@@ -1,4 +1,3 @@
-﻿const os = require('os');
 const {blue, magenta, magentaBright, red, yellow} = require('chalk');
 const moment = require('moment');
 
