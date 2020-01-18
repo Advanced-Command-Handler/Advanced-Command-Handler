@@ -6,6 +6,7 @@
   },
   "scripts": {
     "start": "node main.js",
-    "install": "npm install"
+    "install": "npm install",
+    "start_shards": "node index.js"
   }
 }
