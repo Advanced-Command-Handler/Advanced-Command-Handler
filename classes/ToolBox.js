@@ -99,5 +99,3 @@ module.exports = class ToolBox {
 		}
 	}
 };
-
-// But check before that it does not gradually affect the code.
