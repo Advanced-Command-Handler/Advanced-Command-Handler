@@ -4,11 +4,14 @@ This is a brand new Command Handler which uses classes for commands.
 
 ## Configuration
 
+
 To install dependencies, use `npm run install`.
 To start the bot, use `npm run start` or `npm run start_shards` if you want the bot to be sharded.
 You can edit config in `informations/config.json`.
 
 In `owners` you have to add your ID (in a String). You have to add at least one prefix in `prefixes` to start the bot.
+
+To install `depedencies`, you can simply run `npm install`.
 
 ## Templates
 
@@ -54,7 +57,7 @@ The `ToolBox` class have multiples `static` methods to helps you.
 | Name | Description | Returning |
 | --- | --- | --- |
 | isOwner( id ) | Check if the `id` is in the owners (configuration). | Boolean |
-| getCommand( name ) | Search and return if a command exists with the name `name`. | Command or false |
+| getCommand( name ) | Search and return if a command exists with the name `name` or has the alias `name`. | Command or false |
 | argError( channel, error, command) | Send an embed who explain the argument error and show the syntax. | void |
 | hasPermisisonClient( message, permission ) | Check if bot has permission `permission`. | Boolean |
 | hasPermisisonUser( message, permission ) | Cheif if user has permission `permission`. | Boolean |
