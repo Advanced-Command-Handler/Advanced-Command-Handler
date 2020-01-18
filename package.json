@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "chalk": "~2.4.2",
-    "discord.js": "~11.4.2",
+    "discord.js": "~11.5.2",
     "moment": "~2.24.0"
   },
   "scripts": {
