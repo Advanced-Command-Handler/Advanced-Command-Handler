@@ -3,5 +3,9 @@
     "chalk": "~2.4.2",
     "discord.js": "~11.4.2",
     "moment": "~2.24.0"
+  },
+  "scripts": {
+    "start": "node main.js"
+    "install": "npm install"
   }
 }
