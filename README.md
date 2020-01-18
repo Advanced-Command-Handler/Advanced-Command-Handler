@@ -48,3 +48,6 @@ The `ToolBox` class have multiples `static` methods to helps you.
 | async getThing( dataType, msg, text ) | Search for the `dataType`(like an user) into the client with the mentions and in the `text` (like the username). | Object (dataType) |
 
 You can change or delete thses (or add one) but check before that it does not gradually affect the code.
+
+### That's all now :D
+### I will update this if I see optimisations or bugs ^^
