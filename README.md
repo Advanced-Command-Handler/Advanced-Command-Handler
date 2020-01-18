@@ -13,7 +13,20 @@ In `owners` you have to add your ID (in a String). You have to add at least one 
 ### Commands
 
 ```js
-const Command = require('../../classes/Command.js');module.exports = new Command({    name: '',    description: '',    // Theses are optionnal :    aliases: [],    guildOnly: false,    ownerOnly: false,    userPermissions: [],    clientPermissions: [],    category: ''    }, async(client, message, args) => {    // Your code goes here.});
+const Command = require('../../classes/Command.js');
+module.exports = new Command({
+    name: '',
+    description: '',
+    // Theses are optionnal :
+    aliases: [],
+    guildOnly: false,
+    ownerOnly: false,
+    userPermissions: [],
+    clientPermissions: [],
+    category: ''
+}, async(client, message, args) => {
+    // Your code goes here.
+});
 ```
 
 **You have to put the command into a file into the `commands` dir.**
@@ -25,7 +38,9 @@ Permissions are automatically handled if you add ones.
 ## Events
 
 ```js
-module.exports = async(client, ...EventArguments) => {    // Your code goes here.};
+module.exports = async(client, ...EventArguments) => {
+    // Your code goes here.
+};
 ```
 
 The file's name define wich event it handle.
