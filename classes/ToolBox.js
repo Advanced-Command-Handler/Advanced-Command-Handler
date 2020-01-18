@@ -21,11 +21,14 @@ module.exports = class ToolBox {
 				text: client.user.username
 			}
 		};
-		
+		if(command.usage !== undefined) embed.fields = [{
+			name: "Syntax :",
+			value: command.usage
+		}];
 		if (channel instanceof String) if (client.channels.get(channel)) {
 			channel = client.channels.get(channel);
-		} else return new Error(`The channel ${channel} is not valid, an ID is expected, if an ID has been entered, then the bot does not have this channel.`);
-		return channel.send({embed});
+		} else new Error(`The channel ${channel} is not valid, an ID is expected, if an ID has been entered, then the bot does not have this channel.`);
+		channel.send({embed});
 	}
 	
 	static hasPermissionClient(message, permission) {
@@ -96,3 +99,5 @@ module.exports = class ToolBox {
 		}
 	}
 };
+
+// But check before that it does not gradually affect the code.
