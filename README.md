@@ -9,9 +9,9 @@ To install dependencies, use `npm run install`.
 To start the bot, use `npm run start` or `npm run start_shards` if you want the bot to be sharded.
 You can edit config in `informations/config.json`.
 
-In `owners` you have to add your ID (in a String). You have to add at least one prefix in `prefixes` to start the bot.
+In `owners` you have to add your ID (in a String). 
+You have to add at least one prefix in `prefixes` to start the bot.
 
-To install `depedencies`, you can simply run `npm install`.
 
 ## Templates
 
