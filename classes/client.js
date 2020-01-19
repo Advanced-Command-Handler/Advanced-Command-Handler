@@ -13,7 +13,6 @@ module.exports = class AdvancedClient extends Client {
 		});
 		
 		this.commands = new Collection();
-		this.events = new Collection();
 		
 		this.owners = owners;
 		console.log(grey('Client initialized'));
@@ -38,26 +37,25 @@ module.exports = class AdvancedClient extends Client {
 	}
 	
 	loadCommand(path, name) {
-		if ( !`${path}/${name}`.endsWith('.js')) throw new Error(`Commands are only \`js\` files, path entry : ${path} : ${name}.`);
-		const c = require(`.${path}/${name}`);
-		if (c === undefined) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
+		const command = require(`.${path}/${name}`);
+		if (command === undefined) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		
-		this.commands.set(name, c);
+		this.commands.set(name, command);
 		console.log(gray(`Loading the command : ${red(name)}`));
 	}
 	
 	loadEvents(path) {
 		const files = readdirSync(path);
 		console.log(`Events : (${magenta(files.length)})`);
-		for (let i in files) {
-			const c = files[i];
-			if ( !c.endsWith('.js')) return;
+		for (let file in files) {
+			const eventFile = files[file];
+			if ( !eventFile.endsWith('.js')) continue;
+			if (!eventFile) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 			
-			const event = require(`.${path}${c}`);
-			const eventName = c.split('.')[0];
+			const event = require(`.${path}${eventFile}`);
+			const eventName = eventFile.split('.')[0];
 			this.on(eventName, event.bind(null, this));
 			
-			this.events.set(eventName, event);
 			console.log(gray(`Event loading : ${yellow(eventName)}.`));
 		}
 	}
