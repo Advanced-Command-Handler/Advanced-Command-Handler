@@ -12,7 +12,6 @@
   },
   "scripts": {
     "start": "node main.js",
-    "install": "npm install",
     "start_shards": "node index.js"
   }
 }
