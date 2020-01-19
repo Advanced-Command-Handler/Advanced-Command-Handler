@@ -17,4 +17,4 @@ module.exports = {client};
 client.loadCommands('./commands/');
 client.loadEvents('./events/');
 
-console.log(`End of bot loading, waiting for event ready.`);
+console.log(`End of bot loading, waiting for the event ready.`);
