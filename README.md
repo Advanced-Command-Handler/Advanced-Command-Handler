@@ -52,6 +52,8 @@ The file's name define wich event it handle.
 
 ## Helps
 
+### This is under construction and not accurate.
+
 The `ToolBox` class have multiples `static` methods to helps you.
 
 | Name | Description | Returning |
