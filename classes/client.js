@@ -7,20 +7,19 @@ module.exports = class AdvancedClient extends Client {
 	
 	constructor(token, props) {
 		super(props);
-		super.login(token).then(() => {
-			prefixes.push(`<@${this.user.id}>`);
-			this.prefixes = prefixes;
-		});
+		super.login(token).then(() => {});
+		
+		prefixes.push(`<@${this.user.id}>`);
+		this.prefixes = prefixes;
 		
 		this.commands = new Collection();
-		
 		this.owners = owners;
 		console.log(grey('Client initialized'));
 	}
 	
 	loadCommands(path) {
 		const dirs = readdirSync(path);
-		console.log(`Commands : (${magenta(dirs.length)})`);
+		console.log(`Commands : (${magenta(dirs.length.toString())})`);
 		
 		for (let i in dirs) {
 			const dir = dirs[i];
@@ -46,11 +45,11 @@ module.exports = class AdvancedClient extends Client {
 	
 	loadEvents(path) {
 		const files = readdirSync(path);
-		console.log(`Events : (${magenta(files.length)})`);
+		console.log(`Events : (${magenta(files.length.toString())})`);
 		for (let file in files) {
 			const eventFile = files[file];
 			if ( !eventFile.endsWith('.js')) continue;
-			if (!eventFile) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
+			if ( !eventFile) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 			
 			const event = require(`.${path}${eventFile}`);
 			const eventName = eventFile.split('.')[0];
@@ -58,5 +57,9 @@ module.exports = class AdvancedClient extends Client {
 			
 			console.log(gray(`Event loading : ${yellow(eventName)}.`));
 		}
+	}
+	
+	isOwner(id) {
+		return owners.includes(id);
 	}
 };

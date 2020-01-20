@@ -23,4 +23,9 @@ module.exports = class Command {
 		
 		if(this.category === 'administration') this.userPermissions = ['ADMINISTRATOR'];
 	}
+	
+	deleteMessage(message) {
+		const hasPermissionClient = require('../utils/hasPermissionClient.js');
+		if (hasPermissionClient('MANAGE_MESSAGES')) message.delete();
+	}
 };

@@ -1,6 +1,7 @@
 ﻿const config = require('../informations/config.json');
 const {cyanBright, greenBright, magenta, red, reset, yellowBright} = require('chalk');
-const {embedGenerated, getCommand, isOwner, missingPermission} = require('../classes/ToolBox.js');
+const getCommand = require('../utils/getCommand.js');
+const BetterEmbed = require('../classes/BetterEmbeds.js');
 const moment = require('moment');
 
 module.exports = async (client, message) => {
@@ -23,6 +24,15 @@ module.exports = async (client, message) => {
 		};
 	}
 	
+	function missingPermission(permissions, type) {
+		const embed = new BetterEmbed();
+		embed.color = '#ecc333';
+		embed.title = type === 'client' ? `The bot is missing permissions.` : `The member is missing permissions.`;
+		embed.description`These permissions are missing for the command to succeed : ${permissions}`;
+		
+		return embed.build();
+	}
+	
 	if (message.author.bot || message.system) return;
 	let prefix = false;
 	for (const thisPrefix of client.prefixes) {
@@ -38,7 +48,7 @@ module.exports = async (client, message) => {
 	if (message.content === prefix) return message.channel.send(`The current bot prefixes are : ${config.prefixes.join('\n')}\n<@${client.user.id}>`);
 	
 	if (cmd && prefix !== false) {
-		if ( !isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.ownerOnly)) {
+		if ( !client.isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.ownerOnly)) {
 			message.channel.send('You are not the creator of the bot. You do not have the right to use this command.');
 			return console.log(greenBright(cmd.config.name + '.js') + reset(' : ') + yellowBright(message.author.tag) + reset(` tried the command ${cyanBright(cmd.name)} on the guild ${magenta(message.guild.name)}.`));
 		}
@@ -59,17 +69,24 @@ module.exports = async (client, message) => {
 		
 		return cmd.run(client, message, args).catch((warning) => {
 			console.log(red(`A small error was made somewhere with the command ${cyanBright(cmd.name)}. \nTime : ` + moment().format('LLLL') + '\nError : ' + warning.stack));
-			const embedLog = embedGenerated();
-			embedLog.setColor('#dd0000');
+			const embedLog = new BetterEmbed();
 			
-			embedLog.setDescription('An error occurred with the command : **' + cmd.name + '**.');
-			embedLog.addField('Informations :', `\nSent by : ${message.author} (\`${message.author.id}\`)\n\nOnto : **${message.guild.name}** (\`${message.guild.id}\`)\n\nInto : ${message.channel} (\`${message.channel.id})\``);
-			embedLog.addField('Error :', warning.stack.length > 1024 ? warning.stack.substring(0, 1021) + '...' : warning.stack);
-			embedLog.addField('Message :', messageToString);
+			embedLog.color = '#d00';
+			embedLog.description = 'An error occurred with the command : **' + cmd.name + '**.';
+			embedLog.fields.push({
+				name : 'Informations :',
+				value: `\nSent by : ${message.author} (\`${message.author.id}\`)\n\nOnto : **${message.guild.name}** (\`${message.guild.id}\`)\n\nInto : ${message.channel} (\`${message.channel.id})\``
+			});
+			embedLog.fields.push({
+				name : 'Error :',
+				value: warning.stack.length > 1024 ? warning.stack.substring(0, 1021) + '...' : warning.stack
+			});
+			embedLog.fields.push({
+				name : 'Message :',
+				value: messageToString
+			});
 			
-			if (isOwner(message.author.id)) return message.channel.send(embedLog);
-			
-			message.channel.send(embed);
+			if (client.isOwner(message.author.id)) return message.channel.send(embedLog.build());
 		});
 	}
 };
