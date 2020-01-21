@@ -1,4 +1,4 @@
-const {blue, magenta, magentaBright, red, yellow} = require('chalk');
+﻿const {blue, magenta, magentaBright, red, yellow} = require('chalk');
 const moment = require('moment');
 
 module.exports = async (client) => {
@@ -11,3 +11,5 @@ module.exports = async (client) => {
 		console.log(`RAM used : ${magentaBright((process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))} ` + blue('MB'));
 	}, 20 * 60 * 1000);
 };
+
+// a fixé les indentations des templates

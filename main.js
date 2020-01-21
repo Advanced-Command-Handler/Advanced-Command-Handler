@@ -14,6 +14,7 @@ process.on('uncaughtException', (error) => {
 });
 
 module.exports = {client};
+
 client.loadCommands('./commands/');
 client.loadEvents('./events/');
 
