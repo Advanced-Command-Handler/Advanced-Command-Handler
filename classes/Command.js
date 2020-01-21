@@ -20,6 +20,7 @@ module.exports = class Command {
 		if (props.hasOwnProperty('aliases')) this.aliases = props.aliases;
 		if (props.hasOwnProperty('guildOnly')) this.guildOnly = props.guildOnly;
 		if (props.hasOwnProperty('ownerOnly')) this.ownerOnly = props.ownerOnly;
+		if (props.hasOwnProperty('nsfwOnly')) this.nsfwOnly = props.nsfwOnly;
 		
 		if(this.category === 'administration') this.userPermissions = ['ADMINISTRATOR'];
 	}
