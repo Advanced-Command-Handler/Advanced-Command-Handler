@@ -42,7 +42,10 @@ module.exports = async (client, message) => {
 			message.channel.send('You are not the creator of the bot. You do not have the right to use this command.');
 			return console.log(greenBright(cmd.config.name + '.js') + reset(' : ') + yellowBright(message.author.tag) + reset(` tried the command ${cyanBright(cmd.name)} on the guild ${magenta(message.guild.name)}.`));
 		}
-		
+		if (cmd.nsfwOnly && message.channel.nsfw !== true) {
+			message.channel.send('The command is only available in a nsfw channel.');
+			return console.log(`${greenBright('[EVENT message]')} : ${yellowBright(message.author.tag)} tried the command ${cyanBright(cmd.name)}only available in nsfw channels but in normal text channel.`);
+		}
 		if (message.guild === null) {
 			console.log(`${greenBright('[EVENT message]')} : ${yellowBright(message.author.tag)} executed the command ${cyanBright(cmd.name)} in private messages.`);
 			if (cmd.guildOnly) {
