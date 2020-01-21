@@ -25,7 +25,7 @@ module.exports = class Command {
 	}
 	
 	deleteMessage(message) {
-		const hasPermissionClient = require('../utils/hasPermissionClient.js');
-		if (hasPermissionClient('MANAGE_MESSAGES')) message.delete();
+		const client = require('../main.js');
+		if (client.hasPermission('MANAGE_MESSAGES')) message.delete();
 	}
 };
