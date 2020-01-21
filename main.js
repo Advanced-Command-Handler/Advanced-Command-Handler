@@ -1,6 +1,6 @@
 const {red, yellow} = require('chalk');
 const Client = require('./classes/client.js');
-const {token} = require('./informations/stocks/config.json');
+const {token} = require('./informations/config.json');
 const moment = require('moment');
 
 const client = new Client(token);
@@ -17,4 +17,4 @@ module.exports = {client};
 client.loadCommands('./commands/');
 client.loadEvents('./events/');
 
-console.log(`End of bot loading, waiting for event ready.`);
+console.log(`End of bot loading, waiting for the event ready.`);

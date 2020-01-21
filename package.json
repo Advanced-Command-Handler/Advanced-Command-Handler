@@ -1,12 +1,17 @@
 {
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "chalk": "~2.4.2",
-    "discord.js": "~11.4.2",
+    "discord.js": "~11.5.2",
     "moment": "~2.24.0"
   },
   "scripts": {
     "start": "node main.js",
-    "install": "npm install",
     "start_shards": "node index.js"
   }
 }
