@@ -1,4 +1,4 @@
-﻿const config = require('../informations/config.json');
+const config = require('../informations/config.json');
 const {cyanBright, greenBright, magenta, red, reset, yellowBright} = require('chalk');
 const getCommand = require('../functions/getCommand.js');
 const BetterEmbed = require('../classes/BetterEmbeds.js');
