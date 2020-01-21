@@ -1,6 +1,6 @@
 ﻿const config = require('../informations/config.json');
 const {cyanBright, greenBright, magenta, red, reset, yellowBright} = require('chalk');
-const getCommand = require('../utils/getCommand.js');
+const getCommand = require('../functions/getCommand.js');
 const BetterEmbed = require('../classes/BetterEmbeds.js');
 const moment = require('moment');
 
@@ -10,12 +10,16 @@ module.exports = async (client, message) => {
 		const clientMissingPermissions = [];
 		const userMissingPermissions = [];
 		if ( !message.guild.me.hasPermission('ADMINISTRATOR')) {
-			if (command.hasOwnProperty('clientPermissions')) command.clientPermissions.forEach(permission => {
-				if ( !message.guild.me.hasPermission(permission, true, false, false)) clientMissingPermissions.push(permission);
-			});
-			if (command.hasOwnProperty('userPermissions')) command.userPermissions.forEach(permission => {
-				if ( !message.member.hasPermission(permission, true, false, false)) userMissingPermissions.push(permission);
-			});
+			if (command.hasOwnProperty('clientPermissions')) {
+				command.clientPermissions.forEach(permission => {
+					if ( !message.guild.me.hasPermission(permission, true, false, false)) clientMissingPermissions.push(permission);
+				});
+			}
+			if (command.hasOwnProperty('userPermissions')) {
+				command.userPermissions.forEach(permission => {
+					if ( !message.member.hasPermission(permission, true, false, false)) userMissingPermissions.push(permission);
+				});
+			}
 		}
 		
 		return {
@@ -40,17 +44,24 @@ module.exports = async (client, message) => {
 	}
 	message.content = message.content.replace(/@everyone/gi, '**everyone**');
 	message.content = message.content.replace(/@here/gi, '**here**');
+	
 	const messageToString = message.content.length > 1024 ? message.content.substring(0, 1021) + '...' : message.content;
 	const args = message.content.slice(prefix['length']).trim().split(/ +/g);
 	const cmd = getCommand(args[0].toLowerCase().normalize());
 	args.shift();
 	
-	if (message.content === prefix) return message.channel.send(`The current bot prefixes are : ${config.prefixes.join('\n')}\n<@${client.user.id}>`);
+	if (message.content
+		=== prefix) {
+		return message.channel.send(`The current bot prefixes are : ${config.prefixes.join('\n')}\n<@${client.user.id}>`);
+	}
 	
 	if (cmd && prefix !== false) {
 		if ( !client.isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.ownerOnly)) {
 			message.channel.send('You are not the creator of the bot. You do not have the right to use this command.');
-			return console.log(greenBright(cmd.config.name + '.js') + reset(' : ') + yellowBright(message.author.tag) + reset(` tried the command ${cyanBright(cmd.name)} on the guild ${magenta(message.guild.name)}.`));
+			return console.log(greenBright(cmd.config.name + '.js')
+				+ reset(' : ')
+				+ yellowBright(message.author.tag)
+				+ reset(` tried the command ${cyanBright(cmd.name)} on the guild ${magenta(message.guild.name)}.`));
 		}
 		
 		if (message.guild === null) {
@@ -65,10 +76,23 @@ module.exports = async (client, message) => {
 			const verified = verifyPerms(cmd);
 			if (verified.client.length > 0) return message.channel.send(missingPermission(verified.client, 'client'));
 			if (verified.user.length > 0) return message.channel.send(missingPermission(verified.user, 'user'));
+			
+			if (cmd.nsfw && !message.channel.nsfw) {
+				const embed = new BetterEmbed({
+					title      : 'Error :',
+					description: 'NSFW commands are only available on nsfw channels.',
+					footer     : client.user.username,
+					footer_icon: client.user.displayAvatarURL
+				});
+				await message.channel.send(embed.build());
+			}
 		}
 		
 		return cmd.run(client, message, args).catch((warning) => {
-			console.log(red(`A small error was made somewhere with the command ${cyanBright(cmd.name)}. \nTime : ` + moment().format('LLLL') + '\nError : ' + warning.stack));
+			console.log(red(`A small error was made somewhere with the command ${cyanBright(cmd.name)}. \nTime : `
+				+ moment().format('LLLL')
+				+ '\nError : '
+				+ warning.stack));
 			const embedLog = new BetterEmbed();
 			
 			embedLog.color = '#d00';
