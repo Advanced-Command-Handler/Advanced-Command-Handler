@@ -14,12 +14,13 @@ module.exports = class Command {
 			});
 			this.#dirs = undefined;
 		}
-		if (!props.usage) this.usage = props.usage;
-		if (!props.clientPermissions) this.clientPermissions = props.clientPermissions.length > 0 ? props.clientPermissions : ['SEND_MESSAGES'];
-		if (!props.userPermissions) this.userPermissions = props.userPermissions.length > 0 ? props.userPermissions : ['SEND_MESSAGES'];
-		if (!props.aliases) this.aliases = props.aliases;
-		if (!props.guildOnly) this.guildOnly = props.guildOnly;
-		if (!props.ownerOnly) this.ownerOnly = props.ownerOnly;
+		if (props.usage) this.usage = props.usage;
+		if (props.clientPermissions) this.clientPermissions = props.clientPermissions.length > 0 ? props.clientPermissions : ['SEND_MESSAGES'];
+		if (props.userPermissions) this.userPermissions = props.userPermissions.length > 0 ? props.userPermissions : ['SEND_MESSAGES'];
+		if (props.aliases) this.aliases = props.aliases;
+		if (props.guildOnly) this.guildOnly = props.guildOnly;
+		if (props.ownerOnly) this.ownerOnly = props.ownerOnly;
+		if(props.nsfw) this.nsfw = props.nsfw;
 		
 		if(this.category === 'administration') this.userPermissions = ['ADMINISTRATOR'];
 	}
