@@ -32,9 +32,7 @@ module.exports = class BetterEmbed {
 		}
 		
 		const objects = {
-			authorFull: [
-				'name', 'icon_url', 'url'
-			],
+			authorFull: ['name', 'icon_url', 'url'],
 			author    : ['name', 'icon_url'],
 			image     : ['url'],
 			footer    : ['text'],
