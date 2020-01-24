@@ -53,7 +53,8 @@ The file's name define wich event it handle.
 This is a class for creating Object Embed but a little bit simplier like this :
 
 ```js
-// Embed Objet :const embed = {
+// Embed Objet :
+const embed = {
     image: {
         url: 'url'
     },
@@ -64,7 +65,9 @@ This is a class for creating Object Embed but a little bit simplier like this :
     author: {
         name: 'name',
         icon_url: 'icon_url'
-    }}
+    }
+}
+
 // BetterEmbed
 const embed = new BetterEmbed({
     image: 'url',
