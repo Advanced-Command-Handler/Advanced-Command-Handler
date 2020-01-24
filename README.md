@@ -60,8 +60,8 @@ const embed = {
     },
     fields: [{
         name: 'name',
-        value: 'value',
-    }]
+        value: 'value'
+    }],
     author: {
         name: 'name',
         icon_url: 'icon_url'
@@ -74,6 +74,7 @@ const embed = new BetterEmbed({
     author: 'name',
     author_icon : 'icon_url'
 });
+
 embed.fields.push({
     name: 'name',
     value: 'value'
