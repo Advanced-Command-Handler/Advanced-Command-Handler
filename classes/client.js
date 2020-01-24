@@ -1,13 +1,24 @@
+
 const {Client, Collection} = require('discord.js');
 const {owners, prefixes} = require('../informations/stocks/config.json');
 const {readdirSync} = require('fs');
 const {gray, grey, magenta, red, yellow} = require('chalk');
 
+/**
+ * Class representing an improved Discord Client.
+ * @extends Client
+ */
 module.exports = class AdvancedClient extends Client {
-	
+	/**
+	 * Create a new AdvancedClient, log it and add the mention of the bot on Prefixes.
+	 * This also add a collection for commands, owners, and prefixes in the props.
+	 * @param {String} token - Token of the bot.
+	 * @param {ClientOptions?} props - Options of a normal Client.
+	 */
 	constructor(token, props) {
 		super(props);
-		super.login(token).then(() => {});
+		super.login(token).then(() => {
+		});
 		
 		prefixes.push(`<@${this.user.id}>`);
 		this.prefixes = prefixes;
@@ -17,6 +28,11 @@ module.exports = class AdvancedClient extends Client {
 		console.log(grey('Client initialized'));
 	}
 	
+	/**
+	 * Loads commands from the folder entered as a parameter.
+	 * @param {String} path - Path of the folder of the commands.
+	 * @return {void}
+	 */
 	loadCommands(path) {
 		const dirs = readdirSync(path);
 		console.log(`Commands : (${magenta(dirs.length.toString())})`);
@@ -35,6 +51,12 @@ module.exports = class AdvancedClient extends Client {
 		}
 	}
 	
+	/**
+	 * Load the command {name} into the folder {path}.
+	 * @param {String} path - Path of the folder of the command.
+	 * @param {String} name - Name of the command.
+	 * @return {void}
+	 */
 	loadCommand(path, name) {
 		const command = require(`.${path}/${name}`);
 		if (command === undefined) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
@@ -43,6 +65,11 @@ module.exports = class AdvancedClient extends Client {
 		console.log(gray(`Loading the command : ${red(name)}`));
 	}
 	
+	/**
+	 * Load the events from the folder entered as parameter.
+	 * @param {String} path - Path of the folder of the events.
+	 * @return {void}
+	 */
 	loadEvents(path) {
 		const files = readdirSync(path);
 		console.log(`Events : (${magenta(files.length.toString())})`);
@@ -59,10 +86,21 @@ module.exports = class AdvancedClient extends Client {
 		}
 	}
 	
+	/**
+	 * Tells you if the user is an owner of the bot.
+	 * @param {String} id - Id of an Discord User.
+	 * @return {boolean} - Returns true if the user is in the list of owners.
+	 */
 	isOwner(id) {
 		return owners.includes(id);
 	}
 	
+	/**
+	 * Tells you if the client member on the guild has the permission.
+	 * @param {Message} message - The message to get the client and the to tests if it is on guild.
+	 * @param {Permissions} permission - The permission to test for.
+	 * @return {boolean} - Returns true if the client member has the permission.
+	 */
 	hasPermission(message, permission) {
 		return message.guild === null || message.guild === undefined ? false : message.guild.me.hasPermission(permission, true, false, false);
 	};

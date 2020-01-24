@@ -1,11 +1,24 @@
+﻿/** @module events/message */
+
 const config = require('../informations/config.json');
 const {cyanBright, greenBright, magenta, red, reset, yellowBright} = require('chalk');
 const getCommand = require('../functions/getCommand.js');
 const BetterEmbed = require('../classes/BetterEmbeds.js');
 const moment = require('moment');
 
+/**
+ * The event message.
+ * @param {AdvancedClient} client - The client the event stand for.
+ * @param {Message} message - The message which is recovered by the event.
+ * @return {void}
+ */
 module.exports = async (client, message) => {
 	
+	/**
+	 * Verify if the user and the client has all the permissions of the Command.
+	 * @param {Command} command - Command to verify the permissions.
+	 * @return {{client: [], user: []}}
+	 */
 	function verifyPerms(command) {
 		const clientMissingPermissions = [];
 		const userMissingPermissions = [];
@@ -28,10 +41,16 @@ module.exports = async (client, message) => {
 		};
 	}
 	
-	function missingPermission(permissions, type) {
+	/**
+	 * Create an Embed Objet for listing the missing permisisons of an member or a client.
+	 * @param {Permissions[]} permissions - The missing Permisisons.
+	 * @param {Boolean} client - If the missing permissions are to the client.
+	 * @return {Object} - An Embed Object.
+	 */
+	function missingPermission(permissions, client = false) {
 		const embed = new BetterEmbed();
 		embed.color = '#ecc333';
-		embed.title = type === 'client' ? `The bot is missing permissions.` : `The member is missing permissions.`;
+		embed.title = client ? `The bot is missing permissions.` : `The member is missing permissions.`;
 		embed.description`These permissions are missing for the command to succeed : ${permissions}`;
 		
 		return embed.build();
@@ -74,8 +93,8 @@ module.exports = async (client, message) => {
 			console.log(`${greenBright('[EVENT message]')} : ${yellowBright(message.author.tag)} executed the command ${cyanBright(cmd.name)} on the guild ${magenta(message.guild.name)}.`);
 			
 			const verified = verifyPerms(cmd);
-			if (verified.client.length > 0) return message.channel.send(missingPermission(verified.client, 'client'));
-			if (verified.user.length > 0) return message.channel.send(missingPermission(verified.user, 'user'));
+			if (verified.client.length > 0) return message.channel.send(missingPermission(verified.client, true));
+			if (verified.user.length > 0) return message.channel.send(missingPermission(verified.user));
 			
 			if (cmd.nsfw && !message.channel.nsfw) {
 				const embed = new BetterEmbed({

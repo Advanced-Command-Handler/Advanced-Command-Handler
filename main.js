@@ -13,6 +13,10 @@ process.on('uncaughtException', (error) => {
 	console.log(`An error occurred ${yellow(moment().format('llll'))}.\n\nError : ${red(error.stack)}`);
 });
 
+/**
+ * Exporting the client for functions and classes.
+ * @type {{client: AdvancedClient}}
+ */
 module.exports = {client};
 
 client.loadCommands('./commands/');

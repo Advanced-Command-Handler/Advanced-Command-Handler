@@ -1,12 +1,19 @@
+/** @module functions/getThing */
+
+/**
+ * Let you get a {thing} into your Client, or the {text}.
+ * @param {String} dataType
+ * @param {String|Message} text
+ * @return {Promise<Message|boolean|Emoji|GuildMember|V|User|Role|GuildChannel|TextChannel|Guild>}
+ */
 module.exports = async (dataType, text) => {
 	const message = text.content && text.content instanceof String ? text : null;
 	const client = message.client;
 	
 	switch (dataType) {
 		case 'command':
-			return client.commands.find((c) => c.name === name)
-				|| client.commands.find((c) => c.aliases
-					&& c.aliases.includes(name))
+			return client.commands.find((c) => c.name === name
+					|| c.aliases && c.aliases.includes(name))
 				|| false;
 		case 'channel':
 			return message.guild.channels.get(text)

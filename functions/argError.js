@@ -1,5 +1,15 @@
+/** @module functions/argError
+ * @see module:main
+ * */
 const client = require('../main.js');
 
+/**
+ * Send embed who explains why user failed an argument of the {Command}.
+ * @param {TextChannel} channel - Channel where embed will be sent.
+ * @param {String} error - The mistake user made.
+ * @param {Command} command - Wich command failed.
+ * @return {void}
+ */
 module.exports = (channel, error, command) => {
 	const embed = {
 		title      : `Argument error :`,
@@ -11,15 +21,19 @@ module.exports = (channel, error, command) => {
 		}
 	};
 	
-	if(command.usage) embed.fields = [{
-		name: "Syntax :",
-		value: command.usage
-	}];
+	if (command.usage) {
+		embed.fields = [{
+			name : 'Syntax :',
+			value: command.usage
+		}];
+	}
 	
 	if (channel instanceof String) {
 		if (client.channels.get(channel)) {
 			channel = client.channels.get(channel);
-		} else new Error(`The channel ${channel} is not valid, an ID is expected, if an ID has been entered, then the bot does not have this channel.`);
+		} else {
+			new Error(`The channel ${channel} is not valid, an ID is expected, if an ID has been entered, then the bot does not have this channel.`);
+		}
 	}
 	
 	channel.send({embed});

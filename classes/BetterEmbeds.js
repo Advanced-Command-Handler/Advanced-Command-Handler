@@ -1,4 +1,12 @@
+/**
+ * Class for creating simplier embeds.
+ * @module classes/BetterEmbed
+ */
 module.exports = class BetterEmbed {
+	/**
+	 * Create a BetterEmbed.
+	 * @param {Object?} props - Props of the embed.
+	 */
 	constructor(props) {
 		if (props.title) this.title = props.title;
 		if (props.description) this.description = props.description;
@@ -14,22 +22,40 @@ module.exports = class BetterEmbed {
 		this.fields = props.fields ? props.fields : [];
 	}
 	
+	/**
+	 * To convert BetterEmbed to EmbedObjet.
+	 * @return {{image: (*), thumbnail: (*), color: (*), footer: (*), author: (*), description: (*), title: (*), fields: ([]), timestamp: (*)}}
+	 */
 	build() {
+		function isTemplate(tester, ...templates) {
+			return !tester instanceof Object ? false : templates.includes(tester.keys());
+		}
+		
+		const objects = {
+			authorFull: [
+				'name', 'icon_url', 'url'
+			],
+			author    : ['name', 'icon_url'],
+			image     : ['url'],
+			footer    : ['text'],
+			footerFull: ['text', 'icon_url']
+		};
+		
 		return {
 			title      : this.title ? this.title : undefined,
 			description: this.description ? this.description : undefined,
-			author     : this.author instanceof Object ? this.author : this.author instanceof String ? {
+			author     : isTemplate(this.author, objects.author, objects.authorFull) ? this.author : this.author instanceof String ? {
 				name    : this.author,
 				icon_url: this.author_icon ? this.author_icon : undefined,
 				url     : this.author_url ? this.author_url : undefined
 			} : undefined,
-			image      : this.image instanceof Object ? this.image : this.image instanceof String ? {
+			image      : isTemplate(this.image, objects.image) ? this.image : this.image instanceof String ? {
 				url: this.image
 			} : undefined,
-			thumbnail  : this.thumbnail instanceof Object ? this.thumbnail : this.thumbnail instanceof String ? {
+			thumbnail  : isTemplate(this.thumbnail, objects.image) ? this.thumbnail : this.thumbnail instanceof String ? {
 				url: this.thumbnail
 			} : undefined,
-			footer     : this.footer instanceof Object ? this.footer : this.author instanceof String ? {
+			footer     : isTemplate(this.author, objects.footer, objects.footerFull) ? this.footer : this.author instanceof String ? {
 				text    : this.footer,
 				icon_url: this.footer_icon ? this.footer_icon : undefined
 			} : undefined,
