@@ -1,9 +1,9 @@
 ﻿/** @module events/message */
 
-const config = require('../informations/config.json');
+const config = require('informations/config.json');
 const {cyanBright, greenBright, magenta, red, reset, yellowBright} = require('chalk');
-const getCommand = require('../functions/getCommand.js');
-const BetterEmbed = require('../classes/BetterEmbeds.js');
+const getCommand = require('utils/getThing.js');
+const BetterEmbed = require('utils/BetterEmbeds.js');
 const moment = require('moment');
 
 /**
@@ -66,7 +66,7 @@ module.exports = async (client, message) => {
 	
 	const messageToString = message.content.length > 1024 ? message.content.substring(0, 1021) + '...' : message.content;
 	const args = message.content.slice(prefix['length']).trim().split(/ +/g);
-	const cmd = getCommand(args[0].toLowerCase().normalize());
+	const cmd = getCommand('command',args[0].toLowerCase().normalize());
 	args.shift();
 	
 	if (message.content
