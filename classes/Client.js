@@ -1,5 +1,5 @@
 const {Client, Collection} = require('discord.js');
-const {owners, prefixes} = require('informations/config.json');
+const {owners, prefixes} = require('../../informations/config.json');
 const {readdirSync} = require('fs');
 const {gray, grey, magenta, red, yellow} = require('chalk');
 
