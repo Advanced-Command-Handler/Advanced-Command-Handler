@@ -1,9 +1,9 @@
 ﻿/** @module events/message */
 
-const config = require('informations/config.json');
+const config = require('../informations/config.json');
 const {cyanBright, greenBright, magenta, red, reset, yellowBright} = require('chalk');
-const getCommand = require('utils/getThing.js');
-const BetterEmbed = require('utils/BetterEmbeds.js');
+const getCommand = require('../utils/getThing.js');
+const BetterEmbed = require('../utils/BetterEmbeds.js');
 const moment = require('moment');
 
 /**
