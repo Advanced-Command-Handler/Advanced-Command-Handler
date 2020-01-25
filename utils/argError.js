@@ -1,5 +1,5 @@
 /** @module functions/argError */
-const client = require('main.js');
+const client = require('./main.js');
 
 /**
  * Send embed who explains why user failed an argument of the {Command}.
