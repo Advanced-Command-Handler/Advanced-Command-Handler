@@ -1,6 +1,6 @@
 const {red, yellow} = require('chalk');
-const Client = require('./classes/client.js');
-const {token} = require('./informations/config.json');
+const Client = require('classes/Client.js');
+const {token} = require('informations/config.json');
 const moment = require('moment');
 
 const client = new Client(token);
