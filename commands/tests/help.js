@@ -1,6 +1,6 @@
-const Command = require('classes/Command.js');
-const getThing = require('utils/getThing.js');
-const BetterEmbed = require('utils/BetterEmbeds.js');
+const Command = require('../../classes/Command.js');
+const getThing = require('../../utils/getThing.js');
+const BetterEmbed = require('../../utils/BetterEmbeds.js');
 
 module.exports = new Command({
 	name       : 'help',
