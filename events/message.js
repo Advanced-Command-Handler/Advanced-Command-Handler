@@ -1,15 +1,15 @@
 ﻿/** @module events/message */
 
 const config = require('../informations/config.json');
-const {cyanBright, greenBright, magenta, red, reset, yellowBright} = require('chalk');
+const Logger = require('../utils/Logger.js');
 const getCommand = require('../utils/getThing.js');
 const BetterEmbed = require('../utils/BetterEmbeds.js');
 const moment = require('moment');
 
 /**
  * The event message.
- * @param {AdvancedClient} client - The client the event stand for.
- * @param {Message} message - The message which is recovered by the event.
+ * @param {Object} client - The client the event stand for.
+ * @param {Object} message - The message which is recovered by the event.
  * @return {void}
  */
 module.exports = async (client, message) => {
@@ -66,31 +66,37 @@ module.exports = async (client, message) => {
 	
 	const messageToString = message.content.length > 1024 ? message.content.substring(0, 1021) + '...' : message.content;
 	const args = message.content.slice(prefix['length']).trim().split(/ +/g);
-	const cmd = getCommand('command',args[0].toLowerCase().normalize());
+	/**
+	 * Command to find within the first word after the prefix.
+	 * @type {Command|false} - Command find or false.
+	 */
+	const cmd = await getCommand('command', args[0].toLowerCase().normalize());
 	args.shift();
 	
-	if (message.content
-		=== prefix) {
+	if (message.content === prefix) {
 		return message.channel.send(`The current bot prefixes are : ${config.prefixes.join('\n')}\n<@${client.user.id}>`);
 	}
 	
 	if (cmd && prefix !== false) {
 		if ( !client.isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.ownerOnly)) {
 			message.channel.send('You are not the creator of the bot. You do not have the right to use this command.');
-			return console.log(greenBright(cmd.config.name + '.js')
-				+ reset(' : ')
-				+ yellowBright(message.author.tag)
-				+ reset(` tried the command ${cyanBright(cmd.name)} on the guild ${magenta(message.guild.name)}.`));
+			return Logger.log(
+				`${Logger.setColor('green') + cmd.name}.js${Logger.setColor('log')} : ${Logger.setColor('magenta')}${message.author.tag} tried the command ${
+					Logger.setColor('gold') + cmd.name
+					+ Logger.setColor('log')} on the guild ${
+					Logger.setColor('teal') + message.guild.name + Logger.setColor('teal')
+				}.`
+			);
 		}
 		
 		if (message.guild === null) {
-			console.log(`${greenBright('[EVENT message]')} : ${yellowBright(message.author.tag)} executed the command ${cyanBright(cmd.name)} in private messages.`);
+			console.log(`${Logger.setColor() + message.author.tag} executed the command ${chalk.cyanBright(cmd.name)} in private messages.`);
 			if (cmd.guildOnly) {
 				message.channel.send('The command is only available on a guild.');
-				return console.log(`${greenBright('[EVENT message]')} : ${yellowBright(message.author.tag)} tried the command ${cyanBright(cmd.name)}only available on guild but in private.`);
+				return console.log(`${chalk.greenBright('[EVENT message]')} : ${chalk.yellowBright(message.author.tag)} tried the command ${chalk.cyanBright(cmd.name)}only available on guild but in private.`);
 			}
 		} else {
-			console.log(`${greenBright('[EVENT message]')} : ${yellowBright(message.author.tag)} executed the command ${cyanBright(cmd.name)} on the guild ${magenta(message.guild.name)}.`);
+			console.log(`${chalk.greenBright('[EVENT message]')} : ${chalk.yellowBright(message.author.tag)} executed the command ${chalk.cyanBright(cmd.name)} on the guild ${chalk.magenta(message.guild.name)}.`);
 			
 			const verified = verifyPerms(cmd);
 			if (verified.client.length > 0) return message.channel.send(missingPermission(verified.client, true));
@@ -108,13 +114,13 @@ module.exports = async (client, message) => {
 		}
 		
 		return cmd.run(client, message, args).catch((warning) => {
-			console.log(red(`A small error was made somewhere with the command ${cyanBright(cmd.name)}. \nTime : `
+			console.log(chalk.red(`A small error was made somewhere with the command ${chalk.cyanBright(cmd.name)}. \nTime : `
 				+ moment().format('LLLL')
 				+ '\nError : '
 				+ warning.stack));
 			const embedLog = new BetterEmbed();
 			
-			embedLog.color = '#d00';
+			embedLog.color = '#dd0000';
 			embedLog.description = 'An error occurred with the command : **' + cmd.name + '**.';
 			embedLog.fields.push({
 				name : 'Informations :',

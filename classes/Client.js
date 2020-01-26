@@ -1,7 +1,7 @@
 const {Client, Collection} = require('discord.js');
-const {owners, prefixes} = require('../../informations/config.json');
+const {owners, prefixes} = require('../informations/config.json');
 const {readdirSync} = require('fs');
-const {gray, grey, magenta, red, yellow} = require('chalk');
+const Logger = require('../utils/Logger.js');
 
 /**
  * Class representing an improved Discord Client.
@@ -12,20 +12,17 @@ module.exports = class AdvancedClient extends Client {
 	 * Create a new AdvancedClient, log it and add the mention of the bot on Prefixes.
 	 * This also add a collection for commands, owners, and prefixes in the props.
 	 * @param {String} token - Token of the bot.
-	 * @param {ClientOptions?} props - Options of a normal Client.
+	 * @param {Object?} props - Options of a normal Client.
 	 */
 	constructor(token, props) {
 		super(props);
-		super.login(token).then(() => {
-		});
-		
-		prefixes.push(`<@${this.user.id}>`);
+		super.login(token).then(() => prefixes.push(`<@${this.user.id}>`));
 		this.prefixes = prefixes;
 		
 		this.commands = new Collection();
 		this.owners = owners;
-		console.log(grey('Client initialized'));
-	}
+		Logger.comment('Client initialized');
+	};
 	
 	/**
 	 * Loads commands from the folder entered as a parameter.
@@ -34,7 +31,7 @@ module.exports = class AdvancedClient extends Client {
 	 */
 	loadCommands(path) {
 		const dirs = readdirSync(path);
-		console.log(`Commands : (${magenta(dirs.length.toString())})`);
+		Logger.info(`Commands : (${dirs.length.toString()})`, 'loading');
 		
 		for (let i in dirs) {
 			const dir = dirs[i];
@@ -61,7 +58,7 @@ module.exports = class AdvancedClient extends Client {
 		if (command === undefined) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		
 		this.commands.set(name, command);
-		console.log(gray(`Loading the command : ${red(name)}`));
+		Logger.comment(`Loading the command : ${Logger.setColor('gold') + name}`, 'loading');
 	}
 	
 	/**
@@ -71,7 +68,7 @@ module.exports = class AdvancedClient extends Client {
 	 */
 	loadEvents(path) {
 		const files = readdirSync(path);
-		console.log(`Events : (${magenta(files.length.toString())})`);
+		Logger.info(`Events : (${files.length.toString()})`, 'loading');
 		for (let file in files) {
 			const eventFile = files[file];
 			if ( !eventFile.endsWith('.js')) continue;
@@ -81,7 +78,7 @@ module.exports = class AdvancedClient extends Client {
 			const eventName = eventFile.split('.')[0];
 			this.on(eventName, event.bind(null, this));
 			
-			console.log(gray(`Event loading : ${yellow(eventName)}.`));
+			Logger.comment(`Event loading : ${Logger.setColor('gold') + eventName}.`, 'loading');
 		}
 	}
 	
@@ -96,11 +93,11 @@ module.exports = class AdvancedClient extends Client {
 	
 	/**
 	 * Tells you if the client member on the guild has the permission.
-	 * @param {Message} message - The message to get the client and the to tests if it is on guild.
+	 * @param {Object} message - The message to get the client and the to tests if it is on guild.
 	 * @param {Permissions} permission - The permission to test for.
 	 * @return {boolean} - Returns true if the client member has the permission.
 	 */
 	hasPermission(message, permission) {
 		return message.guild === null || message.guild === undefined ? false : message.guild.me.hasPermission(permission, true, false, false);
-	};
+	}
 };

@@ -1,6 +1,6 @@
 /**
  * Class for creating simplier embeds.
- * @module classes/BetterEmbed
+ * @module utils/BetterEmbed
  */
 module.exports = class BetterEmbed {
 	/**
@@ -22,6 +22,8 @@ module.exports = class BetterEmbed {
 		this.fields = props.fields ? props.fields : [];
 	}
 	
+	
+	// Changement des chemins du require pour un chemin relatif
 	/**
 	 * To convert BetterEmbed to EmbedObjet.
 	 * @return {{image: (*), thumbnail: (*), color: (*), footer: (*), author: (*), description: (*), title: (*), fields: ([]), timestamp: (*)}}

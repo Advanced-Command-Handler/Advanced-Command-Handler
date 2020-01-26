@@ -1,19 +1,19 @@
 /** @module functions/getThing */
 
+const client = require('../main.js');
 /**
  * Let you get a {thing} into your Client, or the {text}.
- * @param {String} dataType
- * @param {String|Message} text
- * @return {Promise<Message|boolean|Emoji|GuildMember|V|User|Role|GuildChannel|TextChannel|Guild>}
+ * @param {'command'|'channel'|'guild'|'member'|'user'|'role'|'emote'|'message'} dataType - The type of data to search
+ * @param {String|Object} text - Text or Message where to look for the dataType.
+ * @return {Promise<Command|GuildChannel|TextChannel|Guild|GuildMember|User|Role|Emoji|Message|boolean>}
  */
 module.exports = async (dataType, text) => {
 	const message = text.content && text.content instanceof String ? text : null;
-	const client = message.client;
 	
 	switch (dataType) {
 		case 'command':
-			return client.commands.find((c) => c.name === name
-					|| c.aliases && c.aliases.includes(name))
+			return client.commands.find((c) => c.name === text
+					|| c.aliases && c.aliases.includes(text))
 				|| false;
 		case 'channel':
 			return message.guild.channels.get(text)
@@ -58,8 +58,8 @@ module.exports = async (dataType, text) => {
 				return (await client.channels.get(url[1]).fetchMessage(url[2])) || false;
 			}
 			
-			for (let [, value] of client.channels) {
-				const m = await value.fetchMessage(text);
+			for (const channel of client.channels) {
+				const m = await channel[1].fetchMessage(text);
 				if (m) return m;
 			}
 			return false;
