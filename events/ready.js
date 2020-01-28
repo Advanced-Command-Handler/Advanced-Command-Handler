@@ -1,5 +1,5 @@
 ﻿/** @module events/reeady */
-const moment = require('moment');
+const {DateTime} = require('luxon');
 const Logger = require('../utils/Logger.js');
 
 /**
@@ -8,12 +8,18 @@ const Logger = require('../utils/Logger.js');
  * @return {void}
  */
 module.exports = async (client) => {
-	Logger.info(`${Logger.setColor('#c0433f') + 'Bot loaded !'} Bot online with ${client.guilds.size + Logger.setColor('#c0433f')} guilds, he sees ${client.users.size + Logger.setColor('#c0433f')} members.`);
-	Logger.log('Date : ' + Logger.setColor('yellow') + moment().format('llll'));
-	Logger.log(`RAM used : ${Logger.setColor('magenta') + (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} ` + Logger.setColor('magenta') + 'MB');
+	Logger.event(
+		Logger.setColor('#c0433f', `Client online ! Client ${
+			Logger.setColor('orange', client.user.username, '#c0433f')
+		} has ${client.guilds.size + Logger.setColor('#c0433f')} guilds, it sees ${client.users.size + Logger.setColor('#c0433f')} members.`)
+	);
+	
+	Logger.event('Date : ' + Logger.setColor('yellow', DateTime.local().toFormat('TT')));
+	Logger.event(`RAM used : ${Logger.setColor('magenta', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))} ` + Logger.setColor('magenta', 'MB'));
 	
 	setInterval(() => {
-		Logger.log('Date : ' + Logger.setColor('yellow') + moment().format('llll'));
-		Logger.log(`RAM used : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} ` + Logger.setColor('magenta') + 'MB');
+		Logger.event('Date : ' + Logger.setColor('yellow', DateTime.local().toFormat('TT')));
+		Logger.event(`RAM used : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} ` + Logger.setColor('magenta', 'MB'));
 	}, 20 * 60 * 1000);
-};
+}
+;

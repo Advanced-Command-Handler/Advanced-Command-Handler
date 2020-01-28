@@ -8,7 +8,7 @@ const client = require('../main.js');
  * @return {Promise<Command|GuildChannel|TextChannel|Guild|GuildMember|User|Role|Emoji|Message|boolean>}
  */
 module.exports = async (dataType, text) => {
-	const message = text.content && text.content instanceof String ? text : null;
+	const message = text.hasOwnProperty('content') && text.content instanceof String ? text : null;
 	
 	switch (dataType) {
 		case 'command':

@@ -5,7 +5,7 @@ const Logger = require('../utils/Logger.js');
 
 /**
  * Class representing an improved Discord Client.
- * @extends Client
+ * @extends {Client}
  */
 module.exports = class AdvancedClient extends Client {
 	/**
@@ -21,7 +21,7 @@ module.exports = class AdvancedClient extends Client {
 		
 		this.commands = new Collection();
 		this.owners = owners;
-		Logger.comment('Client initialized');
+		Logger.comment('Client initialized.', 'loading');
 	};
 	
 	/**
@@ -31,20 +31,25 @@ module.exports = class AdvancedClient extends Client {
 	 */
 	loadCommands(path) {
 		const dirs = readdirSync(path);
-		Logger.info(`Commands : (${dirs.length.toString()})`, 'loading');
+		let total = 0;
+		Logger.info('Loading commands.', 'loading');
+		Logger.comment(`Categories : (${dirs.length})`, 'loading');
 		
 		for (let i in dirs) {
 			const dir = dirs[i];
 			const files = readdirSync(`${path}/${dir}`);
 			if (dirs.length === 0) continue;
+			Logger.comment(`Commands in category '${dir}' : (${files.length})`, 'loading');
 			
 			for (let j in files) {
 				const c = files[j];
 				if ( !c.endsWith('.js')) continue;
 				
 				this.loadCommand(`${path}${dir}`, c);
+				total++;
 			}
 		}
+		Logger.info(`${total} commands loaded.`, 'loading');
 	}
 	
 	/**
@@ -58,7 +63,7 @@ module.exports = class AdvancedClient extends Client {
 		if (command === undefined) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		
 		this.commands.set(name, command);
-		Logger.comment(`Loading the command : ${Logger.setColor('gold') + name}`, 'loading');
+		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
 	}
 	
 	/**
@@ -68,7 +73,9 @@ module.exports = class AdvancedClient extends Client {
 	 */
 	loadEvents(path) {
 		const files = readdirSync(path);
-		Logger.info(`Events : (${files.length.toString()})`, 'loading');
+		let total = 0;
+		Logger.info('Loading events.', 'loading');
+		Logger.comment(`Events : (${files.length})`, 'loading');
 		for (let file in files) {
 			const eventFile = files[file];
 			if ( !eventFile.endsWith('.js')) continue;
@@ -77,9 +84,10 @@ module.exports = class AdvancedClient extends Client {
 			const event = require(`.${path}${eventFile}`);
 			const eventName = eventFile.split('.')[0];
 			this.on(eventName, event.bind(null, this));
-			
-			Logger.comment(`Event loading : ${Logger.setColor('gold') + eventName}.`, 'loading');
+			total++;
+			Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
 		}
+		Logger.info(`${total} events loaded.`, 'loading');
 	}
 	
 	/**

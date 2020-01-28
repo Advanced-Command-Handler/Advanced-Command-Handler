@@ -4,7 +4,7 @@ const config = require('../informations/config.json');
 const Logger = require('../utils/Logger.js');
 const getCommand = require('../utils/getThing.js');
 const BetterEmbed = require('../utils/BetterEmbeds.js');
-const moment = require('moment');
+const {DateTime} = require('luxon');
 
 /**
  * The event message.
@@ -80,23 +80,31 @@ module.exports = async (client, message) => {
 	if (cmd && prefix !== false) {
 		if ( !client.isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.ownerOnly)) {
 			message.channel.send('You are not the creator of the bot. You do not have the right to use this command.');
-			return Logger.log(
-				`${Logger.setColor('green') + cmd.name}.js${Logger.setColor('log')} : ${Logger.setColor('magenta')}${message.author.tag} tried the command ${
-					Logger.setColor('gold') + cmd.name
-					+ Logger.setColor('log')} on the guild ${
-					Logger.setColor('teal') + message.guild.name + Logger.setColor('teal')
-				}.`
-			);
+			return Logger.log(`${
+				Logger.setColor('magenta', message.author.tag)} tried the ownerOnly command ${
+				Logger.setColor('gold', cmd.name)} on the guild ${
+				Logger.setColor('teal', message.guild.name)
+			}.`);
 		}
 		
 		if (message.guild === null) {
-			console.log(`${Logger.setColor() + message.author.tag} executed the command ${chalk.cyanBright(cmd.name)} in private messages.`);
+			Logger.log(`${
+				Logger.setColor('magenta', message.author.tag)} executed the command ${
+				Logger.setColor('gold', cmd.name)} in private messages.`
+			);
 			if (cmd.guildOnly) {
 				message.channel.send('The command is only available on a guild.');
-				return console.log(`${chalk.greenBright('[EVENT message]')} : ${chalk.yellowBright(message.author.tag)} tried the command ${chalk.cyanBright(cmd.name)}only available on guild but in private.`);
+				return Logger.log(`${
+					Logger.setColor('magenta', message.author.tag)} tried the command ${
+					Logger.setColor('gold', cmd.name)} only available on guild but in private.`
+				);
 			}
 		} else {
-			console.log(`${chalk.greenBright('[EVENT message]')} : ${chalk.yellowBright(message.author.tag)} executed the command ${chalk.cyanBright(cmd.name)} on the guild ${chalk.magenta(message.guild.name)}.`);
+			Logger.log(`${
+				Logger.setColor('magenta', message.author.tag)} executed the command ${
+				Logger.setColor('gold', cmd.name)} on the guild ${
+				Logger.setColor('teal', message.guild.name)}.`
+			);
 			
 			const verified = verifyPerms(cmd);
 			if (verified.client.length > 0) return message.channel.send(missingPermission(verified.client, true));
@@ -114,28 +122,32 @@ module.exports = async (client, message) => {
 		}
 		
 		return cmd.run(client, message, args).catch((warning) => {
-			console.log(chalk.red(`A small error was made somewhere with the command ${chalk.cyanBright(cmd.name)}. \nTime : `
-				+ moment().format('LLLL')
-				+ '\nError : '
-				+ warning.stack));
-			const embedLog = new BetterEmbed();
+			Logger.warn(`A small error was made somewhere with the command ${
+				Logger.setColor('gold', cmd.name)}. \nDate : ${
+				Logger.setColor('yellow', DateTime.local().toFormat('TT'))}${
+				Logger.setColor('red', '\nError : ' + warning.stack)}`
+			);
 			
-			embedLog.color = '#dd0000';
-			embedLog.description = 'An error occurred with the command : **' + cmd.name + '**.';
-			embedLog.fields.push({
-				name : 'Informations :',
-				value: `\nSent by : ${message.author} (\`${message.author.id}\`)\n\nOnto : **${message.guild.name}** (\`${message.guild.id}\`)\n\nInto : ${message.channel} (\`${message.channel.id})\``
-			});
-			embedLog.fields.push({
-				name : 'Error :',
-				value: warning.stack.length > 1024 ? warning.stack.substring(0, 1021) + '...' : warning.stack
-			});
-			embedLog.fields.push({
-				name : 'Message :',
-				value: messageToString
-			});
 			
-			if (client.isOwner(message.author.id)) return message.channel.send(embedLog.build());
+			if (client.isOwner(message.author.id)) {
+				const embedLog = new BetterEmbed();
+				embedLog.color = '#dd0000';
+				embedLog.description = 'An error occurred with the command : **' + cmd.name + '**.';
+				embedLog.fields.push({
+					name : 'Informations :',
+					value: `\nSent by : ${message.author} (\`${message.author.id}\`)\n\nOnto : **${message.guild.name}** (\`${message.guild.id}\`)\n\nInto : ${message.channel} (\`${message.channel.id})\``
+				});
+				embedLog.fields.push({
+					name : 'Error :',
+					value: warning.stack.length > 1024 ? warning.stack.substring(0, 1021) + '...' : warning.stack
+				});
+				embedLog.fields.push({
+					name : 'Message :',
+					value: messageToString
+				});
+				
+				return message.channel.send(embedLog.build());
+			}
 		});
 	}
 };

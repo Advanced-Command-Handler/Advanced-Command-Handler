@@ -1,7 +1,11 @@
 /** @module utils/Logger */
+
+const {DateTime} = require('luxon');
+/**
+ * Log system to customize your logs and make them more informative.
+ */
 module.exports = class Logger {
 	static logComments = true;
-	static #text = '';
 	
 	static colors = {
 		red    : '#b52825',
@@ -26,10 +30,10 @@ module.exports = class Logger {
 		error  : 'red',
 		warn   : 'yellow',
 		info   : 'blue',
+		event  : '#43804e',
 		log    : 'default',
 		test   : 'white',
-		comment: 'grey',
-		event  : '#43804e'
+		comment: 'grey'
 	};
 	
 	/**
@@ -60,7 +64,7 @@ module.exports = class Logger {
 	 * @return {void}
 	 */
 	static warn(message, typeToShow = 'warn') {
-		this.process(message, 'warn', type);
+		this.process(message, 'warn', typeToShow);
 	}
 	
 	/**
@@ -106,8 +110,6 @@ module.exports = class Logger {
 	}
 	
 	static process(text, type = 'test', message = type) {
-		text = `[${message.toUpperCase()}] ${text.toString()}`;
-		
 		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, match => {
 			if (text.indexOf(';224;238;38m') !== -1 && text.indexOf(';224;238;38m') < text.indexOf(match)) {
 				return match;
@@ -115,28 +117,36 @@ module.exports = class Logger {
 				return this.setColor('yellow') + match + this.setColor(type);
 			}
 		});
-		if ((type = this.#types[type])) text = this.setColor(type) + text + this.setColor();
+		text = text.replace(/\x2b+/gi, this.setColor(type));
+		type = this.#types[type] ? this.#types[type] : type;
+		text = `${this.setColor('#847270')}[${DateTime.local().toFormat('D HH:mm:ss.u')}]${this.setColor(type)}[${message.toUpperCase()}] ${text.toString() + this.setColor()}`;
 		console.log(text);
 	}
 	
 	/**
 	 * Set the actual color (and each characters after).
 	 * @param {String|HexColor} color - The color in the static 'colors' list or a type of log.
-	 * @param {String} text
+	 * @param {String} text - For only coloring the text.
+	 * @param {String} colorAfter - For set the color after the text.
 	 * @return {string}
 	 */
-	static setColor(color = 'default', text = '') {
-		let result = '\x1b[38;2;';
-		if (color = this.colors[this.#types[color]] || this.colors[color] || color && color.match(/#[\d|a-f]{6}/i)[0]) {
-			color = color.substring(1, 7).match(/.{2}/g).map(n => parseInt(n, 16)).join(';');
+	static setColor(color = 'default', text = '', colorAfter = '') {
+		if (color = this.colors[this.#types[color]] || this.colors[color] ||  this.#types[color] && this.#types[color].match(/#[0-9|a-f]{6}/i)[0] || color && color.match(/#[0-9|a-f]{6}/i)[0]) {
+			color = '\x1b[38;2;' + color.substring(1, 7).match(/.{2}/g).map(n => parseInt(n, 16)).join(';') + 'm';
 		} else {
 			throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 		}
-		result += color + 'm';
-		if(text) {
-			console.log(this.#text);
-			result += text + this.#text.substring(0, this.#text.indexOf('m') + 1);
+		if(colorAfter) {
+			if (colorAfter = this.colors[this.#types[colorAfter]]
+				|| this.colors[colorAfter]
+				|| this.#types[colorAfter]
+				&& this.#types[colorAfter].match(/#[0-9|a-f]{6}/i)[0]
+				|| colorAfter.match(/#[0-9|a-f]{6}/i)[0]) {
+				colorAfter = '\x1b[38;2;' + colorAfter.substring(1, 7).match(/.{2}/g).map(n => parseInt(n, 16)).join(';') + 'm';
+			} else {
+				throw new Error('Waiting for a log type, color or HexColor but receive something else.');
+			}
 		}
-		return result;
+		return text ? color + text + (colorAfter ? colorAfter : '\x2b') : color;
 	}
 };

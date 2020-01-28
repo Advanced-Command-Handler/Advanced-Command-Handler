@@ -1,16 +1,23 @@
 const Logger = require('./utils/Logger.js');
+const {readFileSync} = require('fs');
+Logger.logComments = true;
+try {
+	console.log(Logger.setColor('magenta', readFileSync('./informations/presentation.txt').toString()));
+} catch (e) {
+	console.log(Logger.setColor('orange', 'Advanced Command Handler BY AYFRI'));
+}
+
+Logger.info(`Start of bot loading.`, 'loading');
+
 const Client = require('./classes/Client.js');
 const {token} = require('./informations/config.json');
-const moment = require('moment');
-
 const client = new Client(token);
-Logger.info(`Start of bot loading at : ${Logger.setColor('yellow') + moment().format('llll')}`, 'loading');
 
 process.on('warning', (error) => {
-	Logger.error(`An error occurred ${Logger.setColor('yellow') + moment().format('llll')}.\n\n${Logger.setColor('red')}Error : ${error.stack}`);
+	Logger.error(`An error occurred. \nError : ${error.stack}`);
 });
 process.on('uncaughtException', (error) => {
-	Logger.error(`An error occurred ${Logger.setColor('yellow') + moment().format('llll')}.\n\n${Logger.setColor('red')}Error : ${error.stack}`);
+	Logger.error(`An error occurred. \nError : ${error.stack}`);
 });
 
 /**
@@ -22,5 +29,4 @@ module.exports = client;
 client.loadCommands('./commands/');
 client.loadEvents('./events/');
 
-Logger.test("test " + Logger.setColor('violet', "oui") + " lol");
-Logger.log("End of bot loading, waiting for the event ready.", 'loading');
+Logger.log('End of bot loading, waiting for the event ready.', 'loading');
