@@ -1,6 +1,6 @@
 /**
  * Class for creating simplier embeds.
- * @module classes/BetterEmbed
+ * @module utils/BetterEmbed
  */
 module.exports = class BetterEmbed {
 	/**
@@ -8,27 +8,35 @@ module.exports = class BetterEmbed {
 	 * @param {Object?} props - Props of the embed.
 	 */
 	constructor(props) {
-		if (props.title) this.title = props.title;
-		if (props.description) this.description = props.description;
-		if (props.author) this.author = props.author;
-		if (props.author_icon) this.author_icon = props.author_icon;
-		if (props.author_url) this.author_url = props.author_url;
-		if (props.image) this.image = props.image;
-		if (props.thumbnail) this.thumbnail = props.thumbnail;
-		if (props.footer) this.footer = props.footer;
-		if (props.footer_icon) this.footer_icon = props.footer_icon;
-		if (props.timestamp) this.timestamp = props.timestamp;
-		if (props.color) this.color = props.color;
-		this.fields = props.fields ? props.fields : [];
+		this.title = props ? props.title : '';
+		this.description = props ? props.description : '';
+		this.author = props ? props.author : '';
+		this.author_icon = props ? props.author_icon : '';
+		this.author_url = props ? props.author_url : '';
+		this.image = props ? props.image : '';
+		this.thumbnail = props ? props.thumbnail : '';
+		this.footer = props ? props.footer : '';
+		this.footer_icon = props ? props.footer_icon : '';
+		this.timestamp = props ? props.timestamp : '';
+		this.color = props ? props.color : '';
+		this.fields = props ? props.fields : [];
 	}
 	
+	
+	// Changement des chemins du require pour un chemin relatif
 	/**
 	 * To convert BetterEmbed to EmbedObjet.
 	 * @return {{image: (*), thumbnail: (*), color: (*), footer: (*), author: (*), description: (*), title: (*), fields: ([]), timestamp: (*)}}
 	 */
 	build() {
+		/**
+		 * Test if tester is a template.
+		 * @param {Object} tester - Object to test.
+		 * @param {objects}templates - Templates to test.
+		 * @return {boolean}
+		 */
 		function isTemplate(tester, ...templates) {
-			return !tester instanceof Object ? false : templates.includes(tester.keys());
+			return tester.constructor.name === 'Object' ? templates.includes(tester.keys()) : false;
 		}
 		
 		const objects = {

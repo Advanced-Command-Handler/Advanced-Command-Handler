@@ -42,7 +42,8 @@ module.exports = class Command {
 	
 	/**
 	 * Tries to delete the message without sending an Exception.
-	 * @param {Message} message - The message to delete.
+	 * @param {Object} message - The message to delete.
+	 * @return {void}
 	 */
 	deleteMessage(message) {
 		const client = require('../main.js');

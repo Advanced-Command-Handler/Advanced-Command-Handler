@@ -6,9 +6,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chalk": "~2.4.2",
     "discord.js": "~11.5.1",
-    "moment": "~2.24.0"
+    "luxon": "^1.22.0"
   },
   "scripts": {
     "start": "node main.js",

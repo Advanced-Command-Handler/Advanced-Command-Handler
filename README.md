@@ -1,5 +1,7 @@
 This is a brand new Command Handler which uses classes for commands.
 
+# As there is the Logger now and some fixes, this is not up to date.
+
 ## Configuration
 
 To install dependencies, use `npm install`.
