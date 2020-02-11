@@ -14,7 +14,20 @@ You have to add at least one prefix in `prefixes` to start the bot.
 ### Commands
 
 ```js
-const Command = require('../../classes/Command.js');module.exports = new Command({    name: '',    description: '',    // Theses are optionnal :    aliases: [],    guildOnly: false,    ownerOnly: false,    userPermissions: [],    clientPermissions: [],    category: ''}, async(client, message, args) => {    // Your code goes here.});
+const Command = require('../../classes/Command.js');
+module.exports = new Command({
+    name: '',
+    description: '',
+    // Theses are optionnal :
+    aliases: [],
+    guildOnly: false,
+    ownerOnly: false,
+    userPermissions: [],
+    clientPermissions: [],
+    category: ''},
+ async(client, message, args) => {
+    // Your code goes here.
+});
 ```
 
 **You have to put the command into a folder into the `commands` dir.**
@@ -26,7 +39,9 @@ Permissions are automatically handled if you add ones.
 ## Events
 
 ```js
-module.exports = async(client, ...EventArguments) => {    // Your code goes here.};
+module.exports = async(client, ...EventArguments) => {
+    // Your code goes here.
+};
 ```
 
 The file's name define wich event it handle.
@@ -62,7 +77,23 @@ Colors are defined in static public object in the `Logger` class so you can chan
 These are the actual colors :
 
 ```js
-static colors = {        red    : '#b52825',        orange : '#e76a1f',        gold   : '#deae17',        yellow : '#eeee23',        green  : '#3ecc2d',        teal   : '#11cc93',        blue   : '#2582ff',        indigo : '#524cd9',        violet : '#7d31cc',        magenta: '#b154cf',        pink   : '#d070a0',        brown  : '#502f1e',        black  : '#000000',        grey   : '#6e6f77',        white  : '#ffffff',        default: '#cccccc'    }
+static colors = {
+        red    : '#b52825',
+        orange : '#e76a1f',
+        gold   : '#deae17',
+        yellow : '#eeee23',
+        green  : '#3ecc2d',
+        teal   : '#11cc93',
+        blue   : '#2582ff',
+        indigo : '#524cd9',
+        violet : '#7d31cc',
+        magenta: '#b154cf',
+        pink   : '#d070a0',
+        brown  : '#502f1e',
+        black  : '#000000',
+        grey   : '#6e6f77',
+        white  : '#ffffff',
+        default: '#cccccc'    }
 ```
 
 # Helps
@@ -72,7 +103,29 @@ static colors = {        red    : '#b52825',        orange : '#e76a1f',        g
 This is a class for creating Object Embed but a little bit simplier like this :
 
 ```js
-// Embed Objet :const embed = {    image: {        url: 'url'    },    fields: [{        name: 'name',        value: 'value'    }],    author: {        name: 'name',        icon_url: 'icon_url'    }}// BetterEmbedconst embed = new BetterEmbed({    image: 'url',    author: 'name',    author_icon : 'icon_url'});embed.fields.push({    name: 'name',    value: 'value'});
+// Embed Objet :const embed = {
+    image: {
+        url: 'url'
+    },
+    fields: [{
+        name: 'name',
+        value: 'value'
+    }],
+    author: {
+        name: 'name',
+        icon_url: 'icon_url'
+    }
+}
+// BetterEmbed
+const embed = new BetterEmbed({
+    image: 'url',
+    author: 'name',
+    author_icon : 'icon_url'
+});
+embed.fields.push({
+    name: 'name',
+    value: 'value'
+});
 ```
 
 This can simplify your embeds declarations, and know that RichEmbeds are very heavy on memory.
