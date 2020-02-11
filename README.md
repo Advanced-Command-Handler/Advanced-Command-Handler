@@ -24,8 +24,8 @@ module.exports = new Command({
     ownerOnly: false,
     userPermissions: [],
     clientPermissions: [],
-    category: ''},
- async(client, message, args) => {
+    category: ''
+}, async(client, message, args) => {
     // Your code goes here.
 });
 ```
@@ -65,7 +65,19 @@ It has multiple **static** methods :
 ### Examples
 
 ```js
-Logger.log('Loading bot.', 'loading');/* Logging (in one line) :"[year-month-day hour:minute:second]" : #847270"[LOADING] Loading bot." : #cccccc*/Logger.error(`${setColor('orange', 'Command')} is not allowed.`, );/* Logging (in one line) :"[year-month-day hour:minute:second]" : #847270"[ERROR] " : #b52825"Command" : #e76a1f" is not allowed." : #b52825*/
+Logger.log('Loading bot.', 'loading');
+/* Logging (in one line) :
+"[year-month-day hour:minute:second]" : #847270
+"[LOADING] Loading bot." : #cccccc
+*/
+
+Logger.error(`${setColor('orange', 'Command')} is not allowed.`, );
+/* Logging (in one line) :
+"[year-month-day hour:minute:second]" : #847270
+"[ERROR] " : #b52825
+"Command" : #e76a1f
+" is not allowed." : #b52825
+*/
 ```
 
 **Every numbers are yellow by default.**
@@ -93,7 +105,8 @@ static colors = {
         black  : '#000000',
         grey   : '#6e6f77',
         white  : '#ffffff',
-        default: '#cccccc'    }
+        default: '#cccccc'    
+}
 ```
 
 # Helps
@@ -103,7 +116,8 @@ static colors = {
 This is a class for creating Object Embed but a little bit simplier like this :
 
 ```js
-// Embed Objet :const embed = {
+// Embed Objet :
+const embed = {
     image: {
         url: 'url'
     },
@@ -116,6 +130,7 @@ This is a class for creating Object Embed but a little bit simplier like this :
         icon_url: 'icon_url'
     }
 }
+
 // BetterEmbed
 const embed = new BetterEmbed({
     image: 'url',
