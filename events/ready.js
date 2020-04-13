@@ -15,11 +15,11 @@ module.exports = async (client) => {
 	);
 	
 	Logger.event('Date : ' + Logger.setColor('yellow', DateTime.local().toFormat('TT')));
-	Logger.event(`RAM used : ${Logger.setColor('magenta', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))} ` + Logger.setColor('magenta', 'MB'));
+	Logger.event(`RAM used : ${Logger.setColor('magenta', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))} ` + Logger.setColor('blue', 'MB'));
 	
 	setInterval(() => {
 		Logger.event('Date : ' + Logger.setColor('yellow', DateTime.local().toFormat('TT')));
-		Logger.event(`RAM used : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} ` + Logger.setColor('magenta', 'MB'));
+		Logger.event(`RAM used : ${Logger.setColor('magenta', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))} ` + Logger.setColor('blue', 'MB'));
 	}, 20 * 60 * 1000);
 }
 ;
