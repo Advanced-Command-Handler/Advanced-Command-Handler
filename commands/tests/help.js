@@ -45,8 +45,7 @@ ${command.ownerOnly ? `**Only available to the owner(s).**` : ''}`;
 			if (command.aliases) {
 				embed.fields.push({
 					name : 'Aliases :',
-					value:
-						command.aliases.join(' ')
+					value: command.aliases.join(' ')
 				});
 			}
 		}
