@@ -18,7 +18,6 @@ module.exports = class AdvancedClient extends Client {
 		super(props);
 		super.login(token).then(() => prefixes.push(`<@${this.user.id}>`));
 		this.prefixes = prefixes;
-		
 		this.commands = new Collection();
 		this.owners = owners;
 		Logger.comment('Client initialized.', 'loading');
@@ -60,8 +59,7 @@ module.exports = class AdvancedClient extends Client {
 	 */
 	loadCommand(path, name) {
 		const command = require(`.${path}/${name}`);
-		if (command === undefined) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-		
+		if (command === undefined) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);		
 		this.commands.set(name, command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
 	}
@@ -76,6 +74,7 @@ module.exports = class AdvancedClient extends Client {
 		let total = 0;
 		Logger.info('Loading events.', 'loading');
 		Logger.comment(`Events : (${files.length})`, 'loading');
+		
 		for (let file in files) {
 			const eventFile = files[file];
 			if ( !eventFile.endsWith('.js')) continue;
@@ -106,6 +105,6 @@ module.exports = class AdvancedClient extends Client {
 	 * @return {boolean} - Returns true if the client member has the permission.
 	 */
 	hasPermission(message, permission) {
-		return message.guild === null || message.guild === undefined ? false : message.guild.me.hasPermission(permission, true, false, false);
+		return message.guild ? message.guild.me.hasPermission(permission, true, false, false) : false;
 	}
 };
