@@ -6,7 +6,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "11.6.3",
+    "discord.js": "11.6.4",
     "luxon": "^1.22.0"
   },
   "scripts": {
