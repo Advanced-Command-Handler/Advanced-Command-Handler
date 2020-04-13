@@ -1,4 +1,4 @@
-﻿/** @module events/message */
+/** @module events/message */
 
 const config = require('../informations/config.json');
 const Logger = require('../utils/Logger.js');
@@ -42,7 +42,7 @@ module.exports = async (client, message) => {
 	}
 	
 	/**
-	 * Create an Embed Objet for listing the missing permisisons of an member or a client.
+	 * Creates an Embed Objet for listing the missing permisisons of an member or a client.
 	 * @param {Permissions[]} permissions - The missing Permisisons.
 	 * @param {Boolean} client - If the missing permissions are to the client.
 	 * @return {Object} - An Embed Object.
@@ -61,11 +61,11 @@ module.exports = async (client, message) => {
 	for (const thisPrefix of client.prefixes) {
 		if (message.content.startsWith(thisPrefix)) prefix = thisPrefix;
 	}
-	message.content = message.content.replace(/@everyone/gi, '**everyone**');
-	message.content = message.content.replace(/@here/gi, '**here**');
+	message.content = message.content.replace(/@everyone/g, '**everyone**');
+	message.content = message.content.replace(/@here/g, '**here**');
 	
 	const messageToString = message.content.length > 1024 ? message.content.substring(0, 1021) + '...' : message.content;
-	const args = message.content.slice(prefix['length']).trim().split(/ +/g);
+	const args = message.content.slice(prefix.length).trim().split(/ +/g);
 	/**
 	 * Command to find within the first word after the prefix.
 	 * @type {Command|false} - Command find or false.
@@ -150,4 +150,4 @@ module.exports = async (client, message) => {
 			}
 		});
 	}
-};
+}
