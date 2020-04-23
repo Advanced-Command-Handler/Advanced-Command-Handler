@@ -1,54 +1,134 @@
-This is a brand new Command Handler which uses classes for commands.
+###### This is an Advanced Command Handler which uses classes for commands.
 
-# As there is the Logger now and some fixes, this is not up to date.
+# Configuration
 
-## Configuration
+To install the command handler, install `npm` and then in a terminal run this command where you want your bot `npm i advanced-command-handler`.
+After it create your main file and add this into it :
 
-To install dependencies, use `npm install`.
-To start the bot, use `npm run start` or `npm run start_shards` if you want the bot to be sharded.
-You can edit config in `informations/config.json`.
+```js
+const {CommandHandler} = require('advanced-command-handler');
 
-In `owners` you have to add your ID (in a String). 
-You have to add at least one prefix in `prefixes` to start the bot.
+CommandHandler.create({  
+    commandsDir: 'name of the dir',
+    eventsDir: 'name of the dir',
+    // Optionnals :
+    prefixes: ['!', 'coolPrefix '],
+    owners: ['Discord IDs']
+});
 
-## Templates
+CommandHandler.launch({
+    token: "YOUR TOKEN GOES HERE",
+    // Optionnal :
+    clientOptions: {
+        // Client Options, see Discord.js#ClientOptions
+    }
+});
+```
+
+# CommandHandler Class
+
+| Field           | Description                                                                    | Type                                |
+| --------------- | ------------------------------------------------------------------------------ | ----------------------------------- |
+| instance        | Represents the instance of the CommandHandler.                                 | Object                              |
+| owners          | Owners that you put in creation.                                               | SnowFlake[]                         |
+| prefixes        | Prefixes that you put in creation.                                             | String[]                            |
+| client          | Represents the Client of the bot, see in #help section for the other methods.  | Client extends Discord.Client       |
+| commands        | All the commands that have been found by command handler on the launch.        | Discord.Collection<String, Command> |
+| create(options) | Creates a command handler and reset all data save in instance.                 | return void                         |
+| launch(options) | Launch the Command Handler by login in the Client and fetching Commands/Events | return void                         |
+
+# Templates
 
 ### Commands
 
 ```js
-const Command = require('../../classes/Command.js');
+const {Command} = require('advanced-command-handler');
 module.exports = new Command({
     name: '',
     description: '',
-    // Theses are optionnal :
-    aliases: [],
+    // Optionnals :
+    usage: '',
+    category: '',
+    nsfw: false,
     guildOnly: false,
     ownerOnly: false,
+    aliases: [],
     userPermissions: [],
     clientPermissions: [],
-    category: ''
 }, async(client, message, args) => {
     // Your code goes here.
 });
 ```
 
-**You have to put the command into a file into the `commands` dir.**
+**You have to put the command into a category folder into your commands folder.**
 
-The `administration` category has its permissions managed automatically.
-
-Permissions are automatically handled if you add ones.
+##### **__This is an example, the event message is not integrated into the command handler, you have to created it yourself !__**
 
 ## Events
 
 ```js
-module.exports = async(client, ...EventArguments) => {
+module.exports = async(handler, ...EventArguments) => {
     // Your code goes here.
 };
 ```
 
 The file's name define wich event it handle.
 
-## Helps
+# Logger
+
+`Logger` is a class in the `utils` folder to helps you creating logs.
+It has multiple **static** methods :
+
+| Name                                                      | Description                                                                                                                                         | Color              |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `comment( message, typeToShow = 'comment' )`              | Let you log something with the showed type `COMMENT`, theses only logs if the static field `logComments` is set to true.                            | grey : `#6e6f77`   |
+| `error( message, typeToShow = 'error' )`                  | Let you log something with the showed type `ERROR`.                                                                                                 | red :`#b52825`     |
+| `event( message, typeToShow = 'event' )`                  | Let you log something with the showed type `EVENT`.                                                                                                 | `#43804e`          |
+| `info( message, typeToShow = 'info' )`                    | Let you log something with the showed type `INFO`.                                                                                                  | blue : `#2582ff`   |
+| `log( message, type = 'log', color = 'log' )`             | Let you log something with the showed type `LOG`, you can change the color.                                                                         | default :`#cccccc` |
+| `test( message, typeToShow = 'test' )`                    | Let you log something with the showed type `TEST`.                                                                                                  | white : `#ffffff`  |
+| `warn( message, typeToShow = 'warn' )`                    | Let you log something with the showed type `WARN`.                                                                                                  | yellow : `#eeee23` |
+| `setColor(color = 'default', text = '', colorAfter = '')` | Let you change the color after the function or the color of the `text` only, and let you change the color after the `text` if you set the argument. | `color`            |
+
+### Example
+
+```js
+const {Logger} = require('advanced-command-handler');
+Logger.error(`${Logger.setColor('orange', 'Command')} is not allowed.`, 'PermissionError');
+```
+
+Give the following result in the console (screen made on `WebStorm`).
+
+![](C:\Users\ayfri\AppData\Roaming\marktext\images\2020-04-23-17-17-43-image.png)**Every numbers are yellow by default.**
+
+### Colors
+
+Colors are defined in static public object in the `Logger` class so you can change them.
+
+These are the actual colors : 
+
+```js
+static colors = {
+     red    : '#b52825',
+     orange : '#e76a1f',
+     gold   : '#deae17',
+     yellow : '#eeee23',
+     green  : '#3ecc2d',
+     teal   : '#11cc93',
+     blue   : '#2582ff',
+     indigo : '#524cd9',
+     violet : '#7d31cc',
+     magenta: '#b154cf',
+     pink   : '#d070a0',
+     brown  : '#502f1e',
+     black  : '#000000',
+     grey   : '#6e6f77',
+     white  : '#ffffff',
+     default: '#cccccc'
+}
+```
+
+# Helps
 
 #### BetterEmbed
 
@@ -70,6 +150,7 @@ const embed = {
     }
 }
 
+const {BetterEmbed} = require('advanced-command-handler');
 // BetterEmbed
 const embed = new BetterEmbed({
     image: 'url',
@@ -87,22 +168,22 @@ This can simplify your embeds declarations, and know that RichEmbeds are very he
 
 #### Useful functions
 
-There are multiple utils functions in the `functions` folder :
+There are multiple utils functions that can be use (require them like other classes).
 
-| Name | Description | Returning |
-| --- | --- | --- |
-| argError( channel, error, command ) | Send an embed who explain the argument error and show the syntax. | Embed Object |
-| async getThing( datatype, text ) | Search for the `dataType`(like an user or command) into the client and in the `text`and if `text` is a message it will looks into his mentions. | Object (datatype) or false |
+| Name                                  | Description                                                                                                                                     | Returning                  |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| `argError( channel, error, command )` | Send an embed who explain the argument error and show the syntax.                                                                               | Embed Object               |
+| `async getThing( datatype, text )`    | Search for the `dataType`(like an user or command) into the client and in the `text`and if `text` is a message it will looks into his mentions. | Object (datatype) or false |
 
 The `Command` class has a method `deleteMessage( message )` to safully delete messages without sending Errors *(missing permissions)*.
 
-The `Client` class has multiples methods also :
+**The `Client` class has multiples methods also :**
 
-| Name | Description | Returning |
-| --- | --- | --- |
-| isOwner( id ) | Check if the `id` is in the owners (configuration). | Boolean |
-| hasPermission( message, permission ) | Check if bot has permission `permission`. | Boolean |
+| Name                                   | Description                                         | Returning |
+| -------------------------------------- | --------------------------------------------------- | --------- |
+| `hasPermission( message, permission )` | Check if bot has permission `permission`.           | Boolean   |
+| `isOwner( id )`                        | Check if the `id` is in the owners (configuration). | Boolean   |
 
-### That's all for now :D
+## A documentation will be made later.
 
-#### I will update this if I see optimisations or bugs ^^
+#### That's all for now :D
