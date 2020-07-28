@@ -21,7 +21,7 @@ module.exports = class AdvancedClient extends Client {
 		this.commands = new Collection();
 		this.owners = owners;
 		Logger.comment('Client initialized.', 'loading');
-	};
+	}
 	
 	/**
 	 * Loads commands from the folder entered as a parameter.
