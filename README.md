@@ -1,3 +1,4 @@
+[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6IkF5ZnJpIiwicmVwbzEiOiJBZHZhbmNlZC1Db21tYW5kLUhhbmRsZXIiLCJpbmNsdWRlTGludCI6ZmFsc2UsImF1dGhvcklkIjoxODI3OCwiaWF0IjoxNTk2MTQ5NTU5fQ.f_qKncJz52oZZtkPN02PCG4sFUypAqP27ZV8sbpvVlw)](https://www.deepcode.ai/app/gh/Ayfri/Advanced-Command-Handler/_/dashboard?utm_content=gh%2FAyfri%2FAdvanced-Command-Handler)
 ###### This is an Advanced Command Handler which uses classes for commands.
 
 # Configuration
