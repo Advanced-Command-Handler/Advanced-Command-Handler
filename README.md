@@ -136,12 +136,20 @@ const embed = {
 const embed = new BetterEmbed({
     image: 'url',
     author: 'name',
-    author_icon : 'icon_url'
+    authorIcon : 'icon_url'
 });
 embed.fields.push({
     name: 'name',
     value: 'value'
 });
+
+// Using templates
+BetterEmbed.templates.funny = {
+    title: '${client.user.username} says that you are funny !'
+}
+
+const embed = BetterEmbed.fromTemplate('funny', {client: message.client});
+message.channel.send({embed: embed.build()});
 ```
 
 This can simplify your embeds declarations, and know that RichEmbeds are very heavy on memory.
