@@ -111,12 +111,9 @@ module.exports = async (client, message) => {
 			if (verified.user.length > 0) return message.channel.send(missingPermission(verified.user));
 			
 			if (cmd.nsfw && !message.channel.nsfw) {
-				const embed = new BetterEmbed({
-					title      : 'Error :',
-					description: 'NSFW commands are only available on nsfw channels.',
-					footer     : client.user.username,
-					footer_icon: client.user.displayAvatarURL
-				});
+				const embed = BetterEmbed.fromTemplate('basic', {client: client};
+				embed.title = 'Error :',
+				embed.description = 'NSFW commands are only available on nsfw channels.',
 				await message.channel.send(embed.build());
 			}
 		}
