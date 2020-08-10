@@ -61,7 +61,7 @@ module.exports = class BetterEmbed {
 			thumbnail  : isTemplate(this.thumbnail, objects.image) ? this.thumbnail : this.thumbnail instanceof String ? {
 				url: this.thumbnail
 			} : undefined,
-			footer     : isTemplate(this.author, objects.footer, objects.footerFull) ? this.footer : this.author instanceof String ? {
+			footer     : isTemplate(this.author, objects.footer, objects.footerFull) ? this.footer : this.footer instanceof String ? {
 				text    : this.footer,
 				icon_url: this.footer_icon ? this.footer_icon : undefined
 			} : undefined,
