@@ -4,70 +4,91 @@
  */
 module.exports = class BetterEmbed {
 	/**
-	 * Create a BetterEmbed.
-	 * @param {Object?} props - Props of the embed.
+	 * @typedef {Object} BetterEmbedObject
+	 * @property {string} title
+	 * @property {string} description
+	 * @property {string} author
+	 * @property {string} authorIcon
+	 * @property {string} authorUrl
+	 * @property {string} image
+	 * @property {string} thumbnail
+	 * @property {string} footer
+	 * @property {string} footerIcon
+	 * @property {string} timestamp
+	 * @property {string} color
+	 * @property Array<{name: string, value: string}> fields
 	 */
-	constructor(props) {
-		this.title = props ? props.title : '';
-		this.description = props ? props.description : '';
-		this.author = props ? props.author : '';
-		this.author_icon = props ? props.author_icon : '';
-		this.author_url = props ? props.author_url : '';
-		this.image = props ? props.image : '';
-		this.thumbnail = props ? props.thumbnail : '';
-		this.footer = props ? props.footer : '';
-		this.footer_icon = props ? props.footer_icon : '';
-		this.timestamp = props ? props.timestamp : '';
-		this.color = props ? props.color : '';
-		this.fields = props ? props.fields : [];
+	
+	
+	title;
+	description;
+	author;
+	authorIcon;
+	authorUrl;
+	image;
+	thumbnail;
+	footer;
+	footerIcon;
+	timestamp;
+	color;
+	fields;
+	
+	/**
+	 * @param {string} [author]
+	 * @param {string} [authorIcon]
+	 * @param {string} [authorUrl]
+	 * @param {string} [color]
+	 * @param {string} [description]
+	 * @param {Array<{name: string, value: string}>} [fields]
+	 * @param {string | {text: string, icon_url: string}} [footer]
+	 * @param {string} [footerIcon]
+	 * @param {string} [image]
+	 * @param {string} [thumbnail]
+	 * @param {string} [timestamp]
+	 * @param {string} [title]
+	 */
+	constructor({author, authorIcon, authorUrl, color, description, fields, footer, footerIcon, image, thumbnail, timestamp, title} = {}) {
+		if (title) this.title = title;
+		if (description) this.description = description;
+		if (author) this.author = author;
+		if (authorIcon) this.authorIcon = authorIcon;
+		if (authorUrl) this.authorUrl = authorUrl;
+		if (image) this.image = image;
+		if (thumbnail) this.thumbnail = thumbnail;
+		if (footer) this.footer = footer;
+		if (footerIcon) this.footerIcon = footerIcon;
+		if (timestamp) this.timestamp = timestamp;
+		if (color) this.color = color;
+		if (fields) this.fields = fields;
 	}
 	
-	
-	// Changement des chemins du require pour un chemin relatif
 	/**
 	 * To convert BetterEmbed to EmbedObjet.
-	 * @return {{image: (*), thumbnail: (*), color: (*), footer: (*), author: (*), description: (*), title: (*), fields: ([]), timestamp: (*)}}
+	 * @returns {{image: {url: string}, thumbnail: {url: string}, color: string, footer: {icon_url: string, text: string}, author: {icon_url: string, name: string, url: string}, description: string, title: string, fields: Array<{name: string, value: string}>, timestamp: string}}
 	 */
 	build() {
-		/**
-		 * Test if tester is a template.
-		 * @param {Object} tester - Object to test.
-		 * @param {objects}templates - Templates to test.
-		 * @return {boolean}
-		 */
-		function isTemplate(tester, ...templates) {
-			return tester.constructor.name === 'Object' ? templates.includes(tester.keys()) : false;
-		}
-		
-		const objects = {
-			authorFull: ['name', 'icon_url', 'url'],
-			author    : ['name', 'icon_url'],
-			image     : ['url'],
-			footer    : ['text'],
-			footerFull: ['text', 'icon_url']
-		};
-		
 		return {
-			title      : this.title ? this.title : undefined,
-			description: this.description ? this.description : undefined,
-			author     : isTemplate(this.author, objects.author, objects.authorFull) ? this.author : this.author instanceof String ? {
-				name    : this.author,
-				icon_url: this.author_icon ? this.author_icon : undefined,
-				url     : this.author_url ? this.author_url : undefined
-			} : undefined,
-			image      : isTemplate(this.image, objects.image) ? this.image : this.image instanceof String ? {
-				url: this.image
-			} : undefined,
-			thumbnail  : isTemplate(this.thumbnail, objects.image) ? this.thumbnail : this.thumbnail instanceof String ? {
-				url: this.thumbnail
-			} : undefined,
-			footer     : isTemplate(this.author, objects.footer, objects.footerFull) ? this.footer : this.footer instanceof String ? {
-				text    : this.footer,
-				icon_url: this.footer_icon ? this.footer_icon : undefined
-			} : undefined,
-			timestamp  : this.timestamp ? this.timestamp : undefined,
-			color      : this.color ? this.color : undefined,
-			fields     : this.fields ? this.fields : undefined
+			title:       this.title,
+			description: this.description,
+			author:      {
+				name:     this.author,
+				icon_url: this.authorIcon,
+				url:      this.authorUrl,
+			},
+			image:       {
+				url: this.image,
+			},
+			thumbnail:   {
+				url: this.thumbnail,
+			},
+			footer:      {
+				text:     this.footer,
+				icon_url: this.footerIcon,
+			},
+			timestamp:   this.timestamp,
+			color:       this.color,
+			fields:      this.fields,
 		};
 	}
 };
+
