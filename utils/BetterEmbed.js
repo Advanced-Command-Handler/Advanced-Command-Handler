@@ -19,6 +19,16 @@ module.exports = class BetterEmbed {
 	 * @property Array<{name: string, value: string}> fields
 	 */
 	
+	/**
+	 * Store your templates here !
+	 * @type {Object<BetterEmbedObject>}
+	 */
+	static templates = {
+		basic: {
+			footer:     '${client.user.username}',
+			footerIcon: '${client.user.displayAvatarURL()}',
+		},
+	};
 	
 	title;
 	description;
@@ -63,6 +73,28 @@ module.exports = class BetterEmbed {
 	}
 	
 	/**
+	 * Generates a BetterEmbed from a template, replacing the values if you include any.
+	 * @param {BetterEmbedObject | string} template - A template or a template name.
+	 * @param {Object} [values] - The values in an object if any in the template.
+	 * @return {BetterEmbed} - The resulting BetterEmbed.
+	 * @example
+	 * const embed = BetterEmbed.fromTemplate('basic', {client: message.client});
+	 * message.channel.send({embed: embed.build()});
+	 */
+	static fromTemplate(template, values = {}) {
+		if (typeof template === 'string') template = BetterEmbed.templates[template] || {};
+		
+		const betterEmbed = new BetterEmbed();
+		for (const prop in template) {
+			const code = template[prop].replace(/\${(.+?)}/g, (str, value) => values.hasOwnProperty(value.split('.')[0]) ? `values.${value}` : value);
+			template[prop] = eval(`${code}`);
+			betterEmbed[prop] = template[prop];
+		}
+		
+		return betterEmbed;
+	}
+	
+	/**
 	 * To convert BetterEmbed to EmbedObjet.
 	 * @returns {{image: {url: string}, thumbnail: {url: string}, color: string, footer: {icon_url: string, text: string}, author: {icon_url: string, name: string, url: string}, description: string, title: string, fields: Array<{name: string, value: string}>, timestamp: string}}
 	 */
@@ -91,4 +123,5 @@ module.exports = class BetterEmbed {
 		};
 	}
 };
+
 
