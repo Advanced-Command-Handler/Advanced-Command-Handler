@@ -26,7 +26,7 @@ module.exports = class BetterEmbed {
 	static templates = {
 		basic: {
 			footer:     '${client.user.username}',
-			footerIcon: '${client.user.displayAvatarURL()}',
+			footerIcon: '${client.user.displayAvatarURL}',
 		},
 	};
 	
