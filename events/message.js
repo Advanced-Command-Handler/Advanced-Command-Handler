@@ -3,7 +3,7 @@
 const config = require('../informations/config.json');
 const Logger = require('../utils/Logger.js');
 const getCommand = require('../utils/getThing.js');
-const BetterEmbed = require('../utils/BetterEmbeds.js');
+const BetterEmbed = require('../utils/BetterEmbed.js');
 const {DateTime} = require('luxon');
 
 /**
