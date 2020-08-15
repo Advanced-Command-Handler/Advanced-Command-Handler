@@ -6,7 +6,7 @@
   "author": "Ayfri",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.3.0",
+    "discord.js": "^12.3.1",
     "luxon": "^1.24.1"
   }
 }
