@@ -1,4 +1,4 @@
-﻿const {CommandHandlerError, Logger, getThing: getCommand, BetterEmbed, Command} = require('src/index.js');
+﻿const {CommandHandlerError, Logger, BetterEmbed, Command, getThing} = require('advanced-command-handler');
 const {DateTime} = require('luxon');
 const Discord = require('discord.js');
 
@@ -11,13 +11,18 @@ const Discord = require('discord.js');
 function verifyPerms(message, command) {
 	const clientMissingPermissions = [];
 	const userMissingPermissions = [];
-	if ( !message.guild.me.hasPermission('ADMINISTRATOR')) {
+	if (!message.guild) return {
+		client: clientMissingPermissions,
+		user:   userMissingPermissions,
+	};
+	
+	if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
 		command.clientPermissions.forEach(permission => {
 			if (Discord.Permissions.FLAGS[permission] === undefined) {
 				throw new CommandHandlerError('eventMessage', `Permission '${permission}' is not a valid Permission Flag see the full list here : https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS.`);
 			}
 			
-			if ( !message.channel.permissionsFor(message.guild.me).has(permission, false)) {
+			if (!message.channel.permissionsFor(message.guild.me).has(permission, false)) {
 				clientMissingPermissions.push(permission);
 			}
 		});
@@ -28,14 +33,14 @@ function verifyPerms(message, command) {
 			throw new CommandHandlerError('eventMessage', `Permission '${permission}' is not a valid Permission Flag see the full list here : https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS.`);
 		}
 		
-		if ( !message.channel.permissionsFor(message.member).has(permission, false)) {
+		if (!message.channel.permissionsFor(message.member).has(permission, false)) {
 			userMissingPermissions.push(permission);
 		}
 	});
 	
 	return {
 		client: clientMissingPermissions,
-		user  : userMissingPermissions
+		user:   userMissingPermissions,
 	};
 }
 
@@ -66,19 +71,15 @@ module.exports = async (handler, message) => {
 	
 	const messageToString = message.content.length > 1024 ? message.content.substring(0, 1021) + '...' : message.content;
 	const args = message.content.slice(prefix.length).trim().split(/ +/g);
-	const cmd = await getCommand('command', args[0].toLowerCase().normalize());
+	const cmd = await getThing('command', args[0].toLowerCase().normalize());
 	args.shift();
 	
 	if (message.content === prefix) return message.channel.send(`The current bot prefixes are : ${handler.prefixes.join('\n')}`);
 	
 	if (cmd && prefix) {
-		if ( !handler.client.isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.ownerOnly)) {
+		if (!handler.client.isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.ownerOnly)) {
 			await message.channel.send('You are not the creator of the bot. You do not have the right to use this command.');
-			return Logger.log(`${
-				Logger.setColor('magenta', message.author.tag)} tried the ownerOnly command ${
-				Logger.setColor('gold', cmd.name)} on the guild ${
-				Logger.setColor('teal', message.guild.name)
-			}.`);
+			return Logger.log(`${Logger.setColor('magenta', message.author.tag)} tried the ownerOnly command ${Logger.setColor('gold', cmd.name)} on the guild ${Logger.setColor('teal', message.guild.name)}.`);
 		}
 		
 		if (message.guild) {
@@ -93,7 +94,7 @@ module.exports = async (handler, message) => {
 					title:       'Error :',
 					description: 'NSFW commands are only available on nsfw channels.',
 					footer:      handler.client.user.username,
-					footer_icon: handler.client.user.displayAvatarURL
+					footer_icon: handler.client.user.displayAvatarURL,
 				});
 				await message.channel.send(embed.build());
 			}
@@ -106,11 +107,9 @@ module.exports = async (handler, message) => {
 		}
 		
 		return cmd.run(handler.client, message, args).catch((warning) => {
-			Logger.warn(`A small error was made somewhere with the command ${
-				Logger.setColor('gold', cmd.name)}. \nDate : ${
-				Logger.setColor('yellow', DateTime.local().toFormat('TT'))}${
-				Logger.setColor('red', '\nError : ' + warning.stack)}`
-			);
+			Logger.warn(`A small error was made somewhere with the command ${Logger.setColor('gold', cmd.name)}. \nDate : ${Logger.setColor('yellow', DateTime.local()
+			                                                                                                                                                  .toFormat('TT'))}${Logger.setColor('red', '\nError : ' +
+			                                                                                                                                                                                            warning.stack)}`);
 			
 			
 			if (handler.client.isOwner(message.author.id)) {
@@ -118,18 +117,18 @@ module.exports = async (handler, message) => {
 				embedLog.color = '#dd0000';
 				embedLog.description = 'An error occurred with the command : **' + cmd.name + '**.';
 				embedLog.fields.push({
-					name : 'Informations :',
-					value: `\nSent by : ${message.author} (\`${message.author.id}\`)\n\nOnto : **${message.guild.name}** (\`${message.guild.id}\`)\n\nInto : ${message.channel} (\`${message.channel.id})\``
+					name:  'Informations :',
+					value: `\nSent by : ${message.author} (\`${message.author.id}\`)\n\nOnto : **${message.guild.name}** (\`${message.guild.id}\`)\n\nInto : ${message.channel} (\`${message.channel.id})\``,
 				});
 				
 				embedLog.fields.push({
-					name : 'Error :',
-					value: warning.stack.length > 1024 ? warning.stack.substring(0, 1021) + '...' : warning.stack
+					name:  'Error :',
+					value: warning.stack.length > 1024 ? warning.stack.substring(0, 1021) + '...' : warning.stack,
 				});
 				
 				embedLog.fields.push({
-					name : 'Message :',
-					value: messageToString
+					name:  'Message :',
+					value: messageToString,
 				});
 				
 				return message.channel.send(embedLog.build());

@@ -30,10 +30,10 @@ module.exports = class AdvancedClient extends Client {
 	 * @return {boolean} - Returns true if the client member has the permission.
 	 */
 	hasPermission(message, permission) {
-		return message.guild ? false : message.guild.me.hasPermission(permission, {
+		return message.guild ? message.guild.me.hasPermission(permission, {
 			checkOwner: false,
 			checkAdmin: false,
-		});
+		}) : false;
 	}
 	
 	/**

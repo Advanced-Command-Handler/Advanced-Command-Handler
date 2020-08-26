@@ -1,12 +1,10 @@
-const {Command} = require('src/index.js');
-const {getThing} = require('src/index.js');
-const {BetterEmbed} = require('src/index.js');
+const {BetterEmbed, Command, getThing} = require('advanced-command-handler');
 
 module.exports = new Command({
-	name       : 'help',
+	name:        'help',
 	description: 'A simple help command.',
-	usage      : 'help <command>',
-	aliases    : ['h'],
+	usage:       'help <command>',
+	aliases:     ['h'],
 	
 }, async (client, message, args) => {
 	const embed = new BetterEmbed();
@@ -20,36 +18,35 @@ Category : **${command.category}**
 Available in private messages : **${command.guildOnly ? 'no' : 'yes'}**
 ${command.ownerOnly ? `**Only available to the owner(s).**` : ''}`;
 			embed.fields.push({
-				name : 'Description :',
-				value: command.description
+				name:  'Description :',
+				value: command.description,
 			});
 			
 			if (command.usage) {
 				embed.fields.push({
-					name : 'Syntax :',
-					value: command.usage
+					name:  'Syntax :',
+					value: command.usage,
 				});
 			}
 			
 			if (command.userPermissions) {
 				embed.fields.push({
-					name : 'User permissions required :',
-					value: command.userPermissions.join(' ')
+					name:  'User permissions required :',
+					value: command.userPermissions.join(' '),
 				});
 			}
 			
 			if (command.clientPermissions) {
 				embed.fields.push({
-					name : 'Bot permissions required :',
-					value: command.clientPermissions.join(' ')
+					name:  'Bot permissions required :',
+					value: command.clientPermissions.join(' '),
 				});
 			}
 			
 			if (command.aliases) {
 				embed.fields.push({
-					name : 'Aliases :',
-					value:
-						command.aliases.join(' ')
+					name:  'Aliases :',
+					value: command.aliases.join(' '),
 				});
 			}
 		}

@@ -35,7 +35,7 @@ module.exports = async (dataType, text) => {
 			return message.guild.roles.cache.get(text) ||
 			       message.mentions.roles.first() ||
 			       message.guild.roles.cache.find((r) => r.name.toLowerCase().includes(text.toLowerCase()) && text.length > 1) ||
-			       false;
+			       null;
 		
 		case 'emote':
 			return CommandHandler.client.emojis.get(text) || CommandHandler.client.emojis.find((e) => e.name.toLowerCase().includes(text.toLowerCase()) && text.length > 1) || null;

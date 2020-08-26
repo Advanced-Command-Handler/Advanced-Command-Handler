@@ -100,7 +100,7 @@ module.exports = class Logger {
 		});
 		text = text.replace(/\x2b+/gi, Logger.setColor(type));
 		type = Logger.#types[type] ? Logger.#types[type] : type;
-		text = `${Logger.setColor('#847270')}[${DateTime.local().toFormat('D HH:mm:ss.u')}]${Logger.setColor(type)}[${message.toUpperCase()}] ${text + this.setColor()}`;
+		text = `${Logger.setColor('#847270')}[${DateTime.local().toFormat('D HH:mm:ss.u')}]${Logger.setColor(type)}[${message.toUpperCase()}] ${text + Logger.setColor()}`;
 		console.log(text);
 	}
 	
@@ -123,14 +123,12 @@ module.exports = class Logger {
 			throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 		}
 		if (colorAfter) {
-			if (colorAfter = Logger.colors[this.#types[colorAfter]] ||
+			if (colorAfter = Logger.colors[Logger.#types[colorAfter]] ||
 			                 Logger.colors[colorAfter] ||
 			                 Logger.#types[colorAfter] &&
 			                 Logger.#types[colorAfter].match(/#[0-9|a-f]{6}/i)[0] ||
 			                 colorAfter.match(/#[0-9|a-f]{6}/i)[0]) {
-				colorAfter = '\x1b[38;2;' +
-				             colorAfter.substring(1, 7).match(/.{2}/g).map(n => parseInt(n, 16)).join(';') +
-				             'm';
+				colorAfter = '\x1b[38;2;' + colorAfter.substring(1, 7).match(/.{2}/g).map(n => parseInt(n, 16)).join(';') + 'm';
 			} else {
 				throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 			}

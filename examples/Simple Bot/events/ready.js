@@ -1,5 +1,5 @@
-﻿const {DateTime} = require('luxon');
-const {Logger} = require('src/index.js');
+﻿const {Logger} = require('advanced-command-handler');
+const {DateTime} = require('luxon');
 
 module.exports = async (handler) => {
 	function log() {
@@ -10,14 +10,14 @@ module.exports = async (handler) => {
 	Logger.event(
 		Logger.setColor('#c0433f', `Client online ! Client ${
 			Logger.setColor('orange', handler.client.user.username, '#c0433f')} has ${
-			handler.client.guilds.cache.size + Logger.setColor('#c0433f')} guilds, it sees ${
-			handler.client.users.cache.size + Logger.setColor('#c0433f')} users.`
-		)
+			handler.client.guilds.cache.size + Logger.setColor('#c0433f')
+		} guilds, it sees ${
+			handler.client.users.cache.size + Logger.setColor('#c0433f')
+		} users.`)
 	);
 	
 	log();
 	setInterval(() => {
 		log();
 	}, 20 * 60 * 1000);
-}
-;
+};

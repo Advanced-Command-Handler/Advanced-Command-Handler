@@ -13,5 +13,5 @@ module.exports = {
 	CommandHandlerError,
 	Logger,
 	getThing,
-	argError
+	argError,
 };

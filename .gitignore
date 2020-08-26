@@ -41,6 +41,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+examples/Simple Bot/node_modules
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)

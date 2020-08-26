@@ -86,9 +86,7 @@ module.exports = class BetterEmbed {
 		
 		const betterEmbed = new BetterEmbed();
 		for (const prop in template) {
-			const code = template[prop].replace(/\${(.+?)}/g, (str, value) => values.hasOwnProperty(value.split('.')[0]) ?
-			                                                                  `values.${value}` :
-			                                                                  value);
+			const code = template[prop].replace(/\${(.+?)}/g, (str, value) => values.hasOwnProperty(value.split('.')[0]) ? `values.${value}` : value);
 			template[prop] = eval(`${code}`);
 			betterEmbed[prop] = template[prop];
 		}
