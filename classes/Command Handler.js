@@ -13,7 +13,7 @@ module.exports = class CommandHandler {
 	static instance;
 	
 	constructor() {
-		return new CommandHandlerError('CommandHandler is not a class who can be instantiated');
+		return new CommandHandlerError('CommandHandler is not a class who can be instantiated.');
 	}
 	
 	static get owners() {
@@ -57,18 +57,18 @@ module.exports = class CommandHandler {
 	 * @param {String} eventsDir
 	 */
 	static create({commandsDir, eventsDir, owners = [], prefixes = ['!']}) {
-		console.log(Logger.setColor('magenta') + readFileSync('./src/assets/presentation.txt').toString('utf-8'));
-		if ( !CommandHandler.instance) {
+		console.log(Logger.setColor('magenta') + readFileSync('./src/assets/presentation.txt').toString('utf8'));
+		if (!CommandHandler.instance) {
 			/**
 			 * @type {{commandsDir: String, prefixes: String[], eventsDir: String, client: null, owners: String[], commands: module:"discord.js".Collection<String, Command>}} CommandHandler
 			 */
 			CommandHandler.instance = {
 				commandsDir: commandsDir,
-				eventsDir  : eventsDir,
-				prefixes   : prefixes,
-				owners     : owners,
-				client     : null,
-				commands   : new Collection()
+				eventsDir:   eventsDir,
+				prefixes:    prefixes,
+				owners:      owners,
+				client:      null,
+				commands:    new Collection(),
 			};
 		}
 		
@@ -78,27 +78,6 @@ module.exports = class CommandHandler {
 		process.on('uncaughtException', (error) => {
 			Logger.error(`An error occurred. \nError : ${error.stack}`);
 		});
-	}
-	
-	static loadCommands(path) {
-		const dirs = readdirSync(path);
-		Logger.info('Loading commands.', 'loading');
-		Logger.comment(`Categories : (${dirs.length})`, 'loading');
-		
-		for (let i in dirs) {
-			if ( !dirs.hasOwnProperty(i)) return;
-			
-			const dir = dirs[i];
-			const files = readdirSync(`${path}/${dir}`);
-			if (dirs.length === 0) continue;
-			
-			Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
-			
-			for (let command in files) {
-				this.loadCommand(`${path}/${dir}`, files[command]);
-			}
-		}
-		Logger.info(`${CommandHandler.instance.commands.size} commands loaded.`, 'loading');
 	}
 	
 	/**
@@ -115,30 +94,8 @@ module.exports = class CommandHandler {
 			CommandHandler.prefixes.push(`<@${CommandHandler.client.user.id}>`);
 			CommandHandler.client.fetchApplication().then(application => {
 				CommandHandler.owners.push(application.owner.id);
-			});
-		});
-	}
-	
-	/**
-	 * Load the events from the folder entered as parameter.
-	 * @param {String} path - Path of the folder of the events.
-	 * @return {void}
-	 */
-	static loadEvents(path) {
-		const files = readdirSync(path);
-		Logger.info('Loading events.', 'loading');
-		Logger.comment(`Events : (${files.length})`, 'loading');
-		
-		for (let file in files) {
-			const eventFile = files[file];
-			if ( !eventFile) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-			
-			const event = require(`./../../${path}/${eventFile}`);
-			const eventName = eventFile.split('.')[0];
-			CommandHandler.client.on(eventName, event.bind(null, CommandHandler));
-			Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
-		}
-		Logger.info(`${CommandHandler.client._eventsCount} events loaded.`, 'loading');
+			}).catch((err) => Logger.error(err));
+		}).catch((err) => Logger.error(err));
 	}
 	
 	/**
@@ -155,5 +112,48 @@ module.exports = class CommandHandler {
 		
 		CommandHandler.instance.commands.set(name, command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
+	}
+	
+	static loadCommands(path) {
+		const dirs = readdirSync(path);
+		Logger.info('Loading commands.', 'loading');
+		Logger.comment(`Categories : (${dirs.length})`, 'loading');
+		
+		for (let i in dirs) {
+			if (!dirs.hasOwnProperty(i)) return;
+			
+			const dir = dirs[i];
+			const files = readdirSync(`${path}/${dir}`);
+			if (dirs.length === 0) continue;
+			
+			Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
+			
+			for (let command in files) {
+				this.loadCommand(`${path}/${dir}`, files[command]);
+			}
+		}
+		Logger.info(`${CommandHandler.instance.commands.size} commands loaded.`, 'loading');
+	}
+	
+	/**
+	 * Load the events from the folder entered as parameter.
+	 * @param {String} path - Path of the folder of the events.
+	 * @return {void}
+	 */
+	static loadEvents(path) {
+		const files = readdirSync(path);
+		Logger.info('Loading events.', 'loading');
+		Logger.comment(`Events : (${files.length})`, 'loading');
+		
+		for (let file in files) {
+			const eventFile = files[file];
+			if (!eventFile) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
+			
+			const event = require(`./../../${path}/${eventFile}`);
+			const eventName = eventFile.split('.')[0];
+			CommandHandler.client.on(eventName, event.bind(null, CommandHandler));
+			Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
+		}
+		Logger.info(`${CommandHandler.client._eventsCount} events loaded.`, 'loading');
 	}
 };

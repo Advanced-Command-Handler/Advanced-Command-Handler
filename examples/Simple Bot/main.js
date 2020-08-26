@@ -1,11 +1,11 @@
-const {CommandHandler} = require('advanced-command-handler');
+const {CommandHandler} = require('src/index.js');
 
 CommandHandler.create({
 	commandsDir: 'commands',
 	eventsDir: 'events',
-	prefixes: ['!']
+	prefixes: [';', 'bot!']
 })
 
 CommandHandler.launch({
-	token: 'Your token goes here'
+	token: 'NTk0Njg3MjM3NDkzNDg5Njk5.XpnVTA.3Vpu_6bvv6D-b6fo75PKISCMsWI'
 });

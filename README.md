@@ -1,5 +1,12 @@
 ###### This is an Advanced Command Handler which uses classes for commands.
 
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayfri/advanced-command-handler/package?logo=codefactor&style=for-the-badge)
+![npm](https://img.shields.io/npm/dt/advanced-command-handler?logo=npm&style=for-the-badge)
+![npm](https://img.shields.io/npm/v/advanced-command-handler?logo=npm&style=for-the-badge)
+![GitHub package.json dynamic](https://img.shields.io/github/package-json/keywords/ayfri/advanced-command-handler?logo=npm&style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/ayfri/advanced-command-handler?logo=github&style=for-the-badge)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/ayfri/advanced-command-handler/package?logo=github&style=for-the-badge)
+
 # Configuration
 
 To install the command handler, install `npm` and then in a terminal run this command where you want your bot `npm i advanced-command-handler`.
@@ -9,15 +16,15 @@ After it create your main file and add this into it :
 const {CommandHandler} = require('advanced-command-handler');
 
 CommandHandler.create({  
-    commandsDir: 'name of the dir',
-    eventsDir: 'name of the dir',
-    // Optionnals :
+    commandsDir: 'name of the dir',
+    eventsDir: 'name of the dir',
+    // Optionnals :
     prefixes: ['!', 'coolPrefix '],
     owners: ['Discord IDs']
 });
 
 CommandHandler.launch({
-    token: "YOUR TOKEN GOES HERE",
+    token: "YOUR TOKEN GOES HERE",
     // Optionnal :
     clientOptions: {
         // Client Options, see Discord.js#ClientOptions
@@ -99,16 +106,16 @@ Logger.error(`${Logger.setColor('orange', 'Command')} is not allowed.`, 'Permiss
 
 Give the following result in the console (screen made on `WebStorm`).
 
-![](C:\Users\ayfri\AppData\Roaming\marktext\images\2020-04-23-17-17-43-image.png)**Every numbers are yellow by default.**
+**Every number is yellow by default.**
 
 ### Colors
 
-Colors are defined in static public object in the `Logger` class so you can change them.
+Colors are set out in static public object in the `Logger` class, so you can change them.
 
-These are the actual colors : 
+These are the current colors : 
 
 ```js
-static colors = {
+colors = {
      red    : '#b52825',
      orange : '#e76a1f',
      gold   : '#deae17',
@@ -162,9 +169,17 @@ embed.fields.push({
     name: 'name',
     value: 'value'
 });
+
+// Using templates
+BetterEmbed.templates.funny = {
+    title: '${client.user.username} says that you are funny !'
+}
+
+const embed = BetterEmbed.fromTemplate('funny', {client: message.client});
+message.channel.send({embed: embed.build()});
 ```
 
-This can simplify your embeds declarations, and know that RichEmbeds are very heavy on memory.
+This can simplify your embeds declarations.
 
 #### Useful functions
 
@@ -182,7 +197,7 @@ The `Command` class has a method `deleteMessage( message )` to safully delete me
 | Name                                   | Description                                         | Returning |
 | -------------------------------------- | --------------------------------------------------- | --------- |
 | `hasPermission( message, permission )` | Check if bot has permission `permission`.           | Boolean   |
-| `isOwner( id )`                        | Check if the `id` is in the owners (configuration). | Boolean   |
+| `isOwner( id )`                        | Check if the `id` is in the owners (configuration). | Boolean   |
 
 ## A documentation will be made later.
 

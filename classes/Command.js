@@ -1,10 +1,23 @@
 module.exports = class Command {
+	name;
+	run;
+	description;
+	usage;
+	category;
+	aliases;
+	clientPermissions;
+	userPermissions;
+	guildOnly;
+	ownerOnly;
+	nsfw;
+	
+	
 	/**
 	 * Create a new Command.
 	 * Options of the Command.
 	 * Only name & description are required.
 	 * @param {{name: String, description: String, usage: String, category: String, aliases: String[], clientPermissions: Permissions[], userPermissions: Permissions[], guildOnly: boolean, ownerOnly: boolean, nsfw: boolean}}options - The options of the command.
-	 * @param runFunction - Function that is executed when we do the command.
+	 * @param {Function} runFunction - Function that is executed when we do the command.
 	 */
 	constructor(options, runFunction) {
 		this.name = options.name;
@@ -23,13 +36,13 @@ module.exports = class Command {
 	/**
 	 * Tries to delete the message without sending an Exception.
 	 * @param {module:"discord.js".Message} message - The message to delete.
-	 * @return {void}
+	 * @returns {module:"discord.js".Message} - the deleted message (or not).
 	 */
-	deleteMessage(message) {
-		const {client} = require('../Command Handler.js');
+	async deleteMessage(message) {
+		const {client} = require('./Command Handler.js');
 		
 		if (client.hasPermission('MANAGE_MESSAGES')) {
-			message.delete();
+			return await message.delete();
 		}
 	}
 };

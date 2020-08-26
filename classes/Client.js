@@ -24,15 +24,6 @@ module.exports = class AdvancedClient extends Client {
 	};
 	
 	/**
-	 * Tells you if the user is an owner of the bot.
-	 * @param {String} id - Id of an Discord User.
-	 * @return {boolean} - Returns true if the user is in the list of owners.
-	 */
-	isOwner(id) {
-		return this.handler.owners.includes(id);
-	}
-	
-	/**
 	 * Tells you if the client member on the guild has the permission.
 	 * @param {Object} message - The message to get the client and the to tests if it is on guild.
 	 * @param {PermissionResolvable} permission - The permission to test for.
@@ -41,7 +32,16 @@ module.exports = class AdvancedClient extends Client {
 	hasPermission(message, permission) {
 		return message.guild ? false : message.guild.me.hasPermission(permission, {
 			checkOwner: false,
-			checkAdmin: false
+			checkAdmin: false,
 		});
+	}
+	
+	/**
+	 * Tells you if the user is an owner of the bot.
+	 * @param {String} id - Id of an Discord User.
+	 * @return {boolean} - Returns true if the user is in the list of owners.
+	 */
+	isOwner(id) {
+		return this.handler.owners.includes(id);
 	}
 };

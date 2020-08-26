@@ -1,4 +1,4 @@
-const client = require('../classes/Command Handler.js').client;
+const {client} = require('../classes/Command Handler.js');
 const {Snowflake} = require('discord.js');
 
 /**
@@ -11,27 +11,29 @@ const {Snowflake} = require('discord.js');
 module.exports = async (channelID, error, command) => {
 	let channel;
 	const embed = {
-		title      : `Argument error :`,
-		timestamp  : Date.now(),
-		color      : 0xee2200,
+		title:       'Argument error :',
+		timestamp:   Date.now(),
+		color:       0xee2200,
 		description: error,
-		footer     : {
-			text: client.user.username
-		}
+		footer:      {
+			text: client.user.username,
+		},
 	};
 	
 	if (command.usage) {
-		embed.fields = [{
-			name : 'Syntax :',
-			value: command.usage
-		}];
+		embed.fields = [
+			{
+				name:  'Syntax :',
+				value: command.usage,
+			},
+		];
 	}
 	
 	if (channelID instanceof Snowflake) {
 		if (client.channels.get(channelID)) {
 			channel = await client.channels.fetch(channelID.toString());
 		} else {
-			new Error(`The channel ${channelID} is not valid, an ID is expected, if an ID has been entered, then the bot does not have this channel.`);
+			throw new Error(`The channel ${channelID} is not valid, an ID is expected, if an ID has been entered, then the bot does not have this channel.`);
 		}
 	}
 	

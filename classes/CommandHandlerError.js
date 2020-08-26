@@ -1,19 +1,19 @@
 module.exports = class CommandHandlerError extends Error {
-	place;
+	where;
 	
 	/**
-	 * @param place - Place where this has occured, the name of event/command or the Command HAandler itself.
+	 * @param where - Place where this has occured, the name of event/command or the Command Handler itself.
 	 * @param params - Default settings for an Error.
 	 */
-	constructor(place, ...params) {
-		super(...params);
+	constructor(where, ...params) {
+		super(params);
 		
 		if (Error.captureStackTrace) {
 			Error.captureStackTrace(this, CommandHandlerError);
 		}
 		
 		this.name = 'CommandHandlerError';
-		this.place = place;
+		this.where = where;
 		this.date = new Date();
 	}
-}
+};
