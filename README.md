@@ -1,4 +1,4 @@
-###### This is an Advanced Command Handler which uses classes for commands.
+###### This is an Advanced Command Handler, which uses classes for commands.
 
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayfri/advanced-command-handler/package?logo=codefactor&style=for-the-badge)
 ![npm](https://img.shields.io/npm/dt/advanced-command-handler?logo=npm&style=for-the-badge)
@@ -6,6 +6,8 @@
 ![GitHub package.json dynamic](https://img.shields.io/github/package-json/keywords/ayfri/advanced-command-handler?logo=npm&style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues-raw/ayfri/advanced-command-handler?logo=github&style=for-the-badge)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/ayfri/advanced-command-handler/package?logo=github&style=for-the-badge)
+
+![npm install](https://nodei.co/npm/advanced-command-handler.png?downloads=true&stars=true)
 
 # Configuration
 
@@ -69,7 +71,7 @@ module.exports = new Command({
 
 **You have to put the command into a category folder into your commands folder.**
 
-##### **__This is an example, the event message is not integrated into the command handler, you have to created it yourself !__**
+##### **__This is an example, the message event is not integrated into the command handler, you have to create it yourself !__**
 
 ## Events
 
@@ -79,7 +81,7 @@ module.exports = async(handler, ...EventArguments) => {
 };
 ```
 
-The file's name define wich event it handle.
+The file's given name set out which event it handles.
 
 # Logger
 
@@ -139,7 +141,7 @@ colors = {
 
 #### BetterEmbed
 
-This is a class for creating Object Embed but a little bit simplier like this :
+This is a class for creating Embed Object, but a bit simpler like this :
 
 ```js
 // Embed Objet :

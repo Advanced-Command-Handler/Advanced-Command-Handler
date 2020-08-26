@@ -129,7 +129,7 @@ module.exports = class CommandHandler {
 			Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
 			
 			for (let command in files) {
-				this.loadCommand(`${path}/${dir}`, files[command]);
+				CommandHandler.loadCommand(`${path}/${dir}`, files[command]);
 			}
 		}
 		Logger.info(`${CommandHandler.instance.commands.size} commands loaded.`, 'loading');
