@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b58c32f13af5431694d812d048bc60ff)](https://app.codacy.com/manual/pierre.ayfri/Advanced-Command-Handler?utm_source=github.com&utm_medium=referral&utm_content=Ayfri/Advanced-Command-Handler&utm_campaign=Badge_Grade_Dashboard)
 [![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6IkF5ZnJpIiwicmVwbzEiOiJBZHZhbmNlZC1Db21tYW5kLUhhbmRsZXIiLCJpbmNsdWRlTGludCI6ZmFsc2UsImF1dGhvcklkIjoxODI3OCwiaWF0IjoxNTk2MTQ5NTU5fQ.f_qKncJz52oZZtkPN02PCG4sFUypAqP27ZV8sbpvVlw)](https://www.deepcode.ai/app/gh/Ayfri/Advanced-Command-Handler/_/dashboard?utm_content=gh%2FAyfri%2FAdvanced-Command-Handler)
 ###### This is an Advanced Command Handler which uses classes for commands.
 
