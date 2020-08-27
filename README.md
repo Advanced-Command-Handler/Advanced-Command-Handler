@@ -1,6 +1,6 @@
 ###### This is an Advanced Command Handler, which uses classes for commands.
 
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayfri/advanced-command-handler/package?logo=codefactor&style=for-the-badge)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayfri/advanced-command-handler?logo=codefactor&style=for-the-badge)
 [![npm](https://img.shields.io/npm/dt/advanced-command-handler?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/advanced-command-handler)
 [![npm](https://img.shields.io/npm/v/advanced-command-handler?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/advanced-command-handler)
 [![GitHub package.json dynamic](https://img.shields.io/github/package-json/keywords/ayfri/advanced-command-handler?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/advanced-command-handler)
