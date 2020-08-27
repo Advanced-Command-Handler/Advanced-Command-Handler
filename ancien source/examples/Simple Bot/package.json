@@ -1,0 +1,8 @@
+{
+	"name": "simple-bot",
+	"description": "A simple bot.",
+	"version": "1.0.0",
+	"dependencies": {
+		"advanced-command-handler": "^1.0.1"
+	}
+}
