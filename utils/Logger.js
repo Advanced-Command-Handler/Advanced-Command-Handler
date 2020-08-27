@@ -89,6 +89,7 @@ module.exports = class Logger {
 	 * @param {String} text - Text to log.
 	 * @param {String} type - Type of log.
 	 * @param {String} message - Message of the log.
+	 * @returns {void}
 	 */
 	static process(text, type = 'test', message = type) {
 		text = text.toString().replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, match => {

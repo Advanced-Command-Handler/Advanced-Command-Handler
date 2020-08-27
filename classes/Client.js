@@ -44,4 +44,4 @@ module.exports = class AdvancedClient extends Client {
 	isOwner(id) {
 		return this.handler.owners.includes(id);
 	}
-};
+}

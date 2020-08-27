@@ -6,7 +6,7 @@ const Discord = require('discord.js');
  * Verify if the user and the client has all the permissions of the Command.
  * @param {Message} message - The message.
  * @param {Command} command - Command to verify the permissions.
- * @return {{client: [], user: []}}
+ * @return {{client: [], user: []}} - Missing permissions.
  */
 function verifyPerms(message, command) {
 	const clientMissingPermissions = [];

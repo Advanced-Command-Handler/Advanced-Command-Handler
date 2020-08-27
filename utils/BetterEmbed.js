@@ -44,18 +44,18 @@ module.exports = class BetterEmbed {
 	fields;
 	
 	/**
-	 * @param {string} [author]
-	 * @param {string} [authorIcon]
-	 * @param {string} [authorUrl]
-	 * @param {string} [color]
-	 * @param {string} [description]
-	 * @param {Array<{name: string, value: string}>} [fields]
-	 * @param {string | {text: string, icon_url: string}} [footer]
-	 * @param {string} [footerIcon]
-	 * @param {string} [image]
-	 * @param {string} [thumbnail]
-	 * @param {string} [timestamp]
-	 * @param {string} [title]
+	 * @param {string} [author] - Author text.
+	 * @param {string} [authorIcon] - Author Icon.
+	 * @param {string} [authorUrl] - Author redirect URL.
+	 * @param {string|number} [color] - Color.
+	 * @param {string} [description] - Description.
+	 * @param {Array<{name: string, value: string}>} [fields] - Fields.
+	 * @param {string}} [footer] - Footer text.
+	 * @param {string} [footerIcon] - Footer Icon.
+	 * @param {string} [image] - Image URL.
+	 * @param {string} [thumbnail] - Thumbnail URL.
+	 * @param {string|number|Date} [timestamp] - Timestamp.
+	 * @param {string} [title] - Title text.
 	 */
 	constructor({author, authorIcon, authorUrl, color, description, fields, footer, footerIcon, image, thumbnail, timestamp, title} = {}) {
 		if (title) this.title = title;
