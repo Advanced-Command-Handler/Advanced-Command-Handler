@@ -14,9 +14,8 @@ module.exports = class Command {
 	
 	/**
 	 * Create a new Command.
-	 * Options of the Command.
-	 * Only name & description are required.
-	 * @param {{name: String, description: String, usage: String, category: String, aliases: String[], clientPermissions: Permissions[], userPermissions: Permissions[], guildOnly: boolean, ownerOnly: boolean, nsfw: boolean}}options - The options of the command.
+	 * @param {{name: String, description: String, usage: String, category: String, aliases: String[], clientPermissions: Permissions[], userPermissions: Permissions[], guildOnly: boolean, ownerOnly: boolean, nsfw: boolean}} options - Options of the command.
+	 * Only `name` is required.
 	 * @param {Function} runFunction - Function that is executed when we do the command.
 	 */
 	constructor(options, runFunction) {

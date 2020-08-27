@@ -3,6 +3,6 @@
 	"description": "A simple bot.",
 	"version": "1.0.0",
 	"dependencies": {
-		"advanced-command-handler": "^1.0.1"
+		"advanced-command-handler": "^1.0.3"
 	}
 }

@@ -1,9 +1,9 @@
 const CommandHandler = require('../classes/CommandHandler.js');
 /**
- * Let you get a {thing} into your Client, or the {text}.
+ * Let you get a {dataTyoe} from your Client, or the {text}.
  * @param {'command'|'channel'|'guild'|'member'|'user'|'role'|'emote'|'message'} dataType - The type of data to search
- * @param {String|Object} text - Text or Message where to look for the dataType.
- * @return {Promise<Command|GuildChannel|TextChannel|Guild|GuildMember|User|Role|Emoji|Message|null>}
+ * @param {String|Message} text - Text or Message where to look for the dataType.
+ * @return {Promise<Command|GuildChannel|TextChannel|Guild|GuildMember|User|Role|Emoji|Message|null>|Message}
  */
 module.exports = async (dataType, text) => {
 	/**
