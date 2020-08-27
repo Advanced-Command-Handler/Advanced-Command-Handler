@@ -1,4 +1,4 @@
-const {client} = require('../classes/Command Handler.js');
+const {client} = require('../classes/CommandHandler.js');
 const {Snowflake} = require('discord.js');
 
 /**

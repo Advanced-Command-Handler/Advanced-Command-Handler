@@ -1,4 +1,4 @@
-const CommandHandler = require('../classes/Command Handler.js');
+const CommandHandler = require('../classes/CommandHandler.js');
 /**
  * Let you get a {thing} into your Client, or the {text}.
  * @param {'command'|'channel'|'guild'|'member'|'user'|'role'|'emote'|'message'} dataType - The type of data to search

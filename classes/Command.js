@@ -39,7 +39,7 @@ module.exports = class Command {
 	 * @returns {module:"discord.js".Message} - the deleted message (or not).
 	 */
 	async deleteMessage(message) {
-		const {client} = require('./Command Handler.js');
+		const {client} = require('./CommandHandler.js');
 		
 		if (client.hasPermission('MANAGE_MESSAGES')) {
 			return await message.delete();
