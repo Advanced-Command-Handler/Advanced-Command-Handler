@@ -14,7 +14,7 @@ module.exports = class Command {
 	
 	/**
 	 * Create a new Command.
-	 * @param {{name: String, description: String, usage: String, category: String, aliases: String[], clientPermissions: Permissions[], userPermissions: Permissions[], guildOnly: boolean, ownerOnly: boolean, nsfw: boolean}} options - Options of the command.
+	 * @param {{name: string, description: string, usage: string, category: string, aliases: string[], clientPermissions: Permissions[], userPermissions: Permissions[], guildOnly: boolean, ownerOnly: boolean, nsfw: boolean}} options - Options of the command.
 	 * Only `name` is required.
 	 * @param {Function} runFunction - Function that is executed when we do the command.
 	 */
@@ -35,7 +35,7 @@ module.exports = class Command {
 	/**
 	 * Tries to delete the message without sending an Exception.
 	 * @param {module:"discord.js".Message} message - The message to delete.
-	 * @returns {module:"discord.js".Message} - the deleted message (or not).
+	 * @returns {module:"discord.js".Message} - The deleted message (or not).
 	 */
 	async deleteMessage(message) {
 		const {client} = require('./CommandHandler.js');

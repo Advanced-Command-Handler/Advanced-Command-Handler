@@ -2,6 +2,10 @@
 const {DateTime} = require('luxon');
 
 module.exports = async (handler) => {
+	/**
+	 * Log informations of the bot in the console.
+	 * @returns void
+	 */
 	function log() {
 		Logger.event(`Date : ${Logger.setColor('yellow', DateTime.local().toFormat('TT'))}`);
 		Logger.event(`RAM used  : ${Logger.setColor('magenta', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))} ` + Logger.setColor('magenta', 'MB'));

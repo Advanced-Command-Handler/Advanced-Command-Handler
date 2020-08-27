@@ -4,7 +4,7 @@ const {Snowflake} = require('discord.js');
 /**
  * Send embed who explains why user failed an argument of the {Command}.
  * @param {Snowflake} channelID - Channel where embed will be sent.
- * @param {String} error - The mistake user made.
+ * @param {string} error - The mistake user made.
  * @param {Command} command - Wich command failed.
  * @return {void}
  */

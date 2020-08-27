@@ -4,19 +4,19 @@
  */
 module.exports = class BetterEmbed {
 	/**
-	 * @typedef {Object} BetterEmbedObject
-	 * @property {string} title
-	 * @property {string} description
-	 * @property {string} author
-	 * @property {string} authorIcon
-	 * @property {string} authorUrl
-	 * @property {string} image
-	 * @property {string} thumbnail
-	 * @property {string} footer
-	 * @property {string} footerIcon
-	 * @property {string} timestamp
-	 * @property {string} color
-	 * @property Array<{name: string, value: string}> fields
+	 * @typedef {object} BetterEmbedObject
+	 * @property {string} title - Title text.
+	 * @property {string} description - Description.
+	 * @property {string} author - Author text.
+	 * @property {string} authorIcon - Author Icon.
+	 * @property {string} authorUrl - Author redirect URL.
+	 * @property {string} image - Image URL.
+	 * @property {string} thumbnail - Thumbnail URL.
+	 * @property {string} footer - Footer text.
+	 * @property {string} footerIcon - Footer Icon.
+	 * @property {string | number | Date} [timestamp] - Timestamp.
+	 * @property {string | number} color - Color.
+	 * @property {Array<{name: string, value: string}>} fields - Fields.
 	 */
 	
 	/**
@@ -44,38 +44,27 @@ module.exports = class BetterEmbed {
 	fields;
 	
 	/**
-	 * @param {string} [author] - Author text.
-	 * @param {string} [authorIcon] - Author Icon.
-	 * @param {string} [authorUrl] - Author redirect URL.
-	 * @param {string|number} [color] - Color.
-	 * @param {string} [description] - Description.
-	 * @param {Array<{name: string, value: string}>} [fields] - Fields.
-	 * @param {string}} [footer] - Footer text.
-	 * @param {string} [footerIcon] - Footer Icon.
-	 * @param {string} [image] - Image URL.
-	 * @param {string} [thumbnail] - Thumbnail URL.
-	 * @param {string|number|Date} [timestamp] - Timestamp.
-	 * @param {string} [title] - Title text.
+	 * @param {BetterEmbedObject} properties - Default properties the BetterEmebd Object will have.
 	 */
-	constructor({author, authorIcon, authorUrl, color, description, fields, footer, footerIcon, image, thumbnail, timestamp, title} = {}) {
-		if (title) this.title = title;
-		if (description) this.description = description;
-		if (author) this.author = author;
-		if (authorIcon) this.authorIcon = authorIcon;
-		if (authorUrl) this.authorUrl = authorUrl;
-		if (image) this.image = image;
-		if (thumbnail) this.thumbnail = thumbnail;
-		if (footer) this.footer = footer;
-		if (footerIcon) this.footerIcon = footerIcon;
-		if (timestamp) this.timestamp = timestamp;
-		if (color) this.color = color;
-		if (fields) this.fields = fields;
+	constructor(properties = {}) {
+		if (properties.title) this.title = properties.title;
+		if (properties.description) this.description = properties.description;
+		if (properties.author) this.author = properties.author;
+		if (properties.authorIcon) this.authorIcon = properties.authorIcon;
+		if (properties.authorUrl) this.authorUrl = properties.authorUrl;
+		if (properties.image) this.image = properties.image;
+		if (properties.thumbnail) this.thumbnail = properties.thumbnail;
+		if (properties.footer) this.footer = properties.footer;
+		if (properties.footerIcon) this.footerIcon = properties.footerIcon;
+		if (properties.timestamp) this.timestamp = properties.timestamp;
+		if (properties.color) this.color = properties.color;
+		if (properties.fields) this.fields = properties.fields;
 	}
 	
 	/**
 	 * Generates a BetterEmbed from a template, replacing the values if you include any.
 	 * @param {BetterEmbedObject | string} template - A template or a template name.
-	 * @param {Object} [values] - The values in an object if any in the template.
+	 * @param {object} [values] - The values in an object if any in the template.
 	 * @returns {BetterEmbed} - The resulting BetterEmbed.
 	 * @example
 	 * const embed = BetterEmbed.fromTemplate('basic', {client: message.client});

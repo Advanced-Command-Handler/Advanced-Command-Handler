@@ -33,9 +33,9 @@ module.exports = class Logger {
 	
 	/**
 	 * Log a comment (if comments are activated).
-	 * @param {Object|String} message - Object or String to log.
-	 * @param {String} typeToShow - The type (before the message) to show.
-	 * @return {void}
+	 * @param {object | string} message - Object or String to log.
+	 * @param {string} typeToShow - The type (before the message) to show.
+	 * @returns {void}
 	 */
 	static comment(message, typeToShow = 'comment') {
 		if (Logger.logComments) {
@@ -45,9 +45,9 @@ module.exports = class Logger {
 	
 	/**
 	 * Log an error.
-	 * @param {Object|String} message - Object or String to log.
-	 * @param {String} typeToShow - The type (before the message) to show.
-	 * @return {void}
+	 * @param {object | string} message - Object or String to log.
+	 * @param {string} typeToShow - The type (before the message) to show.
+	 * @returns {void}
 	 */
 	static error(message, typeToShow = 'error') {
 		Logger.process(message, 'error', typeToShow);
@@ -55,9 +55,9 @@ module.exports = class Logger {
 	
 	/**
 	 * Log an event result.
-	 * @param {Object|String} message - Object or String to log.
-	 * @param {String} typeToShow - The type (before the message) to show.
-	 * @return {void}
+	 * @param {object | string} message - Object or String to log.
+	 * @param {string} typeToShow - The type (before the message) to show.
+	 * @returns {void}
 	 */
 	static event(message, typeToShow = 'event') {
 		Logger.process(message, 'event', typeToShow);
@@ -65,9 +65,9 @@ module.exports = class Logger {
 	
 	/**
 	 * Log an info.
-	 * @param {Object|String} message - Object or String to log.
-	 * @param {String} typeToShow - The type (before the message) to show.
-	 * @return {void}
+	 * @param {object | string} message - Object or String to log.
+	 * @param {string} typeToShow - The type (before the message) to show.
+	 * @returns {void}
 	 */
 	static info(message, typeToShow = 'info') {
 		Logger.process(message, 'info', typeToShow);
@@ -75,10 +75,10 @@ module.exports = class Logger {
 	
 	/**
 	 * Log a message.
-	 * @param {Object|String} message - Object or String to log.
-	 * @param {String?} type - The type (before the message) to show.
-	 * @param {String?} color - Color for the message
-	 * @return {void}
+	 * @param {object | string} message - Object or String to log.
+	 * @param {string?} type - The type (before the message) to show.
+	 * @param {string?} color - Color for the message
+	 * @returns {void}
 	 */
 	static log(message, type = 'log', color = 'log') {
 		Logger.process(message, color, type);
@@ -86,10 +86,10 @@ module.exports = class Logger {
 	
 	/**
 	 * Process a log method from the Logger class, you don't have to use it likely.
-	 * @param {String} text - Text to log.
-	 * @param {String} type - Type of log.
-	 * @param {String} message - Message of the log.
-	 * @returns {void}
+	 * @param {string} text - Text to log.
+	 * @param {string} type - Type of log.
+	 * @param {string} message - Message of the log.
+	 * @returnss {void}
 	 */
 	static process(text, type = 'test', message = type) {
 		text = text.toString().replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, match => {
@@ -107,10 +107,10 @@ module.exports = class Logger {
 	
 	/**
 	 * Set the actual color (and each characters after).
-	 * @param {String} color - The color in the static 'colors' list or a type of log.
-	 * @param {String} text - For only coloring the text.
-	 * @param {String} colorAfter - For set the color after the text.
-	 * @return {string}
+	 * @param {string} color - The color in the static 'colors' list or a type of log.
+	 * @param {string} text - For only coloring the text.
+	 * @param {string} colorAfter - For set the color after the text.
+	 * @returns {string}
 	 */
 	static setColor(color = 'default', text = '', colorAfter = '') {
 		if (color = Logger.colors[Logger.#types[color]] ||
@@ -139,9 +139,9 @@ module.exports = class Logger {
 	
 	/**
 	 * Log a test.
-	 * @param {Object|String} message - Object or String to log.
-	 * @param {String} typeToShow - The type (before the message) to show.
-	 * @return {void}
+	 * @param {object | string} message - Object or String to log.
+	 * @param {string} typeToShow - The type (before the message) to show.
+	 * @returns {void}
 	 */
 	static test(message, typeToShow = 'test') {
 		Logger.process(message, 'test', typeToShow);
@@ -149,9 +149,9 @@ module.exports = class Logger {
 	
 	/**
 	 * Log a warn.
-	 * @param {Object|String} message - Object or String to log.
-	 * @param {String} typeToShow - The type (before the message) to show.
-	 * @return {void}
+	 * @param {object | string} message - Object or String to log.
+	 * @param {string} typeToShow - The type (before the message) to show.
+	 * @returns {void}
 	 */
 	static warn(message, typeToShow = 'warn') {
 		Logger.process(message, 'warn', typeToShow);
