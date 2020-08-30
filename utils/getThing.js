@@ -4,7 +4,7 @@ const CommandHandler = require('../classes/CommandHandler.js');
  * Let you get a {dataTyoe} from your Client, or the {text}.
  * @param {'command' | 'channel' | 'guild' | 'member' | 'user' | 'role' | 'emote' | 'message'} dataType - The type of data to search
  * @param {string | Message} text - Text or Message where to look for the dataType.
- * @return {Promise<Command | GuildChannel | TextChannel | NewsChannel | Guild | GuildMember | User | Role | Emoji | Message | null > | Message}
+ * @returns {Promise<Command | GuildChannel | TextChannel | NewsChannel | Guild | GuildMember | User | Role | Emoji | Message | null > | Message} - The datatype result or `null`.
  */
 module.exports = async (dataType, text) => {
 	/**
@@ -47,7 +47,7 @@ module.exports = async (dataType, text) => {
 			
 			const url = message.replace('https://discord.com/channels/', '').split('/');
 			if (message.startsWith('https') && CommandHandler.client.channels.has(url[1])) {
-				return (await CommandHandler.client.channels.get(url[1]).messages.fetch(url[2])) || null;
+				return await CommandHandler.client.channels.get(url[1]).messages.fetch(url[2]) || null;
 			}
 			
 			for (const channel of CommandHandler.client.channels) {

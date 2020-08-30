@@ -85,7 +85,17 @@ module.exports = class BetterEmbed {
 	
 	/**
 	 * To convert BetterEmbed to EmbedObjet.
-	 * @returns {{image: {url: string}, thumbnail: {url: string}, color: string, footer: {icon_url: string, text: string}, author: {icon_url: string, name: string, url: string}, description: string, title: string, fields: Array<{name: string, value: string}>, timestamp: string}}
+	 * @returns {{
+	 * author: {icon_url: string, name: string, url: string},
+	 * color: string,
+	 * description: string,
+	 * fields: Array<{name: string, value: string}>,
+	 * footer: {icon_url: string, text: string}
+	 * image: {url: string},
+	 * thumbnail: {url: string},
+	 * title: string,
+	 * timestamp: string,
+	 * }} - Returns an Embed Objet (from discord.js).
 	 */
 	build() {
 		return {

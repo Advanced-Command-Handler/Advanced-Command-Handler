@@ -4,7 +4,7 @@ const {DateTime} = require('luxon');
 module.exports = async (handler) => {
 	/**
 	 * Log informations of the bot in the console.
-	 * @returns void
+	 * @returns {void}
 	 */
 	function log() {
 		Logger.event(`Date : ${Logger.setColor('yellow', DateTime.local().toFormat('TT'))}`);
