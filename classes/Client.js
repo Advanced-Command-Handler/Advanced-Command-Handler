@@ -3,7 +3,8 @@ const Logger = require('../utils/Logger.js');
 
 /**
  * Class representing an improved Discord Client.
- * @extends {Client}
+ * @class
+ * @extends
  */
 module.exports = class AdvancedClient extends Client {
 	#token;

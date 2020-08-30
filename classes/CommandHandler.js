@@ -139,7 +139,7 @@ module.exports = class CommandHandler {
 	 */
 	static loadCommand(path, name) {
 		const command = require(`./../../${path}/${name}`);
-		if (command === undefined) {
+		if (!command) {
 			throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		}
 		
@@ -163,8 +163,8 @@ module.exports = class CommandHandler {
 			
 			Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
 			
-			for (let command in files) {
-				CommandHandler.loadCommand(`${path}/${dir}`, files[command]);
+			for (const file of files) {
+				CommandHandler.loadCommand(`${path}/${dir}`, file);
 			}
 		}
 		
