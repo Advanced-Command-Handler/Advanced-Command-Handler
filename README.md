@@ -39,9 +39,9 @@ CommandHandler.launch({
 | Field           | Description                                                                    | Type                                |
 | --------------- | ------------------------------------------------------------------------------ | ----------------------------------- |
 | instance        | Represents the instance of the CommandHandler.                                 | Object                              |
-| owners          | Owners that you put in creation.                                               | SnowFlake[]                         |
-| prefixes        | Prefixes that you put in creation.                                             | String[]                            |
-| client          | Represents the Client of the bot, see in #help section for the other methods.  | Client extends Discord.Client       |
+| owners          | Owners that you put in the `CommandHandler.create` method.                     | SnowFlake[]                         |
+| prefixes        | Prefixes that you put in the `CommandHandler.create` method.                   | String[]                            |
+| client          | Represents the Client of the bot, see in the [helpers](#Helpers) section for the other methods.  | Client extends Discord.Client       |
 | commands        | All the commands that have been found by command handler on the launch.        | Discord.Collection<String, Command> |
 | create(options) | Creates a command handler and reset all data save in instance.                 | return void                         |
 | launch(options) | Launch the Command Handler by login in the Client and fetching Commands/Events | return void                         |
@@ -69,7 +69,7 @@ module.exports = new Command({
 });
 ```
 
-**You have to put the command into a category folder into your commands folder.**
+**You have to put the command into a category folder into your commands folder like in the example.**
 
 ##### **__This is an example, the message event is not integrated into the command handler, you have to create it yourself !__**
 
@@ -83,7 +83,7 @@ module.exports = async(handler, ...EventArguments) => {
 
 The file's given name set out which event it handles.
 
-# Logger
+# Logger Class
 
 `Logger` is a class in the `utils` folder to helps you creating logs.
 It has multiple **static** methods :
@@ -110,7 +110,7 @@ Give the following result in the console (screen made on `WebStorm`).
 
 **Every number is yellow by default.**
 
-### Colors
+### Colors for the logger
 
 Colors are set out in static public object in the `Logger` class, so you can change them.
 
@@ -137,7 +137,7 @@ colors = {
 }
 ```
 
-# Helps
+# Helpers
 
 #### BetterEmbed
 
@@ -187,12 +187,12 @@ This can simplify your embeds declarations.
 
 There are multiple utils functions that can be use (require them like other classes).
 
-| Name                                  | Description                                                                                                                                     | Returning                  |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `argError( channel, error, command )` | Send an embed who explain the argument error and show the syntax.                                                                               | Embed Object               |
-| `async getThing( datatype, text )`    | Search for the `dataType`(like an user or command) into the client and in the `text`and if `text` is a message it will looks into his mentions. | Object (datatype) or false |
+| Name                                  | Description                                                                                                                                      | Returning                  |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- |
+| `argError( channel, error, command )` | Send an embed that explains the argument error and show correct the syntax.                                                                      | Embed Object               |
+| `async getThing( datatype, text )`    | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will looks into its mentions.   | Object (datatype) or false |
 
-The `Command` class has a method `deleteMessage( message )` to safully delete messages without sending Errors *(missing permissions)*.
+The `Command` class has a method `deleteMessage( message )` to safely delete messages without sending Errors *(missing permissions)*.
 
 **The `Client` class has multiples methods also :**
 
