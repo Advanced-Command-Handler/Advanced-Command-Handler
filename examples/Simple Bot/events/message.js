@@ -6,7 +6,7 @@ const Discord = require('discord.js');
  * Verify if the user and the client has all the permissions of the Command.
  * @param {Message} message - The message.
  * @param {Command} command - Command to verify the permissions.
- * @return {{client: [], user: []}} - Missing permissions.
+ * @returns {{client: [], user: []}} - Missing permissions.
  */
 function verifyPerms(message, command) {
 	const clientMissingPermissions = [];
@@ -48,7 +48,7 @@ function verifyPerms(message, command) {
  * Create an Embed Objet for listing the missing permisisons of an member or a client.
  * @param {Permissions[]} permissions - The missing Permisisons.
  * @param {Boolean} client - If the missing permissions are to the client.
- * @return {Object} - An Embed Object.
+ * @returns {object} - An Embed Object.
  */
 function missingPermission(permissions, client = false) {
 	const embed = new BetterEmbed();

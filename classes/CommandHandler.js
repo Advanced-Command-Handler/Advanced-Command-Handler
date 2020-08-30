@@ -18,7 +18,7 @@ module.exports = class CommandHandler {
 	 * @returns {CommandHandlerError} - This returns an error because a singleton cannot be instantiated.
 	 */
 	constructor() {
-		return new CommandHandlerError('CommandHandler is not a class that can be instantiated.');
+		throw new CommandHandlerError('CommandHandler is not a class that can be instantiated.');
 	}
 	
 	/**
@@ -82,8 +82,8 @@ module.exports = class CommandHandler {
 	
 	/**
 	 * Creates your Commannd Handler, it cans only be created one time.
-	 * @param {string} commandsDir - Directoery name where the commands are.
-	 * @param {string} eventsDir - Directoery name where the events are.
+	 * @param {string} commandsDir - Directory name where the commands are.
+	 * @param {string} eventsDir - Directory name where the events are.
 	 * @param {string[]} [owners] - An array of ids that are the owners (privileged persons).
 	 * @param {string[]} [prefixes] - An array of strings that will be the prefixes of your bot, if you want to add if you want to make the mention of the bot one of the
 	 * prefixes, put in the array "mention".
@@ -150,7 +150,7 @@ module.exports = class CommandHandler {
 	
 	/**
 	 * Load the commands form the path by fetching them and load them individualy.
-	 * @param {string} path
+	 * @param {string} path - The path of the folder of the commands.
 	 * @returns {void}
 	 */
 	static loadCommands(path) {

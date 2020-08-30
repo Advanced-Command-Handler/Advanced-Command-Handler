@@ -1,6 +1,5 @@
 /**
  * Class for creating simplier embeds.
- * @module utils/BetterEmbed
  */
 module.exports = class BetterEmbed {
 	/**
@@ -21,7 +20,7 @@ module.exports = class BetterEmbed {
 	
 	/**
 	 * Store your templates here !
-	 * @type {Object<BetterEmbedObject>}
+	 * @type {object<BetterEmbedObject>}
 	 */
 	static templates = {
 		basic: {

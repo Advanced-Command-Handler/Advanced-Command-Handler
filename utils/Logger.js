@@ -89,7 +89,7 @@ module.exports = class Logger {
 	 * @param {string} text - Text to log.
 	 * @param {string} type - Type of log.
 	 * @param {string} message - Message of the log.
-	 * @returnss {void}
+	 * @returns {void}
 	 */
 	static process(text, type = 'test', message = type) {
 		text = text.toString().replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, match => {
@@ -110,7 +110,7 @@ module.exports = class Logger {
 	 * @param {string} color - The color in the static 'colors' list or a type of log.
 	 * @param {string} text - For only coloring the text.
 	 * @param {string} colorAfter - For set the color after the text.
-	 * @returns {string}
+	 * @returns {string} - The text colored.
 	 */
 	static setColor(color = 'default', text = '', colorAfter = '') {
 		if (color = Logger.colors[Logger.#types[color]] ||
