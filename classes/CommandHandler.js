@@ -89,7 +89,7 @@ module.exports = class CommandHandler {
 	 * @returns {void}
 	 */
 	static create({commandsDir, eventsDir, owners = [], prefixes = ['!']}) {
-		console.log(Logger.setColor('magenta') + readFileSync('../assets/presentation.txt').toString('utf8'));
+		console.log(Logger.setColor('magenta') + readFileSync(__dirname + '/../assets/presentation.txt').toString('utf8'));
 		if (!CommandHandler.instance) {
 			/**
 			 * @type {{commandsDir: string, prefixes: string[], eventsDir: string, client: null, owners: string[], commands: module:"discord.js".Collection<string, Command>}} CommandHandler
