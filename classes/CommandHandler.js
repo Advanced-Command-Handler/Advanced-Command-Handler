@@ -4,6 +4,7 @@ const {Collection} = require('discord.js');
 const {readdirSync, readFileSync} = require('fs');
 const Client = require('./Client.js');
 const Logger = require('../utils/Logger.js');
+const {join} = require('path');
 
 module.exports = class CommandHandler {
 	/**
@@ -89,7 +90,7 @@ module.exports = class CommandHandler {
 	 * @returns {void}
 	 */
 	static create({commandsDir, eventsDir, owners = [], prefixes = ['!']}) {
-		console.log(Logger.setColor('magenta') + readFileSync(__dirname + '/../assets/presentation.txt').toString('utf8'));
+		console.log(Logger.setColor('magenta') + readFileSync(join(__dirname, '../assets/presentation.txt')).toString('utf8'));
 		if (!CommandHandler.instance) {
 			/**
 			 * @type {{commandsDir: string, prefixes: string[], eventsDir: string, client: null, owners: string[], commands: module:"discord.js".Collection<string, Command>}} CommandHandler
@@ -138,7 +139,7 @@ module.exports = class CommandHandler {
 	 * @return {void}
 	 */
 	static loadCommand(path, name) {
-		const command = require(`./../../${path}/${name}`);
+		const command = require(join(process.cwd(), `./${path}/${name}`));
 		if (!command) {
 			throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		}
@@ -158,7 +159,7 @@ module.exports = class CommandHandler {
 		Logger.comment(`Categories : (${dirs.length})`, 'loading');
 		
 		for (const dir of dirs) {
-			const files = readdirSync(`${path}/${dir}`);
+			const files = readdirSync(join(process.cwd(), `${path}/${dir}`));
 			if (dirs.length === 0) continue;
 			
 			Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
@@ -184,7 +185,7 @@ module.exports = class CommandHandler {
 		for (const file of files) {
 			if (!file) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 			
-			const event = require(`./../../${path}/${file}`);
+			const event = require(join(process.cwd(), `${path}/${file}`));
 			const eventName = file.split('.')[0];
 			CommandHandler.client.on(eventName, event.bind(null, CommandHandler));
 			Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
