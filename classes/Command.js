@@ -33,7 +33,7 @@ module.exports = class Command {
 	}
 	
 	/**
-	 * Tries to delete the message without sending an Exception.
+	 * Tries to delete the message without sending an Error.
 	 * @param {module:"discord.js".Message} message - The message to delete.
 	 * @returns {Promise<module:"discord.js".Message | undefined>} - The deleted message (or not).
 	 */

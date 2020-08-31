@@ -67,7 +67,7 @@ module.exports = class CommandHandler {
 	}
 	
 	/**
-	 * @returns {module:"discord.js".Collection<string, Command> | module:"discord.js".Collection<string Command>} - Returns the commands or a new Collection (when no instance existst).
+	 * @returns {module:"discord.js".Collection<string, Command> | module:"discord.js".Collection<string, Command>} - Returns the commands or a new Collection (when no instance existst).
 	 */
 	static get commands() {
 		return CommandHandler.instance ? CommandHandler.instance.commands : new Collection();
@@ -133,7 +133,7 @@ module.exports = class CommandHandler {
 	}
 	
 	/**
-	 * Load the command {given name} into the folder {path}.
+	 * Load the command from the folder.
 	 * @param {string} path - Path of the folder of the command.
 	 * @param {string} name - Given Name of the command.
 	 * @returns {void}
@@ -149,7 +149,7 @@ module.exports = class CommandHandler {
 	}
 	
 	/**
-	 * Load the commands form the path by fetching them and load them individualy.
+	 * Load the commands from the path by fetching them and loading them individualy.
 	 * @param {string} path - The path of the folder of the commands.
 	 * @returns {void}
 	 */
@@ -173,7 +173,7 @@ module.exports = class CommandHandler {
 	}
 	
 	/**
-	 * Load the events form the path by fetching them and load them individualy.
+	 * Load the events form the path by fetching them and loading them individualy.
 	 * @param {string} path - Path of the folder of the events.
 	 * @returns {void}
 	 */
