@@ -106,8 +106,8 @@ module.exports = class Logger {
 	}
 	
 	/**
-	 * Set the actual color (and each characters after).
-	 * @param {string} color - The color in the static 'colors' list or a type of log.
+	 * Set the actual color (and each character after).
+	 * @param {string} color - The color in the static 'colors' list, or a type of log.
 	 * @param {string} text - For only coloring the text.
 	 * @param {string} colorAfter - For set the color after the text.
 	 * @returns {string} - The text colored.

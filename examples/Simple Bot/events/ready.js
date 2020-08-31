@@ -3,7 +3,7 @@ const {DateTime} = require('luxon');
 
 module.exports = async (handler) => {
 	/**
-	 * Log informations of the bot in the console.
+	 * Log information of the bot in the console.
 	 * @returns {void}
 	 */
 	function log() {

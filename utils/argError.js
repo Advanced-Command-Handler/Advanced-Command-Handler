@@ -2,7 +2,7 @@ const {client} = require('../classes/CommandHandler.js');
 const {Snowflake} = require('discord.js');
 
 /**
- * Send embed who explains why user failed an argument of the {Command}.
+ * Send embed who explains why user failed an argument of the Command.
  * @param {Snowflake} channelID - Channel where embed will be sent.
  * @param {string} error - The mistake user made.
  * @param {Command} command - Wich command failed.
