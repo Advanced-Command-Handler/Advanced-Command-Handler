@@ -6,7 +6,7 @@ const {Snowflake} = require('discord.js');
  * @param {Snowflake} channelID - Channel where embed will be sent.
  * @param {string} error - The mistake user made.
  * @param {Command} command - Wich command failed.
- * @return {void}
+ * @returns {void}
  */
 module.exports = async (channelID, error, command) => {
 	let channel;

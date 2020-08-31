@@ -3,8 +3,6 @@ const Logger = require('../utils/Logger.js');
 
 /**
  * Class representing an improved Discord Client.
- * @class
- * @extends
  */
 module.exports = class AdvancedClient extends Client {
 	#token;
@@ -45,4 +43,4 @@ module.exports = class AdvancedClient extends Client {
 	isOwner(id) {
 		return this.handler.owners.includes(id);
 	}
-}
+};

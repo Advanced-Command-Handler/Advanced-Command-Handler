@@ -136,7 +136,7 @@ module.exports = class CommandHandler {
 	 * Load the command {given name} into the folder {path}.
 	 * @param {string} path - Path of the folder of the command.
 	 * @param {string} name - Given Name of the command.
-	 * @return {void}
+	 * @returns {void}
 	 */
 	static loadCommand(path, name) {
 		const command = require(join(process.cwd(), `./${path}/${name}`));
@@ -175,7 +175,7 @@ module.exports = class CommandHandler {
 	/**
 	 * Load the events form the path by fetching them and load them individualy.
 	 * @param {string} path - Path of the folder of the events.
-	 * @return {void}
+	 * @returns {void}
 	 */
 	static loadEvents(path) {
 		const files = readdirSync(path);

@@ -3,10 +3,10 @@ const {DateTime} = require('luxon');
 const Discord = require('discord.js');
 
 /**
- * Verify if the user and the client has all the permissions of the Command.
+ * Verify if the user, and the client has all the permissions of the Command.
  * @param {Message} message - The message.
  * @param {Command} command - Command to verify the permissions.
- * @returns {{client: [], user: []}} - Missing permissions.
+ * @returns {{client: Permissions[], user: Permissions[]}} - Missing permissions.
  */
 function verifyPerms(message, command) {
 	const clientMissingPermissions = [];
@@ -18,7 +18,7 @@ function verifyPerms(message, command) {
 	
 	if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
 		command.clientPermissions.forEach(permission => {
-			if (Discord.Permissions.FLAGS[permission] === undefined) {
+			if (!Discord.Permissions.FLAGS[permission]) {
 				throw new CommandHandlerError('eventMessage', `Permission '${permission}' is not a valid Permission Flag see the full list here : https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS.`);
 			}
 			
@@ -29,7 +29,7 @@ function verifyPerms(message, command) {
 	}
 	
 	command.userPermissions.forEach(permission => {
-		if (Discord.Permissions.FLAGS[permission] === undefined) {
+		if (!Discord.Permissions.FLAGS[permission]) {
 			throw new CommandHandlerError('eventMessage', `Permission '${permission}' is not a valid Permission Flag see the full list here : https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS.`);
 		}
 		
@@ -45,9 +45,9 @@ function verifyPerms(message, command) {
 }
 
 /**
- * Create an Embed Objet for listing the missing permisisons of an member or a client.
+ * Create an Embed Objet for listing the missing permisisons of a member or a client.
  * @param {Permissions[]} permissions - The missing Permisisons.
- * @param {Boolean} client - If the missing permissions are to the client.
+ * @param {boolean} client - If the missing permissions are to the client.
  * @returns {object} - An Embed Object.
  */
 function missingPermission(permissions, client = false) {
@@ -71,6 +71,10 @@ module.exports = async (handler, message) => {
 	
 	const messageToString = message.content.length > 1024 ? message.content.substring(0, 1021) + '...' : message.content;
 	const args = message.content.slice(prefix.length).trim().split(/ +/g);
+	/**
+	 * The command that have been searched through the message content.
+	 * @type {Command | null} -
+	 */
 	const cmd = await getThing('command', args[0].toLowerCase().normalize());
 	args.shift();
 	
@@ -107,9 +111,8 @@ module.exports = async (handler, message) => {
 		}
 		
 		return cmd.run(handler.client, message, args).catch((warning) => {
-			Logger.warn(`A small error was made somewhere with the command ${Logger.setColor('gold', cmd.name)}. \nDate : ${Logger.setColor('yellow', DateTime.local()
-			                                                                                                                                                  .toFormat('TT'))}${Logger.setColor('red', '\nError : ' +
-			                                                                                                                                                                                            warning.stack)}`);
+			Logger.warn(`A small error was made somewhere with the command ${Logger.setColor('gold', cmd.name)}.
+Date : ${Logger.setColor('yellow', DateTime.local().toFormat('TT'))}${Logger.setColor('red', '\nError : ' + warning.stack)}`);
 			
 			
 			if (handler.client.isOwner(message.author.id)) {
