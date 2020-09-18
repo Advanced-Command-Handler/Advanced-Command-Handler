@@ -3,7 +3,6 @@
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayfri/advanced-command-handler?logo=codefactor&style=for-the-badge)
 [![npm](https://img.shields.io/npm/dt/advanced-command-handler?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/advanced-command-handler)
 [![npm](https://img.shields.io/npm/v/advanced-command-handler?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/advanced-command-handler)
-[![GitHub package.json dynamic](https://img.shields.io/github/package-json/keywords/ayfri/advanced-command-handler?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/advanced-command-handler)
 [![GitHub issues](https://img.shields.io/github/issues-raw/ayfri/advanced-command-handler?logo=github&style=for-the-badge)](https://github.com/Ayfri/Advanced-Command-Handler/issues)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/ayfri/advanced-command-handler/package?logo=github&style=for-the-badge)
 
@@ -43,6 +42,7 @@ CommandHandler.launch({
 | prefixes        | Prefixes that you put in the `CommandHandler.create` method.                   | String[]                            |
 | client          | Represents the Client of the bot, see in the [helpers](#Helpers) section for the other methods.  | Client extends Discord.Client       |
 | commands        | All the commands that have been found by command handler on the launch.        | Discord.Collection<String, Command> |
+| get cooldowns   | The cooldowns of the bot mapped as <UserID, cooldownInSeconds>                 | Discord.Collection<String, number>  |
 | create(options) | Creates a command handler and reset all data save in instance.                 | return void                         |
 | launch(options) | Launch the Command Handler by login in the Client and fetching Commands/Events | return void                         |
 
@@ -64,6 +64,7 @@ module.exports = new Command({
     aliases: [],
     userPermissions: [],
     clientPermissions: [],
+    cooldown: 10
 }, async(client, message, args) => {
     // Your code goes here.
 });
