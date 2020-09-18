@@ -7,7 +7,7 @@ const Logger = require('../utils/Logger.js');
 module.exports = class AdvancedClient extends Client {
 	#token;
 	handler;
-	
+
 	/**
 	 * Create a new AdvancedClient, log it and add the mention of the bot on Prefixes.
 	 * This also add a collection for commands, owners, and prefixes in the props.
@@ -20,8 +20,8 @@ module.exports = class AdvancedClient extends Client {
 		this.handler = handler;
 		this.#token = token;
 		Logger.comment('Client initialized.', 'loading');
-	};
-	
+	}
+
 	/**
 	 * Tells you if the client member on the guild has the permission.
 	 * @param {object} message - The message to get the client to tests if it is on a guild and to get permissions of the bot.
@@ -29,12 +29,14 @@ module.exports = class AdvancedClient extends Client {
 	 * @returns {boolean} - Returns true if the client member has the permission.
 	 */
 	hasPermission(message, permission) {
-		return message.guild ? message.guild.me.hasPermission(permission, {
-			checkOwner: false,
-			checkAdmin: false,
-		}) : false;
+		return message.guild
+			? message.guild.me.hasPermission(permission, {
+					checkOwner: false,
+					checkAdmin: false,
+			  })
+			: false;
 	}
-	
+
 	/**
 	 * Tells you if the user is an owner of the bot.
 	 * @param {string} id - ID of a Discord User.

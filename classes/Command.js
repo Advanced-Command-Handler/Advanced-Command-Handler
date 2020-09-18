@@ -10,11 +10,26 @@ module.exports = class Command {
 	guildOnly;
 	ownerOnly;
 	nsfw;
+	cooldown;
 	
+	/**
+	 * @typedef {object} CommandOptions
+	 * @property {string} name
+	 * @property {string} description
+	 * @property {string} usage
+	 * @property {string} category
+	 * @property {string[]} aliases
+	 * @property {module:"discord.js".PermissionString[]} clientPermissions
+	 * @property {module:"discord.js".PermissionString[]} userPermissions
+	 * @property {boolean} guildOnly
+	 * @property {boolean} ownerOnly
+	 * @property {boolean} nsfw
+	 * @property {number} cooldown
+	 */
 	
 	/**
 	 * Create a new Command.
-	 * @param {{name: string, description: string, usage: string, category: string, aliases: string[], clientPermissions: Permissions[], userPermissions: Permissions[], guildOnly: boolean, ownerOnly: boolean, nsfw: boolean}} options - Options of the command.
+	 * @param {CommandOptions} options - Options of the command.
 	 * Only `name` is required.
 	 * @param {Function} runFunction - Function that is executed when we do the command.
 	 */
@@ -30,6 +45,7 @@ module.exports = class Command {
 		this.guildOnly = options.guildOnly ? options.guildOnly : false;
 		this.ownerOnly = options.ownerOnly ? options.ownerOnly : false;
 		this.nsfw = options.nsfw ? options.nsfw : false;
+		this.cooldown = options.cooldown ? options.cooldown : 0;
 	}
 	
 	/**
