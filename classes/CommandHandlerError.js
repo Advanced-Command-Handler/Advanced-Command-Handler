@@ -8,9 +8,7 @@ module.exports = class CommandHandlerError extends Error {
 	constructor(where, message) {
 		super(message);
 		
-		if (Error.captureStackTrace) {
-			Error.captureStackTrace(this, CommandHandlerError);
-		}
+		if (Error.captureStackTrace) Error.captureStackTrace(this, CommandHandlerError);
 		
 		this.name = 'CommandHandlerError';
 		this.where = where;

@@ -11,27 +11,27 @@ module.exports = class Command {
 	ownerOnly;
 	nsfw;
 	cooldown;
-	
+
 	/**
 	 * @typedef {object} CommandOptions
 	 * @property {string} name
-	 * @property {string} description
-	 * @property {string} usage
-	 * @property {string} category
-	 * @property {string[]} aliases
-	 * @property {module:"discord.js".PermissionString[]} clientPermissions
-	 * @property {module:"discord.js".PermissionString[]} userPermissions
-	 * @property {boolean} guildOnly
-	 * @property {boolean} ownerOnly
-	 * @property {boolean} nsfw
-	 * @property {number} cooldown
+	 * @property {string} [description]
+	 * @property {string} [usage]
+	 * @property {string} [category]
+	 * @property {string[]} [aliases]
+	 * @property {module:"discord.js".PermissionString[]} [clientPermissions]
+	 * @property {module:"discord.js".PermissionString[]} [userPermissions]
+	 * @property {boolean} [guildOnly]
+	 * @property {boolean} [ownerOnly]
+	 * @property {boolean} [nsfw]
+	 * @property {number} [cooldown]
 	 */
-	
+
 	/**
 	 * Create a new Command.
 	 * @param {CommandOptions} options - Options of the command.
 	 * Only `name` is required.
-	 * @param {Function} runFunction - Function that is executed when we do the command.
+	 * @param {function(handler?: CommandHandler, message?: module:"discord.js".Message, args?: string): void} runFunction - Function that is executed when we do the command.
 	 */
 	constructor(options, runFunction) {
 		this.name = options.name;
@@ -47,7 +47,7 @@ module.exports = class Command {
 		this.nsfw = options.nsfw ? options.nsfw : false;
 		this.cooldown = options.cooldown ? options.cooldown : 0;
 	}
-	
+
 	/**
 	 * Tries to delete the message without sending an Error.
 	 * @param {module:"discord.js".Message} message - The message to delete.
@@ -55,7 +55,7 @@ module.exports = class Command {
 	 */
 	async deleteMessage(message) {
 		const {client} = require('./CommandHandler.js');
-		
+
 		if (client.hasPermission('MANAGE_MESSAGES')) {
 			return await message.delete();
 		}
