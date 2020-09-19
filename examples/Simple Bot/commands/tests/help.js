@@ -58,6 +58,7 @@ ${command.ownerOnly ? `**Only available to the owner(s).**` : ''}`;
 				.sort()
 				.join('\n\n')}`;
 		}
+
 		return message.channel.send({embed: embed.build()});
 	}
 );

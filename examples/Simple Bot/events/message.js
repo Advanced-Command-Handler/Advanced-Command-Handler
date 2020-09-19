@@ -85,74 +85,76 @@ module.exports = async (handler, message) => {
 	const cmd = await getThing('command', args[0].toLowerCase().normalize());
 	args.shift();
 
-	if (message.content === prefix) return message.channel.send(`The current bot prefixes are : ${handler.prefixes.join('\n')}`);
+	if (prefix) {
+		if (message.content === prefix) return message.channel.send(`The current bot prefixes are : \n\`${handler.prefixes.join('\n')}\``);
 
-	if (cmd && prefix) {
-		if (!handler.client.isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.ownerOnly)) {
-			await message.channel.send('You are not the creator of the bot. You do not have the right to use this command.');
-			return Logger.log(
-				`${Logger.setColor('magenta', message.author.tag)} tried the ownerOnly command ${Logger.setColor('gold', cmd.name)} on the guild ${Logger.setColor('teal', message.guild.name)}.`
-			);
-		}
-
-		if (message.guild) {
-			Logger.log(`${Logger.setColor('magenta', message.author.tag)} executed the command ${Logger.setColor('gold', cmd.name)} on the guild ${Logger.setColor('teal', message.guild.name)}.`);
-
-			const verified = verifyPerms(message, cmd);
-			if (verified.client.length > 0) return message.channel.send({embed: missingPermission(verified.client, true)});
-			if (verified.user.length > 0) return message.channel.send({embed: missingPermission(verified.user)});
-
-			if (cmd.nsfw && !message.channel.nsfw) {
-				const embed = new BetterEmbed({
-					title: 'Error :',
-					description: 'NSFW commands are only available on nsfw channels.',
-					footer: handler.client.user.username,
-					footerIcon: handler.client.user.displayAvatarURL,
-				});
-				await message.channel.send(embed.build());
+		if (cmd) {
+			if (!handler.client.isOwner(message.author.id) && (['owner', 'wip', 'mod'].includes(cmd.category) || cmd.ownerOnly)) {
+				await message.channel.send('You are not the creator of the bot. You do not have the right to use this command.');
+				return Logger.log(
+					`${Logger.setColor('magenta', message.author.tag)} tried the ownerOnly command ${Logger.setColor('gold', cmd.name)} on the guild ${Logger.setColor('teal', message.guild.name)}.`
+				);
 			}
-		} else {
-			Logger.log(`${Logger.setColor('magenta', message.author.tag)} executed the command ${Logger.setColor('gold', cmd.name)} in private messages.`);
-			if (cmd.guildOnly) {
-				await message.channel.send('The command is only available on a guild.');
-				return Logger.log(`${Logger.setColor('magenta', message.author.tag)} tried the command ${Logger.setColor('gold', cmd.name)} only available on guild but in private.`);
+
+			if (message.guild) {
+				Logger.log(`${Logger.setColor('magenta', message.author.tag)} executed the command ${Logger.setColor('gold', cmd.name)} on the guild ${Logger.setColor('teal', message.guild.name)}.`);
+
+				const verified = verifyPerms(message, cmd);
+				if (verified.client.length > 0) return message.channel.send({embed: missingPermission(verified.client, true)});
+				if (verified.user.length > 0) return message.channel.send({embed: missingPermission(verified.user)});
+
+				if (cmd.nsfw && !message.channel.nsfw) {
+					const embed = new BetterEmbed({
+						title: 'Error :',
+						description: 'NSFW commands are only available on nsfw channels.',
+						footer: handler.client.user.username,
+						footerIcon: handler.client.user.displayAvatarURL,
+					});
+					await message.channel.send(embed.build());
+				}
+			} else {
+				Logger.log(`${Logger.setColor('magenta', message.author.tag)} executed the command ${Logger.setColor('gold', cmd.name)} in private messages.`);
+				if (cmd.guildOnly) {
+					await message.channel.send('The command is only available on a guild.');
+					return Logger.log(`${Logger.setColor('magenta', message.author.tag)} tried the command ${Logger.setColor('gold', cmd.name)} only available on guild but in private.`);
+				}
 			}
-		}
 
-		if (handler.cooldowns.has(message.author.id)) {
-			return message.channel.send(`This command has a cooldown, wait \`${handler.cooldowns.get(message.author.id)}\` seconds and try again.`);
-		} else if (cmd.cooldown > 0) {
-			handler.cooldowns.set(message.author.id, cmd.cooldown);
-			setTimeout(() => {
-				handler.cooldowns.delete(message.author.id);
-			}, cmd.cooldown * 1000);
-		}
+			if (handler.cooldowns.has(message.author.id)) {
+				return message.channel.send(`This command has a cooldown, wait \`${handler.cooldowns.get(message.author.id)}\` seconds and try again.`);
+			} else if (cmd.cooldown > 0) {
+				handler.cooldowns.set(message.author.id, cmd.cooldown);
+				setTimeout(() => {
+					handler.cooldowns.delete(message.author.id);
+				}, cmd.cooldown * 1000);
+			}
 
-		cmd.run(handler.client, message, args).catch(warning => {
-			Logger.warn(`A small error was made somewhere with the command ${Logger.setColor('gold', cmd.name)}.
+			cmd.run(handler.client, message, args).catch(warning => {
+				Logger.warn(`A small error was made somewhere with the command ${Logger.setColor('gold', cmd.name)}.
 Date : ${Logger.setColor('yellow', DateTime.local().toFormat('TT'))}${Logger.setColor('red', '\nError : ' + warning.stack)}`);
 
-			if (handler.client.isOwner(message.author.id)) {
-				const embedLog = new BetterEmbed();
-				embedLog.color = '#dd0000';
-				embedLog.description = 'An error occurred with the command : **' + cmd.name + '**.';
-				embedLog.fields.push({
-					name: 'Informations :',
-					value: `\nSent by : ${message.author} (\`${message.author.id}\`)\n\nOnto : **${message.guild.name}** (\`${message.guild.id}\`)\n\nInto : ${message.channel} (\`${message.channel.id})\``,
-				});
+				if (handler.client.isOwner(message.author.id)) {
+					const embedLog = new BetterEmbed();
+					embedLog.color = '#dd0000';
+					embedLog.description = 'An error occurred with the command : **' + cmd.name + '**.';
+					embedLog.fields.push({
+						name: 'Informations :',
+						value: `\nSent by : ${message.author} (\`${message.author.id}\`)\n\nOnto : **${message.guild.name}** (\`${message.guild.id}\`)\n\nInto : ${message.channel} (\`${message.channel.id})\``,
+					});
 
-				embedLog.fields.push({
-					name: 'Error :',
-					value: warning.stack.length > 1024 ? warning.stack.substring(0, 1021) + '...' : warning.stack,
-				});
+					embedLog.fields.push({
+						name: 'Error :',
+						value: warning.stack.length > 1024 ? warning.stack.substring(0, 1021) + '...' : warning.stack,
+					});
 
-				embedLog.fields.push({
-					name: 'Message :',
-					value: messageToString,
-				});
+					embedLog.fields.push({
+						name: 'Message :',
+						value: messageToString,
+					});
 
-				return message.channel.send(embedLog.build());
-			}
-		});
+					return message.channel.send(embedLog.build());
+				}
+			});
+		}
 	}
 };
