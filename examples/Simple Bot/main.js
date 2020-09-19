@@ -7,5 +7,5 @@ CommandHandler.create({
 });
 
 CommandHandler.launch({
-	token: 'NTk0Njg3MjM3NDkzNDg5Njk5.XRgDpg.rAAsJoDx8Z-s5hwYcrNZTvcfT84',
+	token: 'token',
 });

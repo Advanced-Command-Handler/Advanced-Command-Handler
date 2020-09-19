@@ -190,7 +190,7 @@ There are multiple utils functions that can be use (require them like other clas
 
 | Name                                  | Description                                                                                                                                      | Returning                  |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- |
-| `argError( channel, error, command )` | Send an embed that explains the argument error and show correct the syntax.                                                                      | Embed Object               |
+| `argError( message, error, command )` | Send an embed that explains the argument error and show correct the syntax.                                                                      | Embed Object               |
 | `async getThing( datatype, text )`    | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will looks into its mentions.   | Object (datatype) or false |
 
 The `Command` class has a method `deleteMessage( message )` to safely delete messages without sending Errors *(missing permissions)*.
