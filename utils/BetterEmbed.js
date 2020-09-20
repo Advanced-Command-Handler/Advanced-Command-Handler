@@ -74,6 +74,10 @@ module.exports = class BetterEmbed {
 		
 		const betterEmbed = new BetterEmbed();
 		for (const prop in template) {
+			if (!template.hasOwnProperty(prop)) {
+				continue;
+			}
+			
 			if (!Object.prototype.hasOwnProperty.call(template, prop)) {
 				return betterEmbed;
 			}

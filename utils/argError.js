@@ -2,10 +2,10 @@
  * Send embed who explains why user failed an argument of the Command.
  * @param {module:"discord.js".Message} message - Channel where embed will be sent.
  * @param {string} error - The mistake user made.
- * @param {Command} command - Wich command failed.
+ * @param {Command} command - Which command failed.
  * @returns {void}
  */
-module.exports = async (message, error, command) => {
+module.exports = (message, error, command) => {
 	const embed = {
 		title: 'Argument error :',
 		timestamp: Date.now(),

@@ -1,6 +1,6 @@
 {
 	"name": "advanced-command-handler",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "A package to help you create a bot with only 1 main file and directories for your events and commands with some helpers classes and functions.",
 	"main": "index.js",
 	"author": "Ayfri",
