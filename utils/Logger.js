@@ -92,13 +92,10 @@ module.exports = class Logger {
 	 * @returns {void}
 	 */
 	static process(text, type = 'test', message = type) {
-		text = text.toString().replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, match => {
-			if (text.indexOf(';224;238;38m') !== -1 && text.indexOf(';224;238;38m') < text.indexOf(match)) {
-				return match;
-			} else {
-				return Logger.setColor('yellow') + match + Logger.setColor(type);
-			}
-		});
+		const numberColorReplacer = match => {
+			return text.indexOf(';224;238;38m') !== -1 && text.indexOf(';224;238;38m') < text.indexOf(match) ? match : Logger.setColor('yellow') + match + Logger.setColor(type);
+		};
+		text = text.toString().replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, numberColorReplacer);
 		text = text.replace(/\x2b+/gi, Logger.setColor(type));
 		type = Logger.#types[type] ? Logger.#types[type] : type;
 		text = `${Logger.setColor('#847270')}[${DateTime.local().toFormat('D HH:mm:ss.u')}]${Logger.setColor(type)}[${message.toUpperCase()}] ${text + Logger.setColor()}`;
@@ -121,13 +118,14 @@ module.exports = class Logger {
 				'\x1b[38;2;' +
 				color
 					.substring(1, 7)
-					.match(/.{2}/g)
-					.map(n => parseInt(n, 16))
+					.match(/[0-9|a-f]{2}/gi)
+					.map(n => Number.parseInt(n, 16))
 					.join(';') +
 				'm';
 		} else {
 			throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 		}
+
 		if (colorAfter) {
 			if (
 				(colorAfter =
@@ -140,14 +138,15 @@ module.exports = class Logger {
 					'\x1b[38;2;' +
 					colorAfter
 						.substring(1, 7)
-						.match(/.{2}/g)
-						.map(n => parseInt(n, 16))
+						.match(/[0-9|a-f]{2}/gi)
+						.map(n => Number.parseInt(n, 16))
 						.join(';') +
 					'm';
 			} else {
 				throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 			}
 		}
+
 		return text ? color + text + (colorAfter ? colorAfter : '\x2b') : color;
 	}
 
