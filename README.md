@@ -41,7 +41,7 @@ CommandHandler.launch({
 | owners          | Owners that you put in the `CommandHandler.create` method.                     | SnowFlake[]                         |
 | prefixes        | Prefixes that you put in the `CommandHandler.create` method.                   | String[]                            |
 | client          | Represents the Client of the bot, see in the [helpers](#Helpers) section for the other methods.  | Client extends Discord.Client       |
-| commands        | All the commands that have been found by command handler on the launch.        | Discord.Collection<String, Command> |
+| commands        | All the commands that have been found by the command handler at launch.        | Discord.Collection<String, Command> |
 | get cooldowns   | The cooldowns of the bot mapped as <UserID, cooldownInSeconds>                 | Discord.Collection<String, number>  |
 | create(options) | Creates a command handler and reset all data save in instance.                 | return void                         |
 | launch(options) | Launch the Command Handler by login in the Client and fetching Commands/Events | return void                         |
@@ -86,7 +86,7 @@ The file's given name set out which event it handles.
 
 # Logger Class
 
-`Logger` is a class in the `utils` folder to helps you creating logs.
+`Logger` is a class in the `utils` folder to help you logging things.
 It has multiple **static** methods :
 
 | Name                                                      | Description                                                                                                                                         | Color              |
@@ -113,7 +113,7 @@ Give the following result in the console (screen made on `WebStorm`).
 
 ### Colors for the logger
 
-Colors are set out in static public object in the `Logger` class, so you can change them.
+Colors are set out in a static public object in the `Logger` class, so you can change them.
 
 These are the current colors : 
 
@@ -186,16 +186,16 @@ This can simplify your embeds declarations.
 
 #### Useful functions
 
-There are multiple utils functions that can be use (require them like other classes).
+There are multiple utils functions in the `util` folder that you can use (require them like other classes).
 
 | Name                                  | Description                                                                                                                                      | Returning                  |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- |
 | `argError( message, error, command )` | Send an embed that explains the argument error and show correct the syntax.                                                                      | Embed Object               |
-| `async getThing( datatype, text )`    | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will looks into its mentions.   | Object (datatype) or false |
+| `async getThing( datatype, text )`    | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will look into its mentions.    | Object (datatype) or false |
 
 The `Command` class has a method `deleteMessage( message )` to safely delete messages without sending Errors *(missing permissions)*.
 
-**The `Client` class has multiples methods also :**
+**The `Client` class has multiples methods :**
 
 | Name                                   | Description                                         | Returning |
 | -------------------------------------- | --------------------------------------------------- | --------- |
