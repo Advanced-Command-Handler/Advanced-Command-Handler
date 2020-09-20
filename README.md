@@ -1,4 +1,4 @@
-###### This is an Advanced Command Handler, which uses classes for commands.
+<mark>This is an Advanced Command Handler, which uses classes for commands.</mark>
 
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ayfri/advanced-command-handler?logo=codefactor&style=for-the-badge)
 [![npm](https://img.shields.io/npm/dt/advanced-command-handler?logo=npm&style=for-the-badge)](https://www.npmjs.com/package/advanced-command-handler)
@@ -7,6 +7,21 @@
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/ayfri/advanced-command-handler/package?logo=github&style=for-the-badge)
 
 [![npm install](https://nodei.co/npm/advanced-command-handler.png?downloads=true&stars=true)](https://www.npmjs.com/package/advanced-command-handler)
+
+# Index
+* [Configuration](#configuration)
+* [Classes](#classes)
+    * [Command Handler](#commandhandler-class)
+    * [Client](#client-class)
+* [Templates](#templates)
+    * [Commands](#commands)
+    * [Events](#events)
+* [Utils](#utils)
+    * [Logger](#logger-class)
+        * [Example](#example)
+        * [Colors](#colors)
+    * [BetterEmbed](#betterembed-class)
+    * [Useful functions](#useful-functions)
 
 # Configuration
 
@@ -33,22 +48,32 @@ CommandHandler.launch({
 });
 ```
 
+# Classes
+
 # CommandHandler Class
 
-| Field           | Description                                                                    | Type                                |
-| --------------- | ------------------------------------------------------------------------------ | ----------------------------------- |
-| instance        | Represents the instance of the CommandHandler.                                 | Object                              |
-| owners          | Owners that you put in the `CommandHandler.create` method.                     | SnowFlake[]                         |
-| prefixes        | Prefixes that you put in the `CommandHandler.create` method.                   | String[]                            |
-| client          | Represents the Client of the bot, see in the [helpers](#Helpers) section for the other methods.  | Client extends Discord.Client       |
-| commands        | All the commands that have been found by the command handler at launch.        | Discord.Collection<String, Command> |
-| get cooldowns   | The cooldowns of the bot mapped as <UserID, cooldownInSeconds>                 | Discord.Collection<String, number>  |
-| create(options) | Creates a command handler and reset all data save in instance.                 | return void                         |
-| launch(options) | Launch the Command Handler by login in the Client and fetching Commands/Events | return void                         |
+| Field             | Description                                                                     | Type                                |
+| ----------------- | ------------------------------------------------------------------------------- | ----------------------------------- |
+| `instance`        | Represents the instance of the CommandHandler.                                  | Object                              |
+| `owners`          | Owners that you put in the `CommandHandler.create` method.                      | SnowFlake[]                         |
+| `prefixes`        | Prefixes that you put in the `CommandHandler.create` method.                    | String[]                            |
+| `client`          | Represents the [Client](#client-class) of the bot.                              | Client extends Discord.Client       |
+| `commands`        | All the commands that have been found by the command handler at launch.         | Discord.Collection<String, Command> |
+| `get cooldowns`   | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`                | Discord.Collection<String, number>  |
+| `create(options)` | Creates a command handler and reset all data save in instance.                  | return void                         |
+| `launch(options)` | Launch the Command Handler by login in the Client and fetching Commands/Events. | return void                         |
+
+# Client Class
+
+| Name                                 | Description                                         | Returning |
+| ------------------------------------ | --------------------------------------------------- | --------- |
+| `hasPermission(message, permission)` | Check if bot has permission `permission`.           | Boolean   |
+| `isOwner(id)`                        | Check if the `id` is in the owners (configuration). | Boolean   |
+
 
 # Templates
 
-### Commands
+## Commands
 
 ```js
 const {Command} = require('advanced-command-handler');
@@ -72,8 +97,6 @@ module.exports = new Command({
 
 **You have to put the command into a category folder into your commands folder like in the example.**
 
-##### **__This is an example, the message event is not integrated into the command handler, you have to create it yourself !__**
-
 ## Events
 
 ```js
@@ -84,7 +107,9 @@ module.exports = async(handler, ...EventArguments) => {
 
 The file's given name set out which event it handles.
 
-# Logger Class
+# Utils
+
+## Logger Class
 
 `Logger` is a class in the `utils` folder to help you logging things.
 It has multiple **static** methods :
@@ -111,7 +136,7 @@ Give the following result in the console (screen made on `WebStorm`).
 
 **Every number is yellow by default.**
 
-### Colors for the logger
+### Colors
 
 Colors are set out in a static public object in the `Logger` class, so you can change them.
 
@@ -138,9 +163,7 @@ colors = {
 }
 ```
 
-# Helpers
-
-#### BetterEmbed
+## BetterEmbed class
 
 This is a class for creating Embed Object, but a bit simpler like this :
 
@@ -184,7 +207,7 @@ message.channel.send({embed: embed.build()});
 
 This can simplify your embeds declarations.
 
-#### Useful functions
+## Useful functions
 
 There are multiple utils functions in the `util` folder that you can use (require them like other classes).
 
@@ -195,13 +218,4 @@ There are multiple utils functions in the `util` folder that you can use (requir
 
 The `Command` class has a method `deleteMessage( message )` to safely delete messages without sending Errors *(missing permissions)*.
 
-**The `Client` class has multiples methods :**
-
-| Name                                   | Description                                         | Returning |
-| -------------------------------------- | --------------------------------------------------- | --------- |
-| `hasPermission( message, permission )` | Check if bot has permission `permission`.           | Boolean   |
-| `isOwner( id )`                        | Check if the `id` is in the owners (configuration). | Boolean   |
-
-## A documentation will be made later.
-
-#### That's all for now :D
+##### That's all for now :D
