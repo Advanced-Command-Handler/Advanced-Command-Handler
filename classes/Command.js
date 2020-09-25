@@ -29,9 +29,9 @@ module.exports = class Command {
 
 	/**
 	 * @function runFunction
-	 * @param {CommandHandler} handler,
-	 * @param {module:"discord.js".Message} message
-	 * @param {string[]} args
+	 * @param {CommandHandler} [handler]
+	 * @param {module:"discord.js".Message} [message]
+	 * @param {string[]} [args]
 	 */
 	/**
 	 * Create a new Command.
