@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"module": "commonjs",
+		"noImplicitAny": true,
+		"noUnusedParameters": true,
+		"pretty": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "ES2020"
+	},
+	"exclude": [
+		"node_modules"
+	]
+}
