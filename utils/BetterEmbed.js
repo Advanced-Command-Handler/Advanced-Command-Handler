@@ -57,7 +57,7 @@ module.exports = class BetterEmbed {
 		if (properties.footerIcon) this.footerIcon = properties.footerIcon;
 		if (properties.timestamp) this.timestamp = properties.timestamp;
 		if (properties.color) this.color = properties.color;
-		if (properties.fields) this.fields = properties.fields;
+		this.fields = properties.fields || [];
 	}
 
 	/**
