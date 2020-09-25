@@ -28,10 +28,16 @@ module.exports = class Command {
 	 */
 
 	/**
+	 * @function runFunction
+	 * @param {CommandHandler} handler,
+	 * @param {module:"discord.js".Message} message
+	 * @param {string[]} args
+	 */
+	/**
 	 * Create a new Command.
 	 * @param {CommandOptions} options - Options of the command.
 	 * Only `name` is required.
-	 * @param {function(handler?: CommandHandler, message?: module:"discord.js".Message, args?: string): void} runFunction - Function that is executed when we do the command.
+	 * @param {runFunction} runFunction - Function that is executed when we do the command.
 	 */
 	constructor(options, runFunction) {
 		this.name = options.name;
