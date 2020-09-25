@@ -17,18 +17,18 @@ module.exports = class BetterEmbed {
 	 * @property {string | number} color - Color.
 	 * @property {Array<{name: string, value: string}>} fields - Fields.
 	 */
-	
+
 	/**
 	 * Store your templates here !
 	 * @type {object<BetterEmbedObject>}
 	 */
 	static templates = {
 		basic: {
-			footer:     '${client.user.username}',
+			footer: '${client.user.username}',
 			footerIcon: '${client.user.displayAvatarURL}',
 		},
 	};
-	
+
 	title;
 	description;
 	author;
@@ -41,7 +41,7 @@ module.exports = class BetterEmbed {
 	timestamp;
 	color;
 	fields;
-	
+
 	/**
 	 * @param {BetterEmbedObject} properties - Default properties the BetterEmebd Object will have.
 	 */
@@ -59,7 +59,7 @@ module.exports = class BetterEmbed {
 		if (properties.color) this.color = properties.color;
 		if (properties.fields) this.fields = properties.fields;
 	}
-	
+
 	/**
 	 * Generates a BetterEmbed from a template, replacing the values if you include any.
 	 * @param {BetterEmbedObject | string} template - A template or a template name.
@@ -71,25 +71,25 @@ module.exports = class BetterEmbed {
 	 */
 	static fromTemplate(template, values = {}) {
 		if (typeof template === 'string') template = BetterEmbed.templates[template] || {};
-		
+
 		const betterEmbed = new BetterEmbed();
 		for (const prop in template) {
 			if (!template.hasOwnProperty(prop)) {
 				continue;
 			}
-			
+
 			if (!Object.prototype.hasOwnProperty.call(template, prop)) {
 				return betterEmbed;
 			}
-			
-			const code = template[prop].replace(/\${(.+?)}/g, (str, value) => values.hasOwnProperty(value.split('.')[0]) ? `values.${value}` : value);
+
+			const code = template[prop].replace(/\${(.+?)}/g, (str, value) => (values.hasOwnProperty(value.split('.')[0]) ? `values.${value}` : value));
 			template[prop] = eval(`${code}`);
 			betterEmbed[prop] = template[prop];
 		}
-		
+
 		return betterEmbed;
 	}
-	
+
 	/**
 	 * To convert BetterEmbed to EmbedObjet.
 	 * @returns {{
@@ -106,28 +106,26 @@ module.exports = class BetterEmbed {
 	 */
 	build() {
 		return {
-			title:       this.title,
+			title: this.title,
 			description: this.description,
-			author:      {
-				name:     this.author,
+			author: {
+				name: this.author,
 				icon_url: this.authorIcon,
-				url:      this.authorUrl,
+				url: this.authorUrl,
 			},
-			image:       {
+			image: {
 				url: this.image,
 			},
-			thumbnail:   {
+			thumbnail: {
 				url: this.thumbnail,
 			},
-			footer:      {
-				text:     this.footer,
+			footer: {
+				text: this.footer,
 				icon_url: this.footerIcon,
 			},
-			timestamp:   this.timestamp,
-			color:       this.color,
-			fields:      this.fields,
+			timestamp: this.timestamp,
+			color: this.color,
+			fields: this.fields,
 		};
 	}
 };
-
-
