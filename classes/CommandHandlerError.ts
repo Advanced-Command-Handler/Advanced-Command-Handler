@@ -1,4 +1,4 @@
-module.exports = class CommandHandlerError extends Error {
+export default class CommandHandlerError extends Error {
 	readonly where: string;
 	readonly date: Date;
 

@@ -1,5 +1,6 @@
-import { Message } from "discord.js";
+import {Message} from "discord.js";
 import {BetterEmbed} from 'discord.js-better-embed';
+import Command from '../classes/Command.js';
 
 /**
  * Send embed who explains why user failed an argument of the Command.
@@ -8,7 +9,7 @@ import {BetterEmbed} from 'discord.js-better-embed';
  * @param {Command} command - Which command failed.
  * @returns {void}
  */
-module.exports = (message: Message, error: string, command: Command) => {
+export default (message: Message, error: string, command: Command) => {
 	const embed = BetterEmbed.fromTemplate('title', {
 		client: message.client,
 		color: 0xee2200,

@@ -17,7 +17,7 @@ interface CommandOptions {
 
 type RunFunction = (handler?: CommandHandler, message?: Message, args?: string[]) => Promise<void> | void;
 
-module.exports = class Command implements CommandOptions {
+export default class Command implements CommandOptions {
 	readonly name: string;
 	description: string = '';
 	usage: string = '';

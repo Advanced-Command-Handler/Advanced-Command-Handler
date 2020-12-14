@@ -32,7 +32,7 @@ const colors = {
 
 type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | string>;
 
-export default class Logger {
+class Logger {
 	private static logComments: boolean = true;
 	
 	/**
@@ -178,4 +178,10 @@ export default class Logger {
 	private static propertyInEnum<V extends {[k: string]: any}>(enumObject: V, property: string): keyof V | undefined {
 		return property in enumObject ? enumObject[property] : undefined;
 	}
+}
+
+export {
+	Logger,
+	LogType,
+	colors
 }
