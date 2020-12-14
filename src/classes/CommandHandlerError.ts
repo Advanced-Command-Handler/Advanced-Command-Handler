@@ -1,7 +1,7 @@
 export default class CommandHandlerError extends Error {
 	readonly where: string;
 	readonly date: Date;
-	
+
 	constructor(message: string, where: string) {
 		super(message);
 
@@ -11,4 +11,4 @@ export default class CommandHandlerError extends Error {
 		this.where = where;
 		this.date = new Date();
 	}
-};
+}

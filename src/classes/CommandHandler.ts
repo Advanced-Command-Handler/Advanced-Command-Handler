@@ -16,13 +16,11 @@ export interface CommandHandlerInstance {
 	cooldowns: Collection<string, number>;
 }
 
-interface AdvancedClientOptions {
-
-}
+interface AdvancedClientOptions {}
 
 export default class CommandHandler {
 	static instance: CommandHandlerInstance;
-	
+
 	/**
 	 * @private
 	 * @returns {CommandHandlerError} - This returns an error because a singleton cannot be instantiated.
@@ -30,49 +28,44 @@ export default class CommandHandler {
 	constructor() {
 		throw new CommandHandlerError('CommandHandler is not a class that can be instantiated.', 'CommandHandlerConstructor');
 	}
-	
+
 	static get owners() {
 		return CommandHandler.instance?.owners;
 	}
-	
+
 	static set owners(owners: string[] | null | undefined) {
 		CommandHandler.instance.owners = owners;
 	}
-	
+
 	static get prefixes() {
 		return CommandHandler.instance?.prefixes;
 	}
-	
+
 	static set prefixes(prefixes: string[] | null | undefined) {
 		CommandHandler.instance.prefixes = prefixes;
 	}
-	
+
 	static get client() {
 		return CommandHandler.instance?.client;
 	}
-	
+
 	static set client(client) {
 		CommandHandler.instance.client = client;
 	}
-	
+
 	static get commands() {
 		return CommandHandler.instance?.commands ?? new Collection();
 	}
-	
+
 	static set commands(commands: Collection<string, Command>) {
 		CommandHandler.instance.commands = commands;
 	}
-	
+
 	static get cooldowns() {
 		return CommandHandler.instance?.cooldowns ?? new Collection();
 	}
-	
-	static create(options: {
-		commandsDir: PathLike,
-		eventsDir: PathLike,
-		owners: string[],
-		prefixes: string[]
-	}) {
+
+	static create(options: {commandsDir: PathLike; eventsDir: PathLike; owners: string[]; prefixes: string[]}) {
 		Logger.log(Logger.setColor('magenta') + readFileSync(join(__dirname, '../assets/presentation.txt')).toString('utf8'), 'Loading');
 		if (!CommandHandler.instance) {
 			CommandHandler.instance = {
@@ -80,12 +73,12 @@ export default class CommandHandler {
 				eventsDir: options.eventsDir,
 				prefixes: options.prefixes,
 				owners: options.owners,
-				client:    null,
-				commands:  new Collection(),
+				client: null,
+				commands: new Collection(),
 				cooldowns: new Collection(),
 			};
 		}
-		
+
 		process.on('warning', error => {
 			Logger.error(`An error occurred. \nError : ${error.stack}`);
 		});
@@ -93,15 +86,12 @@ export default class CommandHandler {
 			Logger.error(`An error occurred. \nError : ${error.stack}`);
 		});
 	}
-	
-	static launch(options: {
-		token: string,
-		clientOptions: ClientOptions,
-	}): void {
+
+	static launch(options: {token: string; clientOptions: ClientOptions}): void {
 		CommandHandler.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions);
 		CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
 		CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
-		
+
 		CommandHandler.client
 			.login(options.token)
 			.then(() => {
@@ -115,50 +105,50 @@ export default class CommandHandler {
 			})
 			.catch(err => Logger.error(err));
 	}
-	
+
 	static loadCommand(path: PathLike, name: string) {
 		const command = require(join(process.cwd(), `./${path}/${name}`));
 		if (!command) {
 			throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		}
-		
+
 		CommandHandler.instance.commands.set(name, command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
 	}
-	
+
 	static loadCommands(path: PathLike) {
 		const dirs = readdirSync(path);
 		Logger.info('Loading commands.', 'loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'loading');
-		
+
 		for (const dir of dirs) {
 			const files = readdirSync(join(process.cwd(), `${path}/${dir}`));
 			if (dirs.length === 0) continue;
-			
+
 			Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
-			
+
 			for (const file of files) {
 				CommandHandler.loadCommand(`${path}/${dir}`, file);
 			}
 		}
-		
+
 		Logger.info(`${CommandHandler.instance.commands.size} commands loaded.`, 'loading');
 	}
-	
+
 	static loadEvents(path: PathLike) {
 		const files = readdirSync(path);
 		Logger.info('Loading events.', 'loading');
 		Logger.comment(`Events : (${files.length})`, 'loading');
-		
+
 		for (const file of files) {
 			if (!file) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-			
+
 			const event = require(join(process.cwd(), `${path}/${file}`));
 			const eventName = file.split('.')[0];
 			CommandHandler.client?.on(eventName, event.bind(null, CommandHandler));
 			Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
 		}
-		
+
 		Logger.info(`${CommandHandler.client?.eventNames().length ?? 0} events loaded.`, 'loading');
 	}
-};
+}

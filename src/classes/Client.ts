@@ -27,4 +27,4 @@ export default class AdvancedClient extends Client {
 	isOwner(id: Snowflake) {
 		return this.handler.owners.includes(id);
 	}
-};
+}
