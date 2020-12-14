@@ -7,8 +7,9 @@
 		"noUnusedParameters": true,
 		"outDir": "./dist",
 		"pretty": true,
+		"skipLibCheck": true,
 		"strict": true,
-		"target": "ES2020",
+		"target": "ES2020"
 	},
 	"ts-node": {
 		"require": ["luxons", "discord.js", "discord.js-better-embed"],
