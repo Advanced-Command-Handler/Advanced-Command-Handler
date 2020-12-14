@@ -1,10 +1,10 @@
 import {ClientApplication, ClientOptions, Collection} from 'discord.js';
 import {PathLike, readdirSync, readFileSync} from 'fs';
 import {join} from 'path';
-import {Logger} from '../utils/Logger';
+import {Logger} from '../utils/Logger.js';
 import AdvancedClient from './Client.js';
 import Command from './Command.js';
-import CommandHandlerError from './CommandHandlerError';
+import CommandHandlerError from './CommandHandlerError.js';
 
 export interface CommandHandlerInstance {
 	commandsDir: PathLike;
