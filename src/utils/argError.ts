@@ -2,13 +2,6 @@ import {Message} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
 import Command from '../classes/Command.js';
 
-/**
- * Send embed who explains why user failed an argument of the Command.
- * @param {module:"discord.js".Message} message - Channel where embed will be sent.
- * @param {string} error - The mistake user made.
- * @param {Command} command - Which command failed.
- * @returns {void}
- */
 export default (message: Message, error: string, command: Command) => {
 	const embed = BetterEmbed.fromTemplate('title', {
 		client: message.client,

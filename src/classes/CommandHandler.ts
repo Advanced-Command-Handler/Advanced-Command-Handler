@@ -16,15 +16,9 @@ export interface CommandHandlerInstance {
 	cooldowns: Collection<string, number>;
 }
 
-interface AdvancedClientOptions {}
-
 export default class CommandHandler {
 	static instance: CommandHandlerInstance;
 
-	/**
-	 * @private
-	 * @returns {CommandHandlerError} - This returns an error because a singleton cannot be instantiated.
-	 */
 	constructor() {
 		throw new CommandHandlerError('CommandHandler is not a class that can be instantiated.', 'CommandHandlerConstructor');
 	}

@@ -35,66 +35,29 @@ type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | 
 class Logger {
 	private static logComments: boolean = true;
 
-	/**
-	 * Log a comment (if comments are activated).
-	 * @param {object | string} message - Object or String to log.
-	 * @param {string} typeToShow - The type (before the message) to show.
-	 * @returns {void}
-	 */
+	
 	public static comment(message: any, typeToShow: string = LogType.comment): void {
 		if (Logger.logComments) {
 			Logger.process(message, 'comment', typeToShow);
 		}
 	}
 
-	/**
-	 * Log an error.
-	 * @param {object | string} message - Object or String to log.
-	 * @param {string} typeToShow - The type (before the message) to show.
-	 * @returns {void}
-	 */
 	public static error(message: any, typeToShow: string = LogType.error): void {
 		Logger.process(message, 'error', typeToShow);
 	}
-
-	/**
-	 * Log an event result.
-	 * @param {object | string} message - Object or String to log.
-	 * @param {string} typeToShow - The type (before the message) to show.
-	 * @returns {void}
-	 */
+	
 	public static event(message: any, typeToShow: string = LogType.event): void {
 		Logger.process(message, 'event', typeToShow);
 	}
-
-	/**
-	 * Log an info.
-	 * @param {object | string} message - Object or String to log.
-	 * @param {string} typeToShow - The type (before the message) to show.
-	 * @returns {void}
-	 */
+	
 	public static info(message: any, typeToShow: string = LogType.info): void {
 		Logger.process(message, 'info', typeToShow);
 	}
-
-	/**
-	 * Log a message.
-	 * @param {object | string} message - Object or String to log.
-	 * @param {string?} type - The type (before the message) to show.
-	 * @param {string?} color - Color for the message
-	 * @returns {void}
-	 */
+	
 	public static log(message: any, type: string, color: ColorResolvable = LogType.log): void {
 		Logger.process(message, color, type);
 	}
 
-	/**
-	 * Set the actual color (and each character after).
-	 * @param {string} color - The color in the static 'colors' list, or a type of log.
-	 * @param {string} text - For only coloring the text.
-	 * @param {string} colorAfter - For set the color after the text.
-	 * @returns {string} - The text colored.
-	 */
 	public static setColor(color: ColorResolvable = colors.default, text: string = '', colorAfter: string = ''): string {
 		if ((color = this.getColorFromColorResolvable(color))) {
 			color =
@@ -123,33 +86,14 @@ class Logger {
 		return text ? color + text + (colorAfter ? colorAfter : '\x2b') : color;
 	}
 
-	/**
-	 * Log a test.
-	 * @param {object | string} message - Object or String to log.
-	 * @param {string} typeToShow - The type (before the message) to show.
-	 * @returns {void}
-	 */
 	public static test(message: any, typeToShow: string = LogType.test): void {
 		Logger.process(message, 'test', typeToShow);
 	}
 
-	/**
-	 * Log a warn.
-	 * @param {object | string} message - Object or String to log.
-	 * @param {string} typeToShow - The type (before the message) to show.
-	 * @returns {void}
-	 */
 	public static warn(message: any, typeToShow: string = LogType.warn): void {
 		Logger.process(message, 'warn', typeToShow);
 	}
 
-	/**
-	 * Process a log method from the Logger class, you don't have to use it likely.
-	 * @param {string} text - Text to log.
-	 * @param {string} type - Type of log.
-	 * @param {string} message - Message of the log.
-	 * @returns {void}
-	 */
 	protected static process(text: any, type: ColorResolvable = 'test', message: string = ''): void {
 		text = typeof text === 'string' ? text : inspect(text);
 		const numberColorReplacer: (match: string) => string = (match: string): string => {
