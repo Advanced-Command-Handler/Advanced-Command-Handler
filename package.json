@@ -34,12 +34,9 @@
 	"prettier": {
 		"arrowParens": "avoid",
 		"bracketSpacing": false,
-		"endOfLine": "lf",
 		"printWidth": 200,
-		"semi": true,
 		"singleQuote": true,
 		"tabWidth": 4,
-		"trailingComma": "es5",
 		"useTabs": true
 	},
 	"readme": "https://github.com/Ayfri/Advanced-Command-Handler/blob/package/README.md",
