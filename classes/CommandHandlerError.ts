@@ -1,11 +1,12 @@
 module.exports = class CommandHandlerError extends Error {
-	where;
+	readonly where: string;
+	readonly date: Date;
 
 	/**
 	 * @param {any} where - Place where this has occured, the name of event/command or the Command Handler itself.
-	 * @param {string?} message - Default settings for an Error.
+	 * @param {string | undefined} message - Default settings for an Error.
 	 */
-	constructor(where, message) {
+	constructor(where: string, message: string) {
 		super(message);
 
 		if (Error.captureStackTrace) Error.captureStackTrace(this, CommandHandlerError);
