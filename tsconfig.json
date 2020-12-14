@@ -1,22 +1,17 @@
 {
 	"compilerOptions": {
-		"allowJs": true,
-		"checkJs": true,
 		"declaration": true,
 		"esModuleInterop": true,
 		"module": "commonjs",
 		"noImplicitAny": true,
 		"noUnusedParameters": true,
-		"newLine": "lf",
-		"outDir": "./lib",
+		"outDir": "./dist",
 		"pretty": true,
-		"sourceMap": true,
 		"strict": true,
 		"target": "ES2020",
 	},
 	"ts-node": {
-		"require": ["luxons", "discord.js"],
+		"require": ["luxons", "discord.js", "discord.js-better-embed"],
 		"pretty": true,
-		"preferTsExts": true
 	}
 }
