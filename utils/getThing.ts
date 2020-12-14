@@ -29,7 +29,7 @@ async function getThing(dataType: DataType, text: string | Message): Promise<Com
 	
 	switch (dataType) {
 		case DataType.command:
-			return CommandHandler.commands.find((c: Command) => c.name === text || c.aliases && c.aliases.includes(text)) || null;
+			return CommandHandler.commands.find((c: Command) => c.name === text || c.aliases && c.aliases.includes(text as string)) || null;
 		
 		case DataType.channel:
 			return message?.guild?.channels.cache.get(text) ||

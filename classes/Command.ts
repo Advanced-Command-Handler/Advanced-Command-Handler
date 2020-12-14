@@ -1,5 +1,5 @@
 import {Message, PermissionString} from 'discord.js';
-import CommandHandler from './CommandHandler';
+import CommandHandler from './CommandHandler.js';
 
 interface CommandOptions {
 	readonly name: string;
