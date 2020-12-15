@@ -7,8 +7,8 @@ import Command from './Command.js';
 import CommandHandlerError from './CommandHandlerError.js';
 
 export interface CommandHandlerInstance {
-	commandsDir: PathLike;
-	eventsDir: PathLike;
+	commandsDir: string;
+	eventsDir: string;
 	owners?: string[] | null;
 	prefixes?: string[] | null;
 	client: AdvancedClient | null;
@@ -59,7 +59,7 @@ export default class CommandHandler {
 		return CommandHandler.instance?.cooldowns ?? new Collection();
 	}
 
-	static create(options: {commandsDir: PathLike; eventsDir: PathLike; owners: string[]; prefixes: string[]}) {
+	static create(options: {commandsDir: string; eventsDir: string; owners: string[]; prefixes: string[]}) {
 		Logger.log(Logger.setColor('magenta') + readFileSync(join(__dirname, '../assets/presentation.txt')).toString('utf8'), 'Loading');
 		if (!CommandHandler.instance) {
 			CommandHandler.instance = {
@@ -100,7 +100,7 @@ export default class CommandHandler {
 			.catch(err => Logger.error(err));
 	}
 
-	static loadCommand(path: PathLike, name: string) {
+	static loadCommand(path: string, name: string) {
 		const command = require(join(process.cwd(), `./${path}/${name}`));
 		if (!command) {
 			throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
@@ -110,7 +110,7 @@ export default class CommandHandler {
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
 	}
 
-	static loadCommands(path: PathLike) {
+	static loadCommands(path: string) {
 		const dirs = readdirSync(path);
 		Logger.info('Loading commands.', 'loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'loading');
@@ -129,7 +129,7 @@ export default class CommandHandler {
 		Logger.info(`${CommandHandler.instance.commands.size} commands loaded.`, 'loading');
 	}
 
-	static loadEvents(path: PathLike) {
+	static loadEvents(path: string) {
 		const files = readdirSync(path);
 		Logger.info('Loading events.', 'loading');
 		Logger.comment(`Events : (${files.length})`, 'loading');
