@@ -2,7 +2,7 @@ import {ClientApplication, ClientOptions, Collection} from 'discord.js';
 import {readdirSync, readFileSync} from 'fs';
 import {join} from 'path';
 import {Logger} from '../utils/Logger.js';
-import AdvancedClient from './Client.js';
+import AdvancedClient from './AdvancedClient.js';
 import Command from './Command.js';
 import CommandHandlerError from './CommandHandlerError.js';
 
