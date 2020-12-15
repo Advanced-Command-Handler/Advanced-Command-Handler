@@ -3,7 +3,7 @@ import {Logger} from '../utils/Logger.js';
 import {Client, ClientOptions, Message, PermissionResolvable, Snowflake} from 'discord.js';
 
 export default class AdvancedClient extends Client {
-	handler: CommandHandlerInstance;
+	readonly handler: CommandHandlerInstance;
 
 	constructor(handler: CommandHandlerInstance, token: string, options: ClientOptions) {
 		super(options);
