@@ -1,5 +1,5 @@
 import {ClientApplication, ClientOptions, Collection} from 'discord.js';
-import {PathLike, readdirSync, readFileSync} from 'fs';
+import {readdirSync, readFileSync} from 'fs';
 import {join} from 'path';
 import {Logger} from '../utils/Logger.js';
 import AdvancedClient from './Client.js';
