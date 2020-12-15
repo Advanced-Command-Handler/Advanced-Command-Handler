@@ -81,8 +81,8 @@ export default class CommandHandler {
 		});
 	}
 
-	static launch(options: {token: string; clientOptions: ClientOptions}): void {
-		CommandHandler.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions);
+	static launch(options: {token: string; clientOptions?: ClientOptions}): void {
+		CommandHandler.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
 		CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
 		CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
 
