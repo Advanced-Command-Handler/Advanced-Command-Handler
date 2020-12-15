@@ -115,14 +115,16 @@ export default class CommandHandler {
 		Logger.info('Loading commands.', 'loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'loading');
 
-		for (const dir of dirs) {
-			const files = readdirSync(join(process.cwd(), `${path}/${dir}`));
-			if (dirs.length === 0) continue;
-
-			Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
-
-			for (const file of files) {
-				CommandHandler.loadCommand(`${path}/${dir}`, file);
+		if(dirs) {
+			for (const dir of dirs) {
+				const files = readdirSync(join(process.cwd(), `${path}/${dir}`));
+				if (files.length === 0) continue;
+				
+				Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
+				
+				for (const file of files) {
+					CommandHandler.loadCommand(`${path}/${dir}`, file);
+				}
 			}
 		}
 
@@ -133,16 +135,17 @@ export default class CommandHandler {
 		const files = readdirSync(path);
 		Logger.info('Loading events.', 'loading');
 		Logger.comment(`Events : (${files.length})`, 'loading');
-
-		for (const file of files) {
-			const event = require(join(process.cwd(), `${path}/${file}`));
-			if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
-			
-			const eventName = file.split('.')[0];
-			CommandHandler.client?.on(eventName, event.bind(null, CommandHandler));
-			Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
+		if (files) {
+			for (const file of files) {
+				const event = require(join(process.cwd(), `${path}/${file}`));
+				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
+				
+				const eventName = file.split('.')[0];
+				CommandHandler.client?.on(eventName, event.bind(null, CommandHandler));
+				Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
+			}
 		}
-
+		
 		Logger.info(`${CommandHandler.client?.eventNames().length ?? 0} events loaded.`, 'loading');
 	}
 }
