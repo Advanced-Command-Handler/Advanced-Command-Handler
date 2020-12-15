@@ -5,7 +5,7 @@ import {Logger} from './utils/Logger.js';
 import argError from './utils/argError.js';
 import getThing from './utils/getThing.js';
 
-export default {
+export {
 	Command,
 	CommandHandler,
 	CommandHandlerError,
