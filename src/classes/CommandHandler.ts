@@ -135,9 +135,9 @@ export default class CommandHandler {
 		Logger.comment(`Events : (${files.length})`, 'loading');
 
 		for (const file of files) {
-			if (!file) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-
 			const event = require(join(process.cwd(), `${path}/${file}`));
+			if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
+			
 			const eventName = file.split('.')[0];
 			CommandHandler.client?.on(eventName, event.bind(null, CommandHandler));
 			Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
