@@ -1,6 +1,6 @@
 export default class CommandHandlerError extends Error {
-	readonly where: string;
-	readonly date: Date;
+	public readonly where: string;
+	public readonly date: Date;
 
 	constructor(message: string, where: string) {
 		super(message);
