@@ -1,5 +1,5 @@
 import {ClientApplication, ClientOptions, Collection} from 'discord.js';
-import {readdirSync, readFileSync} from 'fs';
+import {promises as fsPromises} from 'fs';
 import {join} from 'path';
 import {Logger} from '../utils/Logger.js';
 import AdvancedClient from './AdvancedClient.js';
@@ -82,22 +82,24 @@ export default class CommandHandler {
 	}
 	
 	public static launch(options: {token: string; clientOptions?: ClientOptions}): void {
-		CommandHandler.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
-		CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
-		CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
-
-		CommandHandler.client
-			.login(options.token)
-			.then(() => {
-				CommandHandler.prefixes?.push(`<@${CommandHandler.client?.user?.id}>`);
-				CommandHandler.client
-					?.fetchApplication()
-					.then((application: ClientApplication) => {
-						CommandHandler.owners?.push(application.owner?.id ?? '');
-					})
-					.catch((err: Error) => Logger.error(err));
-			})
-			.catch(err => Logger.error(err));
+		(async (): Promise<void> => {
+			CommandHandler.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
+			await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
+			await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
+			
+			CommandHandler.client
+				.login(options.token)
+				.then(() => {
+					CommandHandler.prefixes?.push(`<@${CommandHandler.client?.user?.id}>`);
+					CommandHandler.client
+						?.fetchApplication()
+						.then((application: ClientApplication) => {
+							CommandHandler.owners?.push(application.owner?.id ?? '');
+						})
+						.catch((err: Error) => Logger.error(err));
+				})
+				.catch(err => Logger.error(err));
+		})();
 	}
 	
 	public static loadCommand(path: string, name: string) {
@@ -110,14 +112,14 @@ export default class CommandHandler {
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
 	}
 	
-	public static loadCommands(path: string) {
-		const dirs = readdirSync(path);
+	public static async loadCommands(path: string) {
+		const dirs = await fsPromises.readdir(path);
 		Logger.info('Loading commands.', 'loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'loading');
 
-		if(dirs) {
+		if (dirs) {
 			for (const dir of dirs) {
-				const files = readdirSync(join(process.cwd(), `${path}/${dir}`));
+				const files = await fsPromises.readdir(join(process.cwd(), `${path}/${dir}`));
 				if (files.length === 0) continue;
 				
 				Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
@@ -131,8 +133,8 @@ export default class CommandHandler {
 		Logger.info(`${CommandHandler.instance.commands.size} commands loaded.`, 'loading');
 	}
 	
-	public static loadEvents(path: string) {
-		const files = readdirSync(path);
+	public static async loadEvents(path: string) {
+		const files = await fsPromises.readdir(path);
 		Logger.info('Loading events.', 'loading');
 		Logger.comment(`Events : (${files.length})`, 'loading');
 		if (files) {
