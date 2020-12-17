@@ -5,11 +5,4 @@ import {Logger} from './utils/Logger.js';
 import argError from './utils/argError.js';
 import getThing from './utils/getThing.js';
 
-export {
-	Command,
-	CommandHandler,
-	CommandHandlerError,
-	Logger,
-	getThing,
-	argError,
-};
+export {Command, CommandHandler, CommandHandlerError, Logger, getThing, argError};

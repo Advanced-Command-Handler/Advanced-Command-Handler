@@ -35,7 +35,6 @@ type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | 
 class Logger {
 	private static logComments: boolean = true;
 
-	
 	public static comment(message: any, typeToShow: string = LogType.comment): void {
 		if (Logger.logComments) {
 			Logger.process(message, 'comment', typeToShow);
@@ -45,15 +44,15 @@ class Logger {
 	public static error(message: any, typeToShow: string = LogType.error): void {
 		Logger.process(message, 'error', typeToShow);
 	}
-	
+
 	public static event(message: any, typeToShow: string = LogType.event): void {
 		Logger.process(message, 'event', typeToShow);
 	}
-	
+
 	public static info(message: any, typeToShow: string = LogType.info): void {
 		Logger.process(message, 'info', typeToShow);
 	}
-	
+
 	public static log(message: any, type: string, color: ColorResolvable = LogType.log): void {
 		Logger.process(message, color, type);
 	}

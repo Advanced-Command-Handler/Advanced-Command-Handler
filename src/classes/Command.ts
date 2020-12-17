@@ -38,7 +38,7 @@ export default class Command implements CommandOptions {
 	public nsfw: boolean = false;
 	public cooldown: number = 0;
 	public run: RunFunction;
-	
+
 	public constructor(options: CommandOptions, runFunction: RunFunction) {
 		this.name = options.name;
 		this.run = runFunction;
@@ -53,13 +53,8 @@ export default class Command implements CommandOptions {
 		this.nsfw = options.nsfw ? options.nsfw : false;
 		this.cooldown = options.cooldown ? options.cooldown : 0;
 	}
-	
-	public async deleteMessage(
-		{
-			message,
-			options
-		}: DeleteMessageOptions
-	): Promise<Message | undefined> {
+
+	public async deleteMessage({message, options}: DeleteMessageOptions): Promise<Message | undefined> {
 		if (message.deletable) return await message.delete(options);
 	}
 }

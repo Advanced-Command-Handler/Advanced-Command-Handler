@@ -4,14 +4,14 @@ import {Client, ClientOptions, Message, PermissionResolvable, Snowflake} from 'd
 
 export default class AdvancedClient extends Client {
 	public readonly handler: CommandHandlerInstance;
-	
+
 	public constructor(handler: CommandHandlerInstance, token: string, options: ClientOptions) {
 		super(options);
 		this.handler = handler;
 		this.token = token;
 		Logger.comment('Client initialized.', 'loading');
 	}
-	
+
 	public hasPermission(message: Message, permission: PermissionResolvable) {
 		return message.guild
 			? message.guild.me?.hasPermission(permission, {
@@ -20,7 +20,7 @@ export default class AdvancedClient extends Client {
 			  })
 			: false;
 	}
-	
+
 	public isOwner(id: Snowflake) {
 		return this.handler.owners?.includes(id);
 	}
