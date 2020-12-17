@@ -79,8 +79,10 @@ export default class CommandHandler {
 	public static launch(options: {token: string; clientOptions?: ClientOptions}): void {
 		(async (): Promise<void> => {
 			CommandHandler.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
-			await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
-			await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
+			try {
+				await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
+				await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
+			} catch(ignored) {}
 
 			await CommandHandler.client.login(options.token);
 			CommandHandler.prefixes?.push(`<@${CommandHandler.client?.user?.id}>`);
