@@ -1,7 +1,7 @@
 import {DateTime} from 'luxon';
 import {inspect} from 'util';
 
-const LogType = {
+export const LogType = {
 	error: 'red',
 	warn: 'yellow',
 	info: 'blue',
@@ -11,7 +11,7 @@ const LogType = {
 	comment: 'gray',
 };
 
-const colors = {
+export const colors = {
 	red: '#b52825',
 	orange: '#e76a1f',
 	gold: '#deae17',
@@ -30,9 +30,9 @@ const colors = {
 	default: '#cccccc',
 };
 
-type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | string>;
+export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | string>;
 
-class Logger {
+export class Logger {
 	private static logComments: boolean = true;
 
 	public static comment(message: any, typeToShow: string = LogType.comment): void {
@@ -119,5 +119,3 @@ class Logger {
 		return property in enumObject ? enumObject[property] : undefined;
 	}
 }
-
-export {Logger, LogType, colors};

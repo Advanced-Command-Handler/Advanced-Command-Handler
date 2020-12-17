@@ -13,14 +13,14 @@ export enum DataType {
 	message,
 }
 
-async function getThing(dataType: DataType.channel, text: string | Message): Promise<GuildChannel | null>;
-async function getThing(dataType: DataType.command, text: string | Message): Promise<Command | null>;
-async function getThing(dataType: DataType.emote, text: string | Message): Promise<Emoji | null>;
-async function getThing(dataType: DataType.guild, text: string | Message): Promise<Guild | null>;
-async function getThing(dataType: DataType.message, text: string | Message): Promise<Message | null>;
-async function getThing(dataType: DataType.role, text: string | Message): Promise<Role | null>;
-async function getThing(dataType: DataType.user, text: string | Message): Promise<User | null>;
-async function getThing(dataType: DataType, text: string | Message): Promise<Command | GuildChannel | TextChannel | NewsChannel | Guild | GuildMember | User | Role | Emoji | Message | null> {
+export async function getThing(dataType: DataType.channel, text: string | Message): Promise<GuildChannel | null>;
+export async function getThing(dataType: DataType.command, text: string | Message): Promise<Command | null>;
+export async function getThing(dataType: DataType.emote, text: string | Message): Promise<Emoji | null>;
+export async function getThing(dataType: DataType.guild, text: string | Message): Promise<Guild | null>;
+export async function getThing(dataType: DataType.message, text: string | Message): Promise<Message | null>;
+export async function getThing(dataType: DataType.role, text: string | Message): Promise<Role | null>;
+export async function getThing(dataType: DataType.user, text: string | Message): Promise<User | null>;
+export async function getThing(dataType: DataType, text: string | Message): Promise<Command | GuildChannel | TextChannel | NewsChannel | Guild | GuildMember | User | Role | Emoji | Message | null> {
 	let message: Message | null;
 	if (text instanceof Message) {
 		message = text;
@@ -97,5 +97,3 @@ async function getThing(dataType: DataType, text: string | Message): Promise<Com
 			return null;
 	}
 }
-
-export default getThing;
