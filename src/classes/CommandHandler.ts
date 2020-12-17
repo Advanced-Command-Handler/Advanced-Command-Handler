@@ -1,4 +1,4 @@
-import {ClientApplication, ClientOptions, Collection} from 'discord.js';
+import {ClientOptions, Collection} from 'discord.js';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
 import {Logger} from '../utils/Logger.js';
@@ -94,9 +94,7 @@ export default class CommandHandler {
 	
 	public static loadCommand(path: string, name: string) {
 		const command = require(join(process.cwd(), `./${path}/${name}`));
-		if (!command) {
-			throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-		}
+		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		
 		CommandHandler.instance.commands.set(name, command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
