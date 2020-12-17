@@ -17,6 +17,14 @@ interface CommandOptions {
 
 type RunFunction = (handler?: CommandHandler, message?: Message, args?: string[]) => Promise<void> | void;
 
+interface DeleteMessageOptions {
+	message: Message;
+	options?: {
+		timeout?: number;
+		reason?: string;
+	};
+}
+
 export default class Command implements CommandOptions {
 	public readonly name: string;
 	public description: string = '';
@@ -47,11 +55,10 @@ export default class Command implements CommandOptions {
 	}
 	
 	public async deleteMessage(
-		message: Message,
-		options?: {
-			timeout?: number;
-			reason?: string;
-		}
+		{
+			message,
+			options
+		}: DeleteMessageOptions
 	): Promise<Message | undefined> {
 		if (message.deletable) return await message.delete(options);
 	}
