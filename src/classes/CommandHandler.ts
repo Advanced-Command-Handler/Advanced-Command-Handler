@@ -36,9 +36,8 @@ export default class CommandHandler implements CommandHandlerInstance {
 	}
 
 	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}): CommandHandlerInstance {
-		if (!CommandHandler.instance) {
-			CommandHandler.instance = new CommandHandler(options);
-		}
+		Logger.log("Advanced Command Handler, by Ayfri.", "Loading", 'red');
+		if (!CommandHandler.instance) CommandHandler.instance = new CommandHandler(options);
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
