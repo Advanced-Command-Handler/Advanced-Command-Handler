@@ -45,7 +45,7 @@
 		"url": "git://github.com/Ayfri/Advanced-Command-Handler/tree/package.git"
 	},
 	"scripts": {
-		"prettier": "prettier ./ src --write",
+		"prettier": "prettier package.json tsconfig.json README.md src/**.ts --write",
 		"build": "tsc",
 		"prepare": "npm run build"
 	},
