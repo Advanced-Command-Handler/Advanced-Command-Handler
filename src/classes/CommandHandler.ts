@@ -88,8 +88,7 @@ export default class CommandHandler {
 			
 			await CommandHandler.client.login(options.token);
 			CommandHandler.prefixes?.push(`<@${CommandHandler.client?.user?.id}>`);
-			const application: ClientApplication = await CommandHandler.client.fetchApplication();
-			CommandHandler.owners?.push(application.owner?.id ?? '');
+			CommandHandler.owners?.push((await CommandHandler.client.fetchApplication()).owner?.id ?? '');
 		})();
 	}
 	
