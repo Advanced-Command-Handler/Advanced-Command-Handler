@@ -116,14 +116,14 @@ It has multiple **static** methods :
 
 | Name                                                      | Description                                                                                                                                         | Color              |
 | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `comment( message, typeToShow = 'comment' )`              | Let you log something with the showed type `COMMENT`, theses only logs if the static field `logComments` is set to true.                            | grey : `#6e6f77`   |
+| `comment( message, typeToShow = 'comment' )`              | Let you log something with the showed type `COMMENT`, theses only logs if the static field `logComments` is set to true.                            | grey : `#6e6f77`   |
 | `error( message, typeToShow = 'error' )`                  | Let you log something with the showed type `ERROR`.                                                                                                 | red :`#b52825`     |
 | `event( message, typeToShow = 'event' )`                  | Let you log something with the showed type `EVENT`.                                                                                                 | `#43804e`          |
 | `info( message, typeToShow = 'info' )`                    | Let you log something with the showed type `INFO`.                                                                                                  | blue : `#2582ff`   |
 | `log( message, type = 'log', color = 'log' )`             | Let you log something with the showed type `LOG`, you can change the color.                                                                         | default :`#cccccc` |
 | `test( message, typeToShow = 'test' )`                    | Let you log something with the showed type `TEST`.                                                                                                  | white : `#ffffff`  |
 | `warn( message, typeToShow = 'warn' )`                    | Let you log something with the showed type `WARN`.                                                                                                  | yellow : `#eeee23` |
-| `setColor(color = 'default', text = '', colorAfter = '')` | Let you change the color after the function or the color of the `text` only, and let you change the color after the `text` if you set the argument. | `color`            |
+| `setColor(color = 'default', text = '', colorAfter = '')` | Let you change the color after the function or the color of the `text` only, and let you change the color after the `text` if you set the argument. | `color`            |
 
 ### Example
 
