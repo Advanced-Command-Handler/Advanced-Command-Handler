@@ -60,7 +60,7 @@ export default class CommandHandler {
 	}
 	
 	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}) {
-		Logger.log(Logger.setColor('magenta') + readFileSync(join(__dirname,'../../assets/presentation.txt')).toString('utf8'), 'Loading');
+		Logger.log(Logger.setColor('magenta') + readFileSync(join(__dirname, '../../assets/presentation.txt')).toString('utf8'), 'Loading');
 		if (!CommandHandler.instance) {
 			CommandHandler.instance = {
 				commandsDir: options.commandsDir,
@@ -74,10 +74,10 @@ export default class CommandHandler {
 		}
 
 		process.on('warning', error => {
-			Logger.error(`An error occurred. \nError : ${error.stack}`);
+			Logger.error(`An error occurred. \n${error.stack}`);
 		});
 		process.on('uncaughtException', error => {
-			Logger.error(`An error occurred. \nError : ${error.stack}`);
+			Logger.error(`An error occurred. \n${error.stack}`);
 		});
 	}
 	
