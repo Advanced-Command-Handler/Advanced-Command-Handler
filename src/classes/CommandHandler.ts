@@ -60,7 +60,8 @@ export default class CommandHandler {
 	}
 	
 	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}) {
-		fsPromises.readFile(join(__dirname, '../../assets/presentation.txt'), 'utf8').then((presentation) =>{
+		(async (): Promise<void> => {
+			const presentation = await fsPromises.readFile(join(__dirname, '../../assets/presentation.txt'), 'utf8');
 			Logger.log(Logger.setColor('magenta', presentation), 'Loading');
 			if (!CommandHandler.instance) {
 				CommandHandler.instance = {
@@ -70,7 +71,7 @@ export default class CommandHandler {
 					owners: options.owners,
 					client: null,
 					commands: new Collection(),
-					cooldowns: new Collection(),
+					cooldowns: new Collection()
 				};
 			}
 			
@@ -80,7 +81,7 @@ export default class CommandHandler {
 			process.on('uncaughtException', error => {
 				Logger.error(`An error occurred. \n${error.stack}`);
 			});
-		});
+		})();
 	}
 	
 	public static launch(options: {token: string; clientOptions?: ClientOptions}): void {
@@ -109,7 +110,7 @@ export default class CommandHandler {
 		if (!command) {
 			throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		}
-
+		
 		CommandHandler.instance.commands.set(name, command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
 	}
@@ -118,7 +119,7 @@ export default class CommandHandler {
 		const dirs = await fsPromises.readdir(path);
 		Logger.info('Loading commands.', 'loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'loading');
-
+		
 		if (dirs) {
 			for (const dir of dirs) {
 				const files = await fsPromises.readdir(join(process.cwd(), `${path}/${dir}`));
@@ -131,7 +132,7 @@ export default class CommandHandler {
 				}
 			}
 		}
-
+		
 		Logger.info(`${CommandHandler.instance.commands.size} commands loaded.`, 'loading');
 	}
 	
