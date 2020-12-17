@@ -60,7 +60,7 @@ export default class CommandHandler {
 	}
 	
 	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}) {
-		Logger.log(Logger.setColor('magenta') + readFileSync('../../assets/presentation.txt').toString('utf8'), 'Loading');
+		Logger.log(Logger.setColor('magenta') + readFileSync(join(__dirname,'../../assets/presentation.txt')).toString('utf8'), 'Loading');
 		if (!CommandHandler.instance) {
 			CommandHandler.instance = {
 				commandsDir: options.commandsDir,
