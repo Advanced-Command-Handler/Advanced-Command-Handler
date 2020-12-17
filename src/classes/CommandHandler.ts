@@ -75,12 +75,8 @@ export default class CommandHandler {
 				};
 			}
 			
-			process.on('warning', error => {
-				Logger.error(`An error occurred. \n${error.stack}`);
-			});
-			process.on('uncaughtException', error => {
-				Logger.error(`An error occurred. \n${error.stack}`);
-			});
+			process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
+			process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
 		})();
 	}
 	
@@ -90,18 +86,10 @@ export default class CommandHandler {
 			await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
 			await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
 			
-			CommandHandler.client
-				.login(options.token)
-				.then(() => {
-					CommandHandler.prefixes?.push(`<@${CommandHandler.client?.user?.id}>`);
-					CommandHandler.client
-						?.fetchApplication()
-						.then((application: ClientApplication) => {
-							CommandHandler.owners?.push(application.owner?.id ?? '');
-						})
-						.catch((err: Error) => Logger.error(err));
-				})
-				.catch(err => Logger.error(err));
+			await CommandHandler.client.login(options.token);
+			CommandHandler.prefixes?.push(`<@${CommandHandler.client?.user?.id}>`);
+			const application: ClientApplication = await CommandHandler.client.fetchApplication();
+			CommandHandler.owners?.push(application.owner?.id ?? '');
 		})();
 	}
 	
