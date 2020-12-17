@@ -60,24 +60,26 @@ export default class CommandHandler {
 	}
 	
 	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}) {
-		Logger.log(Logger.setColor('magenta') + readFileSync(join(__dirname, '../../assets/presentation.txt')).toString('utf8'), 'Loading');
-		if (!CommandHandler.instance) {
-			CommandHandler.instance = {
-				commandsDir: options.commandsDir,
-				eventsDir: options.eventsDir,
-				prefixes: options.prefixes,
-				owners: options.owners,
-				client: null,
-				commands: new Collection(),
-				cooldowns: new Collection(),
-			};
-		}
-
-		process.on('warning', error => {
-			Logger.error(`An error occurred. \n${error.stack}`);
-		});
-		process.on('uncaughtException', error => {
-			Logger.error(`An error occurred. \n${error.stack}`);
+		fsPromises.readFile(join(__dirname, '../../assets/presentation.txt'), 'utf8').then((presentation) =>{
+			Logger.log(Logger.setColor('magenta', presentation), 'Loading');
+			if (!CommandHandler.instance) {
+				CommandHandler.instance = {
+					commandsDir: options.commandsDir,
+					eventsDir: options.eventsDir,
+					prefixes: options.prefixes,
+					owners: options.owners,
+					client: null,
+					commands: new Collection(),
+					cooldowns: new Collection(),
+				};
+			}
+			
+			process.on('warning', error => {
+				Logger.error(`An error occurred. \n${error.stack}`);
+			});
+			process.on('uncaughtException', error => {
+				Logger.error(`An error occurred. \n${error.stack}`);
+			});
 		});
 	}
 	
