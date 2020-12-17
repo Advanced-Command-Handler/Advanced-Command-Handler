@@ -4,7 +4,6 @@ import {join} from 'path';
 import {Logger} from '../utils/Logger.js';
 import AdvancedClient from './AdvancedClient.js';
 import Command from './Command.js';
-import CommandHandlerError from './CommandHandlerError.js';
 
 export interface CommandHandlerInstance {
 	commandsDir: string;
@@ -16,77 +15,48 @@ export interface CommandHandlerInstance {
 	cooldowns: Collection<string, number>;
 }
 
-export default class CommandHandler {
+export default class CommandHandler implements CommandHandlerInstance {
 	public static instance: CommandHandlerInstance;
+	public commandsDir: string;
+	public eventsDir: string;
+	public owners?: string[] | null | undefined;
+	public prefixes?: string[] | null | undefined;
+	public client: AdvancedClient | null;
+	public commands: Collection<string, Command>;
+	public cooldowns: Collection<string, number>;
 
-	private constructor() {
-		throw new CommandHandlerError('CommandHandler is not a class that can be instantiated.', 'CommandHandlerConstructor');
+	private constructor(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}) {
+		this.commandsDir = options.commandsDir;
+		this.eventsDir = options.eventsDir;
+		this.owners = options.owners
+		this.prefixes = options.prefixes
+		this.client = null;
+		this.cooldowns = new Collection();
+		this.commands = new Collection();
 	}
 
-	public static get owners() {
-		return CommandHandler.instance?.owners;
-	}
-
-	public static set owners(owners: string[] | null | undefined) {
-		CommandHandler.instance.owners = owners;
-	}
-
-	public static get prefixes() {
-		return CommandHandler.instance?.prefixes;
-	}
-
-	public static set prefixes(prefixes: string[] | null | undefined) {
-		CommandHandler.instance.prefixes = prefixes;
-	}
-
-	public static get client() {
-		return CommandHandler.instance?.client;
-	}
-
-	public static set client(client) {
-		CommandHandler.instance.client = client;
-	}
-
-	public static get commands() {
-		return CommandHandler.instance?.commands ?? new Collection();
-	}
-
-	public static set commands(commands: Collection<string, Command>) {
-		CommandHandler.instance.commands = commands;
-	}
-
-	public static get cooldowns() {
-		return CommandHandler.instance?.cooldowns ?? new Collection();
-	}
-
-	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}) {
+	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}): CommandHandlerInstance {
 		if (!CommandHandler.instance) {
-			CommandHandler.instance = {
-				commandsDir: options.commandsDir,
-				eventsDir: options.eventsDir,
-				prefixes: options.prefixes,
-				owners: options.owners,
-				client: null,
-				commands: new Collection(),
-				cooldowns: new Collection()
-			};
+			CommandHandler.instance = new CommandHandler(options);
 		}
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
+
+		return CommandHandler.instance;
 	}
 
 	public static launch(options: {token: string; clientOptions?: ClientOptions}): void {
 		(async (): Promise<void> => {
-			CommandHandler.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
+			CommandHandler.instance.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
 			try {
 				await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
 				await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
 			} catch(ignored) {}
 
-			await CommandHandler.client.login(options.token);
-			CommandHandler.prefixes?.push(`<@${CommandHandler.client?.user?.id}>`);
-			CommandHandler.owners?.push((await CommandHandler.client.fetchApplication()).owner?.id ?? '');
+			await CommandHandler.instance.client.login(options.token);
+			CommandHandler.instance.prefixes?.push(`<@${CommandHandler.instance.client?.user?.id}>`);
+			CommandHandler.instance.owners?.push((await CommandHandler.instance.client.fetchApplication()).owner?.id ?? '');
 		})();
 	}
 
@@ -129,11 +99,11 @@ export default class CommandHandler {
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 
 				const eventName = file.split('.')[0];
-				CommandHandler.client?.on(eventName, event.bind(null, CommandHandler));
+				CommandHandler.instance.client?.on(eventName, event.bind(null, CommandHandler));
 				Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
 			}
 		}
 
-		Logger.info(`${CommandHandler.client?.eventNames().length ?? 0} events loaded.`, 'loading');
+		Logger.info(`${CommandHandler.instance.client?.eventNames().length ?? 0} events loaded.`, 'loading');
 	}
 }
