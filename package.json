@@ -50,5 +50,5 @@
 		"prepare": "npm run build"
 	},
 	"types": "./dist/index.d.ts",
-	"version": "1.3.0-beta.2"
+	"version": "1.3.0-beta.2.1"
 }
