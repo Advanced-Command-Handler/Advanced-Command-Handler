@@ -6,3 +6,4 @@ import argError from './utils/argError.js';
 import {getThing, DataType} from './utils/getThing.js';
 
 export {Command, CommandHandler, CommandHandlerError, Logger, colors, LogType, ColorResolvable, argError, getThing, DataType};
+export * from 'discord.js-better-embed';
