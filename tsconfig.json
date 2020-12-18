@@ -13,6 +13,6 @@
 	},
 	"ts-node": {
 		"require": ["luxons", "discord.js", "discord.js-better-embed"],
-		"pretty": true,
+		"pretty": true
 	}
 }
