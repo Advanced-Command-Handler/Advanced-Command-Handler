@@ -53,7 +53,7 @@ export class Logger {
 		Logger.process(message, 'info', typeToShow);
 	}
 
-	public static log(message: any, type: string, color: ColorResolvable = LogType.log): void {
+	public static log(message: any, type: string = LogType.log, color: ColorResolvable = LogType.log): void {
 		Logger.process(message, color, type);
 	}
 
