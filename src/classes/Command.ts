@@ -3,16 +3,16 @@ import CommandHandler from './CommandHandler.js';
 
 interface CommandOptions {
 	readonly name: string;
-	description: string;
-	usage: string;
-	category: string;
-	aliases: string[];
-	clientPermissions: PermissionString[];
-	userPermissions: PermissionString[];
-	guildOnly: boolean;
-	ownerOnly: boolean;
-	nsfw: boolean;
-	cooldown: number;
+	description?: string;
+	usage?: string;
+	category?: string;
+	aliases?: string[];
+	clientPermissions?: PermissionString[];
+	userPermissions?: PermissionString[];
+	guildOnly?: boolean;
+	ownerOnly?: boolean;
+	nsfw?: boolean;
+	cooldown?: number;
 }
 
 type RunFunction = (handler?: CommandHandler, message?: Message, args?: string[]) => Promise<void> | void;
