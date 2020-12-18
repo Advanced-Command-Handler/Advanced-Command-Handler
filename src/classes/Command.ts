@@ -1,5 +1,4 @@
 import {Message, PermissionString} from 'discord.js';
-import CommandHandler from './CommandHandler.js';
 
 interface CommandOptions {
 	readonly name: string;
@@ -15,7 +14,7 @@ interface CommandOptions {
 	cooldown?: number;
 }
 
-type RunFunction = (handler?: CommandHandler, message?: Message, args?: string[]) => Promise<void> | void;
+type RunFunction = (...options: any[]) => Promise<void> | void;
 
 interface DeleteMessageOptions {
 	message: Message;
