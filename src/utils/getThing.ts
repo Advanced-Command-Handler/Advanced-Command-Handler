@@ -13,14 +13,14 @@ export enum DataType {
 	message,
 }
 
-export async function getThing(dataType: DataType.channel, text: string | Message): Promise<GuildChannel | null>;
-export async function getThing(dataType: DataType.command, text: string | Message): Promise<Command | null>;
-export async function getThing(dataType: DataType.emote, text: string | Message): Promise<Emoji | null>;
-export async function getThing(dataType: DataType.guild, text: string | Message): Promise<Guild | null>;
-export async function getThing(dataType: DataType.message, text: string | Message): Promise<Message | null>;
-export async function getThing(dataType: DataType.role, text: string | Message): Promise<Role | null>;
-export async function getThing(dataType: DataType.user, text: string | Message): Promise<User | null>;
-export async function getThing(dataType: DataType, text: string | Message): Promise<Command | GuildChannel | TextChannel | NewsChannel | Guild | GuildMember | User | Role | Emoji | Message | null> {
+export async function getThing(dataType: DataType.channel | 'channel', text: string | Message): Promise<GuildChannel | null>;
+export async function getThing(dataType: DataType.command | 'command', text: string | Message): Promise<Command | null>;
+export async function getThing(dataType: DataType.emote | 'emote', text: string | Message): Promise<Emoji | null>;
+export async function getThing(dataType: DataType.guild | 'guild', text: string | Message): Promise<Guild | null>;
+export async function getThing(dataType: DataType.message | 'message', text: string | Message): Promise<Message | null>;
+export async function getThing(dataType: DataType.role | 'role', text: string | Message): Promise<Role | null>;
+export async function getThing(dataType: DataType.user | 'message', text: string | Message): Promise<User | null>;
+export async function getThing(dataType: DataType | keyof typeof DataType, text: string | Message): Promise<Command | GuildChannel | TextChannel | NewsChannel | Guild | GuildMember | User | Role | Emoji | Message | null | undefined> {
 	let message: Message | null;
 	if (text instanceof Message) {
 		message = text;
