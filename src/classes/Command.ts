@@ -42,16 +42,16 @@ export default class Command implements CommandOptions {
 	public constructor(options: CommandOptions, runFunction: RunFunction) {
 		this.name = options.name;
 		this.run = runFunction;
-		this.description = options.description ? options.description : '';
-		this.usage = options.usage ? options.usage : '';
-		this.category = options.category ? options.category : 'None';
-		this.aliases = options.aliases ? options.aliases : [];
-		this.clientPermissions = options.clientPermissions ? options.clientPermissions : ['SEND_MESSAGES'];
-		this.userPermissions = options.userPermissions ? options.userPermissions : ['SEND_MESSAGES'];
-		this.guildOnly = options.guildOnly ? options.guildOnly : false;
-		this.ownerOnly = options.ownerOnly ? options.ownerOnly : false;
-		this.nsfw = options.nsfw ? options.nsfw : false;
-		this.cooldown = options.cooldown ? options.cooldown : 0;
+		this.description = options.description ?? '';
+		this.usage = options.usage ?? '';
+		this.category = options.category ?? 'None';
+		this.aliases = options.aliases ?? [];
+		this.clientPermissions = options.clientPermissions ?? ['SEND_MESSAGES'];
+		this.userPermissions = options.userPermissions ?? ['SEND_MESSAGES'];
+		this.guildOnly = options.guildOnly ?? false;
+		this.ownerOnly = options.ownerOnly ?? false;
+		this.nsfw = options.nsfw ?? false;
+		this.cooldown = options.cooldown ?? 0;
 	}
 
 	public async deleteMessage({message, options}: DeleteMessageOptions): Promise<Message | undefined> {
