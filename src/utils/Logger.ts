@@ -35,26 +35,26 @@ export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof Log
 export class Logger {
 	private static logComments: boolean = true;
 
-	public static comment(message: any, typeToShow: string = LogType.comment): void {
+	public static comment(message: any, title: string = 'comment'): void {
 		if (Logger.logComments) {
-			Logger.process(message, 'comment', typeToShow);
+			Logger.process(message, LogType.comment, title);
 		}
 	}
 
-	public static error(message: any, typeToShow: string = LogType.error): void {
-		Logger.process(message, 'error', typeToShow);
+	public static error(message: any, title: string = 'error'): void {
+		Logger.process(message, LogType.error, title);
 	}
 
-	public static event(message: any, typeToShow: string = LogType.event): void {
-		Logger.process(message, 'event', typeToShow);
+	public static event(message: any, title: string = 'event'): void {
+		Logger.process(message, LogType.event, title);
 	}
 
-	public static info(message: any, typeToShow: string = LogType.info): void {
-		Logger.process(message, 'info', typeToShow);
+	public static info(message: any, title: string = 'info'): void {
+		Logger.process(message, LogType.info, title);
 	}
 
-	public static log(message: any, type: string = LogType.log, color: ColorResolvable = LogType.log): void {
-		Logger.process(message, color, type);
+	public static log(message: any, title: string = 'log', color: ColorResolvable = LogType.log): void {
+		Logger.process(message, color, title);
 	}
 
 	public static setColor(color: ColorResolvable = colors.default, text: string = '', colorAfter: string = ''): string {
@@ -85,23 +85,23 @@ export class Logger {
 		return text ? color + text + (colorAfter ? colorAfter : '\x2b') : color;
 	}
 
-	public static test(message: any, typeToShow: string = LogType.test): void {
-		Logger.process(message, 'test', typeToShow);
+	public static test(message: any, title: string = 'test'): void {
+		Logger.process(message, LogType.test, title);
 	}
 
-	public static warn(message: any, typeToShow: string = LogType.warn): void {
-		Logger.process(message, 'warn', typeToShow);
+	public static warn(message: any, title: string = 'warn'): void {
+		Logger.process(message, LogType.warn, title);
 	}
 
-	protected static process(text: any, type: ColorResolvable = 'test', message: string = ''): void {
+	protected static process(text: any, color: ColorResolvable = 'test', title: string = ''): void {
 		text = typeof text === 'string' ? text : inspect(text);
 		const numberColorReplacer: (match: string) => string = (match: string): string => {
-			return text.indexOf(';224;238;38m') !== -1 && text.indexOf(';224;238;38m') < text.indexOf(match) ? match : Logger.setColor('yellow') + match + Logger.setColor(type);
+			return text.indexOf(';224;238;38m') !== -1 && text.indexOf(';224;238;38m') < text.indexOf(match) ? match : Logger.setColor('yellow') + match + Logger.setColor(color);
 		};
 		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, numberColorReplacer);
-		text = text.replace(/\x2b+/gi, Logger.setColor(type));
-		type = Logger.propertyInEnum(LogType, type) ?? type;
-		text = `${Logger.setColor('#847270')}[${DateTime.local().toFormat('D HH:mm:ss.u')}]${Logger.setColor(type)}[${message.toUpperCase()}] ${text + Logger.setColor()}`;
+		text = text.replace(/\x2b+/gi, Logger.setColor(color));
+		color = Logger.propertyInEnum(LogType, color) ?? color;
+		text = `${Logger.setColor('#847270')}[${DateTime.local().toFormat('D HH:mm:ss.u')}]${Logger.setColor(color)}[${title.toUpperCase()}] ${text + Logger.setColor()}`;
 		console.log(text);
 	}
 
