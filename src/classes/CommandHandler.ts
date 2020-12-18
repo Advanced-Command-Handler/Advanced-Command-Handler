@@ -51,7 +51,9 @@ export default class CommandHandler implements CommandHandlerInstance {
 			try {
 				await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
 				await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
-			} catch(ignored) {}
+			} catch(e) {
+				Logger.error(e.stack, 'Loading');
+			}
 
 			await CommandHandler.instance.client.login(options.token);
 			CommandHandler.instance.prefixes?.push(`<@${CommandHandler.instance.client?.user?.id}>`);
