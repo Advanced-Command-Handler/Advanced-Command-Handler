@@ -28,15 +28,15 @@ export default class CommandHandler implements CommandHandlerInstance {
 	private constructor(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}) {
 		this.commandsDir = options.commandsDir;
 		this.eventsDir = options.eventsDir;
-		this.owners = options.owners
-		this.prefixes = options.prefixes
+		this.owners = options.owners;
+		this.prefixes = options.prefixes;
 		this.client = null;
 		this.cooldowns = new Collection();
 		this.commands = new Collection();
 	}
 
 	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}): CommandHandlerInstance {
-		Logger.log("Advanced Command Handler, by Ayfri.", "Loading", 'red');
+		Logger.log('Advanced Command Handler, by Ayfri.', 'Loading', 'red');
 		if (!CommandHandler.instance) CommandHandler.instance = new CommandHandler(options);
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
@@ -51,7 +51,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 			try {
 				await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
 				await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
-			} catch(e) {
+			} catch (e) {
 				Logger.error(e.stack, 'Loading');
 			}
 
@@ -62,7 +62,8 @@ export default class CommandHandler implements CommandHandlerInstance {
 	}
 
 	public static loadCommand(path: string, name: string) {
-		const command = require(join(process.cwd(), `./${path}/${name}`));
+		let command = require(join(process.cwd(), `./${path}/${name}`));
+		if (command.default && Object.keys(command).length === 1) command = command.default;
 		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 
 		CommandHandler.instance.commands.set(name, command);
@@ -96,11 +97,12 @@ export default class CommandHandler implements CommandHandlerInstance {
 		Logger.comment(`Events : (${files.length})`, 'loading');
 		if (files) {
 			for (const file of files) {
-				const event = require(join(process.cwd(), `${path}/${file}`));
+				let event = require(join(process.cwd(), `${path}/${file}`));
+				if (event.default && Object.keys(event).length === 1) event = event.default;
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 
 				const eventName = file.split('.')[0];
-				CommandHandler.instance.client?.on(eventName, event.bind(null, CommandHandler));
+				CommandHandler.instance.client?.on(eventName, event.bind(null, CommandHandler.instance));
 				Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
 			}
 		}
