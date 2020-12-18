@@ -27,16 +27,16 @@ interface DeleteMessageOptions {
 
 export default class Command implements CommandOptions {
 	public readonly name: string;
-	public description: string = '';
-	public usage: string = '';
-	public category: string = '';
-	public aliases: string[] = [];
-	public clientPermissions: PermissionString[] = [];
-	public userPermissions: PermissionString[] = [];
-	public guildOnly: boolean = false;
-	public ownerOnly: boolean = false;
-	public nsfw: boolean = false;
-	public cooldown: number = 0;
+	public description: string;
+	public usage: string;
+	public category: string;
+	public aliases: string[];
+	public clientPermissions: PermissionString[];
+	public userPermissions: PermissionString[];
+	public guildOnly: boolean;
+	public ownerOnly: boolean;
+	public nsfw: boolean;
+	public cooldown: number;
 	public run: RunFunction;
 
 	public constructor(options: CommandOptions, runFunction: RunFunction) {
