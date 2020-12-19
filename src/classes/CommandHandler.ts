@@ -1,9 +1,9 @@
-import {ClientOptions, Collection} from 'discord.js';
-import {promises as fsPromises} from 'fs';
-import {join} from 'path';
-import {Logger} from '../utils/Logger';
 import AdvancedClient from './AdvancedClient';
 import Command from './Command';
+import {ClientOptions, Collection} from 'discord.js';
+import {Logger} from '../utils/Logger';
+import {join} from 'path';
+import {promises as fsPromises} from 'fs';
 
 export interface CommandHandlerInstance {
 	commandsDir: string;
