@@ -54,6 +54,6 @@ export default class Command implements CommandOptions {
 	}
 
 	public async deleteMessage({message, options}: DeleteMessageOptions): Promise<Message | undefined> {
-		if (message.deletable) return await message.delete(options);
+		if (message.deletable) return message.delete(options);
 	}
 }
