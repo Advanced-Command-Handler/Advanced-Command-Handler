@@ -53,7 +53,7 @@ export default class Command implements CommandOptions {
 		this.cooldown = options.cooldown ?? 0;
 	}
 
-	public async deleteMessage({message, options}: DeleteMessageOptions): Promise<Message | undefined> {
+	public deleteMessage({message, options}: DeleteMessageOptions): Promise<Message> | undefined {
 		if (message.deletable) return message.delete(options);
 	}
 }
