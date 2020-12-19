@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import {DateTime} from 'luxon';
 import {inspect} from 'util';
 
@@ -8,7 +9,7 @@ export const LogType = {
 	event: 'green',
 	log: '#43804e',
 	test: 'default',
-	comment: 'gray',
+	comment: 'gray'
 };
 
 export const colors = {
@@ -27,7 +28,7 @@ export const colors = {
 	black: '#000000',
 	grey: '#6e6f77',
 	white: '#ffffff',
-	default: '#cccccc',
+	default: '#cccccc'
 };
 
 export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | string>;
@@ -57,32 +58,12 @@ export class Logger {
 		Logger.process(message, color, title);
 	}
 
-	public static setColor(color: ColorResolvable = colors.default, text: string = '', colorAfter: string = ''): string {
-		if ((color = this.getColorFromColorResolvable(color))) {
-			color =
-				'\x1b[38;2;' +
-				color
-					.substring(1, 7)
-					.match(/[0-9|a-f]{2}/gi)
-					?.map(n => Number.parseInt(n, 16))
-					.join(';') +
-				'm';
-		} else throw new Error('Waiting for a log type, color or HexColor but receive something else.');
+	public static setColor(color: ColorResolvable = colors.default, text: string = ''): string {
+		let finalColor: chalk.Chalk;
+		if (color = this.getColorFromColorResolvable(color)) finalColor = chalk.hex(color);
+		else throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 
-		if (colorAfter) {
-			if ((colorAfter = this.getColorFromColorResolvable(colorAfter))) {
-				colorAfter =
-					'\x1b[38;2;' +
-					colorAfter
-						.substring(1, 7)
-						.match(/[0-9|a-f]{2}/gi)
-						?.map(n => Number.parseInt(n, 16))
-						.join(';') +
-					'm';
-			} else throw new Error('Waiting for a log type, color or HexColor but receive something else.');
-		}
-
-		return text ? color + text + (colorAfter ? colorAfter : '\x2b') : color;
+		return text ? finalColor(text) : finalColor();
 	}
 
 	public static test(message: any, title: string = 'test'): void {
@@ -95,13 +76,11 @@ export class Logger {
 
 	protected static process(text: any, color: ColorResolvable = 'test', title: string = ''): void {
 		text = typeof text === 'string' ? text : inspect(text);
-		const numberColorReplacer: (match: string) => string = (match: string): string => {
-			return text.indexOf(';224;238;38m') !== -1 && text.indexOf(';224;238;38m') < text.indexOf(match) ? match : Logger.setColor('yellow') + match + Logger.setColor(color);
-		};
-		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, numberColorReplacer);
-		text = text.replace(/\x2b+/gi, Logger.setColor(color));
+		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string): string => chalk.yellow(match));
+		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
+
 		color = Logger.propertyInEnum(LogType, color) ?? color;
-		text = `${Logger.setColor('#847270')}[${DateTime.local().toFormat('D HH:mm:ss.u')}]${Logger.setColor(color)}[${title.toUpperCase()}] ${text + Logger.setColor()}`;
+		text = `${Logger.setColor('#847270', `[${DateTime.local().toFormat('D HH:mm:ss.u')}]`)}${Logger.setColor(color, `[${title.toUpperCase()}] ${text + chalk.reset()}`)}`;
 		console.log(text);
 	}
 
