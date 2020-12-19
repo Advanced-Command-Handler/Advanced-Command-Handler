@@ -1,6 +1,6 @@
 import {Message} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import Command from '../classes/Command.js';
+import Command from '../classes/Command';
 
 export default (message: Message, error: string, command: Command): Promise<Message> => {
 	const embed = BetterEmbed.fromTemplate('title', {

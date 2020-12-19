@@ -1,5 +1,5 @@
-import {CommandHandlerInstance} from './CommandHandler.js';
-import {Logger} from '../utils/Logger.js';
+import {CommandHandlerInstance} from './CommandHandler';
+import {Logger} from '../utils/Logger';
 import {Client, ClientOptions, Message, PermissionResolvable, Snowflake} from 'discord.js';
 
 export default class AdvancedClient extends Client {

@@ -1,6 +1,6 @@
 import {Channel, Collection, Emoji, Guild, GuildChannel, GuildMember, Message, NewsChannel, Role, Snowflake, TextChannel, User} from 'discord.js';
-import Command from '../classes/Command.js';
-import CommandHandler from '../classes/CommandHandler.js';
+import Command from '../classes/Command';
+import CommandHandler from '../classes/CommandHandler';
 
 export enum DataType {
 	command,
