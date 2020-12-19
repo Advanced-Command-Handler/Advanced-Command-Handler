@@ -20,7 +20,10 @@ export async function getThing(dataType: DataType.guild | 'guild', text: string 
 export async function getThing(dataType: DataType.message | 'message', text: string | Message): Promise<Message | null>;
 export async function getThing(dataType: DataType.role | 'role', text: string | Message): Promise<Role | null>;
 export async function getThing(dataType: DataType.user | 'message', text: string | Message): Promise<User | null>;
-export async function getThing(dataType: DataType | keyof typeof DataType, text: string | Message): Promise<Command | GuildChannel | TextChannel | NewsChannel | Guild | GuildMember | User | Role | Emoji | Message | null | undefined> {
+export async function getThing(
+	dataType: DataType | keyof typeof DataType,
+	text: string | Message
+): Promise<Command | GuildChannel | TextChannel | NewsChannel | Guild | GuildMember | User | Role | Emoji | Message | null | undefined> {
 	let message: Message | null;
 	if (text instanceof Message) {
 		message = text;
@@ -40,11 +43,7 @@ export async function getThing(dataType: DataType | keyof typeof DataType, text:
 				null
 			);
 		case DataType.guild:
-			return (
-				client?.guilds.cache.get(text) ||
-				client?.guilds.cache.find((g: Guild) => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
-				null
-			);
+			return client?.guilds.cache.get(text) || client?.guilds.cache.find((g: Guild) => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) || null;
 
 		case DataType.member:
 			return (
@@ -57,12 +56,7 @@ export async function getThing(dataType: DataType | keyof typeof DataType, text:
 				null
 			);
 		case DataType.user:
-			return (
-				client?.users.cache.get(text) ||
-				client?.users.cache.find((u: User) => u.username.toLowerCase() === (text as string).toLowerCase()) ||
-				message?.mentions?.users.first() ||
-				null
-			);
+			return client?.users.cache.get(text) || client?.users.cache.find((u: User) => u.username.toLowerCase() === (text as string).toLowerCase()) || message?.mentions?.users.first() || null;
 
 		case DataType.role:
 			return (
@@ -72,11 +66,7 @@ export async function getThing(dataType: DataType | keyof typeof DataType, text:
 				null
 			);
 		case DataType.emote:
-			return (
-				client?.emojis.cache.get(text) ||
-				client?.emojis.cache.find((e: Emoji) => e.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
-				null
-			);
+			return client?.emojis.cache.get(text) || client?.emojis.cache.find((e: Emoji) => e.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) || null;
 
 		case DataType.message:
 			const m = await message?.channel.messages.fetch(text);

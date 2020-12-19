@@ -9,7 +9,7 @@ export const LogType = {
 	event: 'green',
 	log: '#43804e',
 	test: 'default',
-	comment: 'gray'
+	comment: 'gray',
 };
 
 export const colors = {
@@ -28,7 +28,7 @@ export const colors = {
 	black: '#000000',
 	grey: '#6e6f77',
 	white: '#ffffff',
-	default: '#cccccc'
+	default: '#cccccc',
 };
 
 export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | string>;
@@ -60,7 +60,7 @@ export class Logger {
 
 	public static setColor(color: ColorResolvable = colors.default, text: string = ''): string {
 		let finalColor: chalk.Chalk;
-		if (color = this.getColorFromColorResolvable(color)) finalColor = chalk.hex(color);
+		if ((color = this.getColorFromColorResolvable(color))) finalColor = chalk.hex(color);
 		else throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 
 		return text ? finalColor(text) : finalColor();
