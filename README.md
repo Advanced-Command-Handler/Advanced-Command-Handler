@@ -9,39 +9,37 @@
 
 # Index
 
--   [Configuration](#configuration)
--   [Classes](#classes)
-    -   [Command Handler](#commandhandler-class)
-    -   [Client](#client-class)
--   [Templates](#templates)
-    -   [Commands](#commands)
-    -   [Events](#events)
--   [Utils](#utils)
-    -   [Logger](#logger-class)
-        -   [Example](#example)
-        -   [Colors](#colors)
-    -   [BetterEmbed](#betterembed-class)
-    -   [Useful functions](#useful-functions)
+- [Configuration](#configuration)
+- [Classes](#classes)
+    - [Command Handler](#commandhandler-class)
+    - [Client](#client-class)
+- [Templates](#templates)
+    - [Commands](#commands)
+    - [Events](#events)
+- [Utils](#utils)
+    - [Logger](#logger-class)
+        - [Example](#example)
+        - [Colors](#colors)
+    - [BetterEmbed](#betterembed-class)
+    - [Useful functions](#useful-functions)
 
 # Configuration
 
-To install the command handler, install `npm` and then in a terminal run this command where you want your bot `npm i advanced-command-handler`.
-After it create your main file and add this into it :
+To install the command handler, install `npm` and then in a terminal run this command where you want your bot `npm i advanced-command-handler`. After it create your main file and add this into it :
 
 ```js
 const {CommandHandler} = require('advanced-command-handler');
 
 CommandHandler.create({
 	// Optionnals :
-    commandsDir: 'name of the dir',
-	eventsDir: 'name of the dir',
-	prefixes: ['!', 'coolPrefix '],
-	owners: ['Discord IDs'],
+	commandsDir: 'name of the dir',
+	eventsDir:   'name of the dir',
+	prefixes:    ['!', 'coolPrefix '],
+	owners:      ['Discord IDs'],
 });
 
 CommandHandler.launch({
-	token: 'YOUR TOKEN GOES HERE',
-	// Optionnal :
+	token:         'YOUR TOKEN GOES HERE', // Optionnal :
 	clientOptions: {
 		// Client Options, see Discord.js#ClientOptions
 	},
@@ -59,7 +57,7 @@ CommandHandler.launch({
 | `prefixes`        | Prefixes that you put in the `CommandHandler.create` method.                    | String[]                            |
 | `client`          | Represents the [Client](#client-class) of the bot.                              | Client extends Discord.Client       |
 | `commands`        | All the commands that have been found by the command handler at launch.         | Discord.Collection<String, Command> |
-| `cooldowns`   | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`                | Discord.Collection<String, number>  |
+| `cooldowns`       | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`                | Discord.Collection<String, number>  |
 | `create(options)` | Creates a command handler and reset all data save in instance.                  | return void                         |
 | `launch(options)` | Launch the Command Handler by login in the Client and fetching Commands/Events. | return void                         |
 
@@ -76,28 +74,24 @@ CommandHandler.launch({
 
 ```js
 const {Command} = require('advanced-command-handler');
-module.exports = new Command(
-	{
-		name: '',
-		description: '',
-		// Optionnals :
-		usage: '',
-		category: '',
-        tags: [],
-		aliases: [],
-		userPermissions: [],
+module.exports = new Command({
+		name:              '',
+		description:       '', // Optionnals :
+		usage:             '',
+		category:          '',
+		tags:              [],
+		aliases:           [],
+		userPermissions:   [],
 		clientPermissions: [],
-		cooldown: 10,
-	},
-    /* Note :
-     You can now put the arguments you want as this handler
-     doesn't have default a message event. 
-        
-     */
+		cooldown:          10,
+	}, /* Note :
+	 You can now put the arguments you want as this handler
+	 doesn't have default a message event. 
+
+	 */
 	async (client, message, args) => {
 		// Your code goes here.
-	}
-);
+	});
 ```
 
 **You have to put the command into a category folder into your commands folder like in the example.**
@@ -116,19 +110,18 @@ The file's given name set out which event it handles.
 
 ## Logger Class
 
-`Logger` is a class in the `utils` folder to help you logging things.
-It has multiple **static** methods :
+`Logger` is a class in the `utils` folder to help you logging things. It has multiple **static** methods :
 
-| Name                                                      | Description                                                                                                                                         | Color              |
-| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `comment( message, color = 'comment' )`              | Let you log something with the showed type `COMMENT`, theses only logs if the static field `logComments` is set to true.                            | grey : `#6e6f77`   |
-| `error( message, color = 'error' )`                  | Let you log something with the showed type `ERROR`.                                                                                                 | red :`#b52825`     |
-| `event( message, color = 'event' )`                  | Let you log something with the showed type `EVENT`.                                                                                                 | `#43804e`          |
-| `info( message, color = 'info' )`                    | Let you log something with the showed type `INFO`.                                                                                                  | blue : `#2582ff`   |
-| `log( message, type = 'log', color = 'log' )`             | Let you log something with the showed type `LOG`, you can change the color.                                                                         | default :`#cccccc` |
-| `test( message, color = 'test' )`                    | Let you log something with the showed type `TEST`.                                                                                                  | white : `#ffffff`  |
-| `warn( message, color = 'warn' )`                    | Let you log something with the showed type `WARN`.                                                                                                  | yellow : `#eeee23` |
-| `setColor(color = 'default', text = '')` | Let you change the color after the function or the color of the `text` only, and let you change the color after the `text` if you set the argument. | `color`            |
+| Name                                          | Description                                                                                                                                         | Color              |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| `comment( message, color = 'comment' )`       | Let you log something with the showed type `COMMENT`, theses only logs if the static field `logComments` is set to true.                            | grey : `#6e6f77`   |
+| `error( message, color = 'error' )`           | Let you log something with the showed type `ERROR`.                                                                                                 | red :`#b52825`     |
+| `event( message, color = 'event' )`           | Let you log something with the showed type `EVENT`.                                                                                                 | `#43804e`          |
+| `info( message, color = 'info' )`             | Let you log something with the showed type `INFO`.                                                                                                  | blue : `#2582ff`   |
+| `log( message, type = 'log', color = 'log' )` | Let you log something with the showed type `LOG`, you can change the color.                                                                         | default :`#cccccc` |
+| `test( message, color = 'test' )`             | Let you log something with the showed type `TEST`.                                                                                                  | white : `#ffffff`  |
+| `warn( message, color = 'warn' )`             | Let you log something with the showed type `WARN`.                                                                                                  | yellow : `#eeee23` |
+| `setColor(color = 'default', text = '')`      | Let you change the color after the function or the color of the `text` only, and let you change the color after the `text` if you set the argument. | `color`            |
 
 ### Example
 
@@ -149,26 +142,31 @@ These are the current colors :
 
 ```js
 colors = {
-	red: '#b52825',
-	orange: '#e76a1f',
-	gold: '#deae17',
-	yellow: '#eeee23',
-	green: '#3ecc2d',
-	teal: '#11cc93',
-	blue: '#2582ff',
-	indigo: '#524cd9',
-	violet: '#7d31cc',
+	red:     '#b52825',
+	orange:  '#e76a1f',
+	gold:    '#deae17',
+	yellow:  '#eeee23',
+	green:   '#3ecc2d',
+	teal:    '#11cc93',
+	blue:    '#2582ff',
+	indigo:  '#524cd9',
+	violet:  '#7d31cc',
 	magenta: '#b154cf',
-	pink: '#d070a0',
-	brown: '#502f1e',
-	black: '#000000',
-	grey: '#6e6f77',
-	white: '#ffffff',
+	pink:    '#d070a0',
+	brown:   '#502f1e',
+	black:   '#000000',
+	grey:    '#6e6f77',
+	white:   '#ffffff',
 	default: '#cccccc',
 };
 ```
 
 ## BetterEmbed class
+
+| Name           | Description                                                            |
+| -------------- | ---------------------------------------------------------------------- |
+| `checkSize`    | Check the size of the Embed and throw an error if a field is too long. |
+| `cutIfTooLong` | Check the size of the Embed and cut the fields that are too long.      |
 
 This is a class for creating Embed Object, but a bit simpler like this :
 
@@ -188,9 +186,9 @@ const {BetterEmbed} = require('advanced-command-handler');
 const embed = BetterEmbed.fromTemplate('basic', {
 	image:  'url',
 	author: {
-		name: 'name',
-        icon_url: 'icon_url'
-    }
+		name:     'name',
+		icon_url: 'icon_url'
+	}
 });
 
 embed.cutIfTooLong();
