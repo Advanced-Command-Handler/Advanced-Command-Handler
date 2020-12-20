@@ -1,4 +1,4 @@
-import {Message, PermissionString} from 'discord.js';
+import type {Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
 
 interface CommandOptions {
 	readonly name: string;
@@ -8,6 +8,7 @@ interface CommandOptions {
 	aliases?: string[];
 	clientPermissions?: PermissionString[];
 	userPermissions?: PermissionString[];
+	channels?: Array<Snowflake | TextChannel>;
 	guildOnly?: boolean;
 	ownerOnly?: boolean;
 	nsfw?: boolean;
@@ -32,6 +33,7 @@ export default class Command implements CommandOptions {
 	public aliases: string[];
 	public clientPermissions: PermissionString[];
 	public userPermissions: PermissionString[];
+	public channels: Array<Snowflake | TextChannel>;
 	public guildOnly: boolean;
 	public ownerOnly: boolean;
 	public nsfw: boolean;
@@ -47,6 +49,7 @@ export default class Command implements CommandOptions {
 		this.aliases = options.aliases ?? [];
 		this.clientPermissions = options.clientPermissions ?? ['SEND_MESSAGES'];
 		this.userPermissions = options.userPermissions ?? ['SEND_MESSAGES'];
+		this.channels = options.channels ?? [];
 		this.guildOnly = options.guildOnly ?? false;
 		this.ownerOnly = options.ownerOnly ?? false;
 		this.nsfw = options.nsfw ?? false;
