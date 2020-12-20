@@ -1,5 +1,13 @@
 import type {Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
 
+export enum Tag {
+	guildOnly,
+	ownerOnly,
+	nsfw,
+	guildOwnerOnly,
+	dmOnly
+}
+
 interface CommandOptions {
 	readonly name: string;
 	description?: string;
