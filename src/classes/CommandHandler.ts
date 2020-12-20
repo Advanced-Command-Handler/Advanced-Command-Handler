@@ -1,9 +1,9 @@
+import {ClientOptions, Collection} from 'discord.js';
+import {promises as fsPromises} from 'fs';
+import {join} from 'path';
+import {Logger} from '../utils/Logger';
 import AdvancedClient from './AdvancedClient';
 import {Command} from './Command';
-import {ClientOptions, Collection} from 'discord.js';
-import {Logger} from '../utils/Logger';
-import {join} from 'path';
-import {promises as fsPromises} from 'fs';
 
 export interface CommandHandlerInstance {
 	commandsDir: string;
@@ -45,18 +45,17 @@ export default class CommandHandler implements CommandHandlerInstance {
 		return CommandHandler.instance;
 	}
 
-	public static async launch(options: {token: string; clientOptions?: ClientOptions}): Promise<void> {
+	public static async launch(options: {token: string; clientOptions?: ClientOptions}): Promise<CommandHandlerInstance> {
 		CommandHandler.instance.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
-		try {
-			await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
-			await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
-		} catch (e) {
-			Logger.error(e.stack, 'Loading');
-		}
+
+		await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
+		await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
 
 		await CommandHandler.instance.client.login(options.token);
 		CommandHandler.instance.prefixes?.push(`<@${CommandHandler.instance.client?.user?.id}>`);
 		CommandHandler.instance.owners?.push((await CommandHandler.instance.client.fetchApplication()).owner?.id ?? '');
+
+		return CommandHandler.instance;
 	}
 
 	public static async loadCommand(path: string, name: string) {
