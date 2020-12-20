@@ -32,9 +32,9 @@ After it create your main file and add this into it :
 const {CommandHandler} = require('advanced-command-handler');
 
 CommandHandler.create({
-	commandsDir: 'name of the dir',
-	eventsDir: 'name of the dir',
 	// Optionnals :
+    commandsDir: 'name of the dir',
+	eventsDir: 'name of the dir',
 	prefixes: ['!', 'coolPrefix '],
 	owners: ['Discord IDs'],
 });
@@ -59,7 +59,7 @@ CommandHandler.launch({
 | `prefixes`        | Prefixes that you put in the `CommandHandler.create` method.                    | String[]                            |
 | `client`          | Represents the [Client](#client-class) of the bot.                              | Client extends Discord.Client       |
 | `commands`        | All the commands that have been found by the command handler at launch.         | Discord.Collection<String, Command> |
-| `get cooldowns`   | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`                | Discord.Collection<String, number>  |
+| `cooldowns`   | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`                | Discord.Collection<String, number>  |
 | `create(options)` | Creates a command handler and reset all data save in instance.                  | return void                         |
 | `launch(options)` | Launch the Command Handler by login in the Client and fetching Commands/Events. | return void                         |
 
@@ -83,14 +83,17 @@ module.exports = new Command(
 		// Optionnals :
 		usage: '',
 		category: '',
-		nsfw: false,
-		guildOnly: false,
-		ownerOnly: false,
+        tags: [],
 		aliases: [],
 		userPermissions: [],
 		clientPermissions: [],
 		cooldown: 10,
 	},
+    /* Note :
+     You can now put the arguments you want as this handler
+     doesn't have default a message event. 
+        
+     */
 	async (client, message, args) => {
 		// Your code goes here.
 	}
@@ -118,14 +121,14 @@ It has multiple **static** methods :
 
 | Name                                                      | Description                                                                                                                                         | Color              |
 | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `comment( message, typeToShow = 'comment' )`              | Let you log something with the showed type `COMMENT`, theses only logs if the static field `logComments` is set to true.                            | grey : `#6e6f77`   |
-| `error( message, typeToShow = 'error' )`                  | Let you log something with the showed type `ERROR`.                                                                                                 | red :`#b52825`     |
-| `event( message, typeToShow = 'event' )`                  | Let you log something with the showed type `EVENT`.                                                                                                 | `#43804e`          |
-| `info( message, typeToShow = 'info' )`                    | Let you log something with the showed type `INFO`.                                                                                                  | blue : `#2582ff`   |
+| `comment( message, color = 'comment' )`              | Let you log something with the showed type `COMMENT`, theses only logs if the static field `logComments` is set to true.                            | grey : `#6e6f77`   |
+| `error( message, color = 'error' )`                  | Let you log something with the showed type `ERROR`.                                                                                                 | red :`#b52825`     |
+| `event( message, color = 'event' )`                  | Let you log something with the showed type `EVENT`.                                                                                                 | `#43804e`          |
+| `info( message, color = 'info' )`                    | Let you log something with the showed type `INFO`.                                                                                                  | blue : `#2582ff`   |
 | `log( message, type = 'log', color = 'log' )`             | Let you log something with the showed type `LOG`, you can change the color.                                                                         | default :`#cccccc` |
-| `test( message, typeToShow = 'test' )`                    | Let you log something with the showed type `TEST`.                                                                                                  | white : `#ffffff`  |
-| `warn( message, typeToShow = 'warn' )`                    | Let you log something with the showed type `WARN`.                                                                                                  | yellow : `#eeee23` |
-| `setColor(color = 'default', text = '', colorAfter = '')` | Let you change the color after the function or the color of the `text` only, and let you change the color after the `text` if you set the argument. | `color`            |
+| `test( message, color = 'test' )`                    | Let you log something with the showed type `TEST`.                                                                                                  | white : `#ffffff`  |
+| `warn( message, color = 'warn' )`                    | Let you log something with the showed type `WARN`.                                                                                                  | yellow : `#eeee23` |
+| `setColor(color = 'default', text = '')` | Let you change the color after the function or the color of the `text` only, and let you change the color after the `text` if you set the argument. | `color`            |
 
 ### Example
 
@@ -170,35 +173,27 @@ colors = {
 This is a class for creating Embed Object, but a bit simpler like this :
 
 ```js
-// Embed Objet :
-const embed = {
-	image: {
-		url: 'url',
-	},
-	fields: [
-		{
-			name: 'name',
-			value: 'value',
-		},
-	],
+// MessageEmbed :
+const MessageEmbed = require('discord.js');
+const embed = new MessageEmbed();
+embed.setImage('url');
+embed.setAuthor('name', 'icon_url');
+embed.setTimestamp();
+embed.setFooter(client.user.username, client.user.displayAvatarURL());
+// ...
+embed.setDescription(embed.description.slice(0, 2048));
+
+// BetterEmbed
+const {BetterEmbed} = require('advanced-command-handler');
+const embed = BetterEmbed.fromTemplate('basic', {
+	image:  'url',
 	author: {
 		name: 'name',
-		icon_url: 'icon_url',
-	},
-};
-
-const {BetterEmbed} = require('advanced-command-handler');
-// BetterEmbed
-const embed = new BetterEmbed({
-	image: 'url',
-	author: 'name',
-	author_icon: 'icon_url',
+        icon_url: 'icon_url'
+    }
 });
 
-embed.fields.push({
-	name: 'name',
-	value: 'value',
-});
+embed.cutIfTooLong();
 
 // Using templates
 BetterEmbed.templates.funny = {
@@ -206,7 +201,7 @@ BetterEmbed.templates.funny = {
 };
 
 const embed = BetterEmbed.fromTemplate('funny', {client: message.client});
-message.channel.send({embed: embed.build()});
+message.channel.send(embed);
 ```
 
 This can simplify your embeds declarations.
