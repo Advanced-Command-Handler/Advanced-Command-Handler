@@ -1,5 +1,13 @@
 import type {Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
 
+export enum Tag {
+	guildOnly,
+	ownerOnly,
+	nsfw,
+	guildOwnerOnly,
+	dmOnly
+}
+
 interface CommandOptions {
 	readonly name: string;
 	description?: string;
@@ -9,9 +17,7 @@ interface CommandOptions {
 	clientPermissions?: PermissionString[];
 	userPermissions?: PermissionString[];
 	channels?: Array<Snowflake | TextChannel>;
-	guildOnly?: boolean;
-	ownerOnly?: boolean;
-	nsfw?: boolean;
+	tags?: Tag[];
 	cooldown?: number;
 }
 
@@ -34,9 +40,7 @@ export default class Command implements CommandOptions {
 	public clientPermissions: PermissionString[];
 	public userPermissions: PermissionString[];
 	public channels: Array<Snowflake | TextChannel>;
-	public guildOnly: boolean;
-	public ownerOnly: boolean;
-	public nsfw: boolean;
+	public tags: Tag[];
 	public cooldown: number;
 	public run: RunFunction;
 
@@ -50,9 +54,7 @@ export default class Command implements CommandOptions {
 		this.clientPermissions = options.clientPermissions ?? ['SEND_MESSAGES'];
 		this.userPermissions = options.userPermissions ?? ['SEND_MESSAGES'];
 		this.channels = options.channels ?? [];
-		this.guildOnly = options.guildOnly ?? false;
-		this.ownerOnly = options.ownerOnly ?? false;
-		this.nsfw = options.nsfw ?? false;
+		this.tags = options.tags ?? [];
 		this.cooldown = options.cooldown ?? 0;
 	}
 
