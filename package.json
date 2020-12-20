@@ -1,47 +1,56 @@
 {
-	"name": "advanced-command-handler",
-	"version": "1.2.1",
-	"description": "A package to help you create a bot with only 1 main file and directories for your events and commands with some helpers classes and functions.",
-	"main": "index.js",
 	"author": "Ayfri",
-	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Ayfri/Advanced-Command-Handler/issues"
+	},
 	"dependencies": {
-		"discord.js": "^12.3.1",
+		"chalk": "^4.1.0",
+		"discord.js": "^12.5.1",
+		"discord.js-better-embed": "^1.1.0",
 		"luxon": "^1.25.0"
 	},
-	"scripts": {
-		"prettier": "prettier ./ --write"
+	"description": "A package to help you create a bot with only 1 main file and directories for your events and commands with some helpers classes and functions.",
+	"devDependencies": {
+		"@types/chalk": "^2.2.0",
+		"@types/luxon": "^1.25.0",
+		"@types/node": "^14.14.13",
+		"prettier": "^2.1.2",
+		"typescript": "^4.1.3"
 	},
+	"engines": {
+		"node": ">=14"
+	},
+	"homepage": "https://github.com/Ayfri/Advanced-Command-Handler",
 	"keywords": [
 		"discord",
 		"command-handler",
 		"discord-bot",
 		"discordjs"
 	],
-	"homepage": "https://github.com/Ayfri/Advanced-Command-Handler",
+	"license": "ISC",
+	"main": "./dist/index.js",
 	"maintainers": [
 		"ayfri"
 	],
+	"name": "advanced-command-handler",
+	"prettier": {
+		"arrowParens": "avoid",
+		"bracketSpacing": false,
+		"printWidth": 200,
+		"singleQuote": true,
+		"tabWidth": 4,
+		"useTabs": true
+	},
+	"readme": "https://github.com/Ayfri/Advanced-Command-Handler/blob/package/README.md",
 	"repository": {
 		"type": "github",
 		"url": "git://github.com/Ayfri/Advanced-Command-Handler/tree/package.git"
 	},
-	"readme": "https://github.com/Ayfri/Advanced-Command-Handler/blob/package/README.md",
-	"bugs": {
-		"url": "https://github.com/Ayfri/Advanced-Command-Handler/issues"
+	"scripts": {
+		"build": "tsc",
+		"prepare": "npm run build",
+		"prettier": "prettier package.json tsconfig.json README.md src/**/*.ts --write"
 	},
-	"devDependencies": {
-		"prettier": "^2.1.2"
-	},
-	"prettier": {
-		"arrowParens": "avoid",
-		"bracketSpacing": false,
-		"endOfLine": "lf",
-		"printWidth": 200,
-		"semi": true,
-		"singleQuote": true,
-		"tabWidth": 4,
-		"trailingComma": "es5",
-		"useTabs": true
-	}
+	"types": "./dist/index.d.ts",
+	"version": "1.3.0-beta.4"
 }

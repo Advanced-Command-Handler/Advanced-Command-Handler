@@ -9,19 +9,20 @@
 [![npm install](https://nodei.co/npm/advanced-command-handler.png?downloads=true&stars=true)](https://www.npmjs.com/package/advanced-command-handler)
 
 # Index
-* [Configuration](#configuration)
-* [Classes](#classes)
-    * [Command Handler](#commandhandler-class)
-    * [Client](#client-class)
-* [Templates](#templates)
-    * [Commands](#commands)
-    * [Events](#events)
-* [Utils](#utils)
-    * [Logger](#logger-class)
-        * [Example](#example)
-        * [Colors](#colors)
-    * [BetterEmbed](#betterembed-class)
-    * [Useful functions](#useful-functions)
+
+-   [Configuration](#configuration)
+-   [Classes](#classes)
+    -   [Command Handler](#commandhandler-class)
+    -   [Client](#client-class)
+-   [Templates](#templates)
+    -   [Commands](#commands)
+    -   [Events](#events)
+-   [Utils](#utils)
+    -   [Logger](#logger-class)
+        -   [Example](#example)
+        -   [Colors](#colors)
+    -   [BetterEmbed](#betterembed-class)
+    -   [Useful functions](#useful-functions)
 
 # Configuration
 
@@ -31,20 +32,20 @@ After it create your main file and add this into it :
 ```js
 const {CommandHandler} = require('advanced-command-handler');
 
-CommandHandler.create({  
-    commandsDir: 'name of the dir',
-    eventsDir: 'name of the dir',
-    // Optionnals :
-    prefixes: ['!', 'coolPrefix '],
-    owners: ['Discord IDs']
+CommandHandler.create({
+	commandsDir: 'name of the dir',
+	eventsDir: 'name of the dir',
+	// Optionnals :
+	prefixes: ['!', 'coolPrefix '],
+	owners: ['Discord IDs'],
 });
 
 CommandHandler.launch({
-    token: "YOUR TOKEN GOES HERE",
-    // Optionnal :
-    clientOptions: {
-        // Client Options, see Discord.js#ClientOptions
-    }
+	token: 'YOUR TOKEN GOES HERE',
+	// Optionnal :
+	clientOptions: {
+		// Client Options, see Discord.js#ClientOptions
+	},
 });
 ```
 
@@ -70,29 +71,31 @@ CommandHandler.launch({
 | `hasPermission(message, permission)` | Check if bot has permission `permission`.           | Boolean   |
 | `isOwner(id)`                        | Check if the `id` is in the owners (configuration). | Boolean   |
 
-
 # Templates
 
 ## Commands
 
 ```js
 const {Command} = require('advanced-command-handler');
-module.exports = new Command({
-    name: '',
-    description: '',
-    // Optionnals :
-    usage: '',
-    category: '',
-    nsfw: false,
-    guildOnly: false,
-    ownerOnly: false,
-    aliases: [],
-    userPermissions: [],
-    clientPermissions: [],
-    cooldown: 10
-}, async(client, message, args) => {
-    // Your code goes here.
-});
+module.exports = new Command(
+	{
+		name: '',
+		description: '',
+		// Optionnals :
+		usage: '',
+		category: '',
+		nsfw: false,
+		guildOnly: false,
+		ownerOnly: false,
+		aliases: [],
+		userPermissions: [],
+		clientPermissions: [],
+		cooldown: 10,
+	},
+	async (client, message, args) => {
+		// Your code goes here.
+	}
+);
 ```
 
 **You have to put the command into a category folder into your commands folder like in the example.**
@@ -100,8 +103,8 @@ module.exports = new Command({
 ## Events
 
 ```js
-module.exports = async(handler, ...EventArguments) => {
-    // Your code goes here.
+module.exports = async (handler, ...EventArguments) => {
+	// Your code goes here.
 };
 ```
 
@@ -116,14 +119,14 @@ It has multiple **static** methods :
 
 | Name                                                      | Description                                                                                                                                         | Color              |
 | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| `comment( message, typeToShow = 'comment' )`              | Let you log something with the showed type `COMMENT`, theses only logs if the static field `logComments` is set to true.                            | grey : `#6e6f77`   |
+| `comment( message, typeToShow = 'comment' )`              | Let you log something with the showed type `COMMENT`, theses only logs if the static field `logComments` is set to true.                            | grey : `#6e6f77`   |
 | `error( message, typeToShow = 'error' )`                  | Let you log something with the showed type `ERROR`.                                                                                                 | red :`#b52825`     |
 | `event( message, typeToShow = 'event' )`                  | Let you log something with the showed type `EVENT`.                                                                                                 | `#43804e`          |
 | `info( message, typeToShow = 'info' )`                    | Let you log something with the showed type `INFO`.                                                                                                  | blue : `#2582ff`   |
 | `log( message, type = 'log', color = 'log' )`             | Let you log something with the showed type `LOG`, you can change the color.                                                                         | default :`#cccccc` |
 | `test( message, typeToShow = 'test' )`                    | Let you log something with the showed type `TEST`.                                                                                                  | white : `#ffffff`  |
 | `warn( message, typeToShow = 'warn' )`                    | Let you log something with the showed type `WARN`.                                                                                                  | yellow : `#eeee23` |
-| `setColor(color = 'default', text = '', colorAfter = '')` | Let you change the color after the function or the color of the `text` only, and let you change the color after the `text` if you set the argument. | `color`            |
+| `setColor(color = 'default', text = '', colorAfter = '')` | Let you change the color after the function or the color of the `text` only, and let you change the color after the `text` if you set the argument. | `color`            |
 
 ### Example
 
@@ -140,27 +143,27 @@ Give the following result in the console (screen made on `WebStorm`).
 
 Colors are set out in a static public object in the `Logger` class, so you can change them.
 
-These are the current colors : 
+These are the current colors :
 
 ```js
 colors = {
-     red    : '#b52825',
-     orange : '#e76a1f',
-     gold   : '#deae17',
-     yellow : '#eeee23',
-     green  : '#3ecc2d',
-     teal   : '#11cc93',
-     blue   : '#2582ff',
-     indigo : '#524cd9',
-     violet : '#7d31cc',
-     magenta: '#b154cf',
-     pink   : '#d070a0',
-     brown  : '#502f1e',
-     black  : '#000000',
-     grey   : '#6e6f77',
-     white  : '#ffffff',
-     default: '#cccccc'
-}
+	red: '#b52825',
+	orange: '#e76a1f',
+	gold: '#deae17',
+	yellow: '#eeee23',
+	green: '#3ecc2d',
+	teal: '#11cc93',
+	blue: '#2582ff',
+	indigo: '#524cd9',
+	violet: '#7d31cc',
+	magenta: '#b154cf',
+	pink: '#d070a0',
+	brown: '#502f1e',
+	black: '#000000',
+	grey: '#6e6f77',
+	white: '#ffffff',
+	default: '#cccccc',
+};
 ```
 
 ## BetterEmbed class
@@ -170,36 +173,38 @@ This is a class for creating Embed Object, but a bit simpler like this :
 ```js
 // Embed Objet :
 const embed = {
-    image: {
-        url: 'url'
-    },
-    fields: [{
-        name: 'name',
-        value: 'value'
-    }],
-    author: {
-        name: 'name',
-        icon_url: 'icon_url'
-    }
-}
+	image: {
+		url: 'url',
+	},
+	fields: [
+		{
+			name: 'name',
+			value: 'value',
+		},
+	],
+	author: {
+		name: 'name',
+		icon_url: 'icon_url',
+	},
+};
 
 const {BetterEmbed} = require('advanced-command-handler');
 // BetterEmbed
 const embed = new BetterEmbed({
-    image: 'url',
-    author: 'name',
-    author_icon : 'icon_url'
+	image: 'url',
+	author: 'name',
+	author_icon: 'icon_url',
 });
 
 embed.fields.push({
-    name: 'name',
-    value: 'value'
+	name: 'name',
+	value: 'value',
 });
 
 // Using templates
 BetterEmbed.templates.funny = {
-    title: '${client.user.username} says that you are funny !'
-}
+	title: '${client.user.username} says that you are funny !',
+};
 
 const embed = BetterEmbed.fromTemplate('funny', {client: message.client});
 message.channel.send({embed: embed.build()});
@@ -211,11 +216,11 @@ This can simplify your embeds declarations.
 
 There are multiple utils functions in the `util` folder that you can use (require them like other classes).
 
-| Name                                  | Description                                                                                                                                      | Returning                  |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- |
-| `argError( message, error, command )` | Send an embed that explains the argument error and show correct the syntax.                                                                      | Embed Object               |
-| `async getThing( datatype, text )`    | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will look into its mentions.    | Object (datatype) or false |
+| Name                                  | Description                                                                                                                                   | Returning                  |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| `argError( message, error, command )` | Send an embed that explains the argument error and show correct the syntax.                                                                   | Embed Object               |
+| `async getThing( datatype, text )`    | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will look into its mentions. | Object (datatype) or false |
 
-The `Command` class has a method `deleteMessage( message )` to safely delete messages without sending Errors *(missing permissions)*.
+The `Command` class has a method `deleteMessage( message )` to safely delete messages without sending Errors _(missing permissions)_.
 
 ##### That's all for now :D
