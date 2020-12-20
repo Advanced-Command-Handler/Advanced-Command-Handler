@@ -45,20 +45,18 @@ export default class CommandHandler implements CommandHandlerInstance {
 		return CommandHandler.instance;
 	}
 
-	public static launch(options: {token: string; clientOptions?: ClientOptions}): void {
-		(async (): Promise<void> => {
-			CommandHandler.instance.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
-			try {
-				await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
-				await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
-			} catch (e) {
-				Logger.error(e.stack, 'Loading');
-			}
-
-			await CommandHandler.instance.client.login(options.token);
-			CommandHandler.instance.prefixes?.push(`<@${CommandHandler.instance.client?.user?.id}>`);
-			CommandHandler.instance.owners?.push((await CommandHandler.instance.client.fetchApplication()).owner?.id ?? '');
-		})();
+	public static async launch(options: {token: string; clientOptions?: ClientOptions}): Promise<void> {
+		CommandHandler.instance.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
+		try {
+			await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
+			await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
+		} catch (e) {
+			Logger.error(e.stack, 'Loading');
+		}
+								    
+		await CommandHandler.instance.client.login(options.token);
+		CommandHandler.instance.prefixes?.push(`<@${CommandHandler.instance.client?.user?.id}>`);
+		CommandHandler.instance.owners?.push((await CommandHandler.instance.client.fetchApplication()).owner?.id ?? '');
 	}
 
 	public static loadCommand(path: string, name: string) {
