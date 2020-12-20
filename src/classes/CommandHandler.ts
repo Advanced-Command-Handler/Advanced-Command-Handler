@@ -1,5 +1,5 @@
 import AdvancedClient from './AdvancedClient';
-import Command from './Command';
+import {Command} from './Command';
 import {ClientOptions, Collection} from 'discord.js';
 import {Logger} from '../utils/Logger';
 import {join} from 'path';
@@ -53,14 +53,14 @@ export default class CommandHandler implements CommandHandlerInstance {
 		} catch (e) {
 			Logger.error(e.stack, 'Loading');
 		}
-								    
+
 		await CommandHandler.instance.client.login(options.token);
 		CommandHandler.instance.prefixes?.push(`<@${CommandHandler.instance.client?.user?.id}>`);
 		CommandHandler.instance.owners?.push((await CommandHandler.instance.client.fetchApplication()).owner?.id ?? '');
 	}
 
-	public static loadCommand(path: string, name: string) {
-		let command = require(join(process.cwd(), `./${path}/${name}`));
+	public static async loadCommand(path: string, name: string) {
+		let command = await import(join(process.cwd(), `./${path}/${name}`));
 		if (command.default && Object.keys(command).length === 1) command = command.default;
 		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 
@@ -81,7 +81,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 				Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'loading');
 
 				for (const file of files) {
-					CommandHandler.loadCommand(`${path}/${dir}`, file);
+					await CommandHandler.loadCommand(`${path}/${dir}`, file);
 				}
 			}
 		}
@@ -95,7 +95,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 		Logger.comment(`Events : (${files.length})`, 'loading');
 		if (files) {
 			for (const file of files) {
-				let event = require(join(process.cwd(), `${path}/${file}`));
+				let event = await import(join(process.cwd(), `${path}/${file}`));
 				if (event.default && Object.keys(event).length === 1) event = event.default;
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 

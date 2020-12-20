@@ -31,7 +31,7 @@ interface DeleteMessageOptions {
 	};
 }
 
-export default class Command implements CommandOptions {
+export class Command implements CommandOptions {
 	public readonly name: string;
 	public description: string;
 	public usage: string;
