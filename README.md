@@ -9,19 +9,19 @@
 
 # Index
 
-- [Configuration](#configuration)
-- [Classes](#classes)
-    - [Command Handler](#commandhandler-class)
-    - [Client](#client-class)
-- [Templates](#templates)
-    - [Commands](#commands)
-    - [Events](#events)
-- [Utils](#utils)
-    - [Logger](#logger-class)
-        - [Example](#example)
-        - [Colors](#colors)
-    - [BetterEmbed](#betterembed-class)
-    - [Useful functions](#useful-functions)
+-   [Configuration](#configuration)
+-   [Classes](#classes)
+    -   [Command Handler](#commandhandler-class)
+    -   [Client](#client-class)
+-   [Templates](#templates)
+    -   [Commands](#commands)
+    -   [Events](#events)
+-   [Utils](#utils)
+    -   [Logger](#logger-class)
+        -   [Example](#example)
+        -   [Colors](#colors)
+    -   [BetterEmbed](#betterembed-class)
+    -   [Useful functions](#useful-functions)
 
 # Configuration
 
@@ -33,13 +33,13 @@ const {CommandHandler} = require('advanced-command-handler');
 CommandHandler.create({
 	// Optionnals :
 	commandsDir: 'name of the dir',
-	eventsDir:   'name of the dir',
-	prefixes:    ['!', 'coolPrefix '],
-	owners:      ['Discord IDs'],
+	eventsDir: 'name of the dir',
+	prefixes: ['!', 'coolPrefix '],
+	owners: ['Discord IDs'],
 });
 
 CommandHandler.launch({
-	token:         'YOUR TOKEN GOES HERE', // Optionnal :
+	token: 'YOUR TOKEN GOES HERE', // Optionnal :
 	clientOptions: {
 		// Client Options, see Discord.js#ClientOptions
 	},
@@ -74,24 +74,26 @@ CommandHandler.launch({
 
 ```js
 const {Command} = require('advanced-command-handler');
-module.exports = new Command({
-		name:              '',
-		description:       '', // Optionnals :
-		usage:             '',
-		category:          '',
-		tags:              [],
-		aliases:           [],
-		userPermissions:   [],
+module.exports = new Command(
+	{
+		name: '',
+		description: '', // Optionnals :
+		usage: '',
+		category: '',
+		tags: [],
+		aliases: [],
+		userPermissions: [],
 		clientPermissions: [],
-		cooldown:          10,
-	}, /* Note :
+		cooldown: 10,
+	} /* Note :
 	 You can now put the arguments you want as this handler
 	 doesn't have default a message event. 
 
-	 */
+	 */,
 	async (client, message, args) => {
 		// Your code goes here.
-	});
+	}
+);
 ```
 
 **You have to put the command into a category folder into your commands folder like in the example.**
@@ -142,21 +144,21 @@ These are the current colors :
 
 ```js
 colors = {
-	red:     '#b52825',
-	orange:  '#e76a1f',
-	gold:    '#deae17',
-	yellow:  '#eeee23',
-	green:   '#3ecc2d',
-	teal:    '#11cc93',
-	blue:    '#2582ff',
-	indigo:  '#524cd9',
-	violet:  '#7d31cc',
+	red: '#b52825',
+	orange: '#e76a1f',
+	gold: '#deae17',
+	yellow: '#eeee23',
+	green: '#3ecc2d',
+	teal: '#11cc93',
+	blue: '#2582ff',
+	indigo: '#524cd9',
+	violet: '#7d31cc',
 	magenta: '#b154cf',
-	pink:    '#d070a0',
-	brown:   '#502f1e',
-	black:   '#000000',
-	grey:    '#6e6f77',
-	white:   '#ffffff',
+	pink: '#d070a0',
+	brown: '#502f1e',
+	black: '#000000',
+	grey: '#6e6f77',
+	white: '#ffffff',
 	default: '#cccccc',
 };
 ```
@@ -184,11 +186,11 @@ embed.setDescription(embed.description.slice(0, 2048));
 // BetterEmbed
 const {BetterEmbed} = require('advanced-command-handler');
 const embed = BetterEmbed.fromTemplate('basic', {
-	image:  'url',
+	image: 'url',
 	author: {
-		name:     'name',
-		icon_url: 'icon_url'
-	}
+		name: 'name',
+		icon_url: 'icon_url',
+	},
 });
 
 embed.cutIfTooLong();

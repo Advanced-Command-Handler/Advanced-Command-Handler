@@ -5,7 +5,7 @@ export enum Tag {
 	ownerOnly,
 	nsfw,
 	guildOwnerOnly,
-	dmOnly
+	dmOnly,
 }
 
 interface CommandOptions {
