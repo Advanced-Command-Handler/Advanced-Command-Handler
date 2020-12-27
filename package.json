@@ -11,7 +11,6 @@
 	},
 	"description": "A package to help you create a bot with only 1 main file and directories for your events and commands with some helpers classes and functions.",
 	"devDependencies": {
-		"@types/chalk": "^2.2.0",
 		"@types/luxon": "^1.25.0",
 		"@types/node": "^14.14.13",
 		"prettier": "^2.1.2",
