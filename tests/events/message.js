@@ -25,10 +25,9 @@ module.exports = async (handler, message) => {
 		if (missingTags.length) return argError(message, `You are missing the following tags: \n\`${missingTags.sort().join('\n').toUpperCase()}\``, cmd);
 		try {
 			cmd.run(handler, message, args);
-			Logger.log(`${message.author.tag} has executed the command ${cmd.name}.`);
+			Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', cmd.name)}.`);
 		} catch (error) {
 			Logger.warn(error.stack);
 		}
-
 	}
 };
