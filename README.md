@@ -54,16 +54,24 @@ CommandHandler.launch({
 
 # CommandHandler Class
 
-| Field             | Description                                                                     | Type                                |
-| ----------------- | ------------------------------------------------------------------------------- | ----------------------------------- |
-| `instance`        | Represents the instance of the CommandHandler.                                  | Object                              |
-| `owners`          | Owners that you put in the `CommandHandler.create` method.                      | SnowFlake[]                         |
-| `prefixes`        | Prefixes that you put in the `CommandHandler.create` method.                    | String[]                            |
-| `client`          | Represents the [Client](#client-class) of the bot.                              | Client extends Discord.Client       |
-| `commands`        | All the commands that have been found by the command handler at launch.         | Discord.Collection<String, Command> |
-| `cooldowns`       | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`                | Discord.Collection<String, number>  |
-| `create(options)` | Creates a command handler and reset all data save in instance.                  | return void                         |
-| `launch(options)` | Launch the Command Handler by login in the Client and fetching Commands/Events. | return void                         |
+| Field             | Description                                                                     | Type                     |
+| ----------------- | ------------------------------------------------------------------------------- | ------------------------ |
+| `instance`        | Represents the instance of the CommandHandler.                                  | `CommandHandlerInstance` |
+| `version`         | The version of the handler.                                                     | `string`                 |
+| `create(options)` | Creates a command handler and reset all data save in instance.                  | `=> void`                |
+| `launch(options)` | Launch the Command Handler by login in the Client and fetching Commands/Events. | `=> void`                |
+
+### CommandHandlerInstance
+
+When you create your instance of the command handler, the `instance` will be completed with these fields:
+
+| Field       | Description                                                             | Type                                    |
+| ----------- | ----------------------------------------------------------------------- | --------------------------------------- |
+| `client`    | Represents the [Client](#client-class) of the bot.                      | `AdvancedClient extends Discord.Client` |
+| `commands`  | All the commands that have been found by the command handler at launch. | `Discord.Collection<String, Command>`   |
+| `cooldowns` | The cool downs of the bot mapped as `<UserID, cooldownInSeconds>`       | `Discord.Collection<SnowFlake, number>` |
+| `prefixes`  | Prefixes that you put in the `CommandHandler.create` method.            | `String[]`                              |
+| `owners`    | Owners that you put in the `CommandHandler.create` method.              | `SnowFlake[]`                           |
 
 # Client Class
 
