@@ -25,7 +25,7 @@
 
 # Configuration
 
-To install the command handler, install `npm` and then in a terminal run this command where you want your bot `npm i advanced-command-handler`. After it create your main file and add this into it :
+To install the command handler, install [`Node.js`](https://nodejs.org/en/) (in the latest LTS version) and then in a terminal run this command where you want your bot `npm i advanced-command-handler`. After it create your main file and add this into it :
 
 ```js
 const {CommandHandler} = require('advanced-command-handler');
