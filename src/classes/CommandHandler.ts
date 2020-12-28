@@ -17,6 +17,7 @@ export interface CommandHandlerInstance {
 
 export default class CommandHandler implements CommandHandlerInstance {
 	public static instance: CommandHandlerInstance;
+	public static version: string = require('../../package.json').version;
 	public commandsDir: string;
 	public eventsDir: string;
 	public owners?: string[] | null | undefined;
