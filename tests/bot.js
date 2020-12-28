@@ -1,10 +1,7 @@
 const {CommandHandler} = require('../');
 
 CommandHandler.create({
-	commandsDir: 'name of the dir',
-	eventsDir: 'name of the dir',
-	prefixes: ['!', 'coolPrefix '],
-	owners: ['Discord IDs'],
+	prefixes: ['!'],
 });
 
 CommandHandler.launch({

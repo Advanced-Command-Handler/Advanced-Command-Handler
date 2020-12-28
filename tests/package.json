@@ -1,7 +1,12 @@
 {
-  "name": "tests",
-  "version": "1.0.0",
-  "dependencies": {
-    
-  }
+	"name": "tests",
+	"version": "1.0.0",
+	"dependencies": {
+		"advanced-command-hander": "file://../dist/"
+	},
+	"main": "bot.js",
+	"scripts": {
+		"start": "node .",
+		"build:run": "cd .. && npm run build && cd tests && npm start"
+	}
 }

@@ -49,8 +49,12 @@ export default class CommandHandler implements CommandHandlerInstance {
 	public static async launch(options: {token: string; clientOptions?: ClientOptions}): Promise<CommandHandlerInstance> {
 		CommandHandler.instance.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
 
-		await CommandHandler.loadCommands(CommandHandler.instance.commandsDir);
-		await CommandHandler.loadEvents(CommandHandler.instance.eventsDir);
+		try {
+			await CommandHandler.loadCommands(CommandHandler.instance.commandsDir ?? '');
+			await CommandHandler.loadEvents(CommandHandler.instance.eventsDir ?? '');
+		} catch (e) {
+			Logger.error(e.stack, 'Loading');
+		}
 
 		await CommandHandler.instance.client.login(options.token);
 		CommandHandler.instance.prefixes?.push(`<@${CommandHandler.instance.client?.user?.id}>`);
