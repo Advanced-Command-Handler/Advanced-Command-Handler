@@ -81,13 +81,15 @@ const {Command} = require('advanced-command-handler');
 module.exports = new Command(
 	{
 		name: '',
-		description: '', // Optionnals :
+		description: '',
+        // Optionnals :
 		usage: '',
 		category: '',
 		tags: [],
 		aliases: [],
 		userPermissions: [],
 		clientPermissions: [],
+        channels: [],
 		cooldown: 10,
 	} /* Note :
 	 You can now put the arguments you want as this handler
