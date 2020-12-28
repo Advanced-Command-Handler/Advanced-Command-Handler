@@ -19,10 +19,10 @@ module.exports = async (handler, message) => {
 		const missingPermissions = cmd.getMissingPermissions(message);
 		const missingTags = cmd.getMissingTags(message);
 
-		if (missingPermissions.client) return permissionsError(missingPermissions.client);
-		if (missingPermissions.user) return permissionsError(missingPermissions.user);
+		if (missingPermissions.client.length) return permissionsError(message, missingPermissions.client, cmd, true);
+		if (missingPermissions.user.length) return permissionsError(message, missingPermissions.user, cmd);
 
-		if (missingTags) return argError(`You are missing the following tags: \n\`${missingTags.sort().join('\n').toUpperCase()}\``);
+		if (missingTags.length) return argError(message, `You are missing the following tags: \n\`${missingTags.sort().join('\n').toUpperCase()}\``, cmd);
 		try {
 			cmd.run(handler, message, args);
 			Logger.log(`${message.author.tag} has executed the command ${cmd.name}.`);
