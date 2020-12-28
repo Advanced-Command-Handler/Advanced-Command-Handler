@@ -109,6 +109,7 @@ export class Command implements CommandOptions {
 	}
 
 	public isInRightChannel(message: Message): boolean {
+		if (this.channels.length === 0) return true;
 		return this.channels.every(channel => {
 			return message.channel instanceof TextChannel ?
 			       channel instanceof TextChannel ?
