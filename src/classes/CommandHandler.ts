@@ -1,6 +1,6 @@
 import {ClientOptions, Collection, Message} from 'discord.js';
 import {promises as fsPromises} from 'fs';
-import {join} from 'path';
+import {join, sep} from 'path';
 import {Logger} from '../utils/Logger';
 import AdvancedClient from './AdvancedClient';
 import {Command} from './Command';
@@ -76,7 +76,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 		let command = await import(join(process.cwd(), `./${path}/${name}`));
 		if (command.default) command = command.default;
 		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-//		if (command.category === 'None') command.category = path.split('/').pop();
+		if (command.category === 'None') command.category = path.split(sep).pop();
 		CommandHandler.instance.commands.set(name, command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
 	}
