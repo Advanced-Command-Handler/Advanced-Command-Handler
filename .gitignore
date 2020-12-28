@@ -3,9 +3,8 @@ node_modules
 dist
 
 # Tests
-tests/node_modules
-tests/package-lock.json
-tests/.env
+.env
+./tests/package-lock.json
 
 # JetBrains
 .idea
