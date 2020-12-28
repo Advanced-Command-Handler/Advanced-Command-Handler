@@ -2,7 +2,8 @@
 	"name": "tests",
 	"version": "1.0.0",
 	"dependencies": {
-		"advanced-command-hander": "file://../dist/"
+		"advanced-command-hander": "file://../dist/",
+		"dotenv": "^8.2.0"
 	},
 	"main": "bot.js",
 	"scripts": {
