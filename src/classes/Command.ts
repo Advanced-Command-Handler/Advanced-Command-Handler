@@ -1,4 +1,4 @@
-import type {Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
+import {DMChannel, Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
 
 export enum Tag {
 	guildOnly,
@@ -31,6 +31,11 @@ interface DeleteMessageOptions {
 	};
 }
 
+interface MissingPermissions {
+	client: PermissionString[];
+	user: PermissionString[];
+}
+
 export class Command implements CommandOptions {
 	public readonly name: string;
 	public description: string;
@@ -60,5 +65,29 @@ export class Command implements CommandOptions {
 
 	public deleteMessage({message, options}: DeleteMessageOptions): Promise<Message> | undefined {
 		if (message.deletable) return message.delete(options);
+	}
+
+	public getMissingPermissions(message: Message): MissingPermissions {
+		const missingPermissions: MissingPermissions = {
+			client: [],
+			user: [],
+		};
+		if (!message.guild || !message.guild?.available) return missingPermissions;
+
+		missingPermissions.client.push(
+			...this.userPermissions.filter(permission => {
+				if (!(message.channel instanceof DMChannel)) return !message.channel.permissionsFor(message.guild?.me!!)?.has(permission, false);
+			})
+		);
+		missingPermissions.user.push(
+			...this.userPermissions.filter(permission => {
+				if (!(message.channel instanceof DMChannel)) return !message.channel.permissionsFor(message.member!!)?.has(permission, false);
+			})
+		);
+
+		if (message.guild.me?.hasPermission('ADMINISTRATOR')) missingPermissions.client = [];
+		if (message.member?.hasPermission('ADMINISTRATOR')) missingPermissions.user = [];
+
+		return missingPermissions;
 	}
 }

@@ -40,7 +40,7 @@ CommandHandler.create({
 
 CommandHandler.launch({
 	token: 'YOUR TOKEN GOES HERE',
-    // Optionnal :
+	// Optionnal :
 	clientOptions: {
 		// Client Options, see Discord.js#ClientOptions
 	},
