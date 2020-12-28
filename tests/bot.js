@@ -5,5 +5,5 @@ CommandHandler.create({
 });
 
 CommandHandler.launch({
-	token: 'YOUR TOKEN GOES HERE',
+	token: process.env.TOKEN,
 });
