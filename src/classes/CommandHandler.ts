@@ -1,4 +1,4 @@
-import {ClientOptions, Collection} from 'discord.js';
+import {ClientOptions, Collection, Message} from 'discord.js';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
 import {Logger} from '../utils/Logger';
@@ -44,6 +44,15 @@ export default class CommandHandler implements CommandHandlerInstance {
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
 
 		return CommandHandler.instance;
+	}
+
+	public static getPrefixFromMessage(message: Message): string | null {
+		let prefix = null;
+		for (const thisPrefix of this.instance.prefixes ?? []) {
+			if (message.content.startsWith(thisPrefix)) prefix = thisPrefix;
+		}
+
+		return prefix;
 	}
 
 	public static async launch(options: {token: string; clientOptions?: ClientOptions}): Promise<CommandHandlerInstance> {
