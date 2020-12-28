@@ -92,9 +92,8 @@ module.exports = new Command(
         channels: [],
 		cooldown: 10,
 	} /* Note :
-	 You can now put the arguments you want as this handler
-	 doesn't have default a message event. 
-
+	 You can put what arguments you want as this handler
+	 doesn't have a default message event.
 	 */,
 	async (client, message, args) => {
 		// Your code goes here.
