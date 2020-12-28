@@ -1,4 +1,5 @@
 const {CommandHandler} = require('../');
+require('dotenv').config();
 
 CommandHandler.create({
 	prefixes: ['!'],
