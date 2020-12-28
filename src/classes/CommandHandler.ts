@@ -48,7 +48,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 
 	public static getPrefixFromMessage(message: Message): string | null {
 		let prefix = null;
-		for (const thisPrefix of this.instance.prefixes ?? []) {
+		for (const thisPrefix of CommandHandler.instance.prefixes ?? []) {
 			if (message.content.startsWith(thisPrefix)) prefix = thisPrefix;
 		}
 
