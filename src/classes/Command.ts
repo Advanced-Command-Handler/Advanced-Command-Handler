@@ -107,4 +107,14 @@ export class Command implements CommandOptions {
 		}
 		return missingTags;
 	}
+
+	public isInRightChannel(message: Message): boolean {
+		return this.channels.every(channel => {
+			return message.channel instanceof TextChannel ?
+			       channel instanceof TextChannel ?
+			       channel.id === message.channel?.id :
+			       channel === message.channel.id :
+			       false;
+		});
+	}
 }
