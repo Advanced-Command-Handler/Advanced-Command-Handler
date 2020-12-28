@@ -18,6 +18,7 @@
 	"engines": {
 		"node": ">=14"
 	},
+	"engineStrict": true,
 	"homepage": "https://github.com/Ayfri/Advanced-Command-Handler",
 	"keywords": [
 		"discord",
