@@ -76,7 +76,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 		let command = await import(join(process.cwd(), `./${path}/${name}`));
 		if (command.default) command = command.default;
 		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-		if (command.category === 'None') command.category = path.split(sep).pop();
+		if (command.category === 'None') command.category = path.split(/[\\/]/).pop();
 		CommandHandler.instance.commands.set(name, command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
 	}

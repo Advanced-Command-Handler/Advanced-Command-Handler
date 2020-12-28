@@ -13,7 +13,6 @@ module.exports = async (handler, message) => {
 	if (!prefix) return;
 	const args = message.content.slice(prefix.length).trim().split(/ +/g);
 	const cmd = await getThing('command', args[0].toLowerCase().normalize());
-	console.log(handler.commands);
 	args.shift();
 
 	if (cmd && cmd.isInRightChannel(message)) {
