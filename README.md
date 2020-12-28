@@ -47,6 +47,9 @@ CommandHandler.launch({
 });
 ```
 
+> Note:
+> You can see some more advanced examples in [this repo](https://github.com/Ayfri/advanced-command-handler-examples).
+
 # Classes
 
 # CommandHandler Class
