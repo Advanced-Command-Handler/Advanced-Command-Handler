@@ -215,11 +215,11 @@ This can simplify your embeds declarations.
 
 There are multiple utils functions in the `util` folder that you can use (require them like other classes).
 
-| Name                                  | Description                                                                                                                                   | Returning                  |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `argError( message, error, command )` | Send an embed that explains the argument error and show correct the syntax.                                                                   | Embed Object               |
-| `async getThing( datatype, text )`    | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will look into its mentions. | Object (datatype) or false |
-
+| Name                                                                       | Description                                                                                                                                   | Returning                     |
+| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `argError(message, error, command)`                                        | Send an embed that explains the argument error and show correct the syntax.                                                                   | Embed Object                  |
+| `async getThing(datatype, text)`                                           | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will look into its mentions. | Datatype you entered or false |
+| `permissionsError(message, missingPermissions, command, isFromBot = true)` | Send an embed that explains which permissions are missing.                                                                                    | Embed Object                  |
 The `Command` class has a method `deleteMessage( message )` to safely delete messages without sending Errors _(missing permissions)_.
 
 ##### That's all for now :D
