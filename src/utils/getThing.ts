@@ -1,16 +1,29 @@
-import {Channel, Collection, Emoji, Guild, GuildChannel, GuildMember, Message, NewsChannel, Role, Snowflake, TextChannel, User} from 'discord.js';
+import {
+	Channel,
+	Collection,
+	Emoji,
+	Guild,
+	GuildChannel,
+	GuildMember,
+	Message,
+	NewsChannel,
+	Role,
+	Snowflake,
+	TextChannel,
+	User
+} from 'discord.js';
 import {Command} from '../classes/Command';
 import CommandHandler from '../classes/CommandHandler';
 
 export enum DataType {
-	command,
-	channel,
-	guild,
-	member,
-	user,
-	role,
-	emote,
-	message,
+	command = 'command',
+	channel = 'channel',
+	guild = 'emote',
+	member = 'guild',
+	user = 'user',
+	role = 'role',
+	emote = 'emote',
+	message = 'message',
 }
 
 export async function getThing(dataType: DataType.channel | 'channel', text: string | Message): Promise<GuildChannel | null>;
