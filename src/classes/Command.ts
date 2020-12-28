@@ -64,17 +64,14 @@ export class Command implements CommandOptions {
 		this.cooldown = options.cooldown ?? 0;
 	}
 
-	public deleteMessage({
-		                     message,
-		                     options
-	                     }: DeleteMessageOptions): Promise<Message> | undefined {
+	public deleteMessage({message, options}: DeleteMessageOptions): Promise<Message> | undefined {
 		if (message.deletable) return message.delete(options);
 	}
 
 	public getMissingPermissions(message: Message): MissingPermissions {
 		const missingPermissions: MissingPermissions = {
 			client: [],
-			user: []
+			user: [],
 		};
 		if (!message.guild || !message.guild?.available) return missingPermissions;
 
@@ -111,11 +108,7 @@ export class Command implements CommandOptions {
 	public isInRightChannel(message: Message): boolean {
 		if (this.channels.length === 0) return true;
 		return this.channels.every(channel => {
-			return message.channel instanceof TextChannel ?
-			       channel instanceof TextChannel ?
-			       channel.id === message.channel?.id :
-			       channel === message.channel.id :
-			       false;
+			return message.channel instanceof TextChannel ? (channel instanceof TextChannel ? channel.id === message.channel?.id : channel === message.channel.id) : false;
 		});
 	}
 }
