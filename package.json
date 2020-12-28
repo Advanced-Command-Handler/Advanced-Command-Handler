@@ -5,13 +5,12 @@
 	},
 	"dependencies": {
 		"chalk": "^4.1.0",
+		"dayjs": "^1.9.8",
 		"discord.js": "^12.5.1",
-		"discord.js-better-embed": "^1.1.0",
-		"luxon": "^1.25.0"
+		"discord.js-better-embed": "^1.1.0"
 	},
 	"description": "A package to help you create a bot with only 1 main file and directories for your events and commands with some helpers classes and functions.",
 	"devDependencies": {
-		"@types/luxon": "^1.25.0",
 		"@types/node": "^14.14.14",
 		"prettier": "^2.2.1",
 		"typescript": "^4.1.3"
