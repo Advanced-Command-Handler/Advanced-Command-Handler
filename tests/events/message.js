@@ -1,5 +1,6 @@
 const {
 	argError,
+	CommandHandler,
 	getThing,
 	Logger,
 	permissionsError,
@@ -8,7 +9,7 @@ const {
 module.exports = async (handler, message) => {
 	if (message.author.bot || message.system) return;
 
-	const prefix = handler.getPrefixFromMessage(message);
+	const prefix = CommandHandler.getPrefixFromMessage(message);
 	const args = message.content.slice(prefix.length).trim().split(/ +/g);
 	const cmd = await getThing('command', args[0].toLowerCase().normalize());
 	args.shift();
