@@ -73,6 +73,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 	}
 
 	public static async loadCommands(path: string) {
+		if (!path) return;
 		const dirs = await fsPromises.readdir(path);
 		Logger.info('Loading commands.', 'loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'loading');
@@ -94,6 +95,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 	}
 
 	public static async loadEvents(path: string) {
+		if (!path) return;
 		const files = await fsPromises.readdir(path);
 		Logger.info('Loading events.', 'loading');
 		Logger.comment(`Events : (${files.length})`, 'loading');
