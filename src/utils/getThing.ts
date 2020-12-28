@@ -27,7 +27,7 @@ export async function getThing(
 	let message: Message | null;
 	if (text instanceof Message) {
 		message = text;
-		text = text.toString();
+		text = text.content;
 	} else message = null;
 
 	const client = CommandHandler.instance.client;
