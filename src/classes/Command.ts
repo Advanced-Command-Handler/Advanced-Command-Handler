@@ -1,4 +1,5 @@
-import {DMChannel, Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
+import {DMChannel, GuildChannel, Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
+import CommandHandler from './CommandHandler';
 
 export enum Tag {
 	guildOnly,
@@ -63,14 +64,17 @@ export class Command implements CommandOptions {
 		this.cooldown = options.cooldown ?? 0;
 	}
 
-	public deleteMessage({message, options}: DeleteMessageOptions): Promise<Message> | undefined {
+	public deleteMessage({
+		                     message,
+		                     options
+	                     }: DeleteMessageOptions): Promise<Message> | undefined {
 		if (message.deletable) return message.delete(options);
 	}
 
 	public getMissingPermissions(message: Message): MissingPermissions {
 		const missingPermissions: MissingPermissions = {
 			client: [],
-			user: [],
+			user: []
 		};
 		if (!message.guild || !message.guild?.available) return missingPermissions;
 
@@ -89,5 +93,18 @@ export class Command implements CommandOptions {
 		if (message.member?.hasPermission('ADMINISTRATOR')) missingPermissions.user = [];
 
 		return missingPermissions;
+	}
+
+	public getMissingTags(message: Message): Tag[] {
+		const missingTags: Tag[] = [];
+
+		for (const tag of this.tags) {
+			if (tag === Tag.ownerOnly && !CommandHandler.instance?.owners?.includes(message.author.id)) missingTags.push(Tag.ownerOnly);
+			if (tag === Tag.nsfw && message.channel instanceof GuildChannel && !message.channel.nsfw) missingTags.push(Tag.nsfw);
+			if (tag === Tag.guildOnly && message.guild === null) missingTags.push(Tag.guildOnly);
+			if (tag === Tag.guildOwnerOnly && message.guild?.ownerID !== message.author.id) missingTags.push(Tag.guildOwnerOnly);
+			if (tag === Tag.dmOnly && message.guild !== null) missingTags.push(Tag.dmOnly);
+		}
+		return missingTags;
 	}
 }
