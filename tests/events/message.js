@@ -1,10 +1,4 @@
-const {
-	argError,
-	CommandHandler,
-	getThing,
-	Logger,
-	permissionsError
-} = require('advanced-command-hander');
+const {argError, CommandHandler, getThing, Logger, permissionsError} = require('advanced-command-hander');
 
 module.exports = async (handler, message) => {
 	if (message.author.bot || message.system) return;

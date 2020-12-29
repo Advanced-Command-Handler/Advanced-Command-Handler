@@ -55,12 +55,13 @@ CommandHandler.launch({
 # CommandHandler Class
 
 | Field                           | Description                                                                     | Type                     |
-| ------------------------------- | ------------------------------------------------------------------------------- | ------------------------ |
+| ------------------------------- | ------------------------------------------------------------------------------- | ------------------------ | ----- |
 | `instance`                      | Represents the instance of the CommandHandler.                                  | `CommandHandlerInstance` |
 | `version`                       | The version of the handler.                                                     | `string`                 |
 | `create(options)`               | Creates a command handler and reset all data save in instance.                  | `=> void`                |
 | `launch(options)`               | Launch the Command Handler by login in the Client and fetching Commands/Events. | `=> void`                |
-| 'getPrefixFromMessage(message)` | Get the prefix from the message or null if not found.                           | `=> void | null`         | 
+| 'getPrefixFromMessage(message)` | Get the prefix from the message or null if not found.                           | `=> void                 | null` |
+
 ### CommandHandlerInstance
 
 When you create your instance of the command handler, the `instance` will be completed with these fields:
