@@ -5,8 +5,6 @@ CommandHandler.create({
 	eventsDir: 'events',
 	commandsDir: 'commands',
 	prefixes: ['!'],
-});
-
-CommandHandler.launch({
+}).launch({
 	token: process.env.TOKEN,
 });
