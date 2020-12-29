@@ -12,7 +12,7 @@
 - [Configuration](#configuration)
 - [Classes](#classes)
   - [Command Handler](#commandhandler-class)
-  - [CommandHandler Events]({commandhandler-events)
+  - [CommandHandler Events](#commandhandler-events)
   - [Client](#client-class)
 - [Templates](#templates)
   - [Commands](#commands)
@@ -78,6 +78,14 @@ When you create your instance of the command handler, the `instance` will be com
 ### CommandHandler events
 
 The CommandHandler class is extending the `EventEmitter` class, which means that there are events that can be hooked.
+
+| Event Name     | When Fired                                  |
+| -------------- | ------------------------------------------- |
+| `create`       | When creating the CommandHandler.           |
+| `launch`       | When starting to launch the CommandHandler. |
+| `loadEvents`   | When loading the events.                    |
+| `loadCommands` | When loading the commands.                  |
+| `launched`     | When the CommandHandler is started.         |
 
 # Client Class
 
