@@ -48,7 +48,7 @@
 	"scripts": {
 		"build": "tsc",
 		"prepare": "npm run build",
-		"prettier": "prettier package.json tsconfig.json README.md src/**/*.ts tests/** --write"
+		"prettier": "prettier package.json tsconfig.json README.md src/**/*.ts tests/**/*.js --write"
 	},
 	"types": "./dist/index.d.ts",
 	"version": "2.1.0"
