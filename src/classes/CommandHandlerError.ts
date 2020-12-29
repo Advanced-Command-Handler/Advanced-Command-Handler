@@ -1,3 +1,5 @@
+import CommandHandler from './CommandHandler';
+
 export default class CommandHandlerError extends Error {
 	public readonly where: string;
 	public readonly date: Date;
@@ -10,5 +12,7 @@ export default class CommandHandlerError extends Error {
 		this.name = 'CommandHandlerError';
 		this.where = where;
 		this.date = new Date();
+
+		CommandHandler.instance.emit('error');
 	}
 }
