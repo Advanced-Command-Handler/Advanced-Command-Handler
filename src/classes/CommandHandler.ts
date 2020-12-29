@@ -1,7 +1,7 @@
 import {ClientOptions, Collection, Message} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
-import {join, sep} from 'path';
+import {join} from 'path';
 import {Logger} from '../utils/Logger';
 import AdvancedClient from './AdvancedClient';
 import {Command} from './Command';
