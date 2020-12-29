@@ -1,4 +1,5 @@
 import {ClientOptions, Collection, Message} from 'discord.js';
+import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join, sep} from 'path';
 import {Logger} from '../utils/Logger';
@@ -15,8 +16,8 @@ export interface CommandHandlerInstance {
 	cooldowns: Collection<string, number>;
 }
 
-export default class CommandHandler implements CommandHandlerInstance {
-	public static instance: CommandHandlerInstance;
+export default class CommandHandler extends EventEmitter implements CommandHandlerInstance {
+	public static instance: CommandHandler;
 	public static version: string = require('../../package.json').version;
 	public commandsDir: string;
 	public eventsDir: string;
@@ -27,6 +28,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 	public cooldowns: Collection<string, number>;
 
 	private constructor(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}) {
+		super();
 		this.commandsDir = options.commandsDir;
 		this.eventsDir = options.eventsDir;
 		this.owners = options.owners;
@@ -42,7 +44,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
-
+		CommandHandler.instance.emit('create');
 		return CommandHandler.instance;
 	}
 
@@ -57,6 +59,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 
 	public static async launch(options: {token: string; clientOptions?: ClientOptions}): Promise<CommandHandlerInstance> {
 		CommandHandler.instance.client = new AdvancedClient(CommandHandler.instance, options.token, options.clientOptions ?? {});
+		CommandHandler.instance.emit('launch');
 
 		try {
 			await CommandHandler.loadCommands(CommandHandler.instance.commandsDir ?? '');
@@ -68,7 +71,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 		await CommandHandler.instance.client.login(options.token);
 		CommandHandler.instance.prefixes?.push(`<@${CommandHandler.instance.client?.user?.id}>`);
 		CommandHandler.instance.owners?.push((await CommandHandler.instance.client.fetchApplication()).owner?.id ?? '');
-
+		CommandHandler.instance.emit('launched');
 		return CommandHandler.instance;
 	}
 
@@ -85,6 +88,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 		if (!path) return;
 		const dirs = await fsPromises.readdir(path);
 		Logger.info('Loading commands.', 'loading');
+		CommandHandler.instance.emit('loadCommands');
 		Logger.comment(`Categories : (${dirs.length})`, 'loading');
 
 		if (dirs) {
@@ -107,7 +111,9 @@ export default class CommandHandler implements CommandHandlerInstance {
 		if (!path) return;
 		const files = await fsPromises.readdir(path);
 		Logger.info('Loading events.', 'loading');
+		CommandHandler.instance.emit('loadEvents');
 		Logger.comment(`Events : (${files.length})`, 'loading');
+
 		if (files) {
 			for (const file of files) {
 				let event = await import(join(process.cwd(), `${path}/${file}`));
