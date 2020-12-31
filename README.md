@@ -86,6 +86,7 @@ The CommandHandler class is extending the `EventEmitter` class, which means that
 | `loadEvents`   | When loading the events.                    |
 | `loadCommands` | When loading the commands.                  |
 | `launched`     | When the CommandHandler is started.         |
+| `error`        | When a CommandHandlerError is thrown.       |
 
 # Client Class
 
