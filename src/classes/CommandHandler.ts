@@ -38,14 +38,14 @@ export default class CommandHandler extends EventEmitter implements CommandHandl
 		this.commands = new Collection();
 	}
 
-	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}): CommandHandlerInstance {
+	public static create(options: {commandsDir: string; eventsDir: string; owners?: string[]; prefixes?: string[]}): typeof CommandHandler {
 		Logger.log('Advanced Command Handler, by Ayfri.', 'Loading', 'red');
 		if (!CommandHandler.instance) CommandHandler.instance = new CommandHandler(options);
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
 		CommandHandler.instance.emit('create');
-		return CommandHandler.instance;
+		return CommandHandler;
 	}
 
 	public static getPrefixFromMessage(message: Message): string | null {
