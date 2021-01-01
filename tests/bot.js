@@ -1,4 +1,4 @@
-const {CommandHandler} = require('../');
+const {CommandHandler, Logger} = require('../dist');
 require('dotenv').config();
 
 CommandHandler.create({
@@ -8,3 +8,12 @@ CommandHandler.create({
 }).launch({
 	token: process.env.TOKEN,
 });
+
+
+CommandHandler.on('create', (options) => {
+	Logger.log(options);
+})
+
+CommandHandler.on('launched', () => {
+	Logger.log('CommandHandler launched successfully !');
+})
