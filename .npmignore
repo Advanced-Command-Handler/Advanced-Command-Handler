@@ -3,3 +3,4 @@ src
 .git
 .github
 .dcignore
+tests
