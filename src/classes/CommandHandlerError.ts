@@ -13,6 +13,6 @@ export default class CommandHandlerError extends Error {
 		this.where = where;
 		this.date = new Date();
 
-		CommandHandler.instance.emit('error');
+		CommandHandler.emit('error', this);
 	}
 }
