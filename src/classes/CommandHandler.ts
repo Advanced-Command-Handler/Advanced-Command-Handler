@@ -23,16 +23,16 @@ export interface CommandHandlerInstance extends CreateCommandHandlerOptions {
 }
 
 type CommandHandlerEvents = {
-	create: [CreateCommandHandlerOptions]
-	error: [CommandHandlerError],
-	launch: [],
-	loadCommand: [Command],
-	loadEvent: [Event],
-	launched: [CommandHandlerInstance]
-}
+	create: [CreateCommandHandlerOptions];
+	error: [CommandHandlerError];
+	launch: [];
+	loadCommand: [Command];
+	loadEvent: [Event];
+	launched: [CommandHandlerInstance];
+};
 
 export default class CommandHandler implements CommandHandlerInstance {
-	private static emitter: EventEmitter = new EventEmitter;
+	private static emitter: EventEmitter = new EventEmitter();
 	public static instance: CommandHandler;
 	public static version: string = require('../../package.json').version;
 	public commandsDir: string;
@@ -110,7 +110,6 @@ export default class CommandHandler implements CommandHandlerInstance {
 		Logger.info('Loading commands.', 'loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'loading');
 		if (dirs) {
-
 			for (const dir of dirs) {
 				const files = await fsPromises.readdir(join(process.cwd(), `${path}/${dir}`));
 				if (files.length === 0) continue;
@@ -120,7 +119,6 @@ export default class CommandHandler implements CommandHandlerInstance {
 					await CommandHandler.loadCommand(`${path}/${dir}`, file);
 				}
 			}
-
 		}
 		Logger.info(`${CommandHandler.instance.commands.size} commands loaded.`, 'loading');
 	}
@@ -133,7 +131,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 
 		if (files) {
 			for (const file of files) {
-				let event: Event | Event & {default: Event} = await import(join(process.cwd(), `${path}/${file}`));
+				let event: Event | (Event & {default: Event}) = await import(join(process.cwd(), `${path}/${file}`));
 				if ('default' in event && Object.keys(event).length === 1) event = event.default;
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 

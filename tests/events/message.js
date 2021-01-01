@@ -16,7 +16,16 @@ module.exports = async (handler, message) => {
 		if (missingPermissions.client.length) return permissionsError(message, missingPermissions.client, cmd, true);
 		if (missingPermissions.user.length) return permissionsError(message, missingPermissions.user, cmd);
 
-		if (missingTags.length) return argError(message, `You are missing the following tags: \n\`${missingTags.map(tag => Object.keys(Tag).filter(t => Tag[t] === tag)).sort().join('\n').toUpperCase()}\``, cmd);
+		if (missingTags.length)
+			return argError(
+				message,
+				`You are missing the following tags: \n\`${missingTags
+					.map(tag => Object.keys(Tag).filter(t => Tag[t] === tag))
+					.sort()
+					.join('\n')
+					.toUpperCase()}\``,
+				cmd
+			);
 		try {
 			cmd.run(handler, message, args);
 			Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', cmd.name)}.`);

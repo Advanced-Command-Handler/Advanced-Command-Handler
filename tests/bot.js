@@ -9,11 +9,10 @@ CommandHandler.create({
 	token: process.env.TOKEN,
 });
 
-
-CommandHandler.on('create', (options) => {
+CommandHandler.on('create', options => {
 	Logger.log(options);
-})
+});
 
 CommandHandler.on('launched', () => {
 	Logger.log('CommandHandler launched successfully !');
-})
+});
