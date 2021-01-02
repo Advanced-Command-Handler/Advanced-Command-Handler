@@ -134,11 +134,10 @@ export default class CommandHandler implements CommandHandlerInstance {
 				if ('default' in event && Object.keys(event).length === 1) event = event.default;
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 
-				const eventName = file.split('.')[0];
-				if (event.once) CommandHandler.instance.client?.once(eventName, event.run.bind(null, CommandHandler.instance));
-				else CommandHandler.instance.client?.on(eventName, event.run.bind(null, CommandHandler.instance));
+				if (event.once) CommandHandler.instance.client?.once(event.name, event.run.bind(null, CommandHandler.instance));
+				else CommandHandler.instance.client?.on(event.name, event.run.bind(null, CommandHandler.instance));
 
-				Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
+				Logger.comment(`Event loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'loading');
 				CommandHandler.emit('loadEvent', event);
 			}
 		}
