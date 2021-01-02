@@ -1,6 +1,8 @@
-const {argError, CommandHandler, getThing, Logger, permissionsError, Tag} = require('advanced-command-hander');
+const {argError, CommandHandler, Event, getThing, Logger, permissionsError, Tag} = require('advanced-command-hander');
 
-module.exports = async (handler, message) => {
+module.exports = new Event({
+	name: 'message'
+}, async (handler, message) => {
 	if (message.author.bot || message.system) return;
 
 	const prefix = CommandHandler.getPrefixFromMessage(message);
@@ -33,4 +35,4 @@ module.exports = async (handler, message) => {
 			Logger.warn(error.stack);
 		}
 	}
-};
+});
