@@ -1,4 +1,5 @@
 import {DMChannel, GuildChannel, Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
+import {RunFunction} from '../types.js';
 import CommandHandler from './CommandHandler';
 
 export enum Tag {
@@ -21,8 +22,6 @@ interface CommandOptions {
 	tags?: Tag[];
 	cooldown?: number;
 }
-
-type RunFunction = (...options: any[]) => Promise<void> | void;
 
 interface DeleteMessageOptions {
 	message: Message;
