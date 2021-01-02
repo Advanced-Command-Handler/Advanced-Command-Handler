@@ -31,9 +31,9 @@ type CommandHandlerEvents = {
 };
 
 export default class CommandHandler implements CommandHandlerInstance {
-	private static emitter: EventEmitter = new EventEmitter();
 	public static instance: CommandHandler;
 	public static version: string = require('../../package.json').version;
+	private static emitter: EventEmitter = new EventEmitter();
 	public commandsDir: string;
 	public eventsDir: string;
 	public owners?: string[];
@@ -135,7 +135,9 @@ export default class CommandHandler implements CommandHandlerInstance {
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 
 				const eventName = file.split('.')[0];
-				CommandHandler.instance.client?.on(eventName, event.run.bind(null, CommandHandler.instance));
+				if (event.once) CommandHandler.instance.client?.once(eventName, event.run.bind(null, CommandHandler.instance));
+				else CommandHandler.instance.client?.on(eventName, event.run.bind(null, CommandHandler.instance));
+
 				Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
 				CommandHandler.emit('loadEvent', event);
 			}
