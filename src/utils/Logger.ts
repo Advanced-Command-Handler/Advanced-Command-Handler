@@ -34,12 +34,10 @@ export const colors = {
 export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | string>;
 
 export class Logger {
-	private static logComments: boolean = true;
+	public static logComments: boolean = true;
 
 	public static comment(message: any, title: string = 'comment'): void {
-		if (Logger.logComments) {
-			Logger.process(message, LogType.comment, title);
-		}
+		if (Logger.logComments) Logger.process(message, LogType.comment, title);
 	}
 
 	public static error(message: any, title: string = 'error'): void {
