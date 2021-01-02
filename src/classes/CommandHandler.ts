@@ -57,7 +57,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 	}
 
 	public static create(options: CreateCommandHandlerOptions): typeof CommandHandler {
-		Logger.log('Advanced Command Handler, by Ayfri.', 'Loading', 'red');
+		Logger.log(`Advanced Command Handler ${CommandHandler.version} by Ayfri.`, 'Loading', 'red');
 		if (!CommandHandler.instance) CommandHandler.instance = new CommandHandler(options);
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
