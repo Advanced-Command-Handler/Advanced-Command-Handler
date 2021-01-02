@@ -6,8 +6,7 @@ import {Logger} from '../utils/Logger';
 import AdvancedClient from './AdvancedClient';
 import {Command} from './Command';
 import CommandHandlerError from './CommandHandlerError';
-
-type Event = (...args: any) => Promise<void> & Function;
+import Event from './Event';
 
 export interface CreateCommandHandlerOptions {
 	commandsDir: string;
@@ -136,7 +135,7 @@ export default class CommandHandler implements CommandHandlerInstance {
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 
 				const eventName = file.split('.')[0];
-				CommandHandler.instance.client?.on(eventName, event.bind(null, CommandHandler.instance));
+				CommandHandler.instance.client?.on(eventName, event.run.bind(null, CommandHandler.instance));
 				Logger.comment(`Event loading : ${Logger.setColor('gold', `${eventName}.js`)}`, 'loading');
 				CommandHandler.emit('loadEvent', event);
 			}
