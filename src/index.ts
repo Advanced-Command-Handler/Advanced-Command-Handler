@@ -1,11 +1,12 @@
-import CommandHandler from './classes/CommandHandler.js';
-import CommandHandlerError from './classes/CommandHandlerError.js';
-import argError from './utils/argError.js';
+import CommandHandler from './classes/CommandHandler';
+import CommandHandlerError from './classes/CommandHandlerError';
+import Event from './classes/Event';
+import argError from './utils/argError';
 import dayjs from 'dayjs';
-import permissionsError from './utils/permissionsError.js';
+import permissionsError from './utils/permissionsError';
 
-export {CommandHandler, CommandHandlerError, argError, dayjs, permissionsError};
-export * from './classes/Command.js';
+export {CommandHandler, CommandHandlerError, Event, argError, dayjs, permissionsError};
+export * from './classes/Command';
 export * from './utils/Logger';
 export * from './utils/getThing';
 export * from 'discord.js-better-embed';
