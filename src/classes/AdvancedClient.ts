@@ -1,13 +1,13 @@
-import {CommandHandlerInstance} from './CommandHandler';
+import CommandHandler from './CommandHandler';
 import {Logger} from '../utils/Logger';
 import {Client, ClientOptions, Message, PermissionResolvable, Snowflake} from 'discord.js';
 
 export default class AdvancedClient extends Client {
-	public readonly handler: CommandHandlerInstance;
+	public readonly handler: typeof CommandHandler;
 
-	public constructor(handler: CommandHandlerInstance, token: string, options: ClientOptions) {
+	public constructor(token: string, options: ClientOptions) {
 		super(options);
-		this.handler = handler;
+		this.handler = CommandHandler;
 		this.token = token;
 		Logger.comment('Client initialized.', 'loading');
 	}

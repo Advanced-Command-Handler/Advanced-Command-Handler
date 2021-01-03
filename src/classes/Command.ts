@@ -95,7 +95,7 @@ export class Command implements CommandOptions {
 		const missingTags: Tag[] = [];
 
 		for (const tag of this.tags) {
-			if (tag === Tag.ownerOnly && !CommandHandler.instance?.owners?.includes(message.author.id)) missingTags.push(Tag.ownerOnly);
+			if (tag === Tag.ownerOnly && !CommandHandler.owners?.includes(message.author.id)) missingTags.push(Tag.ownerOnly);
 			if (tag === Tag.nsfw && message.channel instanceof GuildChannel && !message.channel.nsfw) missingTags.push(Tag.nsfw);
 			if (tag === Tag.guildOnly && message.guild === null) missingTags.push(Tag.guildOnly);
 			if (tag === Tag.guildOwnerOnly && message.guild?.ownerID !== message.author.id) missingTags.push(Tag.guildOwnerOnly);
