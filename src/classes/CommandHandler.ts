@@ -51,6 +51,12 @@ namespace CommandHandler {
 
 	export function create(options: CreateCommandHandlerOptions): typeof CommandHandler {
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');
+		commandsDir = options.commandsDir;
+		eventsDir = options.eventsDir;
+		owners = options.owners;
+		prefixes = options.prefixes;
+		cooldowns = new Collection();
+		commands = new Collection();
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
@@ -58,7 +64,7 @@ namespace CommandHandler {
 		return CommandHandler;
 	}
 
-	export async function launch(options: {token: string; clientOptions?: ClientOptions}): Promise<CommandHandlerInstance> {
+	export async function launch(options: {token: string; clientOptions?: ClientOptions}): Promise<typeof CommandHandler> {
 		client = new AdvancedClient(options.token, options.clientOptions ?? {});
 		emit('launch');
 

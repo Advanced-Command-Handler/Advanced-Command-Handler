@@ -1,8 +1,8 @@
+import dayjs from 'dayjs';
 import CommandHandler from './classes/CommandHandler';
 import CommandHandlerError from './classes/CommandHandlerError';
 import Event from './classes/Event';
 import argError from './utils/argError';
-import dayjs from 'dayjs';
 import permissionsError from './utils/permissionsError';
 
 export {CommandHandler, CommandHandlerError, Event, argError, dayjs, permissionsError};
