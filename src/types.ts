@@ -1,1 +1,1 @@
-export type RunFunction = (...options: any[]) => Promise<void> | void;
+export type RunFunction = (...options: any[]) => Promise<any>;
