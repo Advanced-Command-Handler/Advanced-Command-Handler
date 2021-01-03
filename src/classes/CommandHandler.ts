@@ -8,8 +8,7 @@ import Event from './Event';
 import {EventEmitter} from 'events';
 import {Logger} from '../utils/Logger';
 
-
-export namespace CommandHandler {
+namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
 		commandsDir: string;
 		eventsDir: string;
@@ -138,3 +137,5 @@ export namespace CommandHandler {
 		Logger.info(`${client?.eventNames().length ?? 0} events loaded.`, 'loading');
 	}
 }
+
+export default CommandHandler;
