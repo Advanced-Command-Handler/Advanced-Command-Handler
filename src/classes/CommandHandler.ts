@@ -59,7 +59,7 @@ namespace CommandHandler {
 	}
 
 	export async function launch(options: {token: string; clientOptions?: ClientOptions}): Promise<CommandHandlerInstance> {
-		client = new AdvancedClient(CommandHandler, options.token, options.clientOptions ?? {});
+		client = new AdvancedClient(options.token, options.clientOptions ?? {});
 		emit('launch');
 
 		try {

@@ -1,6 +1,6 @@
 import {Message, PermissionString} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command} from '../classes/Command.js';
+import {Command} from '../classes/Command';
 
 export default (message: Message, missingPermissions: PermissionString[], command: Command, fromClient: boolean = false): Promise<Message> => {
 	const embed = BetterEmbed.fromTemplate('title', {

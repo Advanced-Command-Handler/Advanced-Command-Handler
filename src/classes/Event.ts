@@ -1,4 +1,4 @@
-import {RunFunction} from '../types.js';
+import {RunFunction} from '../types';
 
 interface EventsOptions {
 	readonly name: string;

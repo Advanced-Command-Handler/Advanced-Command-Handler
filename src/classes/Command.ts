@@ -1,5 +1,5 @@
 import {DMChannel, GuildChannel, Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
-import {RunFunction} from '../types.js';
+import {RunFunction} from '../types';
 import CommandHandler from './CommandHandler';
 
 export enum Tag {
