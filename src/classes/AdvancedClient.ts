@@ -3,9 +3,8 @@ import {Logger} from '../utils/Logger';
 import {Client, ClientOptions, Message, PermissionResolvable, Snowflake} from 'discord.js';
 
 export default class AdvancedClient extends Client {
-	public constructor(token: string, options: ClientOptions) {
+	public constructor(options: ClientOptions) {
 		super(options);
-		this.token = token;
 		Logger.comment('Client initialized.', 'loading');
 	}
 

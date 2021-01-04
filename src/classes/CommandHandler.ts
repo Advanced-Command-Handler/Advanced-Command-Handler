@@ -15,6 +15,7 @@ namespace CommandHandler {
 		eventsDir: string;
 		owners?: string[];
 		prefixes?: string[];
+		clientOptions?: ClientOptions;
 	}
 
 	type CommandHandlerEvents = {
@@ -46,9 +47,11 @@ namespace CommandHandler {
 	}
 
 	export function setDefaultEvents(): typeof CommandHandler {
+		Logger.info('Loading default events.', 'loading');
 		for (let event of Object.values(defaultEvents)) {
-			Logger.comment(`Default event ${Logger.setColor('green', loadEvent(event.default).name) + Logger.setColor('comment', ' loaded.')}`, 'loading');
+			Logger.comment(`Default ${Logger.setColor('green', loadEvent(event.default).name) + Logger.setColor('comment', ' event loaded.')}`, 'loading');
 		}
+		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'loading');
 
 		return CommandHandler;
 	}
@@ -59,15 +62,15 @@ namespace CommandHandler {
 		eventsDir = options.eventsDir;
 		owners = options.owners ?? [];
 		prefixes = options.prefixes ?? [];
+		client = new AdvancedClient(options.clientOptions ?? {});
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
 		emit('create', options);
 		return CommandHandler;
-	}
 
-	export async function launch(options: {token: string; clientOptions?: ClientOptions}): Promise<typeof CommandHandler> {
-		client = new AdvancedClient(options.token, options.clientOptions ?? {});
+	}
+	export async function launch(token: string): Promise<typeof CommandHandler> {
 		emit('launch');
 
 		try {
@@ -77,10 +80,10 @@ namespace CommandHandler {
 			Logger.error(e.stack, 'Loading');
 		}
 
-		await client.login(options.token);
+		await client?.login(token);
 		prefixes.push(`<@${client?.user?.id}> `);
 		prefixes.push(`<@!${client?.user?.id}> `);
-		owners.push((await client.fetchApplication()).owner?.id ?? '');
+		owners.push((await client?.fetchApplication())?.owner?.id ?? '');
 		emit('launched');
 		return CommandHandler;
 	}
