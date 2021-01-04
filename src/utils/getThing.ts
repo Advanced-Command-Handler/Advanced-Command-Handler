@@ -30,10 +30,10 @@ export async function getThing(
 		text = text.content;
 	} else message = null;
 
-	const client = CommandHandler.instance.client;
+	const client = CommandHandler.client;
 	switch (dataType) {
 		case DataType.command:
-			return CommandHandler.instance.commands.find((c: Command) => c.name === text || (c.aliases && c.aliases.includes(text as string))) || null;
+			return CommandHandler.commands.find((c: Command) => c.name === text || (c.aliases && c.aliases.includes(text as string))) || null;
 
 		case DataType.channel:
 			return (
