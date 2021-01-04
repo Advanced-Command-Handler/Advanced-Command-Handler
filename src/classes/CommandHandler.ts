@@ -74,7 +74,7 @@ namespace CommandHandler {
 		}
 
 		await client.login(options.token);
-		prefixes.push(`<@${client?.user?.id}>` );
+		prefixes.push(`<@${client?.user?.id}> `);
 		owners.push((await client.fetchApplication()).owner?.id ?? '');
 		emit('launched', CommandHandler);
 		return CommandHandler;
