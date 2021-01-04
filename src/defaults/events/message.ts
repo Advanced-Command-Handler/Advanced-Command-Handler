@@ -6,8 +6,6 @@ import argError from '../../utils/argError';
 import {getThing} from '../../utils/getThing';
 import {Logger} from '../../utils/Logger';
 import permissionsError from '../../utils/permissionsError';
-//import {argError, CommandHandler, Event, getThing, Logger, permissionsError, Tag} from '../../index';
-
 
 export default new Event(
 	{

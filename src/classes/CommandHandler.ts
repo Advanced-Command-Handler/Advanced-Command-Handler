@@ -45,6 +45,14 @@ namespace CommandHandler {
 		emitter.emit(eventName, args);
 	}
 
+	export function setDefaultEvents(): typeof CommandHandler {
+		for (let event of Object.values(defaultEvents)) {
+			loadEvent(event.default);
+		}
+
+		return CommandHandler;
+	}
+
 	export function create(options: CreateCommandHandlerOptions): typeof CommandHandler {
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');
 		commandsDir = options.commandsDir;
@@ -129,7 +137,7 @@ namespace CommandHandler {
 		Logger.info(`${client?.eventNames().length ?? 0} events loaded.`, 'loading');
 	}
 
-	export async function loadEvent(event: Event | (Event & {default: Event})): Promise<void> {
+	export function loadEvent(event: Event | (Event & {default: Event})): void {
 		if ('default' in event && Object.keys(event).length === 1) event = event.default;
 
 		if (event.once) client?.once(event.name, event.run.bind(null, CommandHandler));
