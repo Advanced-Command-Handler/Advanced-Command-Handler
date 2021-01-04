@@ -1,12 +1,12 @@
 import {ClientOptions, Collection, Message} from 'discord.js';
+import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
+import {Logger} from '../utils/Logger';
 import AdvancedClient from './AdvancedClient';
 import {Command} from './Command';
 import CommandHandlerError from './CommandHandlerError';
 import Event from './Event';
-import {EventEmitter} from 'events';
-import {Logger} from '../utils/Logger';
 
 namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
@@ -29,6 +29,7 @@ namespace CommandHandler {
 	export const emitter: EventEmitter = new EventEmitter();
 	export const commands: Collection<string, Command> = new Collection();
 	export const cooldowns: Collection<string, number> = new Collection();
+	export const events: Collection<string, Event> = new Collection();
 	export let commandsDir: string = '';
 	export let eventsDir: string = '';
 	export let owners: string[] = [];
@@ -122,6 +123,7 @@ namespace CommandHandler {
 
 				if (event.once) client?.once(event.name, event.run.bind(null, CommandHandler));
 				else client?.on(event.name, event.run.bind(null, CommandHandler));
+				events.set(event.name, event);
 
 				Logger.comment(`Event loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'loading');
 				emit('loadEvent', event);
