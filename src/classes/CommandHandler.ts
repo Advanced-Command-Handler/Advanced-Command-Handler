@@ -81,12 +81,7 @@ namespace CommandHandler {
 	}
 
 	export function getPrefixFromMessage(message: Message): string | null {
-		let prefix = null;
-		for (const thisPrefix of prefixes ?? []) {
-			if (message.content.startsWith(thisPrefix)) prefix = thisPrefix;
-		}
-
-		return prefix;
+		return prefixes.find(prefix => message.content.startsWith(prefix)) ?? null;
 	}
 
 	export async function loadCommand(path: string, name: string) {
