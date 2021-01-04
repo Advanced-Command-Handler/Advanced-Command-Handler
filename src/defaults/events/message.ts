@@ -1,9 +1,17 @@
 import {Message} from 'discord.js';
-import {argError, CommandHandler, Event, getThing, Logger, permissionsError, Tag} from '../../';
+import {Tag} from '../../classes/Command';
+import CommandHandler from '../../classes/CommandHandler';
+import Event from '../../classes/Event';
+import argError from '../../utils/argError';
+import {getThing} from '../../utils/getThing';
+import {Logger} from '../../utils/Logger';
+import permissionsError from '../../utils/permissionsError';
+//import {argError, CommandHandler, Event, getThing, Logger, permissionsError, Tag} from '../../index';
 
-module.exports = new Event(
+
+export default new Event(
 	{
-		name: 'message',
+		name: 'message'
 	},
 	async (handler: typeof CommandHandler, message: Message): Promise<any> => {
 		if (message.author.bot || message.system) return;
