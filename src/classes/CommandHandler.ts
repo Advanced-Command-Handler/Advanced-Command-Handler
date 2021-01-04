@@ -118,11 +118,9 @@ namespace CommandHandler {
 
 		if (files) {
 			for (const file of files) {
-				let event: Event | (Event & {default: Event}) = await import(join(process.cwd(), `${path}/${file}`));
-				if ('default' in event && Object.keys(event).length === 1) event = event.default;
-				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
+				const event: Event | (Event & {default: Event}) = await import(join(process.cwd(), `${path}/${file}`));
+				if ('default' in event && !event.default || !event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 				await loadEvent(event);
-
 				Logger.comment(`Event loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'loading');
 				emit('loadEvent', event);
 			}
@@ -131,7 +129,9 @@ namespace CommandHandler {
 		Logger.info(`${client?.eventNames().length ?? 0} events loaded.`, 'loading');
 	}
 
-	export async function loadEvent(event: Event): Promise<void> {
+	export async function loadEvent(event: Event | (Event & {default: Event})): Promise<void> {
+		if ('default' in event && Object.keys(event).length === 1) event = event.default;
+
 		if (event.once) client?.once(event.name, event.run.bind(null, CommandHandler));
 		else client?.on(event.name, event.run.bind(null, CommandHandler));
 		events.set(event.name, event);
