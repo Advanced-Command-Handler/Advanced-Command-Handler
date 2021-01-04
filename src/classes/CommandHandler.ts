@@ -15,7 +15,6 @@ namespace CommandHandler {
 		eventsDir: string;
 		owners?: string[];
 		prefixes?: string[];
-		clientOptions?: ClientOptions;
 	}
 
 	type CommandHandlerEvents = {
@@ -49,7 +48,8 @@ namespace CommandHandler {
 	export function setDefaultEvents(): typeof CommandHandler {
 		Logger.info('Loading default events.', 'loading');
 		for (let event of Object.values(defaultEvents)) {
-			Logger.comment(`Default ${Logger.setColor('green', loadEvent(event.default).name) + Logger.setColor('comment', ' event loaded.')}`, 'loading');
+			events.set(event.default.name, event.default);
+			Logger.comment(`Default ${Logger.setColor('green', event.default.name) + Logger.setColor('comment', ' event loaded.')}`, 'loading');
 		}
 		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'loading');
 
@@ -62,28 +62,35 @@ namespace CommandHandler {
 		eventsDir = options.eventsDir;
 		owners = options.owners ?? [];
 		prefixes = options.prefixes ?? [];
-		client = new AdvancedClient(options.clientOptions ?? {});
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
 		emit('create', options);
 		return CommandHandler;
-
 	}
-	export async function launch(token: string): Promise<typeof CommandHandler> {
+
+	export async function launch(options: {token: string; clientOptions?: ClientOptions}): Promise<typeof CommandHandler> {
+		client = new AdvancedClient(options.token, options.clientOptions ?? {});
 		emit('launch');
 
 		try {
 			await loadCommands(commandsDir ?? '');
 			await loadEvents(eventsDir ?? '');
+
+			Logger.comment('Binding events to client.', 'binding');
+			events.forEach(event => {
+				event.bind(client!!);
+			});
+
+			Logger.info(`${client?.eventNames().length ?? 0} events loaded & bind.`, 'loading');
 		} catch (e) {
 			Logger.error(e.stack, 'Loading');
 		}
 
-		await client?.login(token);
+		await client.login(options.token);
 		prefixes.push(`<@${client?.user?.id}> `);
 		prefixes.push(`<@!${client?.user?.id}> `);
-		owners.push((await client?.fetchApplication())?.owner?.id ?? '');
+		owners.push((await client.fetchApplication()).owner?.id ?? '');
 		emit('launched');
 		return CommandHandler;
 	}
@@ -129,21 +136,21 @@ namespace CommandHandler {
 
 		if (files) {
 			for (const file of files) {
-				const event: Event | (Event & {default: Event}) = await import(join(process.cwd(), `${path}/${file}`));
-				if ('default' in event && !event.default || !event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
-				Logger.comment(`Event ${loadEvent(event).name} loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'loading');
+				let event: Event | (Event & {default: Event}) = await import(join(process.cwd(), `${path}/${file}`));
+				if ('default' in event) event = event.default;
+				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
+				events.set(event.name, event);
+
+				Logger.comment(`Event ${event.name} loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'loading');
 			}
 		}
-
-		Logger.info(`${client?.eventNames().length ?? 0} events loaded.`, 'loading');
 	}
 
 	export function loadEvent(event: Event | (Event & {default: Event})): Event {
-		if ('default' in event && Object.keys(event).length === 1) event = event.default;
+		if ('default' in event) event = event.default;
 
 		if (event.once) client?.once(event.name, event.run.bind(null, CommandHandler));
 		else client?.on(event.name, event.run.bind(null, CommandHandler));
-		events.set(event.name, event);
 		emit('loadEvent', event);
 
 		return event;
