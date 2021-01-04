@@ -33,13 +33,13 @@ namespace CommandHandler {
 
 	export const version: string = require('../../package.json').version;
 	export const emitter: EventEmitter = new EventEmitter();
-	export let commandsDir: string;
-	export let eventsDir: string;
-	export let owners: string[] | undefined;
-	export let prefixes: string[] | undefined;
-	export let client: AdvancedClient | null;
-	export let commands: Collection<string, Command>;
-	export let cooldowns: Collection<string, number>;
+	export const commands: Collection<string, Command> = new Collection();
+	export const cooldowns: Collection<string, number> = new Collection();
+	export let commandsDir: string = '';
+	export let eventsDir: string = '';
+	export let owners: string[] = [];
+	export let prefixes: string[] = [];
+	export let client: AdvancedClient | null = null;
 
 	export function on<K extends keyof CommandHandlerEvents>(eventName: K, fn: (listener: CommandHandlerEvents[K]) => void): void {
 		emitter.on(eventName, fn);
@@ -53,10 +53,8 @@ namespace CommandHandler {
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');
 		commandsDir = options.commandsDir;
 		eventsDir = options.eventsDir;
-		owners = options.owners;
-		prefixes = options.prefixes;
-		cooldowns = new Collection();
-		commands = new Collection();
+		owners = options.owners ?? [];
+		prefixes = options.prefixes ?? [];
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
