@@ -16,19 +16,13 @@ namespace CommandHandler {
 		prefixes?: string[];
 	}
 
-	export interface CommandHandlerInstance extends CreateCommandHandlerOptions {
-		client: AdvancedClient | null;
-		commands: Collection<string, Command>;
-		cooldowns: Collection<string, number>;
-	}
-
 	type CommandHandlerEvents = {
 		create: [CreateCommandHandlerOptions];
 		error: [CommandHandlerError];
 		launch: [];
 		loadCommand: [Command];
 		loadEvent: [Event];
-		launched: [CommandHandlerInstance];
+		launched: [];
 	};
 
 	export const version: string = require('../../package.json').version;
@@ -77,7 +71,7 @@ namespace CommandHandler {
 		prefixes.push(`<@${client?.user?.id}> `);
 		prefixes.push(`<@!${client?.user?.id}> `);
 		owners.push((await client.fetchApplication()).owner?.id ?? '');
-		emit('launched', CommandHandler);
+		emit('launched');
 		return CommandHandler;
 	}
 

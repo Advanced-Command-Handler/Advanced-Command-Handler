@@ -22,7 +22,7 @@ module.exports = new Event({
 		if (missingTags.length)
 			return argError(
 				message,
-				`You are missing the following tags: \n\`${missingTags
+				`There are missing tags for the message: \n\`${missingTags
 					.map((_, index: number) => Tag[index])
 					.sort()
 					.join('\n')
