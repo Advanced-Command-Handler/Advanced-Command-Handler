@@ -47,7 +47,7 @@ namespace CommandHandler {
 
 	export function setDefaultEvents(): typeof CommandHandler {
 		for (let event of Object.values(defaultEvents)) {
-			loadEvent(event.default);
+			Logger.comment(`Default event ${Logger.setColor('green', loadEvent(event.default).name) + Logger.setColor('comment', ' loaded.')}`, 'loading');
 		}
 
 		return CommandHandler;
