@@ -7,6 +7,7 @@ import AdvancedClient from './AdvancedClient';
 import {Command} from './Command';
 import CommandHandlerError from './CommandHandlerError';
 import Event from './Event';
+import * as defaultEvents from '../defaults/events';
 
 namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
@@ -120,10 +121,7 @@ namespace CommandHandler {
 				let event: Event | (Event & {default: Event}) = await import(join(process.cwd(), `${path}/${file}`));
 				if ('default' in event && Object.keys(event).length === 1) event = event.default;
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
-
-				if (event.once) client?.once(event.name, event.run.bind(null, CommandHandler));
-				else client?.on(event.name, event.run.bind(null, CommandHandler));
-				events.set(event.name, event);
+				await loadEvent(event);
 
 				Logger.comment(`Event loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'loading');
 				emit('loadEvent', event);
@@ -131,6 +129,12 @@ namespace CommandHandler {
 		}
 
 		Logger.info(`${client?.eventNames().length ?? 0} events loaded.`, 'loading');
+	}
+
+	export async function loadEvent(event: Event): Promise<void> {
+		if (event.once) client?.once(event.name, event.run.bind(null, CommandHandler));
+		else client?.on(event.name, event.run.bind(null, CommandHandler));
+		events.set(event.name, event);
 	}
 }
 
