@@ -12,15 +12,15 @@ export enum Tag {
 
 interface CommandOptions {
 	readonly name: string;
-	description?: string;
-	usage?: string;
-	category?: string;
+	category: string;
 	aliases?: string[];
-	clientPermissions?: PermissionString[];
-	userPermissions?: PermissionString[];
 	channels?: Array<Snowflake | TextChannel>;
-	tags?: Tag[];
+	clientPermissions?: PermissionString[];
 	cooldown?: number;
+	description?: string;
+	tags?: Tag[];
+	usage?: string;
+	userPermissions?: PermissionString[];
 }
 
 interface DeleteMessageOptions {
