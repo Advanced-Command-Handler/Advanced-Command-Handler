@@ -58,15 +58,16 @@ CommandHandler.launch({
 
 | Field                           | Description                                                                                        | Type                                    |
 | ------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `version`                       | The version of the handler (equivalent to `package.json` version).                                 | `string`                                |
-| `create(options)`               | Creates the command handler, creates the [Client](#client-class).                                  | `=> void`                               |
-| `launch(options)`               | Launch the Command Handler by logging in the [Client](#client-class) and fetching Commands/Events. | `=> void`                               |
-| `getPrefixFromMessage(message)` | Get the prefix from the message or null if not found.                                              | `=> string \| null`                     |
+| `create(options)`               | Creates the command handler, creates the [Client](#client-class).                                  | `void`                                  |
+| `getPrefixFromMessage(message)` | Get the prefix from the message or null if not found.                                              | `string \| null`                        |
+| `launch(options)`               | Launch the Command Handler by logging in the [Client](#client-class) and fetching Commands/Events. | `void`                                  |
+| `setDefaultEvents()`            | Sets the default Events.                                                                           | `void`                                  |
 | `client`                        | Represents the [Client](#client-class) of the bot.                                                 | `AdvancedClient extends Discord.Client` |
 | `commands`                      | All the commands that have been found by the command handler at launch.                            | `Discord.Collection<String, Command>`   |
 | `cooldowns`                     | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`                                   | `Discord.Collection<SnowFlake, number>` |
 | `prefixes`                      | Prefixes that you put in the `create` function.                                                    | `String[]`                              |
 | `owners`                        | Owners that you put in the `create` function.                                                      | `SnowFlake[]`                           |
+| `version`                       | The version of the handler (equivalent to `package.json` version).                                 | `string`                                |
 
 ### CommandHandler events
 
