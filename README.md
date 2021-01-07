@@ -10,7 +10,7 @@
 # Index
 
 - [Configuration](#configuration)
-- [Command Handler](#commandhandler-class)
+- [Command Handler](#commandhandler-namespace)
   - [CommandHandler Events](#commandhandler-events)
 - [Classes](#classes)
   - [Client](#client-class)
@@ -19,6 +19,8 @@
     - [Command Class](#command-class)
     - [Events](#events)
     - [Event Class](#event-class)
+- [Defaults](#defaults)
+  - [Events](#defaults-events)
 - [Utils](#utils)
   - [Logger](#logger-class)
     - [Example](#example)
@@ -54,7 +56,7 @@ CommandHandler.launch({
 > Note:
 > You can see some more advanced examples in [this repo](https://github.com/Ayfri/advanced-command-handler-examples).
 
-# # CommandHandler Namespace
+# CommandHandler Namespace
 
 | Field                           | Description                                                                                        | Type                                    |
 | ------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------- |
@@ -82,7 +84,7 @@ The CommandHandler class is extending the `EventEmitter` class, which means that
 | `launched`     | When the CommandHandler is started.         |
 | `error`        | When a CommandHandlerError is thrown.       |
 
-# # Classes
+# Classes
 
 # Client Class
 
@@ -149,6 +151,14 @@ module.exports = new Event({
 | ---------------- | ------------------------------------------------ | -------------- |
 | `bind(client)`   | Bind the Event to the [Client](#client-class).   | `void`         |
 | `unbind(client)` | Unbind the Event to the [Client](#client-class). | `void`         |
+
+# Defaults
+
+## Defaults Events
+
+There is for now one Default Event which is the `message` event.
+
+To use the default events, see the [CommandHandler Namespace `setDefaultEvents()` function](#commandhandler-namespace).
 
 # Utils
 
