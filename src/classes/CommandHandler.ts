@@ -116,7 +116,7 @@ namespace CommandHandler {
 		if (command.default) command = command.default;
 		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		if (command.category === 'None') command.category = path.split(/[\\/]/).pop();
-		commands.set(name, command);
+		commands.set(command.name, command);
 		emit('loadCommand', command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
 	}
