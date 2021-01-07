@@ -16,7 +16,9 @@
   - [Client](#client-class)
   - [Templates](#templates)
     - [Commands](#commands)
+    - [Command Class](#command-class)
     - [Events](#events)
+    - [Event Class](#event-class)
 - [Utils](#utils)
   - [Logger](#logger-class)
     - [Example](#example)
@@ -140,7 +142,12 @@ module.exports = new Event({
 });
 ```
 
-The file's given name set out which event it handles.
+## Event Class
+
+| Method           | Description                                      | Returning Type |
+| ---------------- | ------------------------------------------------ | -------------- |
+| `bind(client)`   | Bind the Event to the [Client](#client-class).   | `void`         |
+| `unbind(client)` | Unbind the Event to the [Client](#client-class). | `void`         |
 
 # Utils
 
@@ -199,10 +206,10 @@ colors = {
 
 ## BetterEmbed class
 
-| Name           | Description                                                            |
-| -------------- | ---------------------------------------------------------------------- |
-| `checkSize`    | Check the size of the Embed and throw an error if a field is too long. |
-| `cutIfTooLong` | Check the size of the Embed and cut the fields that are too long.      |
+| Name             | Description                                                            |
+| ---------------- | ---------------------------------------------------------------------- |
+| `checkSize()`    | Check the size of the Embed and throw an error if a field is too long. |
+| `cutIfTooLong()` | Check the size of the Embed and cut the fields that are too long.      |
 
 This is a class for creating Embed Object, but a bit simpler like this :
 
@@ -244,11 +251,11 @@ This can simplify your embeds declarations.
 
 There are multiple utils functions in the `util` folder that you can use (require them like other classes).
 
-| Name                                                                       | Description                                                                                                                                   | Returning                     |
-| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| `argError(message, error, command)`                                        | Send an embed that explains the argument error and show correct the syntax.                                                                   | Embed Object                  |
-| `async getThing(datatype, text)`                                           | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will look into its mentions. | Datatype you entered or false |
-| `permissionsError(message, missingPermissions, command, isFromBot = true)` | Send an embed that explains which permissions are missing.                                                                                    | Embed Object                  |
+| Name                                                                       | Description                                                                                                                                   | Returning                       |
+| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| `argError(message, error, command)`                                        | Send an embed that explains the argument error and show correct the syntax.                                                                   | `BetterEmbed`                   |
+| `async getThing(datatype, text)`                                           | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will look into its mentions. | Datatype you entered or `false` |
+| `permissionsError(message, missingPermissions, command, isFromBot = true)` | Send an embed that explains which permissions are missing.                                                                                    | `BetterEmbed`                   |
 
 The `Command` class has a method `deleteMessage( message )` to safely delete messages without sending Errors _(missing permissions)_.
 
