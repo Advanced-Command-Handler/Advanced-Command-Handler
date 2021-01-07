@@ -164,7 +164,7 @@ To use the default Commands/Events, use the `setDefaultEvents` and `setDefaultCo
 
 There is for now only one Default Event which is the `message` event.
 
-## Default Commands
+## Defaults Commands
 
 There is for now only one default Command which is the `ping` command.
 
