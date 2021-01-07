@@ -115,15 +115,14 @@ module.exports = new Command(
 		clientPermissions: [],
 		channels: [],
 		cooldown: 10,
-	} /* Note :
-         You can put what arguments you want as this handler
-         doesn't have a default message event.
-         */,
-	async (client, message, args) => {
+	},
+	async (handler, message, args) => {
 		// Your code goes here.
 	}
 );
 ```
+> Note:
+> Command function car get any argument you put with a custom message event. 
 
 **You have to put the command into a category folder into your commands folder like in the example.**
 
@@ -138,9 +137,14 @@ module.exports = new Command(
 ## Events
 
 ```js
-module.exports = async (handler, ...EventArguments) => {
+const {Event} = require('advanced-command-handler');
+module.exports = new Event({
+    name: '',
+    //optionnal :
+    once: true
+}, async (handler, ...EventArguments) => {
 	// Your code goes here.
-};
+});
 ```
 
 The file's given name set out which event it handles.
