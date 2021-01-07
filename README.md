@@ -9,24 +9,24 @@
 
 # Index
 
-- [Configuration](#configuration)
-- [Command Handler](#commandhandler-namespace)
-  - [CommandHandler Events](#commandhandler-events)
-- [Classes](#classes)
-  - [Client](#client-class)
-  - [Templates](#templates)
-    - [Commands](#commands)
-    - [Command Class](#command-class)
-    - [Events](#events)
-    - [Event Class](#event-class)
-- [Defaults](#defaults)
-  - [Events](#defaults-events)
-- [Utils](#utils)
-  - [Logger](#logger-class)
-    - [Example](#example)
-    - [Colors](#colors)
-  - [BetterEmbed](#betterembed-class)
-  - [Useful functions](#useful-functions)
+-   [Configuration](#configuration)
+-   [Command Handler](#commandhandler-namespace)
+    -   [CommandHandler Events](#commandhandler-events)
+-   [Classes](#classes)
+    -   [Client](#client-class)
+    -   [Templates](#templates)
+        -   [Commands](#commands)
+        -   [Command Class](#command-class)
+        -   [Events](#events)
+        -   [Event Class](#event-class)
+-   [Defaults](#defaults)
+    -   [Events](#defaults-events)
+-   [Utils](#utils)
+    -   [Logger](#logger-class)
+        -   [Example](#example)
+        -   [Colors](#colors)
+    -   [BetterEmbed](#betterembed-class)
+    -   [Useful functions](#useful-functions)
 
 # Configuration
 
@@ -37,19 +37,19 @@ After, you create your main file and adds this into it :
 const {CommandHandler} = require('advanced-command-handler');
 
 CommandHandler.create({
-    // Optionnals :
-    commandsDir: 'name of the dir',
-    eventsDir: 'name of the dir',
-    prefixes: ['!', 'coolPrefix '],
-    owners: ['Discord IDs'],
+	// Optionnals :
+	commandsDir: 'name of the dir',
+	eventsDir: 'name of the dir',
+	prefixes: ['!', 'coolPrefix '],
+	owners: ['Discord IDs'],
 });
 
 CommandHandler.launch({
-    token: 'YOUR TOKEN GOES HERE',
-    // Optionnal :
-    clientOptions: {
-        // Client Options, see Discord.js#ClientOptions
-    },
+	token: 'YOUR TOKEN GOES HERE',
+	// Optionnal :
+	clientOptions: {
+		// Client Options, see Discord.js#ClientOptions
+	},
 });
 ```
 
@@ -60,11 +60,11 @@ CommandHandler.launch({
 
 | Field                           | Description                                                                                        | Type                                    |
 | ------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `create(options)`               | Creates the command handler, creates the [Client](#client-class).                                  | `void`                                  |
+| `create(options)`               | Creates the command handler, creates the [Client](#client-class).                                  | `CommandHandler`                        |
 | `getPrefixFromMessage(message)` | Get the prefix from the message or null if not found.                                              | `string \| null`                        |
-| `launch(options)`               | Launch the Command Handler by logging in the [Client](#client-class) and fetching Commands/Events. | `void`                                  |
-| `setDefaultCommands()`          | Sets the default Commands, see [Default Commands](#defaults-commands).                             | `void`                                  |
-| `setDefaultEvents()`            | Sets the default Events [Default Events](#defaults-events).                                        | `void`                                  |
+| `launch(options)`               | Launch the Command Handler by logging in the [Client](#client-class) and fetching Commands/Events. | `CommandHandler`                        |
+| `setDefaultCommands()`          | Sets the default Commands, see [Default Commands](#defaults-commands).                             | `CommandHandler`                        |
+| `setDefaultEvents()`            | Sets the default Events [Default Events](#defaults-events).                                        | `CommandHandler`                        |
 | `client`                        | Represents the [Client](#client-class) of the bot.                                                 | `AdvancedClient extends Discord.Client` |
 | `commands`                      | All the commands that have been found by the command handler at launch.                            | `Discord.Collection<String, Command>`   |
 | `cooldowns`                     | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`                                   | `Discord.Collection<SnowFlake, number>` |
@@ -101,22 +101,22 @@ The CommandHandler class is extending the `EventEmitter` class, which means that
 ```js
 const {Command} = require('advanced-command-handler');
 module.exports = new Command(
-    {
-        name: '',
-        description: '',
-        // Optionnals :
-        usage: '',
-        category: '',
-        tags: [],
-        aliases: [],
-        userPermissions: [],
-        clientPermissions: [],
-        channels: [],
-        cooldown: 10,
-    },
-    async (handler, message, args) => {
-        // Your code goes here.
-    }
+	{
+		name: '',
+		description: '',
+		// Optionnals :
+		usage: '',
+		category: '',
+		tags: [],
+		aliases: [],
+		userPermissions: [],
+		clientPermissions: [],
+		channels: [],
+		cooldown: 10,
+	},
+	async (handler, message, args) => {
+		// Your code goes here.
+	}
 );
 ```
 
@@ -138,14 +138,14 @@ module.exports = new Command(
 ```js
 const {Event} = require('advanced-command-handler');
 module.exports = new Event(
-    {
-        name: '',
-        //optionnal :
-        once: true,
-    },
-    async (handler, ...EventArguments) => {
-        // Your code goes here.
-    }
+	{
+		name: '',
+		//optionnal :
+		once: true,
+	},
+	async (handler, ...EventArguments) => {
+		// Your code goes here.
+	}
 );
 ```
 
@@ -204,22 +204,22 @@ These are the current colors :
 
 ```js
 colors = {
-    red: '#b52825',
-    orange: '#e76a1f',
-    gold: '#deae17',
-    yellow: '#eeee23',
-    green: '#3ecc2d',
-    teal: '#11cc93',
-    blue: '#2582ff',
-    indigo: '#524cd9',
-    violet: '#7d31cc',
-    magenta: '#b154cf',
-    pink: '#d070a0',
-    brown: '#502f1e',
-    black: '#000000',
-    grey: '#6e6f77',
-    white: '#ffffff',
-    default: '#cccccc',
+	red: '#b52825',
+	orange: '#e76a1f',
+	gold: '#deae17',
+	yellow: '#eeee23',
+	green: '#3ecc2d',
+	teal: '#11cc93',
+	blue: '#2582ff',
+	indigo: '#524cd9',
+	violet: '#7d31cc',
+	magenta: '#b154cf',
+	pink: '#d070a0',
+	brown: '#502f1e',
+	black: '#000000',
+	grey: '#6e6f77',
+	white: '#ffffff',
+	default: '#cccccc',
 };
 ```
 
@@ -246,18 +246,18 @@ embed.setDescription(embed.description.slice(0, 2048));
 // BetterEmbed
 const {BetterEmbed} = require('advanced-command-handler');
 const embed = BetterEmbed.fromTemplate('basic', {
-    image: 'url',
-    author: {
-        name: 'name',
-        icon_url: 'icon_url',
-    },
+	image: 'url',
+	author: {
+		name: 'name',
+		icon_url: 'icon_url',
+	},
 });
 
 embed.cutIfTooLong();
 
 // Using templates
 BetterEmbed.templates.funny = {
-    title: '${client.user.username} says that you are funny !',
+	title: '${client.user.username} says that you are funny !',
 };
 
 const embed = BetterEmbed.fromTemplate('funny', {client: message.client});
