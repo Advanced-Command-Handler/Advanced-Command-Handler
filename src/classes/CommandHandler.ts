@@ -112,10 +112,10 @@ namespace CommandHandler {
 	}
 
 	export async function loadCommand(path: string, name: string) {
-		let command = await import(join(process.cwd(), `./${path}/${name}`));
-		if (command.default) command = command.default;
+		let command: Command |(Command & {default: Command}) = await import(join(process.cwd(), `./${path}/${name}`));
+		if ('default' in command) command = command.default;
 		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-		if (command.category === 'None') command.category = path.split(/[\\/]/).pop();
+		if (command.category === 'None') command.category = <string>path.split(/[\\/]/).pop();
 		commands.set(command.name, command);
 		emit('loadCommand', command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');

@@ -12,8 +12,8 @@ export enum Tag {
 
 interface CommandOptions {
 	readonly name: string;
-	category: string;
 	aliases?: string[];
+	category?: string;
 	channels?: Array<Snowflake | TextChannel>;
 	clientPermissions?: PermissionString[];
 	cooldown?: number;
