@@ -1,5 +1,5 @@
 import {DMChannel, GuildChannel, Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
-import {RunFunction} from '../types';
+import {DefaultCommandRunFunction, RunFunction} from '../types';
 import CommandHandler from './CommandHandler';
 
 export enum Tag {
@@ -47,9 +47,9 @@ export class Command implements CommandOptions {
 	public channels: Array<Snowflake | TextChannel>;
 	public tags: Tag[];
 	public cooldown: number;
-	public run: RunFunction;
+	public run: RunFunction | DefaultCommandRunFunction;
 
-	public constructor(options: CommandOptions, runFunction: RunFunction) {
+	public constructor(options: CommandOptions, runFunction: RunFunction | DefaultCommandRunFunction) {
 		this.name = options.name;
 		this.run = runFunction;
 		this.description = options.description ?? '';
