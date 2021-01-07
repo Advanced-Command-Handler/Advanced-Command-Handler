@@ -112,10 +112,17 @@ namespace CommandHandler {
 	}
 
 	export async function loadCommand(path: string, name: string) {
-		let command: Command |(Command & {default: Command}) = await import(join(process.cwd(), `./${path}/${name}`));
+		let command: Command | (Command & {default: Command}) = await import(join(process.cwd(), `./${path}/${name}`));
 		if ('default' in command) command = command.default;
 		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		if (command.category === 'None') command.category = <string>path.split(/[\\/]/).pop();
+
+		const invalidPermissions = command.getInvalidPermissions();
+		if (invalidPermissions.client)
+			throw new CommandHandlerError(`Invalid client permissions for ${command.name} command.\nInvalid Permissions: ${invalidPermissions.client.sort().join(',')}`, 'LoadingCommands');
+		if (invalidPermissions.user)
+			throw new CommandHandlerError(`Invalid user permissions for ${command.name} command.\nInvalid Permissions: ${invalidPermissions.user.sort().join(',')}`, 'LoadingCommands');
+
 		commands.set(command.name, command);
 		emit('loadCommand', command);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');

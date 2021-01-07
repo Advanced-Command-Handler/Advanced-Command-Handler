@@ -1,4 +1,4 @@
-import {DMChannel, GuildChannel, Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
+import {DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
 import {DefaultCommandRunFunction, RunFunction} from '../types';
 import CommandHandler from './CommandHandler';
 
@@ -38,15 +38,15 @@ interface MissingPermissions {
 
 export class Command implements CommandOptions {
 	public readonly name: string;
-	public description: string;
-	public usage: string;
-	public category: string;
 	public aliases: string[];
-	public clientPermissions: PermissionString[];
-	public userPermissions: PermissionString[];
+	public category: string;
 	public channels: Array<Snowflake | TextChannel>;
-	public tags: Tag[];
+	public clientPermissions: PermissionString[];
 	public cooldown: number;
+	public description: string;
+	public tags: Tag[];
+	public usage: string;
+	public userPermissions: PermissionString[];
 	public run: RunFunction | DefaultCommandRunFunction;
 
 	public constructor(options: CommandOptions, runFunction: RunFunction | DefaultCommandRunFunction) {
@@ -89,6 +89,15 @@ export class Command implements CommandOptions {
 		if (message.member?.hasPermission('ADMINISTRATOR')) missingPermissions.user = [];
 
 		return missingPermissions;
+	}
+
+	public getInvalidPermissions() {
+		const permissionsFlags: string[] = [...Object.keys(Permissions.FLAGS)];
+
+		return {
+			user: this.userPermissions.filter(permission => !permissionsFlags.includes(permission)),
+			client: this.clientPermissions.filter(permission => !permissionsFlags.includes(permission)),
+		};
 	}
 
 	public getMissingTags(message: Message): Tag[] {
