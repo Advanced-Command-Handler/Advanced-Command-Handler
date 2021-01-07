@@ -1,18 +1,14 @@
-const {
-	CommandHandler,
-	Logger
-} = require('../dist');
+const {CommandHandler, Logger} = require('../dist');
 require('dotenv').config();
 
-CommandHandler
-	.create({
-		eventsDir: 'events',
-		commandsDir: 'commands',
-		prefixes: ['!']
-	})
+CommandHandler.create({
+	eventsDir: 'events',
+	commandsDir: 'commands',
+	prefixes: ['!'],
+})
 	.setDefaultEvents()
 	.launch({
-		token: process.env.TOKEN
+		token: process.env.TOKEN,
 	});
 
 CommandHandler.on('create', options => {

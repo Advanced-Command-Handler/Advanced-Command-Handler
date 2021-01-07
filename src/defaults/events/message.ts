@@ -9,7 +9,7 @@ import permissionsError from '../../utils/permissionsError';
 
 export default new Event(
 	{
-		name: 'message'
+		name: 'message',
 	},
 	async (handler: typeof CommandHandler, message: Message): Promise<any> => {
 		if (message.author.bot || message.system) return;
