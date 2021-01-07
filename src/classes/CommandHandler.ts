@@ -2,12 +2,13 @@ import {ClientOptions, Collection, Message} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
+import * as defaultCommands from '../defaults/commands';
+import * as defaultEvents from '../defaults/events';
 import {Logger} from '../utils/Logger';
 import AdvancedClient from './AdvancedClient';
 import {Command} from './Command';
 import CommandHandlerError from './CommandHandlerError';
 import Event from './Event';
-import * as defaultEvents from '../defaults/events';
 
 namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
@@ -52,6 +53,17 @@ namespace CommandHandler {
 			Logger.comment(`Default ${Logger.setColor('green', event.default.name) + Logger.setColor('comment', ' event loaded.')}`, 'loading');
 		}
 		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'loading');
+
+		return CommandHandler;
+	}
+
+	export function setDefaultCommands(): typeof CommandHandler {
+		Logger.info('Loading default commands.', 'Loading');
+		for (let command of Object.values(defaultCommands)) {
+			commands.set(command.default.name, command.default);
+			Logger.comment(`Default ${Logger.setColor('green', command.default.name) + Logger.setColor('comment', ' command loaded.')}`, 'loading');
+		}
+		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands)})`, 'loading');
 
 		return CommandHandler;
 	}
