@@ -7,6 +7,7 @@ CommandHandler.create({
 	prefixes: ['!'],
 })
 	.setDefaultEvents()
+	.setDefaultCommands()
 	.launch({
 		token: process.env.TOKEN,
 	});
