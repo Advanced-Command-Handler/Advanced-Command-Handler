@@ -1,5 +1,5 @@
-import {DMChannel, GuildChannel, Message, PermissionString, Snowflake, TextChannel} from 'discord.js';
-import {RunFunction} from '../types';
+import {DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
+import {DefaultCommandRunFunction, RunFunction} from '../types';
 import CommandHandler from './CommandHandler';
 
 export enum Tag {
@@ -12,15 +12,15 @@ export enum Tag {
 
 interface CommandOptions {
 	readonly name: string;
-	description?: string;
-	usage?: string;
-	category?: string;
 	aliases?: string[];
-	clientPermissions?: PermissionString[];
-	userPermissions?: PermissionString[];
+	category?: string;
 	channels?: Array<Snowflake | TextChannel>;
-	tags?: Tag[];
+	clientPermissions?: PermissionString[];
 	cooldown?: number;
+	description?: string;
+	tags?: Tag[];
+	usage?: string;
+	userPermissions?: PermissionString[];
 }
 
 interface DeleteMessageOptions {
@@ -38,18 +38,18 @@ interface MissingPermissions {
 
 export class Command implements CommandOptions {
 	public readonly name: string;
-	public description: string;
-	public usage: string;
-	public category: string;
 	public aliases: string[];
-	public clientPermissions: PermissionString[];
-	public userPermissions: PermissionString[];
+	public category: string;
 	public channels: Array<Snowflake | TextChannel>;
-	public tags: Tag[];
+	public clientPermissions: PermissionString[];
 	public cooldown: number;
-	public run: RunFunction;
+	public description: string;
+	public tags: Tag[];
+	public usage: string;
+	public userPermissions: PermissionString[];
+	public run: RunFunction | DefaultCommandRunFunction;
 
-	public constructor(options: CommandOptions, runFunction: RunFunction) {
+	public constructor(options: CommandOptions, runFunction: RunFunction | DefaultCommandRunFunction) {
 		this.name = options.name;
 		this.run = runFunction;
 		this.description = options.description ?? '';
@@ -91,16 +91,25 @@ export class Command implements CommandOptions {
 		return missingPermissions;
 	}
 
+	public getInvalidPermissions() {
+		const permissionsFlags: string[] = [...Object.keys(Permissions.FLAGS)];
+
+		return {
+			user: this.userPermissions.filter(permission => !permissionsFlags.includes(permission)),
+			client: this.clientPermissions.filter(permission => !permissionsFlags.includes(permission)),
+		};
+	}
+
 	public getMissingTags(message: Message): Tag[] {
 		const missingTags: Tag[] = [];
-
 		for (const tag of this.tags) {
 			if (tag === Tag.ownerOnly && !CommandHandler.owners?.includes(message.author.id)) missingTags.push(Tag.ownerOnly);
 			if (tag === Tag.nsfw && message.channel instanceof GuildChannel && !message.channel.nsfw) missingTags.push(Tag.nsfw);
 			if (tag === Tag.guildOnly && message.guild === null) missingTags.push(Tag.guildOnly);
 			if (tag === Tag.guildOwnerOnly && message.guild?.ownerID !== message.author.id) missingTags.push(Tag.guildOwnerOnly);
-			if (tag === Tag.dmOnly && message.guild !== null) missingTags.push(Tag.dmOnly);
+			if (tag === Tag.dmOnly && message.channel.type !== 'dm') missingTags.push(Tag.dmOnly);
 		}
+
 		return missingTags;
 	}
 

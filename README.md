@@ -10,13 +10,17 @@
 # Index
 
 -   [Configuration](#configuration)
--   [Classes](#classes)
-    -   [Command Handler](#commandhandler-class)
+-   [Command Handler](#commandhandler-namespace)
     -   [CommandHandler Events](#commandhandler-events)
+-   [Classes](#classes)
     -   [Client](#client-class)
--   [Templates](#templates)
-    -   [Commands](#commands)
-    -   [Events](#events)
+    -   [Templates](#templates)
+        -   [Commands](#commands)
+        -   [Command Class](#command-class)
+        -   [Events](#events)
+        -   [Event Class](#event-class)
+-   [Defaults](#defaults)
+    -   [Events](#defaults-events)
 -   [Utils](#utils)
     -   [Logger](#logger-class)
         -   [Example](#example)
@@ -52,29 +56,21 @@ CommandHandler.launch({
 > Note:
 > You can see some more advanced examples in [this repo](https://github.com/Ayfri/advanced-command-handler-examples).
 
-# Classes
+# CommandHandler Namespace
 
-# CommandHandler Class
-
-| Field                           | Description                                                                       | Type                     |
-| ------------------------------- | --------------------------------------------------------------------------------- | ------------------------ |
-| `instance`                      | Represents the instance of the CommandHandler.                                    | `CommandHandlerInstance` |
-| `version`                       | The version of the handler.                                                       | `string`                 |
-| `create(options)`               | Creates a command handler and reset all data save in the instance.                | `=> void`                |
-| `launch(options)`               | Launch the Command Handler by logging in the Client and fetching Commands/Events. | `=> void`                |
-| `getPrefixFromMessage(message)` | Get the prefix from the message or null if not found.                             | `=> string \| null`      |
-
-### CommandHandlerInstance
-
-When you create your instance of the command handler, the `instance` will be completed with these fields:
-
-| Field       | Description                                                             | Type                                    |
-| ----------- | ----------------------------------------------------------------------- | --------------------------------------- |
-| `client`    | Represents the [Client](#client-class) of the bot.                      | `AdvancedClient extends Discord.Client` |
-| `commands`  | All the commands that have been found by the command handler at launch. | `Discord.Collection<String, Command>`   |
-| `cooldowns` | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`        | `Discord.Collection<SnowFlake, number>` |
-| `prefixes`  | Prefixes that you put in the `CommandHandler.create` method.            | `String[]`                              |
-| `owners`    | Owners that you put in the `CommandHandler.create` method.              | `SnowFlake[]`                           |
+| Field                           | Description                                                                                        | Type                                    |
+| ------------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| `create(options)`               | Creates the command handler, creates the [Client](#client-class).                                  | `CommandHandler`                        |
+| `getPrefixFromMessage(message)` | Get the prefix from the message or null if not found.                                              | `string \| null`                        |
+| `launch(options)`               | Launch the Command Handler by logging in the [Client](#client-class) and fetching Commands/Events. | `CommandHandler`                        |
+| `setDefaultCommands()`          | Sets the default Commands, see [Default Commands](#defaults-commands).                             | `CommandHandler`                        |
+| `setDefaultEvents()`            | Sets the default Events [Default Events](#defaults-events).                                        | `CommandHandler`                        |
+| `client`                        | Represents the [Client](#client-class) of the bot.                                                 | `AdvancedClient extends Discord.Client` |
+| `commands`                      | All the commands that have been found by the command handler at launch.                            | `Discord.Collection<String, Command>`   |
+| `cooldowns`                     | The cooldowns of the bot mapped as `<UserID, cooldownInSeconds>`                                   | `Discord.Collection<SnowFlake, number>` |
+| `prefixes`                      | Prefixes that you put in the `create` function.                                                    | `String[]`                              |
+| `owners`                        | Owners that you put in the `create` function.                                                      | `SnowFlake[]`                           |
+| `version`                       | The version of the handler (equivalent to `package.json` version).                                 | `string`                                |
 
 ### CommandHandler events
 
@@ -88,6 +84,8 @@ The CommandHandler class is extending the `EventEmitter` class, which means that
 | `loadCommands` | When loading the commands.                  |
 | `launched`     | When the CommandHandler is started.         |
 | `error`        | When a CommandHandlerError is thrown.       |
+
+# Classes
 
 # Client Class
 
@@ -115,15 +113,15 @@ module.exports = new Command(
 		clientPermissions: [],
 		channels: [],
 		cooldown: 10,
-	} /* Note :
-         You can put what arguments you want as this handler
-         doesn't have a default message event.
-         */,
-	async (client, message, args) => {
+	},
+	async (handler, message, args) => {
 		// Your code goes here.
 	}
 );
 ```
+
+> Note:
+> Command function car get any argument you put with a custom message event.
 
 **You have to put the command into a category folder into your commands folder like in the example.**
 
@@ -138,12 +136,37 @@ module.exports = new Command(
 ## Events
 
 ```js
-module.exports = async (handler, ...EventArguments) => {
-	// Your code goes here.
-};
+const {Event} = require('advanced-command-handler');
+module.exports = new Event(
+	{
+		name: '',
+		//optionnal :
+		once: true,
+	},
+	async (handler, ...EventArguments) => {
+		// Your code goes here.
+	}
+);
 ```
 
-The file's given name set out which event it handles.
+## Event Class
+
+| Method           | Description                                      | Returning Type |
+| ---------------- | ------------------------------------------------ | -------------- |
+| `bind(client)`   | Bind the Event to the [Client](#client-class).   | `void`         |
+| `unbind(client)` | Unbind the Event to the [Client](#client-class). | `void`         |
+
+# Defaults
+
+To use the default Commands/Events, use the `setDefaultEvents` and `setDefaultCommands` functions in the [CommandHandler Namespace](#commandhandler-namespace).
+
+## Defaults Events
+
+There is for now only one Default Event which is the `message` event.
+
+## Defaults Commands
+
+There is for now only one default Command which is the `ping` command.
 
 # Utils
 
@@ -202,10 +225,10 @@ colors = {
 
 ## BetterEmbed class
 
-| Name           | Description                                                            |
-| -------------- | ---------------------------------------------------------------------- |
-| `checkSize`    | Check the size of the Embed and throw an error if a field is too long. |
-| `cutIfTooLong` | Check the size of the Embed and cut the fields that are too long.      |
+| Name             | Description                                                            |
+| ---------------- | ---------------------------------------------------------------------- |
+| `checkSize()`    | Check the size of the Embed and throw an error if a field is too long. |
+| `cutIfTooLong()` | Check the size of the Embed and cut the fields that are too long.      |
 
 This is a class for creating Embed Object, but a bit simpler like this :
 
@@ -247,11 +270,11 @@ This can simplify your embeds declarations.
 
 There are multiple utils functions in the `util` folder that you can use (require them like other classes).
 
-| Name                                                                       | Description                                                                                                                                   | Returning                     |
-| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| `argError(message, error, command)`                                        | Send an embed that explains the argument error and show correct the syntax.                                                                   | Embed Object                  |
-| `async getThing(datatype, text)`                                           | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will look into its mentions. | Datatype you entered or false |
-| `permissionsError(message, missingPermissions, command, isFromBot = true)` | Send an embed that explains which permissions are missing.                                                                                    | Embed Object                  |
+| Name                                                                       | Description                                                                                                                                   | Returning                       |
+| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| `argError(message, error, command)`                                        | Send an embed that explains the argument error and show correct the syntax.                                                                   | `BetterEmbed`                   |
+| `async getThing(datatype, text)`                                           | Search for the `dataType` (like an user or command) into the client and in the `text`. If `text` is a message it will look into its mentions. | Datatype you entered or `false` |
+| `permissionsError(message, missingPermissions, command, isFromBot = true)` | Send an embed that explains which permissions are missing.                                                                                    | `BetterEmbed`                   |
 
 The `Command` class has a method `deleteMessage( message )` to safely delete messages without sending Errors _(missing permissions)_.
 

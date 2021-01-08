@@ -5,9 +5,12 @@ CommandHandler.create({
 	eventsDir: 'events',
 	commandsDir: 'commands',
 	prefixes: ['!'],
-}).launch({
-	token: process.env.TOKEN,
-});
+})
+	.setDefaultEvents()
+	.setDefaultCommands()
+	.launch({
+		token: process.env.TOKEN,
+	});
 
 CommandHandler.on('create', options => {
 	Logger.log(options);
