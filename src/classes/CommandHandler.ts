@@ -118,14 +118,14 @@ namespace CommandHandler {
 		if (command.category === 'None') command.category = <string>path.split(/[\\/]/).pop();
 
 		const invalidPermissions = command.getInvalidPermissions();
-		if (invalidPermissions.client)
-			throw new CommandHandlerError(`Invalid client permissions for ${command.name} command.\nInvalid Permissions: ${invalidPermissions.client.sort().join(',')}`, 'LoadingCommands');
-		if (invalidPermissions.user)
-			throw new CommandHandlerError(`Invalid user permissions for ${command.name} command.\nInvalid Permissions: ${invalidPermissions.user.sort().join(',')}`, 'LoadingCommands');
+		if (invalidPermissions.client.length > 0)
+			throw new CommandHandlerError(`Invalid client permissions for '${command.name}' command.\nInvalid Permissions: '${invalidPermissions.client.sort().join(',')}'`, 'LoadingCommands');
+		if (invalidPermissions.user.length > 0)
+			throw new CommandHandlerError(`Invalid user permissions for '${command.name}' command.\nInvalid Permissions: '${invalidPermissions.user.sort().join(',')}'`, 'LoadingCommands');
 
 		commands.set(command.name, command);
 		emit('loadCommand', command);
-		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'loading');
+		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'Loading');
 	}
 
 	export async function loadCommands(path: string) {
