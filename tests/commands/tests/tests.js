@@ -9,6 +9,6 @@ module.exports = new Command(
 		userPermissions: ['MANAGE_MESSAGES'],
 	},
 	async (handler, message) => {
-		await message.channel.send('bite');
+		await message.channel.send('testing');
 	}
 );
