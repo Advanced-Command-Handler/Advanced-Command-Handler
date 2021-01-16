@@ -75,7 +75,7 @@ export class Command implements CommandOptions {
 		if (!message.guild || !message.guild?.available) return missingPermissions;
 
 		missingPermissions.client.push(
-			...this.userPermissions.filter(permission => {
+			...this.clientPermissions.filter(permission => {
 				if (!(message.channel instanceof DMChannel)) return !message.channel.permissionsFor(message.guild?.me!!)?.has(permission, false);
 			})
 		);
