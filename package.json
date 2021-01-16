@@ -11,7 +11,7 @@
 	},
 	"description": "A package to help you create a bot with only 1 main file, directories for your events/commands, with some helpers classes and functions.",
 	"devDependencies": {
-		"@types/node": "^14.14.17",
+		"@types/node": "^14.14.21",
 		"prettier": "^2.2.1",
 		"typescript": "^4.1.3"
 	},
