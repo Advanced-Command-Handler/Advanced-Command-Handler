@@ -31,7 +31,7 @@ export default new Event(
 				return argError(
 					message,
 					`There are missing tags for the message: \n\`${missingTags
-						.map((_, index: number) => Tag[index])
+						.map(tag => Tag[tag])
 						.sort()
 						.join('\n')
 						.toUpperCase()}\``,

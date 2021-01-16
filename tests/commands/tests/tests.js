@@ -5,10 +5,10 @@ module.exports = new Command(
 		name: 'tests',
 		aliases: ['test', 't'],
 		channels: [],
-		tags: [Tag.dmOnly],
+		tags: [Tag.nsfw],
 		userPermissions: ['MANAGE_MESSAGES'],
 	},
 	async (handler, message) => {
-		await message.channel.send(util.inspect(handler).slice(0, 2000));
+		await message.channel.send('bite');
 	}
 );
