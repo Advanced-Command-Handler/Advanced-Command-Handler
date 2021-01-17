@@ -1,6 +1,7 @@
-import {DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
+import {Collection, DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
 import {DefaultCommandRunFunction, RunFunction} from '../types';
 import CommandHandler from './CommandHandler';
+import CommandCooldown = CommandHandler.CommandCooldown;
 
 export enum Tag {
 	guildOnly,
@@ -121,6 +122,14 @@ export class Command implements CommandOptions {
 	}
 
 	public isInCooldown(message: Message): boolean {
-		return CommandHandler.cooldowns.has(message.author.id) && CommandHandler.cooldowns.get(message.author.id)!.has(this.name);
+		return CommandHandler.cooldowns.has(message.author.id) && Object.keys(CommandHandler.cooldowns.get(message.author.id)!).includes(this.name);
+	}
+
+	public addToCooldown(message: Message) {
+		if (!CommandHandler.cooldowns.has(message.author.id)) CommandHandler.cooldowns.set(message.author.id, {});
+		CommandHandler.cooldowns.get(message.author.id)![this.name] = {
+			executedAt: message.createdAt,
+			cooldown: this.cooldown,
+		};
 	}
 }
