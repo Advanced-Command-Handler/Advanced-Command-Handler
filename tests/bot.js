@@ -1,4 +1,4 @@
-const {CommandHandler, Logger} = require('../');
+const {CommandHandler, Logger} = require('advanced-command-hander');
 require('dotenv').config();
 
 CommandHandler.create({
