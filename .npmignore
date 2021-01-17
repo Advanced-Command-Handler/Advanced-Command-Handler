@@ -1,6 +1,9 @@
+# Directories
 src
 .idea
 .git
 .github
-.dcignore
 tests
+
+# Files
+.dcignore
