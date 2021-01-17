@@ -125,11 +125,17 @@ export class Command implements CommandOptions {
 		return CommandHandler.cooldowns.has(message.author.id) && Object.keys(CommandHandler.cooldowns.get(message.author.id)!).includes(this.name);
 	}
 
-	public addToCooldown(message: Message) {
+	public setCooldown(message: Message) {
 		if (!CommandHandler.cooldowns.has(message.author.id)) CommandHandler.cooldowns.set(message.author.id, {});
+		if (this.cooldown === 0 ?? !!CommandHandler.cooldowns.get(message.author.id)![this.name]) return;
+
 		CommandHandler.cooldowns.get(message.author.id)![this.name] = {
 			executedAt: message.createdAt,
 			cooldown: this.cooldown,
 		};
+
+		setTimeout(() => {
+			delete CommandHandler.cooldowns.get(message.author.id)![this.name];
+		}, this.cooldown * 1000);
 	}
 }
