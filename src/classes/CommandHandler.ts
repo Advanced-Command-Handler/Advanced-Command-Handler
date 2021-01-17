@@ -18,6 +18,13 @@ namespace CommandHandler {
 		prefixes?: string[];
 	}
 
+	interface CommandCooldown {
+		executedAt: Date;
+		cooldown: number;
+	}
+
+	type CooldownUser = Collection<string, CommandCooldown>;
+
 	type CommandHandlerEvents = {
 		create: [CreateCommandHandlerOptions];
 		error: [CommandHandlerError];
@@ -30,7 +37,7 @@ namespace CommandHandler {
 	export const version: string = require('../../package.json').version;
 	export const emitter: EventEmitter = new EventEmitter();
 	export const commands: Collection<string, Command> = new Collection();
-	export const cooldowns: Collection<string, number> = new Collection();
+	export const cooldowns: Collection<string, CooldownUser> = new Collection();
 	export const events: Collection<string, Event> = new Collection();
 	export let commandsDir: string = '';
 	export let eventsDir: string = '';
