@@ -2,6 +2,7 @@ import {Collection, DMChannel, GuildChannel, Message, Permissions, PermissionStr
 import {DefaultCommandRunFunction, RunFunction} from '../types';
 import CommandHandler from './CommandHandler';
 import CommandCooldown = CommandHandler.CommandCooldown;
+import cooldowns = CommandHandler.cooldowns;
 
 export enum Tag {
 	guildOnly,
@@ -123,6 +124,14 @@ export class Command implements CommandOptions {
 
 	public isInCooldown(message: Message): boolean {
 		return CommandHandler.cooldowns.has(message.author.id) && Object.keys(CommandHandler.cooldowns.get(message.author.id)!).includes(this.name);
+	}
+
+	public getCooldown(message: Message): {waitMore: number; executedAt: Date; cooldown: number} {
+		const cooldown = CommandHandler.cooldowns.get(message.author.id)![this.name];
+		return {
+			...cooldown,
+			waitMore: (cooldown.executedAt.getTime() + cooldown.cooldown * 1000) - Date.now()
+		}
 	}
 
 	public setCooldown(message: Message) {
