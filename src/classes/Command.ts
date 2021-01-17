@@ -72,7 +72,7 @@ export class Command implements CommandOptions {
 			client: [],
 			user: [],
 		};
-		if (!message.guild || !message.guild?.available) return missingPermissions;
+		if (!message.guild || !message.guild.available) return missingPermissions;
 
 		missingPermissions.client.push(
 			...this.clientPermissions.filter(permission => {
@@ -116,7 +116,7 @@ export class Command implements CommandOptions {
 	public isInRightChannel(message: Message): boolean {
 		if (this.channels.length === 0) return true;
 		return this.channels.every(channel => {
-			return message.channel instanceof TextChannel ? (channel instanceof TextChannel ? channel.id === message.channel?.id : channel === message.channel.id) : false;
+			return message.channel instanceof TextChannel ? (channel instanceof TextChannel ? channel.id === message.channel.id : channel === message.channel.id) : false;
 		});
 	}
 
