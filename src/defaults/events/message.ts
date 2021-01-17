@@ -21,7 +21,7 @@ export default new Event(
 		args.shift();
 
 		if (command) {
-			if (command.isInCooldown(message)) return message.channel.send(`You are in cooldown, please wait **${command?.getCooldown(message).waitMore / 1000}**s.`);
+			if (command.isInCooldown(message)) return message.channel.send(`You are in cooldown, please wait **${command.getCooldown(message).waitMore / 1000}**s.`);
 			if (!command.isInRightChannel(message)) return message.channel.send(`This command is not in this channel.`);
 
 			const missingPermissions = command.getMissingPermissions(message);

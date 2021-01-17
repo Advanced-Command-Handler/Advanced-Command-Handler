@@ -1,8 +1,6 @@
-import {Collection, DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
+import {DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
 import {DefaultCommandRunFunction, RunFunction} from '../types';
 import CommandHandler from './CommandHandler';
-import CommandCooldown = CommandHandler.CommandCooldown;
-import cooldowns = CommandHandler.cooldowns;
 
 export enum Tag {
 	guildOnly,
