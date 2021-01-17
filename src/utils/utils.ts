@@ -2,7 +2,7 @@ function random<T extends any>(array: T[]): T {
 	return array[Math.floor(Math.random() * array.length)];
 }
 
-function getKeyByValue<V extends unknown, O extends {[key: string]: unknown}>(object: O, value: V): keyof O | undefined {
+function getKeyByValue<O extends {[key: string]: any}>(object: O, value: O[keyof O]): keyof O | undefined {
 	return Object.keys(object).find(key => object[key] === value);
 }
 
