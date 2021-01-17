@@ -1,4 +1,4 @@
-const {CommandHandler, Logger} = require('../dist');
+const {CommandHandler, Logger} = require('../');
 require('dotenv').config();
 
 CommandHandler.create({
