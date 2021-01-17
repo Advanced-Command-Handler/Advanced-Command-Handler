@@ -1,20 +1,27 @@
 {
 	"compilerOptions": {
 		"declaration": true,
+		"declarationDir": "types",
 		"esModuleInterop": true,
+		"lib": [
+			"ESNext"
+		],
 		"module": "commonjs",
 		"noImplicitAny": true,
 		"noUnusedParameters": true,
 		"outDir": "dist",
-		"rootDir": "src",
 		"pretty": true,
+		"rootDir": "src",
 		"skipLibCheck": true,
 		"strict": true,
-		"target": "ES2020",
-		"lib": ["ESNext"]
+		"target": "ES2020"
 	},
 	"ts-node": {
-		"require": ["luxons", "discord.js", "discord.js-better-embed"],
+		"require": [
+			"dayjs",
+			"discord.js",
+			"discord.js-better-embed"
+		],
 		"pretty": true
 	}
 }
