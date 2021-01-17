@@ -130,8 +130,8 @@ export class Command implements CommandOptions {
 		const cooldown = CommandHandler.cooldowns.get(message.author.id)![this.name];
 		return {
 			...cooldown,
-			waitMore: (cooldown.executedAt.getTime() + cooldown.cooldown * 1000) - Date.now()
-		}
+			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now(),
+		};
 	}
 
 	public setCooldown(message: Message) {

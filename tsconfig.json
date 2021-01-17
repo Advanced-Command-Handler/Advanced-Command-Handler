@@ -3,9 +3,7 @@
 		"declaration": true,
 		"declarationDir": "types",
 		"esModuleInterop": true,
-		"lib": [
-			"ESNext"
-		],
+		"lib": ["ESNext"],
 		"module": "commonjs",
 		"noImplicitAny": true,
 		"noUnusedParameters": true,
@@ -17,11 +15,7 @@
 		"target": "ES2020"
 	},
 	"ts-node": {
-		"require": [
-			"dayjs",
-			"discord.js",
-			"discord.js-better-embed"
-		],
+		"require": ["chalk", "dayjs", "discord.js", "discord.js-better-embed"],
 		"pretty": true
 	}
 }

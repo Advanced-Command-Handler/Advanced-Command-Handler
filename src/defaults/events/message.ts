@@ -1,17 +1,15 @@
-import {Collection, Message} from 'discord.js';
-import {Command, Tag} from '../../classes/Command';
+import {Message} from 'discord.js';
+import {Tag} from '../../classes/Command';
 import CommandHandler from '../../classes/CommandHandler';
 import Event from '../../classes/Event';
 import argError from '../../utils/argError';
 import {getThing} from '../../utils/getThing';
 import {Logger} from '../../utils/Logger';
 import permissionsError from '../../utils/permissionsError';
-import CooldownUser = CommandHandler.CooldownUser;
-import CommandCooldown = CommandHandler.CommandCooldown;
 
 export default new Event(
 	{
-		name: 'message'
+		name: 'message',
 	},
 	async (handler: typeof CommandHandler, message: Message): Promise<any> => {
 		if (message.author.bot || message.system) return;
@@ -21,7 +19,6 @@ export default new Event(
 		const args = message.content.slice(prefix.length).trim().split(/ +/g);
 		const command = await getThing('command', args[0].toLowerCase().normalize());
 		args.shift();
-
 
 		if (command?.isInCooldown(message)) return message.channel.send(`You are in cooldown, please wait **${command?.getCooldown(message).waitMore / 1000}**s.`);
 		if (command && command.isInRightChannel(message)) {

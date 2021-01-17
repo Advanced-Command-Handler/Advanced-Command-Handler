@@ -51,5 +51,12 @@ export declare class Command implements CommandOptions {
     };
     getMissingTags(message: Message): Tag[];
     isInRightChannel(message: Message): boolean;
+    isInCooldown(message: Message): boolean;
+    getCooldownTime(message: Message): {
+        waitMore: number;
+        executedAt: Date;
+        cooldown: number;
+    };
+    setCooldown(message: Message): void;
 }
 export {};
