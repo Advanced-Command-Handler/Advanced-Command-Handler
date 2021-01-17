@@ -1,4 +1,4 @@
-import {ClientOptions, Collection, Message} from 'discord.js';
+import {ClientOptions, Collection, Message, Snowflake} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
@@ -18,6 +18,13 @@ namespace CommandHandler {
 		prefixes?: string[];
 	}
 
+	export interface CommandCooldown {
+		executedAt: Date;
+		cooldown: number;
+	}
+
+	export type CooldownUser = {[k: string]: CommandCooldown};
+
 	type CommandHandlerEvents = {
 		create: [CreateCommandHandlerOptions];
 		error: [CommandHandlerError];
@@ -30,7 +37,7 @@ namespace CommandHandler {
 	export const version: string = require('../../package.json').version;
 	export const emitter: EventEmitter = new EventEmitter();
 	export const commands: Collection<string, Command> = new Collection();
-	export const cooldowns: Collection<string, number> = new Collection();
+	export const cooldowns: Collection<Snowflake, CooldownUser> = new Collection();
 	export const events: Collection<string, Event> = new Collection();
 	export let commandsDir: string = '';
 	export let eventsDir: string = '';

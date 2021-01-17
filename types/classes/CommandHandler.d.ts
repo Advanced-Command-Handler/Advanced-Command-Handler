@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { ClientOptions, Collection, Message } from 'discord.js';
+import { ClientOptions, Collection, Message, Snowflake } from 'discord.js';
 import { EventEmitter } from 'events';
 import AdvancedClient from './AdvancedClient';
 import { Command } from './Command';
@@ -12,6 +12,13 @@ declare namespace CommandHandler {
         owners?: string[];
         prefixes?: string[];
     }
+    export interface CommandCooldown {
+        executedAt: Date;
+        cooldown: number;
+    }
+    export type CooldownUser = {
+        [k: string]: CommandCooldown;
+    };
     type CommandHandlerEvents = {
         create: [CreateCommandHandlerOptions];
         error: [CommandHandlerError];
@@ -23,7 +30,7 @@ declare namespace CommandHandler {
     export const version: string;
     export const emitter: EventEmitter;
     export const commands: Collection<string, Command>;
-    export const cooldowns: Collection<string, number>;
+    export const cooldowns: Collection<Snowflake, CooldownUser>;
     export const events: Collection<string, Event>;
     export let commandsDir: string;
     export let eventsDir: string;

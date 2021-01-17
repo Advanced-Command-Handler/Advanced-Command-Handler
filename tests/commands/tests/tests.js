@@ -1,4 +1,3 @@
-const util = require('util');
 const {Command, Tag} = require('advanced-command-hander');
 module.exports = new Command(
 	{

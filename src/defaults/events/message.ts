@@ -17,15 +17,18 @@ export default new Event(
 		const prefix = CommandHandler.getPrefixFromMessage(message);
 		if (!prefix) return;
 		const args = message.content.slice(prefix.length).trim().split(/ +/g);
-		const cmd = await getThing('command', args[0].toLowerCase().normalize());
+		const command = await getThing('command', args[0].toLowerCase().normalize());
 		args.shift();
 
-		if (cmd && cmd.isInRightChannel(message)) {
-			const missingPermissions = cmd.getMissingPermissions(message);
-			const missingTags = cmd.getMissingTags(message);
+		if (command) {
+			if (command.isInCooldown(message)) return message.channel.send(`You are in cooldown, please wait **${command.getCooldown(message).waitMore / 1000}**s.`);
+			if (!command.isInRightChannel(message)) return message.channel.send(`This command is not in this channel.`);
 
-			if (missingPermissions.client.length) return permissionsError(message, missingPermissions.client, cmd, true);
-			if (missingPermissions.user.length) return permissionsError(message, missingPermissions.user, cmd);
+			const missingPermissions = command.getMissingPermissions(message);
+			const missingTags = command.getMissingTags(message);
+
+			if (missingPermissions.client.length) return permissionsError(message, missingPermissions.client, command, true);
+			if (missingPermissions.user.length) return permissionsError(message, missingPermissions.user, command);
 
 			if (missingTags.length)
 				return argError(
@@ -35,11 +38,12 @@ export default new Event(
 						.sort()
 						.join('\n')
 						.toUpperCase()}\``,
-					cmd
+					command
 				);
 			try {
-				await cmd.run(handler, message, args);
-				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', cmd.name)}.`);
+				await command.run(handler, message, args);
+				command.setCooldown(message);
+				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
 			} catch (error) {
 				Logger.warn(error.stack);
 			}
