@@ -119,4 +119,8 @@ export class Command implements CommandOptions {
 			return message.channel instanceof TextChannel ? (channel instanceof TextChannel ? channel.id === message.channel?.id : channel === message.channel.id) : false;
 		});
 	}
+
+	public isInCooldown(message: Message): boolean {
+		return CommandHandler.cooldowns.has(message.author.id) && CommandHandler.cooldowns.get(message.author.id)!.has(this.name);
+	}
 }
