@@ -16,13 +16,16 @@ export default new Event(
 
 		const prefix = CommandHandler.getPrefixFromMessage(message);
 		if (!prefix) return;
-		const args = message.content.slice(prefix.length).trim().split(/ +/g);
-		const command = await getThing('command', args[0].toLowerCase().normalize());
-		args.shift();
+
+		const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
+		const command = await getThing('command', cmd.toLowerCase().normalize());
 
 		if (command) {
-			if (command.isInCooldown(message)) return message.channel.send(`You are in cooldown, please wait **${command.getCooldown(message).waitMore / 1000}**s.`);
-			if (!command.isInRightChannel(message)) return message.channel.send(`This command is not in this channel.`);
+			if (command.isInCooldown(message)) 
+				return message.channel.send(`You are on a cooldown! Please wait **${command.getCooldown(message).waitMore / 1000}**s.`);
+
+			if (!command.isInRightChannel(message)) 
+				return message.channel.send(`This command is not in the correct channel.`);
 
 			const missingPermissions = command.getMissingPermissions(message);
 			const missingTags = command.getMissingTags(message);
