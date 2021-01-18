@@ -13,6 +13,6 @@ export default new Command(
 		const msg = await message.channel.send('Ping ?');
 		const botPing = handler.client?.ws.ping;
 		const apiPing = msg.createdTimestamp - message.createdTimestamp;
-		await msg.edit(`Bot latence: **${botPing}**ms\nAPI latence: **${apiPing}**ms`);
+		await msg.edit(`Bot Latency: **${botPing}**ms\nAPI Latency: **${apiPing}**ms`);
 	}
 );
