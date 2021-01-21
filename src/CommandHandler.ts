@@ -2,13 +2,13 @@ import {ClientOptions, Collection, Message, Snowflake} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
-import * as defaultCommands from '../defaults/commands';
-import * as defaultEvents from '../defaults/events';
-import {Logger} from '../utils/Logger';
-import AdvancedClient from './AdvancedClient';
-import {Command} from './Command';
-import CommandHandlerError from './CommandHandlerError';
-import Event from './Event';
+import * as defaultCommands from './defaults/commands/index.js';
+import * as defaultEvents from './defaults/events/index.js';
+import {Logger} from './utils/Logger.js';
+import AdvancedClient from './classes/AdvancedClient.js';
+import {Command} from './classes/Command.js';
+import CommandHandlerError from './classes/CommandHandlerError.js';
+import Event from './classes/Event.js';
 
 namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
@@ -34,7 +34,7 @@ namespace CommandHandler {
 		launched: [];
 	};
 
-	export const version: string = require('../../package.json').version;
+	export const version: string = require('../package.json').version;
 	export const emitter: EventEmitter = new EventEmitter();
 	export const commands: Collection<string, Command> = new Collection();
 	export const cooldowns: Collection<Snowflake, CooldownUser> = new Collection();

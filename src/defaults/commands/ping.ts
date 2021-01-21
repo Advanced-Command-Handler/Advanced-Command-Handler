@@ -1,6 +1,6 @@
 import {Message} from 'discord.js';
 import {Command, Tag} from '../../classes/Command';
-import CommandHandler from '../../classes/CommandHandler';
+import CommandHandler from '../../CommandHandler.js';
 
 export default new Command(
 	{

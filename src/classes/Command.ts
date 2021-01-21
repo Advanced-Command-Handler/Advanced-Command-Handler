@@ -1,6 +1,6 @@
 import {DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
 import {DefaultCommandRunFunction, RunFunction} from '../types';
-import CommandHandler from './CommandHandler';
+import CommandHandler from '../CommandHandler.js';
 
 export enum Tag {
 	guildOnly,

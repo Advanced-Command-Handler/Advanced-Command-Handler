@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import CommandHandler from './classes/CommandHandler';
+import CommandHandler from './CommandHandler.js';
 import CommandHandlerError from './classes/CommandHandlerError';
 import Event from './classes/Event';
 import argError from './utils/argError';

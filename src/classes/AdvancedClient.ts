@@ -1,4 +1,4 @@
-import CommandHandler from './CommandHandler';
+import CommandHandler from '../CommandHandler.js';
 import {Logger} from '../utils/Logger';
 import {Client, ClientOptions, Message, PermissionResolvable, Snowflake} from 'discord.js';
 

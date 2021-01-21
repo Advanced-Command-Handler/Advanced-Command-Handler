@@ -1,6 +1,6 @@
 import {Message} from 'discord.js';
 import {Tag} from '../../classes/Command';
-import CommandHandler from '../../classes/CommandHandler';
+import CommandHandler from '../../CommandHandler.js';
 import Event from '../../classes/Event';
 import argError from '../../utils/argError';
 import {getThing} from '../../utils/getThing';
