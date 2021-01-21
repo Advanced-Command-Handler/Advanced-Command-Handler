@@ -1,6 +1,7 @@
 import {DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
 import {DefaultCommandRunFunction, RunFunction} from '../types';
 import CommandHandler from '../CommandHandler.js';
+import {isOwner} from '../utils/utils.js';
 
 export enum Tag {
 	guildOnly,
@@ -103,7 +104,7 @@ export class Command implements CommandOptions {
 	public getMissingTags(message: Message): Tag[] {
 		const missingTags: Tag[] = [];
 		for (const tag of this.tags) {
-			if (tag === Tag.ownerOnly && !CommandHandler.owners?.includes(message.author.id)) missingTags.push(Tag.ownerOnly);
+			if (tag === Tag.ownerOnly && !isOwner(message.author.id)) missingTags.push(Tag.ownerOnly);
 			if (tag === Tag.nsfw && message.channel instanceof GuildChannel && !message.channel.nsfw) missingTags.push(Tag.nsfw);
 			if (tag === Tag.guildOnly && message.guild === null) missingTags.push(Tag.guildOnly);
 			if (tag === Tag.guildOwnerOnly && message.guild?.ownerID !== message.author.id) missingTags.push(Tag.guildOwnerOnly);
