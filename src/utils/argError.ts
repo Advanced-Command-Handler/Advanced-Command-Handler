@@ -11,7 +11,5 @@ export default (message: Message, error: string, command: Command): Promise<Mess
 	});
 
 	if (command.usage) embed.addField('Syntax :', command.usage);
-
-	if (message.client.channels.cache.has(message.channel.id)) return message.channel.send(embed);
-	else throw new Error(`The channel ${message} is not valid, an ID is expected, if an ID has been entered, then the bot does not have this channel.`);
+	return message.channel.send(embed);
 };
