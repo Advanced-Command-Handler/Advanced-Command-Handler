@@ -17,8 +17,4 @@ export default class AdvancedClient extends Client {
 			  })
 			: false;
 	}
-
-	public isOwner(id: Snowflake) {
-		return CommandHandler.owners.includes(id);
-	}
 }
