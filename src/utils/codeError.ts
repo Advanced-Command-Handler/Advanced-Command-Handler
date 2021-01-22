@@ -2,14 +2,14 @@ import {Message} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
 import {Command} from '../classes/Command';
 import {Logger} from './Logger';
-import {isOwner} from './utils';
+import {cutIfTooLong, isOwner} from './utils';
 
 export default (message: Message, error: Error, command: Command): Promise<Message> => {
 	const embed = BetterEmbed.fromTemplate('complete', {
 		client: message.client,
 		color: 0xee2200,
 		title: 'Code error :',
-		description: error.stack,
+		description: cutIfTooLong(error.stack ?? error.toString(), 2048),
 	});
 
 	Logger.error(error, 'CodeError');
