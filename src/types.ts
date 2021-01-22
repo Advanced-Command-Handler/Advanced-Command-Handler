@@ -1,5 +1,5 @@
 import {Message} from 'discord.js';
-import CommandHandler from './CommandHandler.js';
+import CommandHandler from './CommandHandler';
 
 export type RunFunction = (...options: any[]) => Promise<any>;
 

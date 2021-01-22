@@ -9,10 +9,10 @@ export function getKeyByValue<O extends {[key: string]: any}>(object: O, value: 
 	return Object.keys(object).find(key => object[key] === value);
 }
 
-export function random<T extends any>(array: T[]): T {
-	return array[Math.floor(Math.random() * array.length)];
-}
-
 export function isOwner(id: Snowflake): boolean {
 	return CommandHandler.owners?.includes(id);
+}
+
+export function random<T extends any>(array: T[]): T {
+	return array[Math.floor(Math.random() * array.length)];
 }

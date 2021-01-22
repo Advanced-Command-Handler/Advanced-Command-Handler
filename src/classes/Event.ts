@@ -1,6 +1,6 @@
 import {RunFunction} from '../types';
 import AdvancedClient from './AdvancedClient';
-import CommandHandler from '../CommandHandler.js';
+import CommandHandler from '../CommandHandler';
 
 interface EventsOptions {
 	readonly name: string;

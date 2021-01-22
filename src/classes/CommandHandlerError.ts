@@ -1,4 +1,4 @@
-import CommandHandler from '../CommandHandler.js';
+import CommandHandler from '../CommandHandler';
 
 export default class CommandHandlerError extends Error {
 	public readonly where: string;
