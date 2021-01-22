@@ -122,7 +122,7 @@ namespace CommandHandler {
 		let command: Command | (Command & {default: Command}) = await import(join(process.cwd(), `./${path}/${name}`));
 		if ('default' in command) command = command.default;
 		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-		if (command.category === 'None') command.category = <string>path.split(/[\\/]/).pop();
+		if (command.category === 'None') command.category = path.split(/[\\/]/).pop()!;
 
 		const invalidPermissions = command.getInvalidPermissions();
 		if (invalidPermissions.client.length > 0)
