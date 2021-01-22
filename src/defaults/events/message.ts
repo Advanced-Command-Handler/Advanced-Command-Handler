@@ -3,6 +3,7 @@ import {Tag} from '../../classes/Command';
 import CommandHandler from '../../CommandHandler.js';
 import Event from '../../classes/Event';
 import argError from '../../utils/argError';
+import codeError from '../../utils/codeError.js';
 import {getThing} from '../../utils/getThing';
 import {Logger} from '../../utils/Logger';
 import permissionsError from '../../utils/permissionsError';
@@ -46,7 +47,7 @@ export default new Event(
 				command.setCooldown(message);
 				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
 			} catch (error) {
-				Logger.warn(error.stack);
+				await codeError(message, error, command);
 			}
 		}
 	}
