@@ -21,11 +21,9 @@ export default new Event(
 		const command = await getThing('command', cmd.toLowerCase().normalize());
 
 		if (command) {
-			if (command.isInCooldown(message)) 
-				return message.channel.send(`You are on a cooldown! Please wait **${command.getCooldown(message).waitMore / 1000}**s.`);
+			if (command.isInCooldown(message)) return message.channel.send(`You are on a cooldown! Please wait **${command.getCooldown(message).waitMore / 1000}**s.`);
 
-			if (!command.isInRightChannel(message)) 
-				return message.channel.send(`This command is not in the correct channel.`);
+			if (!command.isInRightChannel(message)) return message.channel.send(`This command is not in the correct channel.`);
 
 			const missingPermissions = command.getMissingPermissions(message);
 			const missingTags = command.getMissingTags(message);
