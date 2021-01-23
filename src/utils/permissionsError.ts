@@ -3,10 +3,14 @@ import {BetterEmbed} from 'discord.js-better-embed';
 import {Command} from '../classes/Command';
 
 /**
- * @param message
- * @param missingPermissions
- * @param command
- * @param fromClient
+ * A function to use when an user or the client hasn't all the permissions needed.
+ *
+ * @param message - The message where the error is from.
+ * @param missingPermissions - The error.
+ * @param command - The command to be executed.
+ * @param fromClient - If the error is from the client.
+ *
+ * @returns The error message sent.
  */
 export function permissionsError(message: Message, missingPermissions: PermissionString[], command: Command, fromClient: boolean = false): Promise<Message> {
 	const embed = BetterEmbed.fromTemplate('complete', {
@@ -18,4 +22,4 @@ export function permissionsError(message: Message, missingPermissions: Permissio
 
 	if (command.usage) embed.addField('Syntax :', command.usage);
 	return message.channel.send(embed);
-};
+}
