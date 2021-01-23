@@ -7,3 +7,6 @@ tests
 
 # Files
 .dcignore
+
+# Documentation
+docs
