@@ -1,9 +1,20 @@
 import {CommandHandler} from '../CommandHandler';
 
 export class CommandHandlerError extends Error {
+	/**
+	 * Where the error occurred.
+	 */
 	public readonly where: string;
+	/**
+	 * When the error occurred.
+	 */
 	public readonly date: Date;
 
+	/**
+	 *
+	 * @param message - The error message to explain what happens.
+	 * @param where - Where the error occurred.
+	 */
 	constructor(message: string, where: string) {
 		super(message);
 
