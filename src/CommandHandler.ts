@@ -14,7 +14,17 @@ export namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
 		commandsDir: string;
 		eventsDir: string;
+		/**
+		 * The owners IDs from discord of the bot.
+		 */
 		owners?: string[];
+		/**
+		 * The prefixes for the CommandHandler.
+		 *
+		 * @remarks
+		 * There are two default prefixes that are `<@!botID>` & `<@botID>`, they're the text versions of mentions in Discord.
+		 * There are two ones because the `!` is only here in DM to indicate that that's a user mention and not a member mention.
+		 */
 		prefixes?: string[];
 	}
 
@@ -37,6 +47,20 @@ export namespace CommandHandler {
 	export const version: string = require('../package.json').version;
 	export const emitter: EventEmitter = new EventEmitter();
 	export const commands: Collection<string, Command> = new Collection();
+	/**
+	 * The cooldowns mapped by ID and cooldown user.
+	 * **A simple explication** :
+	 *
+	 * When a user executes a command with a cooldown, a new value is added.
+	 * ```ts
+	 * [ID]: {
+	 *    [commandName]: {
+	 *        executedAt: Date,
+	 *        cooldown: [command cooldown]
+	 *    }
+	 * }
+	 * ```
+	 */
 	export const cooldowns: Collection<Snowflake, CooldownUser> = new Collection();
 	export const events: Collection<string, Event> = new Collection();
 	export let commandsDir: string = '';
