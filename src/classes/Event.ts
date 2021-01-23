@@ -28,7 +28,6 @@ export class Event implements EventsOptions {
 	public run: RunFunction;
 
 	/**
-	 *
 	 * @param options - Options for the event.
 	 * @param runFunction - The run function, executed when the event is fired.
 	 * {@link "@discord.js".GuildMember}
