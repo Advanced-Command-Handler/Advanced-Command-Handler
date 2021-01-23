@@ -4,17 +4,17 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>dayjs | Advanced Command Handler</title>
-	<meta name="description" content="">
+	<meta name="description" content="Documentation for Advanced Command Handler">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -41,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -54,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../modules.html">Globals</a>
+					<a href="../modules.html">Advanced Command Handler</a>
 				</li>
 				<li>
 					<a href="index.html">index</a>
@@ -63,419 +61,174 @@
 					<a href="index.dayjs.html">dayjs</a>
 				</li>
 			</ul>
+			<h1>Namespace dayjs</h1>
 		</div>
 	</div>
 </header>
-<div class="container">
-	<div class="row container container-main">
-		<div class="col-3 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul>
-					<ul class="before-current">
-						<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-is-external">
-							<a href="../classes/index.dayjs.dayjs.html" class="tsd-kind-icon">Dayjs</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#configtype" class="tsd-kind-icon">Config<wbr>Type</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#opunittype" class="tsd-kind-icon">Op<wbr>Unit<wbr>Type</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#optiontype" class="tsd-kind-icon">Option<wbr>Type</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
-							<a href="index.dayjs.html#pluginfunc" class="tsd-kind-icon">Plugin<wbr>Func</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#qunittype" class="tsd-kind-icon">QUnit<wbr>Type</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#unittype" class="tsd-kind-icon">Unit<wbr>Type</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#unittypelong" class="tsd-kind-icon">Unit<wbr>Type<wbr>Long</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#unittypelongplural" class="tsd-kind-icon">Unit<wbr>Type<wbr>Long<wbr>Plural</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#unittypeshort" class="tsd-kind-icon">Unit<wbr>Type<wbr>Short</a>
-						</li>
-						<li class=" tsd-kind-variable tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#ls" class="tsd-kind-icon">Ls</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
-							<a href="index.dayjs.html#extend" class="tsd-kind-icon">extend</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#isdayjs" class="tsd-kind-icon">is<wbr>Dayjs</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#locale" class="tsd-kind-icon">locale</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
-							<a href="index.dayjs.html#unix" class="tsd-kind-icon">unix</a>
-						</li>
-					</ul>
-				</ul>
-				<ul>
-					<li>📑 Index</li>
-					<li><br></li>
-					<li class=" ">
-						<a href="../modules.html">Exports</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="commandhandler.html">Command<wbr>Handler</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="classes_advancedclient.html">classes/<wbr>Advanced<wbr>Client</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="classes_command.html">classes/<wbr>Command</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="classes_commandhandlererror.html">classes/<wbr>Command<wbr>Handler<wbr>Error</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="classes_event.html">classes/<wbr>Event</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="defaults_commands.html">defaults/commands</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="defaults_commands_ping.html">defaults/commands/ping</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="defaults_events.html">defaults/events</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="defaults_events_message.html">defaults/events/message</a>
-						</li>                        <li class="current tsd-kind-module">
-						<a href="index.html">index</a>
-						<ul>
-							<li class="current tsd-kind-namespace tsd-parent-kind-module tsd-is-external">
-								<a href="index.dayjs.html">dayjs</a>
-							</li>
-						</ul>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="types.html">types</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="utils_logger.html">utils/<wbr>Logger</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="utils_argerror.html">utils/arg<wbr>Error</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="utils_codeerror.html">utils/code<wbr>Error</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="utils_getthing.html">utils/get<wbr>Thing</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="utils_permissionserror.html">utils/permissions<wbr>Error</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="utils_utils.html">utils/utils</a>
-				</li>                </ul>
-			</nav>
-		</div>
-		<div class="col-9 col-content">
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
 			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Classes</h3>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-class tsd-parent-kind-namespace tsd-is-external">
-										<a href="../classes/index.dayjs.dayjs.html" class="tsd-kind-icon">Dayjs</a>
-										<ul>
-											<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#constructor" class="tsd-kind-icon">constructor</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#add" class="tsd-kind-icon">add</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#clone" class="tsd-kind-icon">clone</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#date" class="tsd-kind-icon">date</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#day" class="tsd-kind-icon">day</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#daysinmonth" class="tsd-kind-icon">days<wbr>InMonth</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#diff" class="tsd-kind-icon">diff</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#endof" class="tsd-kind-icon">end<wbr>Of</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#format" class="tsd-kind-icon">format</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#get" class="tsd-kind-icon">get</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#hour" class="tsd-kind-icon">hour</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#isafter" class="tsd-kind-icon">is<wbr>After</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#isbefore" class="tsd-kind-icon">is<wbr>Before</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#issame" class="tsd-kind-icon">is<wbr>Same</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#isvalid" class="tsd-kind-icon">is<wbr>Valid</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#locale" class="tsd-kind-icon">locale</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#millisecond" class="tsd-kind-icon">millisecond</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#minute" class="tsd-kind-icon">minute</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#month" class="tsd-kind-icon">month</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#second" class="tsd-kind-icon">second</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#set" class="tsd-kind-icon">set</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#startof" class="tsd-kind-icon">start<wbr>Of</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#subtract" class="tsd-kind-icon">subtract</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#todate" class="tsd-kind-icon">to<wbr>Date</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#toisostring" class="tsd-kind-icon">toISOString</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#tojson" class="tsd-kind-icon">toJSON</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#unix" class="tsd-kind-icon">unix</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#utcoffset" class="tsd-kind-icon">utc<wbr>Offset</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#valueof" class="tsd-kind-icon">value<wbr>Of</a>
-											</li>
-											<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external">
-												<a href="../classes/index.dayjs.dayjs.html#year" class="tsd-kind-icon">year</a>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</div>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-class tsd-parent-kind-namespace tsd-is-external"><a href="../classes/index.dayjs.dayjs.html" class="tsd-kind-icon">Dayjs</a></li>
+							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Type aliases</h3>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#configtype" class="tsd-kind-icon">Config<wbr>Type</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#opunittype" class="tsd-kind-icon">Op<wbr>Unit<wbr>Type</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#optiontype" class="tsd-kind-icon">Option<wbr>Type</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
-										<a href="index.dayjs.html#pluginfunc" class="tsd-kind-icon">Plugin<wbr>Func</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#qunittype" class="tsd-kind-icon">QUnit<wbr>Type</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#unittype" class="tsd-kind-icon">Unit<wbr>Type</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#unittypelong" class="tsd-kind-icon">Unit<wbr>Type<wbr>Long</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#unittypelongplural" class="tsd-kind-icon">Unit<wbr>Type<wbr>Long<wbr>Plural</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#unittypeshort" class="tsd-kind-icon">Unit<wbr>Type<wbr>Short</a>
-									</li>
-								</ul>
-							</div>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#configtype" class="tsd-kind-icon">Config<wbr>Type</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#opunittype" class="tsd-kind-icon">Op<wbr>Unit<wbr>Type</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#optiontype" class="tsd-kind-icon">Option<wbr>Type</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external"><a href="index.dayjs.html#pluginfunc" class="tsd-kind-icon">Plugin<wbr>Func</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#qunittype" class="tsd-kind-icon">QUnit<wbr>Type</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#unittype" class="tsd-kind-icon">Unit<wbr>Type</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#unittypelong" class="tsd-kind-icon">Unit<wbr>Type<wbr>Long</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#unittypelongplural" class="tsd-kind-icon">Unit<wbr>Type<wbr>Long<wbr>Plural</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#unittypeshort" class="tsd-kind-icon">Unit<wbr>Type<wbr>Short</a></li>
+							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Variables</h3>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-variable tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#ls" class="tsd-kind-icon">Ls</a>
-									</li>
-								</ul>
-							</div>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#ls" class="tsd-kind-icon">Ls</a></li>
+							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Functions</h3>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
-										<a href="index.dayjs.html#extend" class="tsd-kind-icon">extend</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#isdayjs" class="tsd-kind-icon">is<wbr>Dayjs</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#locale" class="tsd-kind-icon">locale</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
-										<a href="index.dayjs.html#unix" class="tsd-kind-icon">unix</a>
-									</li>
-								</ul>
-							</div>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external"><a href="index.dayjs.html#extend" class="tsd-kind-icon">extend</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#isdayjs" class="tsd-kind-icon">is<wbr>Dayjs</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#locale" class="tsd-kind-icon">locale</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-namespace tsd-is-external"><a href="index.dayjs.html#unix" class="tsd-kind-icon">unix</a></li>
+							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
 					<a name="configtype" class="tsd-anchor"></a>
 					<h3>Config<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">ConfigType<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type">Dayjs</a></div>
+					<div class="tsd-signature tsd-kind-icon">Config<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:12</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
 					<a name="opunittype" class="tsd-anchor"></a>
 					<h3>Op<wbr>Unit<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">OpUnitType<span class="tsd-signature-symbol">:</span> <a href="index.dayjs.html#unittype" class="tsd-signature-type">UnitType</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"week"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"weeks"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"w"</span></div>
+					<div class="tsd-signature tsd-kind-icon">Op<wbr>Unit<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="index.dayjs.html#unittype" class="tsd-signature-type" data-tsd-kind="Type alias">UnitType</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;week&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;weeks&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;w&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:24</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
 					<a name="optiontype" class="tsd-anchor"></a>
 					<h3>Option<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">OptionType<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>    <span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">Option<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>format<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>locale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>utc<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:14</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
 					<a name="pluginfunc" class="tsd-anchor"></a>
 					<h3>Plugin<wbr>Func</h3>
-					<div class="tsd-signature tsd-kind-icon">PluginFunc&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<h4 class="tsd-type-parameters-title">Type parameters</h4>
-					<ul class="tsd-type-parameters">
-						<li>
-						<span class="name">T</span>                    </li>
-					</ul>
+					<div class="tsd-signature tsd-kind-icon">Plugin<wbr>Func&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>option<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, c<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">typeof </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a>, d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">typeof </span><a href="index.html#dayjs-1" class="tsd-signature-type" data-tsd-kind="Function">dayjs</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:410</li>
 						</ul>
 					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T = <span class="tsd-signature-type">unknown</span></h4>
+						</li>
+					</ul>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-external">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>option<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, c<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">typeof </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a>, d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">typeof </span><a href="index.html#dayjs-1" class="tsd-signature-type" data-tsd-kind="Function">dayjs</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>option: <span class="tsd-signature-type">T</span></h5>
+											</li>
+											<li>
+												<h5>c: <span class="tsd-signature-symbol">typeof </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a></h5>
+											</li>
+											<li>
+												<h5>d: <span class="tsd-signature-symbol">typeof </span><a href="index.html#dayjs-1" class="tsd-signature-type" data-tsd-kind="Function">dayjs</a></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
 					<a name="qunittype" class="tsd-anchor"></a>
 					<h3>QUnit<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">QUnitType<span class="tsd-signature-symbol">:</span> <a href="index.dayjs.html#unittype" class="tsd-signature-type">UnitType</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"quarter"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"quarters"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"Q"</span></div>
+					<div class="tsd-signature tsd-kind-icon">QUnit<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="index.dayjs.html#unittype" class="tsd-signature-type" data-tsd-kind="Type alias">UnitType</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;quarter&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;quarters&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;Q&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:25</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
 					<a name="unittype" class="tsd-anchor"></a>
 					<h3>Unit<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">UnitType<span class="tsd-signature-symbol">:</span> <a href="index.dayjs.html#unittypelong" class="tsd-signature-type">UnitTypeLong</a><span class="tsd-signature-symbol"> | </span><a href="index.dayjs.html#unittypelongplural" class="tsd-signature-type">UnitTypeLongPlural</a><span class="tsd-signature-symbol"> | </span><a href="index.dayjs.html#unittypeshort" class="tsd-signature-type">UnitTypeShort</a></div>
+					<div class="tsd-signature tsd-kind-icon">Unit<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="index.dayjs.html#unittypelong" class="tsd-signature-type" data-tsd-kind="Type alias">UnitTypeLong</a><span class="tsd-signature-symbol"> | </span><a href="index.dayjs.html#unittypelongplural" class="tsd-signature-type" data-tsd-kind="Type alias">UnitTypeLongPlural</a><span class="tsd-signature-symbol"> | </span><a href="index.dayjs.html#unittypeshort" class="tsd-signature-type" data-tsd-kind="Type alias">UnitTypeShort</a></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:22</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
 					<a name="unittypelong" class="tsd-anchor"></a>
 					<h3>Unit<wbr>Type<wbr>Long</h3>
-					<div class="tsd-signature tsd-kind-icon">UnitTypeLong<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"millisecond"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"second"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"minute"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"hour"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"day"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"month"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"year"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"date"</span></div>
+					<div class="tsd-signature tsd-kind-icon">Unit<wbr>Type<wbr>Long<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;millisecond&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;second&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;minute&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;hour&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;day&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;month&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;year&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;date&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:18</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
 					<a name="unittypelongplural" class="tsd-anchor"></a>
 					<h3>Unit<wbr>Type<wbr>Long<wbr>Plural</h3>
-					<div class="tsd-signature tsd-kind-icon">UnitTypeLongPlural<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"milliseconds"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"seconds"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"minutes"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"hours"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"days"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"months"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"years"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"dates"</span></div>
+					<div class="tsd-signature tsd-kind-icon">Unit<wbr>Type<wbr>Long<wbr>Plural<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;milliseconds&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;seconds&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;minutes&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;hours&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;days&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;months&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;years&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;dates&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:20</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
 					<a name="unittypeshort" class="tsd-anchor"></a>
 					<h3>Unit<wbr>Type<wbr>Short</h3>
-					<div class="tsd-signature tsd-kind-icon">UnitTypeShort<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"d"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"M"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"y"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"h"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"m"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"s"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"ms"</span></div>
+					<div class="tsd-signature tsd-kind-icon">Unit<wbr>Type<wbr>Short<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;d&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;M&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;y&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;h&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;m&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;s&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;ms&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:16</li>
@@ -485,150 +238,276 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Variables</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace tsd-is-external">
 					<a name="ls" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Ls</h3>
-					<div class="tsd-signature tsd-kind-icon">Ls<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<div class="tsd-signature tsd-kind-icon">Ls<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in node_modules/dayjs/index.d.ts:420</li>
 						</ul>
 					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">ILocale</span></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
 					<a name="extend" class="tsd-anchor"></a>
 					<h3>extend</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">extend&lt;T&gt;<span class="tsd-signature-symbol">(</span>plugin<span class="tsd-signature-symbol">: </span><a href="index.dayjs.html#pluginfunc" class="tsd-signature-type">PluginFunc</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, option<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type">Dayjs</a></li>
+						<li class="tsd-signature tsd-kind-icon">extend&lt;T&gt;<span class="tsd-signature-symbol">(</span>plugin<span class="tsd-signature-symbol">: </span><a href="index.dayjs.html#pluginfunc" class="tsd-signature-type" data-tsd-kind="Type alias">PluginFunc</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, option<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a></li>
 					</ul>
-					<h4 class="tsd-type-parameters-title">Type parameters</h4>
-					<ul class="tsd-type-parameters">
-						<li>
-						<span class="name">T</span>                    </li>
-					</ul>
-					<h4 class="tsd-parameters-title">Parameters</h4>
-					<ul class="tsd-parameters">
-						<li>
-							<span class="name">plugin</span>: <a href="index.dayjs.html#pluginfunc" class="tsd-signature-type">PluginFunc</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in node_modules/dayjs/index.d.ts:412</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T = <span class="tsd-signature-type">unknown</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>plugin: <a href="index.dayjs.html#pluginfunc" class="tsd-signature-type" data-tsd-kind="Type alias">PluginFunc</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> option: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a></h4>
 						</li>
-						<li>
-							<span class="name">option</span>: <span class="tsd-signature-type">T</span> <span class="tsd-flag ts-flagOptional">Optional</span>
-						</li>
 					</ul>
-					<h4 class="tsd-returns-title">Returns <a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type">Dayjs</a></h4>
-					</ul>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in node_modules/dayjs/index.d.ts:412</li>
-						</ul>
-					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
 					<a name="isdayjs" class="tsd-anchor"></a>
 					<h3>is<wbr>Dayjs</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Dayjs<span class="tsd-signature-symbol">(</span>d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">d</span> <span class="tsd-signature-symbol">is</span> <a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type">Dayjs</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Dayjs<span class="tsd-signature-symbol">(</span>d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">d</span><span class="tsd-signature-symbol"> is </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a></li>
 					</ul>
-					<h4 class="tsd-parameters-title">Parameters</h4>
-					<ul class="tsd-parameters">
-						<li>
-							<span class="name">d</span>: <span class="tsd-signature-type">any</span>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in node_modules/dayjs/index.d.ts:416</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>d: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">d</span><span class="tsd-signature-symbol"> is </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a></h4>
 						</li>
 					</ul>
-					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">d</span> <span class="tsd-signature-symbol">is</span> <a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type">Dayjs</a>    </h4>
-					</ul>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in node_modules/dayjs/index.d.ts:416</li>
-						</ul>
-					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
 					<a name="locale" class="tsd-anchor"></a>
 					<h3>locale</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">locale<span class="tsd-signature-symbol">(</span>preset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ILocale</span>, object<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ILocale</span><span class="tsd-signature-symbol">&gt;</span>, isLocal<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
-					<h4 class="tsd-parameters-title">Parameters</h4>
-					<ul class="tsd-parameters">
-						<li>
-							<span class="name">preset</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ILocale</span> <span class="tsd-flag ts-flagOptional">Optional</span>
-						</li>
-						<li>
-							<span class="name">object</span>: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ILocale</span><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-flag ts-flagOptional">Optional</span>
-						</li>
-						<li>
-							<span class="name">isLocal</span>: <span class="tsd-signature-type">boolean</span> <span class="tsd-flag ts-flagOptional">Optional</span>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in node_modules/dayjs/index.d.ts:414</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> preset: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ILocale</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> object: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ILocale</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> isLocal: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
-					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span>    </h4>
-					</ul>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in node_modules/dayjs/index.d.ts:414</li>
-						</ul>
-					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-is-external tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
 					<a name="unix" class="tsd-anchor"></a>
 					<h3>unix</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">unix<span class="tsd-signature-symbol">(</span>t<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type">Dayjs</a></li>
+						<li class="tsd-signature tsd-kind-icon">unix<span class="tsd-signature-symbol">(</span>t<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a></li>
 					</ul>
-					<h4 class="tsd-parameters-title">Parameters</h4>
-					<ul class="tsd-parameters">
-						<li>
-							<span class="name">t</span>: <span class="tsd-signature-type">number</span>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in node_modules/dayjs/index.d.ts:418</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>t: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type" data-tsd-kind="Class">Dayjs</a></h4>
 						</li>
 					</ul>
-					<h4 class="tsd-returns-title">Returns <a href="../classes/index.dayjs.dayjs.html" class="tsd-signature-type">Dayjs</a></h4>
-					</ul>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in node_modules/dayjs/index.d.ts:418</li>
-						</ul>
-					</aside>
 				</section>
 			</section>
-			<footer class="with-border-bottom">
-				<div class="tsd-legend-group">
-					<ul class="tsd-legend">
-						<li class="tsd-is-inherited"><span class="tsd-kind-icon">Inherited</span></li>
-						<li class="tsd-is-protected"><span class="tsd-kind-icon">Protected</span></li>
-						<li class="tsd-is-private"><span class="tsd-kind-icon">Private</span></li>
-						<li class="tsd-is-static"><span class="tsd-kind-icon">Static</span></li>
-					</ul>
-					<ul class="tsd-legend">
-						<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-						<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object</span></li>
-						<li class="tsd-kind-property"><span class="tsd-kind-icon">Property</span></li>
-					</ul>
-					<ul class="tsd-legend">
-						<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-						<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-						<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index</span></li>
-					</ul>
-					<ul class="tsd-legend">
-						<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type</span></li>
-						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-						<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-					</ul>
-					<ul class="tsd-legend">
-						<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enum</span></li>
-						<li class="tsd-kind-constructor"><span class="tsd-kind-icon">Constructor</span></li>
-						<li class="tsd-kind-accessor"><span class="tsd-kind-icon">Getter/Setter</span></li>
-					</ul>
-				</div>
-			</footer>
-			<div>Made with ❤️ by <a href="https://github.com/pirix-gh/eledoc" target="_blank">pirix-gh</a>. Documentation generated by <a href="http://typedoc.org/" target="_blank">TypeDoc.</a></div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="commandhandler.html">Command<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="classes_advancedclient.html">classes/<wbr>Advanced<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="classes_command.html">classes/<wbr>Command</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="classes_commandhandlererror.html">classes/<wbr>Command<wbr>Handler<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="classes_event.html">classes/<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="defaults_commands.html">defaults/commands</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="defaults_commands_ping.html">defaults/commands/ping</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="defaults_events.html">defaults/events</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="defaults_events_message.html">defaults/events/message</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="index.html">index</a>
+						<ul>
+							<li class="current tsd-kind-namespace tsd-parent-kind-module tsd-is-external">
+								<a href="index.dayjs.html">dayjs</a>
+							</li>
+						</ul>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="types.html">types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="utils_logger.html">utils/<wbr>Logger</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="utils_argerror.html">utils/arg<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="utils_codeerror.html">utils/code<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="utils_getthing.html">utils/get<wbr>Thing</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="utils_permissionserror.html">utils/permissions<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="utils_utils.html">utils/utils</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-namespace tsd-is-external">
+						<a href="../classes/index.dayjs.dayjs.html" class="tsd-kind-icon">Dayjs</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#configtype" class="tsd-kind-icon">Config<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#opunittype" class="tsd-kind-icon">Op<wbr>Unit<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#optiontype" class="tsd-kind-icon">Option<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
+						<a href="index.dayjs.html#pluginfunc" class="tsd-kind-icon">Plugin<wbr>Func</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#qunittype" class="tsd-kind-icon">QUnit<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#unittype" class="tsd-kind-icon">Unit<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#unittypelong" class="tsd-kind-icon">Unit<wbr>Type<wbr>Long</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#unittypelongplural" class="tsd-kind-icon">Unit<wbr>Type<wbr>Long<wbr>Plural</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#unittypeshort" class="tsd-kind-icon">Unit<wbr>Type<wbr>Short</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#ls" class="tsd-kind-icon">Ls</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-has-type-parameter tsd-is-external">
+						<a href="index.dayjs.html#extend" class="tsd-kind-icon">extend</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#isdayjs" class="tsd-kind-icon">is<wbr>Dayjs</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#locale" class="tsd-kind-icon">locale</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-namespace tsd-is-external">
+						<a href="index.dayjs.html#unix" class="tsd-kind-icon">unix</a>
+					</li>
+				</ul>
+			</nav>
 		</div>
 	</div>
 </div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

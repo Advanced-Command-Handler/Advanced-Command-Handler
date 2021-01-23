@@ -4,17 +4,17 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Tag | Advanced Command Handler</title>
-	<meta name="description" content="">
+	<meta name="description" content="Documentation for Advanced Command Handler">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -41,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -54,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../modules.html">Globals</a>
+					<a href="../modules.html">Advanced Command Handler</a>
 				</li>
 				<li>
 					<a href="../modules/index.html">index</a>
@@ -63,282 +61,263 @@
 					<a href="index.tag.html">Tag</a>
 				</li>
 			</ul>
+			<h1>Enumeration Tag</h1>
 		</div>
 	</div>
 </header>
-<div class="container">
-	<div class="row container container-main">
-		<div class="col-3 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul>
-					<ul class="before-current">
-						<li class=" tsd-kind-reference tsd-parent-kind-module">
-							<a href="../modules/index.html#commandhandler" class="tsd-kind-icon">Command<wbr>Handler</a>
-						</li>
-						<li class=" tsd-kind-reference tsd-parent-kind-module">
-							<a href="../modules/index.html#commandhandlererror" class="tsd-kind-icon">Command<wbr>Handler<wbr>Error</a>
-						</li>
-						<li class=" tsd-kind-reference tsd-parent-kind-module">
-							<a href="../modules/index.html#event" class="tsd-kind-icon">Event</a>
-						</li>
-						<li class=" tsd-kind-reference tsd-parent-kind-module">
-							<a href="../modules/index.html#argerror" class="tsd-kind-icon">arg<wbr>Error</a>
-						</li>
-						<li class=" tsd-kind-reference tsd-parent-kind-module">
-							<a href="../modules/index.html#permissionserror" class="tsd-kind-icon">permissions<wbr>Error</a>
-						</li>
-						<li class=" tsd-kind-enum tsd-parent-kind-module">
-							<a href="index.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
-						</li>
-					</ul>
-					<ul class="current">
-						<li class="current tsd-kind-enum tsd-parent-kind-module">
-							<a href="index.tag.html" class="tsd-kind-icon">Tag</a>
-							<ul>
-								<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-									<a href="index.tag.html#dmonly" class="tsd-kind-icon">dm<wbr>Only</a>
-								</li>
-								<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-									<a href="index.tag.html#guildonly" class="tsd-kind-icon">guild<wbr>Only</a>
-								</li>
-								<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-									<a href="index.tag.html#guildowneronly" class="tsd-kind-icon">guild<wbr>Owner<wbr>Only</a>
-								</li>
-								<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-									<a href="index.tag.html#nsfw" class="tsd-kind-icon">nsfw</a>
-								</li>
-								<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-									<a href="index.tag.html#owneronly" class="tsd-kind-icon">owner<wbr>Only</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
-					<ul class="after-current">
-						<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
-							<a href="../classes/index.betterembed.html" class="tsd-kind-icon">Better<wbr>Embed</a>
-						</li>
-						<li class=" tsd-kind-class tsd-parent-kind-module">
-							<a href="../classes/index.command.html" class="tsd-kind-icon">Command</a>
-						</li>
-						<li class=" tsd-kind-class tsd-parent-kind-module">
-							<a href="../classes/index.logger.html" class="tsd-kind-icon">Logger</a>
-						</li>
-						<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-							<a href="../modules/index.html#colorresolvable" class="tsd-kind-icon">Color<wbr>Resolvable</a>
-						</li>
-						<li class=" tsd-kind-variable tsd-parent-kind-module">
-							<a href="../modules/index.html#logtype" class="tsd-kind-icon">Log<wbr>Type</a>
-						</li>
-						<li class=" tsd-kind-variable tsd-parent-kind-module">
-							<a href="../modules/index.html#colors" class="tsd-kind-icon">colors</a>
-						</li>
-						<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-external">
-							<a href="../modules/index.html#limits" class="tsd-kind-icon">limits</a>
-						</li>
-						<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-external">
-							<a href="../modules/index.html#templates" class="tsd-kind-icon">templates</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-module">
-							<a href="../modules/index.html#cutiftoolong" class="tsd-kind-icon">cut<wbr>IfToo<wbr>Long</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
-							<a href="../modules/index.html#dayjs-1" class="tsd-kind-icon">dayjs</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-							<a href="../modules/index.html#getkeybyvalue" class="tsd-kind-icon">get<wbr>Key<wbr>ByValue</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-module">
-							<a href="../modules/index.html#getthing" class="tsd-kind-icon">get<wbr>Thing</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-module">
-							<a href="../modules/index.html#isowner" class="tsd-kind-icon">is<wbr>Owner</a>
-						</li>
-						<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-							<a href="../modules/index.html#random" class="tsd-kind-icon">random</a>
-						</li>
-					</ul>
-				</ul>
-				<ul>
-					<li>📑 Index</li>
-					<li><br></li>
-					<li class=" ">
-						<a href="../modules.html">Exports</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/commandhandler.html">Command<wbr>Handler</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/classes_advancedclient.html">classes/<wbr>Advanced<wbr>Client</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/classes_command.html">classes/<wbr>Command</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/classes_commandhandlererror.html">classes/<wbr>Command<wbr>Handler<wbr>Error</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/classes_event.html">classes/<wbr>Event</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/defaults_commands.html">defaults/commands</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/defaults_commands_ping.html">defaults/commands/ping</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/defaults_events.html">defaults/events</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/defaults_events_message.html">defaults/events/message</a>
-						</li>                        <li class="current tsd-kind-module">
-						<a href="../modules/index.html">index</a>
-						<ul>
-							<li class=" tsd-kind-namespace tsd-parent-kind-module tsd-is-external">
-								<a href="../modules/index.dayjs.html">dayjs</a>
-							</li>
-						</ul>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/types.html">types</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/utils_logger.html">utils/<wbr>Logger</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/utils_argerror.html">utils/arg<wbr>Error</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/utils_codeerror.html">utils/code<wbr>Error</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/utils_getthing.html">utils/get<wbr>Thing</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/utils_permissionserror.html">utils/permissions<wbr>Error</a>
-						</li>                        <li class=" tsd-kind-module">
-						<a href="../modules/utils_utils.html">utils/utils</a>
-				</li>                </ul>
-			</nav>
-		</div>
-		<div class="col-9 col-content">
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
 			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
 							<h3>Enumeration members</h3>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-enum-member tsd-parent-kind-enum">
-										<a href="index.tag.html#dmonly" class="tsd-kind-icon">dm<wbr>Only</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-enum-member tsd-parent-kind-enum">
-										<a href="index.tag.html#guildonly" class="tsd-kind-icon">guild<wbr>Only</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-enum-member tsd-parent-kind-enum">
-										<a href="index.tag.html#guildowneronly" class="tsd-kind-icon">guild<wbr>Owner<wbr>Only</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-enum-member tsd-parent-kind-enum">
-										<a href="index.tag.html#nsfw" class="tsd-kind-icon">nsfw</a>
-									</li>
-								</ul>
-							</div>
-							<div class="tsd-navigation secondary">
-								<ul>
-									<li class="tsd-kind-enum-member tsd-parent-kind-enum">
-										<a href="index.tag.html#owneronly" class="tsd-kind-icon">owner<wbr>Only</a>
-									</li>
-								</ul>
-							</div>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="index.tag.html#dmonly" class="tsd-kind-icon">dm<wbr>Only</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="index.tag.html#guildonly" class="tsd-kind-icon">guild<wbr>Only</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="index.tag.html#guildowneronly" class="tsd-kind-icon">guild<wbr>Owner<wbr>Only</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="index.tag.html#nsfw" class="tsd-kind-icon">nsfw</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="index.tag.html#owneronly" class="tsd-kind-icon">owner<wbr>Only</a></li>
+							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Enumeration members</h2>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="dmonly" class="tsd-anchor"></a>
 					<h3>dm<wbr>Only</h3>
-					<div class="tsd-signature tsd-kind-icon">dmOnly<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 4</span></div>
+					<div class="tsd-signature tsd-kind-icon">dm<wbr>Only<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 4</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/71c65cb/src/classes/Command.ts#L11">src/classes/Command.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c81801c/src/classes/Command.ts#L11">src/classes/Command.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="guildonly" class="tsd-anchor"></a>
 					<h3>guild<wbr>Only</h3>
-					<div class="tsd-signature tsd-kind-icon">guildOnly<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 0</span></div>
+					<div class="tsd-signature tsd-kind-icon">guild<wbr>Only<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/71c65cb/src/classes/Command.ts#L7">src/classes/Command.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c81801c/src/classes/Command.ts#L7">src/classes/Command.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="guildowneronly" class="tsd-anchor"></a>
 					<h3>guild<wbr>Owner<wbr>Only</h3>
-					<div class="tsd-signature tsd-kind-icon">guildOwnerOnly<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 3</span></div>
+					<div class="tsd-signature tsd-kind-icon">guild<wbr>Owner<wbr>Only<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 3</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/71c65cb/src/classes/Command.ts#L10">src/classes/Command.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c81801c/src/classes/Command.ts#L10">src/classes/Command.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="nsfw" class="tsd-anchor"></a>
 					<h3>nsfw</h3>
 					<div class="tsd-signature tsd-kind-icon">nsfw<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 2</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/71c65cb/src/classes/Command.ts#L9">src/classes/Command.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c81801c/src/classes/Command.ts#L9">src/classes/Command.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-descriptions">
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="owneronly" class="tsd-anchor"></a>
 					<h3>owner<wbr>Only</h3>
-					<div class="tsd-signature tsd-kind-icon">ownerOnly<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 1</span></div>
+					<div class="tsd-signature tsd-kind-icon">owner<wbr>Only<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/71c65cb/src/classes/Command.ts#L8">src/classes/Command.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c81801c/src/classes/Command.ts#L8">src/classes/Command.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
-			<footer class="with-border-bottom">
-				<div class="tsd-legend-group">
-					<ul class="tsd-legend">
-						<li class="tsd-is-inherited"><span class="tsd-kind-icon">Inherited</span></li>
-						<li class="tsd-is-protected"><span class="tsd-kind-icon">Protected</span></li>
-						<li class="tsd-is-private"><span class="tsd-kind-icon">Private</span></li>
-						<li class="tsd-is-static"><span class="tsd-kind-icon">Static</span></li>
-					</ul>
-					<ul class="tsd-legend">
-						<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-						<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object</span></li>
-						<li class="tsd-kind-property"><span class="tsd-kind-icon">Property</span></li>
-					</ul>
-					<ul class="tsd-legend">
-						<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-						<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-						<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index</span></li>
-					</ul>
-					<ul class="tsd-legend">
-						<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type</span></li>
-						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-						<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-					</ul>
-					<ul class="tsd-legend">
-						<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enum</span></li>
-						<li class="tsd-kind-constructor"><span class="tsd-kind-icon">Constructor</span></li>
-						<li class="tsd-kind-accessor"><span class="tsd-kind-icon">Getter/Setter</span></li>
-					</ul>
-				</div>
-			</footer>
-			<div>Made with ❤️ by <a href="https://github.com/pirix-gh/eledoc" target="_blank">pirix-gh</a>. Documentation generated by <a href="http://typedoc.org/" target="_blank">TypeDoc.</a></div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/commandhandler.html">Command<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/classes_advancedclient.html">classes/<wbr>Advanced<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/classes_command.html">classes/<wbr>Command</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/classes_commandhandlererror.html">classes/<wbr>Command<wbr>Handler<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/classes_event.html">classes/<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/defaults_commands.html">defaults/commands</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/defaults_commands_ping.html">defaults/commands/ping</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/defaults_events.html">defaults/events</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/defaults_events_message.html">defaults/events/message</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/index.html">index</a>
+						<ul>
+							<li class=" tsd-kind-namespace tsd-parent-kind-module tsd-is-external">
+								<a href="../modules/index.dayjs.html">dayjs</a>
+							</li>
+						</ul>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/types.html">types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/utils_logger.html">utils/<wbr>Logger</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/utils_argerror.html">utils/arg<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/utils_codeerror.html">utils/code<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/utils_getthing.html">utils/get<wbr>Thing</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/utils_permissionserror.html">utils/permissions<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/utils_utils.html">utils/utils</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/index.html#commandhandler" class="tsd-kind-icon">Command<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/index.html#commandhandlererror" class="tsd-kind-icon">Command<wbr>Handler<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/index.html#event" class="tsd-kind-icon">Event</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/index.html#argerror" class="tsd-kind-icon">arg<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/index.html#permissionserror" class="tsd-kind-icon">permissions<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="index.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-enum tsd-parent-kind-module">
+						<a href="index.tag.html" class="tsd-kind-icon">Tag</a>
+						<ul>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="index.tag.html#dmonly" class="tsd-kind-icon">dm<wbr>Only</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="index.tag.html#guildonly" class="tsd-kind-icon">guild<wbr>Only</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="index.tag.html#guildowneronly" class="tsd-kind-icon">guild<wbr>Owner<wbr>Only</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="index.tag.html#nsfw" class="tsd-kind-icon">nsfw</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="index.tag.html#owneronly" class="tsd-kind-icon">owner<wbr>Only</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="../classes/index.betterembed.html" class="tsd-kind-icon">Better<wbr>Embed</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/index.command.html" class="tsd-kind-icon">Command</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/index.logger.html" class="tsd-kind-icon">Logger</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/index.html#colorresolvable" class="tsd-kind-icon">Color<wbr>Resolvable</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/index.html#logtype" class="tsd-kind-icon">Log<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/index.html#colors" class="tsd-kind-icon">colors</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-external">
+						<a href="../modules/index.html#limits" class="tsd-kind-icon">limits</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-external">
+						<a href="../modules/index.html#templates" class="tsd-kind-icon">templates</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/index.html#cutiftoolong" class="tsd-kind-icon">cut<wbr>IfToo<wbr>Long</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
+						<a href="../modules/index.html#dayjs-1" class="tsd-kind-icon">dayjs</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/index.html#getkeybyvalue" class="tsd-kind-icon">get<wbr>Key<wbr>ByValue</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/index.html#getthing" class="tsd-kind-icon">get<wbr>Thing</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/index.html#isowner" class="tsd-kind-icon">is<wbr>Owner</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/index.html#random" class="tsd-kind-icon">random</a>
+					</li>
+				</ul>
+			</nav>
 		</div>
 	</div>
 </div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

@@ -51,7 +51,7 @@
 		"build": "tsc",
 		"prepare": "npm run build",
 		"prettier": "prettier package.json tsconfig.json README.md src tests --write",
-		"genDocs": "typedoc src --out docs --theme node_modules/eledoc/bin/default --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md"
+		"genDocs": "typedoc src --out docs --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md"
 	},
 	"types": "types/index.d.ts",
 	"version": "2.2.2"
