@@ -6,7 +6,7 @@ import {CommandHandler} from '../CommandHandler.js';
  *
  * @param text - The text to cut if it is too long.
  * @param maxLength - The maximum length required.
- * @param [endTextIfTooLong = '...'] - The end text to add if it is too long.
+ * @param endTextIfTooLong - The end text to add if it is too long.
  * @returns The text, cut if it was too long.
  */
 export function cutIfTooLong(text: string, maxLength: number, endTextIfTooLong: string = '...'): string {
