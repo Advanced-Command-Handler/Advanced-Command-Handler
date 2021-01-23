@@ -1,13 +1,13 @@
 import {RunFunction} from '../types';
-import AdvancedClient from './AdvancedClient';
-import CommandHandler from '../CommandHandler';
+import {AdvancedClient} from './AdvancedClient';
+import {CommandHandler} from '../CommandHandler';
 
 interface EventsOptions {
 	readonly name: string;
 	once?: boolean;
 }
 
-export default class Event implements EventsOptions {
+export class Event implements EventsOptions {
 	public readonly name: string;
 	public once: boolean;
 	public run: RunFunction;

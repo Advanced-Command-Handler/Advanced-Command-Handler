@@ -1,6 +1,6 @@
-import CommandHandler from '../CommandHandler';
+import {CommandHandler} from '../CommandHandler';
 
-export default class CommandHandlerError extends Error {
+export class CommandHandlerError extends Error {
 	public readonly where: string;
 	public readonly date: Date;
 

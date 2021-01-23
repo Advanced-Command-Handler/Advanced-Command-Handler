@@ -2,7 +2,13 @@ import {Message, PermissionString} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
 import {Command} from '../classes/Command';
 
-export default (message: Message, missingPermissions: PermissionString[], command: Command, fromClient: boolean = false): Promise<Message> => {
+/**
+ * @param message
+ * @param missingPermissions
+ * @param command
+ * @param fromClient
+ */
+export function permissionsError(message: Message, missingPermissions: PermissionString[], command: Command, fromClient: boolean = false): Promise<Message> {
 	const embed = BetterEmbed.fromTemplate('complete', {
 		client: message.client,
 		color: 0xee2200,

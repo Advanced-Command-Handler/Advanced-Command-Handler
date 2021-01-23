@@ -2,7 +2,12 @@ import {Message} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
 import {Command} from '../classes/Command';
 
-export default (message: Message, error: string, command: Command): Promise<Message> => {
+/**
+ * @param message
+ * @param error
+ * @param command
+ */
+export function argError(message: Message, error: string, command: Command): Promise<Message>  {
 	const embed = BetterEmbed.fromTemplate('complete', {
 		client: message.client,
 		color: 0xee2200,

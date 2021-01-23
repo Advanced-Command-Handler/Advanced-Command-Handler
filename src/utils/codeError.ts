@@ -4,7 +4,12 @@ import {Command} from '../classes/Command';
 import {Logger} from './Logger';
 import {cutIfTooLong, isOwner} from './utils';
 
-export default (message: Message, error: Error, command: Command): Promise<Message> => {
+/**
+ * @param message
+ * @param error
+ * @param command
+ */
+export function codeError(message: Message, error: Error, command: Command): Promise<Message> {
 	const embed = BetterEmbed.fromTemplate('complete', {
 		client: message.client,
 		color: 0xee2200,

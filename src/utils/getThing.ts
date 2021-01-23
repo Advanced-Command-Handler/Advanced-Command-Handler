@@ -1,6 +1,6 @@
 import {Channel, Collection, Emoji, Guild, GuildChannel, GuildMember, Message, NewsChannel, Role, Snowflake, TextChannel, User} from 'discord.js';
 import {Command} from '../classes/Command';
-import CommandHandler from '../CommandHandler';
+import {CommandHandler} from '../CommandHandler';
 
 export enum DataType {
 	command = 'command',
@@ -20,6 +20,10 @@ export async function getThing(dataType: DataType.guild | 'guild', text: string 
 export async function getThing(dataType: DataType.message | 'message', text: string | Message): Promise<Message | null>;
 export async function getThing(dataType: DataType.role | 'role', text: string | Message): Promise<Role | null>;
 export async function getThing(dataType: DataType.user | 'message', text: string | Message): Promise<User | null>;
+/**
+ * @param dataType
+ * @param text
+ */
 export async function getThing(
 	dataType: DataType | keyof typeof DataType,
 	text: string | Message
