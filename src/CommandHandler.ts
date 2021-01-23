@@ -35,7 +35,7 @@ export namespace CommandHandler {
 
 	export type CooldownUser = {[k: string]: CommandCooldown};
 
-	type CommandHandlerEvents = {
+	export type CommandHandlerEvents = {
 		create: [CreateCommandHandlerOptions];
 		error: [CommandHandlerError];
 		launch: [];
@@ -45,6 +45,11 @@ export namespace CommandHandler {
 	};
 
 	export const version: string = require('../package.json').version;
+	/**
+	 * The event emitter for the CommandHandler.
+	 *
+	 * @eventProperty
+	 */
 	export const emitter: EventEmitter = new EventEmitter();
 	export const commands: Collection<string, Command> = new Collection();
 	/**

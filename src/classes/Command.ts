@@ -11,7 +11,7 @@ export enum Tag {
 	dmOnly,
 }
 
-interface CommandOptions {
+export interface CommandOptions {
 	readonly name: string;
 	aliases?: string[];
 	category?: string;
@@ -24,7 +24,7 @@ interface CommandOptions {
 	userPermissions?: PermissionString[];
 }
 
-interface DeleteMessageOptions {
+export interface DeleteMessageOptions {
 	message: Message;
 	options?: {
 		timeout?: number;
@@ -32,7 +32,7 @@ interface DeleteMessageOptions {
 	};
 }
 
-interface MissingPermissions {
+export interface MissingPermissions {
 	client: PermissionString[];
 	user: PermissionString[];
 }
