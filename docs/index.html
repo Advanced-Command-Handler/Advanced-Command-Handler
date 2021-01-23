@@ -1,0 +1,624 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Advanced Command Handler</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">Advanced Command Handler</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="modules.html">Globals</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</header>
+<div class="container">
+	<div class="row container container-main">
+		<div class="col-3 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul>
+					<li>📑 Index</li>
+					<li><br></li>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/commandhandler.html">Command<wbr>Handler</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/classes_advancedclient.html">classes/<wbr>Advanced<wbr>Client</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/classes_command.html">classes/<wbr>Command</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/classes_commandhandlererror.html">classes/<wbr>Command<wbr>Handler<wbr>Error</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/classes_event.html">classes/<wbr>Event</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/defaults_commands.html">defaults/commands</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/defaults_commands_ping.html">defaults/commands/ping</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/defaults_events.html">defaults/events</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/defaults_events_message.html">defaults/events/message</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/index.html">index</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/types.html">types</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/utils_logger.html">utils/<wbr>Logger</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/utils_argerror.html">utils/arg<wbr>Error</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/utils_codeerror.html">utils/code<wbr>Error</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/utils_getthing.html">utils/get<wbr>Thing</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/utils_permissionserror.html">utils/permissions<wbr>Error</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="modules/utils_utils.html">utils/utils</a>
+				</li>                </ul>
+			</nav>
+		</div>
+		<div class="col-9 col-content">
+			<div class="tsd-panel">
+				<p><mark>This is an Advanced Command Handler, which uses classes for commands.</mark></p>
+				<p><a href="https://www.npmjs.com/package/advanced-command-handler"><img src="https://img.shields.io/npm/dt/advanced-command-handler?logo=npm&style=for-the-badge" alt="npm"></a>
+					<a href="https://www.npmjs.com/package/advanced-command-handler"><img src="https://img.shields.io/npm/v/advanced-command-handler?logo=npm&style=for-the-badge" alt="npm"></a>
+					<a href="https://github.com/Ayfri/Advanced-Command-Handler/issues"><img src="https://img.shields.io/github/issues-raw/ayfri/advanced-command-handler?logo=github&style=for-the-badge" alt="GitHub issues"></a>
+				<img src="https://img.shields.io/github/last-commit/ayfri/advanced-command-handler/master?logo=github&style=for-the-badge" alt="GitHub last commit (branch)"></p>
+				<p><a href="https://www.npmjs.com/package/advanced-command-handler"><img src="https://nodei.co/npm/advanced-command-handler.png?downloads=true&stars=true" alt="npm install"></a></p>
+				<a href="#index" id="index" style="color: inherit; text-decoration: none;">
+					<h1>Index</h1>
+				</a>
+				<ul>
+					<li>  <a href="#configuration">Configuration</a></li>
+					<li><a href="#commandhandler-namespace">Command Handler</a><ul>
+							<li>  <a href="#commandhandler-events">CommandHandler Events</a></li>
+						</ul>
+					</li>
+					<li><a href="#classes">Classes</a><ul>
+							<li>  <a href="#client-class">Client</a></li>
+							<li><a href="#templates">Templates</a><ul>
+									<li>  <a href="#commands">Commands</a></li>
+									<li>  <a href="#command-class">Command Class</a></li>
+									<li>  <a href="#events">Events</a></li>
+									<li>  <a href="#event-class">Event Class</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li><a href="#defaults">Defaults</a><ul>
+							<li>  <a href="#defaults-events">Events</a></li>
+						</ul>
+					</li>
+					<li><a href="#utils">Utils</a><ul>
+							<li><a href="#logger-class">Logger</a><ul>
+									<li>  <a href="#example">Example</a></li>
+									<li>  <a href="#colors">Colors</a></li>
+								</ul>
+							</li>
+							<li>  <a href="#betterembed-class">BetterEmbed</a></li>
+							<li>  <a href="#useful-functions">Useful functions</a></li>
+						</ul>
+					</li>
+				</ul>
+				<a href="#configuration" id="configuration" style="color: inherit; text-decoration: none;">
+					<h1>Configuration</h1>
+				</a>
+				<p>To install the command handler, install <a href="https://nodejs.org/en/"><code>Node.js</code></a> (in the latest LTS version) and then in a terminal run this command where you want your bot <code>npm i advanced-command-handler</code>.
+				After, you create your main file and adds this into it :</p>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> {</span><span style="color: #0070C1">CommandHandler</span><span style="color: #000000">} = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;advanced-command-handler&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">CommandHandler</span><span style="color: #000000">.</span><span style="color: #795E26">create</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Optionnals :</span>
+<span style="color: #000000">    </span><span style="color: #001080">commandsDir:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;name of the dir&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">eventsDir:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;name of the dir&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">prefixes:</span><span style="color: #000000"> [</span><span style="color: #A31515">&#039;!&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;coolPrefix &#039;</span><span style="color: #000000">],</span>
+<span style="color: #000000">    </span><span style="color: #001080">owners:</span><span style="color: #000000"> [</span><span style="color: #A31515">&#039;Discord IDs&#039;</span><span style="color: #000000">],</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #001080">CommandHandler</span><span style="color: #000000">.</span><span style="color: #795E26">launch</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #001080">token:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;YOUR TOKEN GOES HERE&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Optionnal :</span>
+<span style="color: #000000">    </span><span style="color: #001080">clientOptions:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #008000">// Client Options, see Discord.js#ClientOptions</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">});</span>
+</code></pre>
+				<blockquote>
+					<p>Note:
+					You can see some more advanced examples in <a href="https://github.com/Ayfri/advanced-command-handler-examples">this repo</a>.</p>
+				</blockquote>
+				<a href="#commandhandler-namespace" id="commandhandler-namespace" style="color: inherit; text-decoration: none;">
+					<h1>CommandHandler Namespace</h1>
+				</a>
+				<table>
+					<thead>
+						<tr>
+							<th>Field</th>
+							<th>Description</th>
+							<th>Type</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>create(options)</code></td>
+							<td>Creates the command handler, creates the <a href="#client-class">Client</a>.</td>
+							<td><code>CommandHandler</code></td>
+						</tr>
+						<tr>
+							<td><code>getPrefixFromMessage(message)</code></td>
+							<td>Get the prefix from the message or null if not found.</td>
+							<td><code>string | null</code></td>
+						</tr>
+						<tr>
+							<td><code>launch(options)</code></td>
+							<td>Launch the Command Handler by logging in the <a href="#client-class">Client</a> and fetching Commands/Events.</td>
+							<td><code>CommandHandler</code></td>
+						</tr>
+						<tr>
+							<td><code>setDefaultCommands()</code></td>
+							<td>Sets the default Commands, see <a href="#defaults-commands">Default Commands</a>.</td>
+							<td><code>CommandHandler</code></td>
+						</tr>
+						<tr>
+							<td><code>setDefaultEvents()</code></td>
+							<td>Sets the default Events <a href="#defaults-events">Default Events</a>.</td>
+							<td><code>CommandHandler</code></td>
+						</tr>
+						<tr>
+							<td><code>client</code></td>
+							<td>Represents the <a href="#client-class">Client</a> of the bot.</td>
+							<td><code>AdvancedClient extends Discord.Client</code></td>
+						</tr>
+						<tr>
+							<td><code>commands</code></td>
+							<td>All the commands that have been found by the command handler at launch.</td>
+							<td><code>Discord.Collection&lt;String, Command&gt;</code></td>
+						</tr>
+						<tr>
+							<td><code>cooldowns</code></td>
+							<td>The cooldowns of the bot mapped as <code>&lt;UserID, cooldownInSeconds&gt;</code></td>
+							<td><code>Discord.Collection&lt;SnowFlake, number&gt;</code></td>
+						</tr>
+						<tr>
+							<td><code>prefixes</code></td>
+							<td>Prefixes that you put in the <code>create</code> function.</td>
+							<td><code>String[]</code></td>
+						</tr>
+						<tr>
+							<td><code>owners</code></td>
+							<td>Owners that you put in the <code>create</code> function.</td>
+							<td><code>SnowFlake[]</code></td>
+						</tr>
+						<tr>
+							<td><code>version</code></td>
+							<td>The version of the handler (equivalent to <code>package.json</code> version).</td>
+							<td><code>string</code></td>
+						</tr>
+				</tbody></table>
+				<a href="#commandhandler-events" id="commandhandler-events" style="color: inherit; text-decoration: none;">
+					<h3>CommandHandler events</h3>
+				</a>
+				<p>The CommandHandler class is extending the <code>EventEmitter</code> class, which means that there are events that can be hooked.</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Event Name</th>
+							<th>When Fired</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>create</code></td>
+							<td>When creating the CommandHandler.</td>
+						</tr>
+						<tr>
+							<td><code>launch</code></td>
+							<td>When starting to launch the CommandHandler.</td>
+						</tr>
+						<tr>
+							<td><code>loadEvents</code></td>
+							<td>When loading the events.</td>
+						</tr>
+						<tr>
+							<td><code>loadCommands</code></td>
+							<td>When loading the commands.</td>
+						</tr>
+						<tr>
+							<td><code>launched</code></td>
+							<td>When the CommandHandler is started.</td>
+						</tr>
+						<tr>
+							<td><code>error</code></td>
+							<td>When a CommandHandlerError is thrown.</td>
+						</tr>
+				</tbody></table>
+				<a href="#classes" id="classes" style="color: inherit; text-decoration: none;">
+					<h1>Classes</h1>
+				</a>
+				<a href="#client-class" id="client-class" style="color: inherit; text-decoration: none;">
+					<h1>Client Class</h1>
+				</a>
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Returning</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>hasPermission(message, permission)</code></td>
+							<td>Check if bot has permission <code>permission</code>.</td>
+							<td>Boolean</td>
+						</tr>
+						<tr>
+							<td><code>isOwner(id)</code></td>
+							<td>Check if the <code>id</code> is in the owners (configuration).</td>
+							<td>Boolean</td>
+						</tr>
+				</tbody></table>
+				<a href="#templates" id="templates" style="color: inherit; text-decoration: none;">
+					<h1>Templates</h1>
+				</a>
+				<a href="#commands" id="commands" style="color: inherit; text-decoration: none;">
+					<h2>Commands</h2>
+				</a>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> {</span><span style="color: #0070C1">Command</span><span style="color: #000000">} = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;advanced-command-handler&#039;</span><span style="color: #000000">);</span>
+<span style="color: #267F99">module</span><span style="color: #000000">.</span><span style="color: #267F99">exports</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Command</span><span style="color: #000000">(</span>
+<span style="color: #000000">    {</span>
+<span style="color: #000000">        </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">description:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #008000">// Optionnals :</span>
+<span style="color: #000000">        </span><span style="color: #001080">usage:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">category:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">tags:</span><span style="color: #000000"> [],</span>
+<span style="color: #000000">        </span><span style="color: #001080">aliases:</span><span style="color: #000000"> [],</span>
+<span style="color: #000000">        </span><span style="color: #001080">userPermissions:</span><span style="color: #000000"> [],</span>
+<span style="color: #000000">        </span><span style="color: #001080">clientPermissions:</span><span style="color: #000000"> [],</span>
+<span style="color: #000000">        </span><span style="color: #001080">channels:</span><span style="color: #000000"> [],</span>
+<span style="color: #000000">        </span><span style="color: #001080">cooldown:</span><span style="color: #000000"> </span><span style="color: #098658">10</span><span style="color: #000000">,</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">async</span><span style="color: #000000"> (</span><span style="color: #001080">handler</span><span style="color: #000000">, </span><span style="color: #001080">message</span><span style="color: #000000">, </span><span style="color: #001080">args</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #008000">// Your code goes here.</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">);</span>
+</code></pre>
+				<blockquote>
+					<p>Note:
+					Command function car get any argument you put with a custom message event.</p>
+				</blockquote>
+				<p><strong>You have to put the command into a category folder into your commands folder like in the example.</strong></p>
+				<a href="#command-class" id="command-class" style="color: inherit; text-decoration: none;">
+					<h2>Command class</h2>
+				</a>
+				<table>
+					<thead>
+						<tr>
+							<th>Method</th>
+							<th>Description</th>
+							<th>Returning Type</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>getMissingPermission(message)</code></td>
+							<td>Returns the missing permissions.</td>
+							<td><code>PermissionsString[]</code></td>
+						</tr>
+						<tr>
+							<td><code>getMissingTags(message)</code></td>
+							<td>Returns the missing tags.</td>
+							<td><code>Tag[]</code></td>
+						</tr>
+						<tr>
+							<td><code>isInRightChannel(message)</code></td>
+							<td>Returns <code>true</code> if the command has been executed in a channel present in the <code>channels</code> property (if present, otherwise <code>true</code>) otherwise <code>false</code>.</td>
+							<td><code>Boolean</code></td>
+						</tr>
+				</tbody></table>
+				<a href="#events" id="events" style="color: inherit; text-decoration: none;">
+					<h2>Events</h2>
+				</a>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> {</span><span style="color: #0070C1">Event</span><span style="color: #000000">} = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;advanced-command-handler&#039;</span><span style="color: #000000">);</span>
+<span style="color: #267F99">module</span><span style="color: #000000">.</span><span style="color: #267F99">exports</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Event</span><span style="color: #000000">(</span>
+<span style="color: #000000">    {</span>
+<span style="color: #000000">        </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #008000">//optionnal :</span>
+<span style="color: #000000">        </span><span style="color: #001080">once:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">async</span><span style="color: #000000"> (</span><span style="color: #001080">handler</span><span style="color: #000000">, ...</span><span style="color: #001080">EventArguments</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #008000">// Your code goes here.</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">);</span>
+</code></pre>
+				<a href="#event-class" id="event-class" style="color: inherit; text-decoration: none;">
+					<h2>Event Class</h2>
+				</a>
+				<table>
+					<thead>
+						<tr>
+							<th>Method</th>
+							<th>Description</th>
+							<th>Returning Type</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>bind(client)</code></td>
+							<td>Bind the Event to the <a href="#client-class">Client</a>.</td>
+							<td><code>void</code></td>
+						</tr>
+						<tr>
+							<td><code>unbind(client)</code></td>
+							<td>Unbind the Event to the <a href="#client-class">Client</a>.</td>
+							<td><code>void</code></td>
+						</tr>
+				</tbody></table>
+				<a href="#defaults" id="defaults" style="color: inherit; text-decoration: none;">
+					<h1>Defaults</h1>
+				</a>
+				<p>To use the default Commands/Events, use the <code>setDefaultEvents</code> and <code>setDefaultCommands</code> functions in the <a href="#commandhandler-namespace">CommandHandler Namespace</a>.</p>
+				<a href="#defaults-events" id="defaults-events" style="color: inherit; text-decoration: none;">
+					<h2>Defaults Events</h2>
+				</a>
+				<p>There is for now only one Default Event which is the <code>message</code> event.</p>
+				<a href="#defaults-commands" id="defaults-commands" style="color: inherit; text-decoration: none;">
+					<h2>Defaults Commands</h2>
+				</a>
+				<p>There is for now only one default Command which is the <code>ping</code> command.</p>
+				<a href="#utils" id="utils" style="color: inherit; text-decoration: none;">
+					<h1>Utils</h1>
+				</a>
+				<a href="#logger-class" id="logger-class" style="color: inherit; text-decoration: none;">
+					<h2>Logger Class</h2>
+				</a>
+				<p><code>Logger</code> is a class in the <code>utils</code> folder to help you logging things. It has multiple <strong>static</strong> methods :</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Color</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>comment( message, color = &#39;comment&#39; )</code></td>
+							<td>Let you log something with the showed type <code>COMMENT</code>, theses only logs if the static field <code>logComments</code> is set to true.</td>
+							<td>grey : <code>#6e6f77</code></td>
+						</tr>
+						<tr>
+							<td><code>error( message, color = &#39;error&#39; )</code></td>
+							<td>Let you log something with the showed type <code>ERROR</code>.</td>
+							<td>red :<code>#b52825</code></td>
+						</tr>
+						<tr>
+							<td><code>event( message, color = &#39;event&#39; )</code></td>
+							<td>Let you log something with the showed type <code>EVENT</code>.</td>
+							<td><code>#43804e</code></td>
+						</tr>
+						<tr>
+							<td><code>info( message, color = &#39;info&#39; )</code></td>
+							<td>Let you log something with the showed type <code>INFO</code>.</td>
+							<td>blue : <code>#2582ff</code></td>
+						</tr>
+						<tr>
+							<td><code>log( message, type = &#39;log&#39;, color = &#39;log&#39; )</code></td>
+							<td>Let you log something with the showed type <code>LOG</code>, you can change the color.</td>
+							<td>default :<code>#cccccc</code></td>
+						</tr>
+						<tr>
+							<td><code>test( message, color = &#39;test&#39; )</code></td>
+							<td>Let you log something with the showed type <code>TEST</code>.</td>
+							<td>white : <code>#ffffff</code></td>
+						</tr>
+						<tr>
+							<td><code>warn( message, color = &#39;warn&#39; )</code></td>
+							<td>Let you log something with the showed type <code>WARN</code>.</td>
+							<td>yellow : <code>#eeee23</code></td>
+						</tr>
+						<tr>
+							<td><code>setColor(color = &#39;default&#39;, text = &#39;&#39;)</code></td>
+							<td>Let you change the color after the function or the color of the <code>text</code> only, and let you change the color after the <code>text</code> if you set the argument.</td>
+							<td><code>color</code></td>
+						</tr>
+				</tbody></table>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h3>Example</h3>
+				</a>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> {</span><span style="color: #0070C1">Logger</span><span style="color: #000000">} = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;advanced-command-handler&#039;</span><span style="color: #000000">);</span>
+<span style="color: #001080">Logger</span><span style="color: #000000">.</span><span style="color: #795E26">error</span><span style="color: #000000">(</span><span style="color: #A31515">`</span><span style="color: #0000FF">${</span><span style="color: #001080">Logger</span><span style="color: #000000FF">.</span><span style="color: #795E26">setColor</span><span style="color: #000000FF">(</span><span style="color: #A31515">&#039;orange&#039;</span><span style="color: #000000FF">, </span><span style="color: #A31515">&#039;Command&#039;</span><span style="color: #000000FF">)</span><span style="color: #0000FF">}</span><span style="color: #A31515"> is not allowed.`</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;PermissionError&#039;</span><span style="color: #000000">);</span>
+</code></pre>
+				<p>Give the following result in the console (screen made on <code>WebStorm</code>).</p>
+				<p><strong>Every number is yellow by default.</strong></p>
+				<a href="#colors" id="colors" style="color: inherit; text-decoration: none;">
+					<h3>Colors</h3>
+				</a>
+				<p>Colors are set out in a static public object in the <code>Logger</code> class, so you can change them.</p>
+				<p>These are the current colors :</p>
+				<pre><code class="language-js"><span style="color: #001080">colors</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">    </span><span style="color: #001080">red:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#b52825&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">orange:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#e76a1f&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">gold:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#deae17&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">yellow:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#eeee23&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">green:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#3ecc2d&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">teal:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#11cc93&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">blue:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#2582ff&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">indigo:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#524cd9&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">violet:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#7d31cc&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">magenta:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#b154cf&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">pink:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#d070a0&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">brown:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#502f1e&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">black:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#000000&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">grey:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#6e6f77&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">white:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#ffffff&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">default:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;#cccccc&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">};</span>
+</code></pre>
+				<a href="#betterembed-class" id="betterembed-class" style="color: inherit; text-decoration: none;">
+					<h2>BetterEmbed class</h2>
+				</a>
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>checkSize()</code></td>
+							<td>Check the size of the Embed and throw an error if a field is too long.</td>
+						</tr>
+						<tr>
+							<td><code>cutIfTooLong()</code></td>
+							<td>Check the size of the Embed and cut the fields that are too long.</td>
+						</tr>
+				</tbody></table>
+				<p>This is a class for creating Embed Object, but a bit simpler like this :</p>
+				<pre><code class="language-js"><span style="color: #008000">// MessageEmbed :</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">MessageEmbed</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;discord.js&#039;</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">embed</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">MessageEmbed</span><span style="color: #000000">();</span>
+<span style="color: #001080">embed</span><span style="color: #000000">.</span><span style="color: #795E26">setImage</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;url&#039;</span><span style="color: #000000">);</span>
+<span style="color: #001080">embed</span><span style="color: #000000">.</span><span style="color: #795E26">setAuthor</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;name&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;icon_url&#039;</span><span style="color: #000000">);</span>
+<span style="color: #001080">embed</span><span style="color: #000000">.</span><span style="color: #795E26">setTimestamp</span><span style="color: #000000">();</span>
+<span style="color: #001080">embed</span><span style="color: #000000">.</span><span style="color: #795E26">setFooter</span><span style="color: #000000">(</span><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #001080">user</span><span style="color: #000000">.</span><span style="color: #001080">username</span><span style="color: #000000">, </span><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #001080">user</span><span style="color: #000000">.</span><span style="color: #795E26">displayAvatarURL</span><span style="color: #000000">());</span>
+<span style="color: #008000">// ...</span>
+<span style="color: #001080">embed</span><span style="color: #000000">.</span><span style="color: #795E26">setDescription</span><span style="color: #000000">(</span><span style="color: #001080">embed</span><span style="color: #000000">.</span><span style="color: #001080">description</span><span style="color: #000000">.</span><span style="color: #795E26">slice</span><span style="color: #000000">(</span><span style="color: #098658">0</span><span style="color: #000000">, </span><span style="color: #098658">2048</span><span style="color: #000000">));</span>
+
+<span style="color: #008000">// BetterEmbed</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> {</span><span style="color: #0070C1">BetterEmbed</span><span style="color: #000000">} = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;advanced-command-handler&#039;</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">embed</span><span style="color: #000000"> = </span><span style="color: #001080">BetterEmbed</span><span style="color: #000000">.</span><span style="color: #795E26">fromTemplate</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;basic&#039;</span><span style="color: #000000">, {</span>
+<span style="color: #000000">    </span><span style="color: #001080">image:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;url&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">author:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;name&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">icon_url:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;icon_url&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    },</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #001080">embed</span><span style="color: #000000">.</span><span style="color: #795E26">cutIfTooLong</span><span style="color: #000000">();</span>
+
+<span style="color: #008000">// Using templates</span>
+<span style="color: #001080">BetterEmbed</span><span style="color: #000000">.</span><span style="color: #001080">templates</span><span style="color: #000000">.</span><span style="color: #001080">funny</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">    </span><span style="color: #001080">title:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;${client.user.username} says that you are funny !&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">};</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">embed</span><span style="color: #000000"> = </span><span style="color: #001080">BetterEmbed</span><span style="color: #000000">.</span><span style="color: #795E26">fromTemplate</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;funny&#039;</span><span style="color: #000000">, {</span><span style="color: #001080">client:</span><span style="color: #000000"> </span><span style="color: #001080">message</span><span style="color: #000000">.</span><span style="color: #001080">client</span><span style="color: #000000">});</span>
+<span style="color: #001080">message</span><span style="color: #000000">.</span><span style="color: #001080">channel</span><span style="color: #000000">.</span><span style="color: #795E26">send</span><span style="color: #000000">(</span><span style="color: #001080">embed</span><span style="color: #000000">);</span>
+</code></pre>
+				<p>This can simplify your embeds declarations.</p>
+				<a href="#useful-functions" id="useful-functions" style="color: inherit; text-decoration: none;">
+					<h2>Useful functions</h2>
+				</a>
+				<p>There are multiple utils functions in the <code>util</code> folder that you can use (require them like other classes).</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Returning</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td><code>argError(message, error, command)</code></td>
+							<td>Send an embed that explains the argument error and show correct the syntax.</td>
+							<td><code>BetterEmbed</code></td>
+						</tr>
+						<tr>
+							<td><code>async getThing(datatype, text)</code></td>
+							<td>Search for the <code>dataType</code> (like an user or command) into the client and in the <code>text</code>. If <code>text</code> is a message it will look into its mentions.</td>
+							<td>Datatype you entered or <code>false</code></td>
+						</tr>
+						<tr>
+							<td><code>permissionsError(message, missingPermissions, command, isFromBot = true)</code></td>
+							<td>Send an embed that explains which permissions are missing.</td>
+							<td><code>BetterEmbed</code></td>
+						</tr>
+				</tbody></table>
+				<p>The <code>Command</code> class has a method <code>deleteMessage( message )</code> to safely delete messages without sending Errors <em>(missing permissions)</em>.</p>
+				<a href="#that39s-all-for-now-d" id="that39s-all-for-now-d" style="color: inherit; text-decoration: none;">
+					<h5>That&#39;s all for now :D</h5>
+				</a>
+			</div>
+			<footer class="with-border-bottom">
+				<div class="tsd-legend-group">
+					<ul class="tsd-legend">
+						<li class="tsd-is-inherited"><span class="tsd-kind-icon">Inherited</span></li>
+						<li class="tsd-is-protected"><span class="tsd-kind-icon">Protected</span></li>
+						<li class="tsd-is-private"><span class="tsd-kind-icon">Private</span></li>
+						<li class="tsd-is-static"><span class="tsd-kind-icon">Static</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+						<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object</span></li>
+						<li class="tsd-kind-property"><span class="tsd-kind-icon">Property</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+						<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+						<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type</span></li>
+						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+						<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enum</span></li>
+						<li class="tsd-kind-constructor"><span class="tsd-kind-icon">Constructor</span></li>
+						<li class="tsd-kind-accessor"><span class="tsd-kind-icon">Getter/Setter</span></li>
+					</ul>
+				</div>
+			</footer>
+			<div>Made with ❤️ by <a href="https://github.com/pirix-gh/eledoc" target="_blank">pirix-gh</a>. Documentation generated by <a href="http://typedoc.org/" target="_blank">TypeDoc.</a></div>
+		</div>
+	</div>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

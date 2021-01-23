@@ -1,0 +1,305 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>utils/getThing | Advanced Command Handler</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Advanced Command Handler</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">Globals</a>
+				</li>
+				<li>
+					<a href="utils_getthing.html">utils/getThing</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</header>
+<div class="container">
+	<div class="row container container-main">
+		<div class="col-3 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul>
+					<ul class="before-current">
+						<li class=" tsd-kind-enum tsd-parent-kind-module">
+							<a href="../enums/utils_getthing.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
+						</li>
+						<li class=" tsd-kind-function tsd-parent-kind-module">
+							<a href="utils_getthing.html#getthing" class="tsd-kind-icon">get<wbr>Thing</a>
+						</li>
+					</ul>
+				</ul>
+				<ul>
+					<li>📑 Index</li>
+					<li><br></li>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="commandhandler.html">Command<wbr>Handler</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="classes_advancedclient.html">classes/<wbr>Advanced<wbr>Client</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="classes_command.html">classes/<wbr>Command</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="classes_commandhandlererror.html">classes/<wbr>Command<wbr>Handler<wbr>Error</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="classes_event.html">classes/<wbr>Event</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="defaults_commands.html">defaults/commands</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="defaults_commands_ping.html">defaults/commands/ping</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="defaults_events.html">defaults/events</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="defaults_events_message.html">defaults/events/message</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="index.html">index</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="types.html">types</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="utils_logger.html">utils/<wbr>Logger</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="utils_argerror.html">utils/arg<wbr>Error</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="utils_codeerror.html">utils/code<wbr>Error</a>
+						</li>                        <li class="current tsd-kind-module">
+						<a href="utils_getthing.html">utils/get<wbr>Thing</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="utils_permissionserror.html">utils/permissions<wbr>Error</a>
+						</li>                        <li class=" tsd-kind-module">
+						<a href="utils_utils.html">utils/utils</a>
+				</li>                </ul>
+			</nav>
+		</div>
+		<div class="col-9 col-content">
+			<section class="tsd-panel-group tsd-index-group">
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Enumerations</h3>
+							<div class="tsd-navigation secondary">
+								<ul>
+									<li class="tsd-kind-enum tsd-parent-kind-module">
+										<a href="../enums/utils_getthing.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
+										<ul>
+											<li class="tsd-kind-enum-member tsd-parent-kind-enum">
+												<a href="../enums/utils_getthing.datatype.html#channel" class="tsd-kind-icon">channel</a>
+											</li>
+											<li class="tsd-kind-enum-member tsd-parent-kind-enum">
+												<a href="../enums/utils_getthing.datatype.html#command" class="tsd-kind-icon">command</a>
+											</li>
+											<li class="tsd-kind-enum-member tsd-parent-kind-enum">
+												<a href="../enums/utils_getthing.datatype.html#emote" class="tsd-kind-icon">emote</a>
+											</li>
+											<li class="tsd-kind-enum-member tsd-parent-kind-enum">
+												<a href="../enums/utils_getthing.datatype.html#guild" class="tsd-kind-icon">guild</a>
+											</li>
+											<li class="tsd-kind-enum-member tsd-parent-kind-enum">
+												<a href="../enums/utils_getthing.datatype.html#member" class="tsd-kind-icon">member</a>
+											</li>
+											<li class="tsd-kind-enum-member tsd-parent-kind-enum">
+												<a href="../enums/utils_getthing.datatype.html#message" class="tsd-kind-icon">message</a>
+											</li>
+											<li class="tsd-kind-enum-member tsd-parent-kind-enum">
+												<a href="../enums/utils_getthing.datatype.html#role" class="tsd-kind-icon">role</a>
+											</li>
+											<li class="tsd-kind-enum-member tsd-parent-kind-enum">
+												<a href="../enums/utils_getthing.datatype.html#user" class="tsd-kind-icon">user</a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<div class="tsd-navigation secondary">
+								<ul>
+									<li class="tsd-kind-function tsd-parent-kind-module">
+										<a href="utils_getthing.html#getthing" class="tsd-kind-icon">get<wbr>Thing</a>
+									</li>
+								</ul>
+							</div>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-descriptions">
+					<a name="getthing" class="tsd-anchor"></a>
+					<h3>get<wbr>Thing</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Thing<span class="tsd-signature-symbol">(</span>dataType<span class="tsd-signature-symbol">: </span><a href="../enums/utils_getthing.datatype.html#channel" class="tsd-signature-type">channel</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"channel"</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GuildChannel</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Thing<span class="tsd-signature-symbol">(</span>dataType<span class="tsd-signature-symbol">: </span><a href="../enums/utils_getthing.datatype.html#command" class="tsd-signature-type">command</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"command"</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/classes_command.command.html" class="tsd-signature-type">Command</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Thing<span class="tsd-signature-symbol">(</span>dataType<span class="tsd-signature-symbol">: </span><a href="../enums/utils_getthing.datatype.html#emote" class="tsd-signature-type">emote</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"emote"</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Emoji</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Thing<span class="tsd-signature-symbol">(</span>dataType<span class="tsd-signature-symbol">: </span><a href="../enums/utils_getthing.datatype.html#guild" class="tsd-signature-type">guild</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"guild"</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Guild</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Thing<span class="tsd-signature-symbol">(</span>dataType<span class="tsd-signature-symbol">: </span><a href="../enums/utils_getthing.datatype.html#message" class="tsd-signature-type">message</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"message"</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Thing<span class="tsd-signature-symbol">(</span>dataType<span class="tsd-signature-symbol">: </span><a href="../enums/utils_getthing.datatype.html#role" class="tsd-signature-type">role</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"role"</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Role</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Thing<span class="tsd-signature-symbol">(</span>dataType<span class="tsd-signature-symbol">: </span><a href="../enums/utils_getthing.datatype.html#user" class="tsd-signature-type">user</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"message"</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">User</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">dataType</span>: <a href="../enums/utils_getthing.datatype.html#channel" class="tsd-signature-type">channel</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"channel"</span>
+						</li>
+						<li>
+							<span class="name">text</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GuildChannel</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span>    </h4>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">dataType</span>: <a href="../enums/utils_getthing.datatype.html#command" class="tsd-signature-type">command</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"command"</span>
+						</li>
+						<li>
+							<span class="name">text</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/classes_command.command.html" class="tsd-signature-type">Command</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span>    </h4>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">dataType</span>: <a href="../enums/utils_getthing.datatype.html#emote" class="tsd-signature-type">emote</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"emote"</span>
+						</li>
+						<li>
+							<span class="name">text</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Emoji</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span>    </h4>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">dataType</span>: <a href="../enums/utils_getthing.datatype.html#guild" class="tsd-signature-type">guild</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"guild"</span>
+						</li>
+						<li>
+							<span class="name">text</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Guild</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span>    </h4>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">dataType</span>: <a href="../enums/utils_getthing.datatype.html#message" class="tsd-signature-type">message</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"message"</span>
+						</li>
+						<li>
+							<span class="name">text</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span>    </h4>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">dataType</span>: <a href="../enums/utils_getthing.datatype.html#role" class="tsd-signature-type">role</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"role"</span>
+						</li>
+						<li>
+							<span class="name">text</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Role</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span>    </h4>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">dataType</span>: <a href="../enums/utils_getthing.datatype.html#user" class="tsd-signature-type">user</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"message"</span>
+						</li>
+						<li>
+							<span class="name">text</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Message</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">User</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span>    </h4>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/71c65cb/src/utils/getThing.ts#L16">src/utils/getThing.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<footer class="with-border-bottom">
+				<div class="tsd-legend-group">
+					<ul class="tsd-legend">
+						<li class="tsd-is-inherited"><span class="tsd-kind-icon">Inherited</span></li>
+						<li class="tsd-is-protected"><span class="tsd-kind-icon">Protected</span></li>
+						<li class="tsd-is-private"><span class="tsd-kind-icon">Private</span></li>
+						<li class="tsd-is-static"><span class="tsd-kind-icon">Static</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+						<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object</span></li>
+						<li class="tsd-kind-property"><span class="tsd-kind-icon">Property</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+						<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+						<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type</span></li>
+						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+						<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+					</ul>
+					<ul class="tsd-legend">
+						<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enum</span></li>
+						<li class="tsd-kind-constructor"><span class="tsd-kind-icon">Constructor</span></li>
+						<li class="tsd-kind-accessor"><span class="tsd-kind-icon">Getter/Setter</span></li>
+					</ul>
+				</div>
+			</footer>
+			<div>Made with ❤️ by <a href="https://github.com/pirix-gh/eledoc" target="_blank">pirix-gh</a>. Documentation generated by <a href="http://typedoc.org/" target="_blank">TypeDoc.</a></div>
+		</div>
+	</div>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
