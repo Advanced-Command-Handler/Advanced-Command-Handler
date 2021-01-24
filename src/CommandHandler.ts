@@ -45,16 +45,14 @@ export namespace CommandHandler {
 	 * Options for launching the CommandHandler.
 	 */
 	export interface LaunchCommandHandlerOptions {
-		options: {
-			/**
-			 * The token of your bot.
-			 */
-			token: string;
-			/**
-			 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
-			 */
-			clientOptions?: ClientOptions
-		};
+		/**
+		 * The token of your bot.
+		 */
+		token: string;
+		/**
+		 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
+		 */
+		clientOptions?: ClientOptions
 	}
 
 	/**
@@ -197,11 +195,10 @@ export namespace CommandHandler {
 	/**
 	 * Launches the CommandHandler, log in the client and load commands/events.
 	 *
-	 * @param options.options
 	 * @param options - Options for launching the CommandHandler, see {@link CreateCommandHandlerOptions}.
 	 * @returns Itself in a promise.
 	 */
-	export async function launch({options}: LaunchCommandHandlerOptions): Promise<typeof CommandHandler> {
+	export async function launch(options: LaunchCommandHandlerOptions): Promise<typeof CommandHandler> {
 		client = new AdvancedClient(options.token, options.clientOptions ?? {});
 		emit('launch');
 
