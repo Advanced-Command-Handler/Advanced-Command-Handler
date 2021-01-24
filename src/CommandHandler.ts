@@ -28,19 +28,64 @@ export namespace CommandHandler {
 		prefixes?: string[];
 	}
 
+	/**
+	 * @internal
+	 */
 	export interface CommandCooldown {
 		executedAt: Date;
 		cooldown: number;
 	}
 
+	/**
+	 * @internal
+	 */
 	export type CooldownUser = {[k: string]: CommandCooldown};
 
+	/**
+	 * Options for launching the CommandHandler.
+	 */
+	export interface LaunchCommandHandlerOptions {
+		options: {
+			/**
+			 * The token of your bot.
+			 */
+			token: string;
+			/**
+			 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
+			 */
+			clientOptions?: ClientOptions
+		};
+	}
+
+	/**
+	 * The CommandHandler events.
+	 *
+	 * @see {@link EventEmitter}.
+	 */
 	export type CommandHandlerEvents = {
+		/**
+		 * The event executed when creating the CommandHandler.
+		 */
 		create: [CreateCommandHandlerOptions];
+		/**
+		 * The event executed when a CommandHandlerError is created.
+		 */
 		error: [CommandHandlerError];
+		/**
+		 * The event executed when the CommandHandler starts its launch.
+		 */
 		launch: [];
+		/**
+		 * The event executed when loading a Command.
+		 */
 		loadCommand: [Command];
+		/**
+		 * The event executed when loading an Event.
+		 */
 		loadEvent: [Event];
+		/**
+		 * The event executed when the CommandHandler has finished launching..
+		 */
 		launched: [];
 	};
 
@@ -72,6 +117,7 @@ export namespace CommandHandler {
 	export let eventsDir: string = '';
 	export let owners: string[] = [];
 	export let prefixes: string[] = [];
+
 	export let client: AdvancedClient | null = null;
 
 	/**
@@ -151,13 +197,11 @@ export namespace CommandHandler {
 	/**
 	 * Launches the CommandHandler, log in the client and load commands/events.
 	 *
-	 * @param options - Options for launching the CommandHandler.
-	 * @param options.token - The token of your bot.
-	 * @param options.clientOptions - The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions}.
-	 *
+	 * @param options.options
+	 * @param options - Options for launching the CommandHandler, see {@link CreateCommandHandlerOptions}.
 	 * @returns Itself in a promise.
 	 */
-	export async function launch(options: {token: string; clientOptions?: ClientOptions}): Promise<typeof CommandHandler> {
+	export async function launch({options}: LaunchCommandHandlerOptions): Promise<typeof CommandHandler> {
 		client = new AdvancedClient(options.token, options.clientOptions ?? {});
 		emit('launch');
 
