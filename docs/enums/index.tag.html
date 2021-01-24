@@ -68,6 +68,29 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<a href="#how-tags-should-works-" id="how-tags-should-works-" style="color: inherit; text-decoration: none;">
+							<h1>How tags should works ?</h1>
+						</a>
+					</div>
+					<p>When using commands, you want certain commands to only run on a server or in DM etc.<br>
+						Most of other CommandHandlers uses boolean properties like <code>guildOnly</code>.<br>
+						To avoid having a ton of these, I imagined a system where you have command tags and for every calls, tags for the command are verified one by one.<br>
+						And this system works very smoothly !<br>
+						So if you&#39;re using the default message event
+					(<a href="https://github.com/Ayfri/Advanced-Command-Handler/wiki/Defaults#defaults-events" class="external">see how to use defaults events</a>), tags will be checked.</p>
+					<dl class="tsd-comment-tags">
+						<dt>example</dt>
+						<dd><pre><code class="language-ts"><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">command</span><span style="color: #000000">.</span><span style="color: #001080">tags</span><span style="color: #000000">.</span><span style="color: #795E26">includes</span><span style="color: #000000">(</span><span style="color: #001080">Tag</span><span style="color: #000000">.</span><span style="color: #001080">guildOnly</span><span style="color: #000000">) &amp;&amp; !</span><span style="color: #001080">message</span><span style="color: #000000">.</span><span style="color: #001080">guild</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #001080">message</span><span style="color: #000000">.</span><span style="color: #001080">channel</span><span style="color: #000000">.</span><span style="color: #795E26">send</span><span style="color: #000000">(</span><span style="color: #A31515">`You must be on a guild to execute the </span><span style="color: #0000FF">${</span><span style="color: #001080">command</span><span style="color: #000000FF">.</span><span style="color: #001080">name</span><span style="color: #0000FF">}</span><span style="color: #A31515"> command !`</span><span style="color: #000000">);</span>
+<span style="color: #000000">}</span>
+</code></pre>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -93,9 +116,14 @@
 					<div class="tsd-signature tsd-kind-icon">dm<wbr>Only<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 4</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L11">src/classes/Command.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L43">src/classes/Command.ts:43</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Tag for commands to only run in DM.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="guildonly" class="tsd-anchor"></a>
@@ -103,9 +131,14 @@
 					<div class="tsd-signature tsd-kind-icon">guild<wbr>Only<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L7">src/classes/Command.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L27">src/classes/Command.ts:27</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Tag for commands to only run on a guild.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="guildowneronly" class="tsd-anchor"></a>
@@ -113,9 +146,14 @@
 					<div class="tsd-signature tsd-kind-icon">guild<wbr>Owner<wbr>Only<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 3</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L10">src/classes/Command.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L39">src/classes/Command.ts:39</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Tag for commands to only run on a guild and if the author is the owner of the guild.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="nsfw" class="tsd-anchor"></a>
@@ -123,9 +161,14 @@
 					<div class="tsd-signature tsd-kind-icon">nsfw<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 2</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L9">src/classes/Command.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L35">src/classes/Command.ts:35</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Tag for commands to only run on a guild and in an NSFW channel.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
 					<a name="owneronly" class="tsd-anchor"></a>
@@ -133,9 +176,14 @@
 					<div class="tsd-signature tsd-kind-icon">owner<wbr>Only<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L8">src/classes/Command.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L31">src/classes/Command.ts:31</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Tag for commands to only run if author is an owner defined in <a href="../modules/index.commandhandler.html#owners">CommandHandler.owners</a>.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -175,6 +223,9 @@
 					<li class="current tsd-kind-module">
 						<a href="../modules/index.html">index</a>
 						<ul>
+							<li class=" tsd-kind-namespace tsd-parent-kind-module">
+								<a href="../modules/index.commandhandler.html">Command<wbr>Handler</a>
+							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-module tsd-is-external">
 								<a href="../modules/index.dayjs.html">dayjs</a>
 							</li>
@@ -205,21 +256,6 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#commandhandler" class="tsd-kind-icon">Command<wbr>Handler</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#commandhandlererror" class="tsd-kind-icon">Command<wbr>Handler<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#event" class="tsd-kind-icon">Event</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#argerror" class="tsd-kind-icon">arg<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#permissionserror" class="tsd-kind-icon">permissions<wbr>Error</a>
-					</li>
 					<li class=" tsd-kind-enum tsd-parent-kind-module">
 						<a href="index.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
 					</li>
@@ -247,6 +283,9 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/index.advancedclient.html" class="tsd-kind-icon">Advanced<wbr>Client</a>
+					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
 						<a href="../classes/index.betterembed.html" class="tsd-kind-icon">Better<wbr>Embed</a>
 					</li>
@@ -254,7 +293,25 @@
 						<a href="../classes/index.command.html" class="tsd-kind-icon">Command</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/index.commandhandlererror.html" class="tsd-kind-icon">Command<wbr>Handler<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/index.event.html" class="tsd-kind-icon">Event</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
 						<a href="../classes/index.logger.html" class="tsd-kind-icon">Logger</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/index.commandoptions.html" class="tsd-kind-icon">Command<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/index.deletemessageoptions.html" class="tsd-kind-icon">Delete<wbr>Message<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/index.eventsoptions.html" class="tsd-kind-icon">Events<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/index.missingpermissions.html" class="tsd-kind-icon">Missing<wbr>Permissions</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="../modules/index.html#colorresolvable" class="tsd-kind-icon">Color<wbr>Resolvable</a>
@@ -272,6 +329,9 @@
 						<a href="../modules/index.html#templates" class="tsd-kind-icon">templates</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/index.html#argerror" class="tsd-kind-icon">arg<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="../modules/index.html#cutiftoolong" class="tsd-kind-icon">cut<wbr>IfToo<wbr>Long</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
@@ -285,6 +345,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="../modules/index.html#isowner" class="tsd-kind-icon">is<wbr>Owner</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/index.html#permissionserror" class="tsd-kind-icon">permissions<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../modules/index.html#random" class="tsd-kind-icon">random</a>
@@ -307,6 +370,9 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>

@@ -79,7 +79,7 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><span class="tsd-signature-type">CommandOptions</span></li>
+					<li><a href="../interfaces/classes_command.commandoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CommandOptions</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -130,22 +130,28 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Command<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CommandOptions</span>, runFunction<span class="tsd-signature-symbol">: </span><a href="../modules/types.html#runfunction" class="tsd-signature-type" data-tsd-kind="Type alias">RunFunction</a><span class="tsd-signature-symbol"> | </span><a href="../modules/types.html#defaultcommandrunfunction" class="tsd-signature-type" data-tsd-kind="Type alias">DefaultCommandRunFunction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes_command.command.html" class="tsd-signature-type" data-tsd-kind="Class">Command</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Command<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/classes_command.commandoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CommandOptions</a>, runFunction<span class="tsd-signature-symbol">: </span><a href="../modules/types.html#runfunction" class="tsd-signature-type" data-tsd-kind="Type alias">RunFunction</a><span class="tsd-signature-symbol"> | </span><a href="../modules/types.html#defaultcommandrunfunction" class="tsd-signature-type" data-tsd-kind="Type alias">DefaultCommandRunFunction</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="classes_command.command.html" class="tsd-signature-type" data-tsd-kind="Class">Command</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L51">src/classes/Command.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L196">src/classes/Command.ts:196</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>options: <span class="tsd-signature-type">CommandOptions</span></h5>
+									<h5>options: <a href="../interfaces/classes_command.commandoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CommandOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The options for the command.</p>
+									</div>
 								</li>
 								<li>
 									<h5>runFunction: <a href="../modules/types.html#runfunction" class="tsd-signature-type" data-tsd-kind="Type alias">RunFunction</a><span class="tsd-signature-symbol"> | </span><a href="../modules/types.html#defaultcommandrunfunction" class="tsd-signature-type" data-tsd-kind="Type alias">DefaultCommandRunFunction</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The function to run when executing the command.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="classes_command.command.html" class="tsd-signature-type" data-tsd-kind="Class">Command</a></h4>
@@ -160,70 +166,130 @@
 					<h3>aliases</h3>
 					<div class="tsd-signature tsd-kind-icon">aliases<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#aliases">aliases</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L42">src/classes/Command.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L138">src/classes/Command.ts:138</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The aliases of the command.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="category" class="tsd-anchor"></a>
 					<h3>category</h3>
 					<div class="tsd-signature tsd-kind-icon">category<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#category">category</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L43">src/classes/Command.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L144">src/classes/Command.ts:144</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The category of the command.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>defaultvalue</dt>
+							<dd><p>The command parent directory.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="channels" class="tsd-anchor"></a>
 					<h3>channels</h3>
 					<div class="tsd-signature tsd-kind-icon">channels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TextChannel</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#channels">channels</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L44">src/classes/Command.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L148">src/classes/Command.ts:148</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The channels where the command should only be executed if used (if using the default message event).</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="clientpermissions" class="tsd-anchor"></a>
 					<h3>client<wbr>Permissions</h3>
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Permissions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">PermissionString</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#clientpermissions">clientPermissions</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L45">src/classes/Command.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L154">src/classes/Command.ts:154</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The client permissions needed to run the command (if using the default message event).</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>defaultvalue</dt>
+							<dd><p><code>[&#39;SEND_MESSAGES&#39;]</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="cooldown" class="tsd-anchor"></a>
 					<h3>cooldown</h3>
 					<div class="tsd-signature tsd-kind-icon">cooldown<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#cooldown">cooldown</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L46">src/classes/Command.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L163">src/classes/Command.ts:163</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The cooldown of the command.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>defaultvalue</dt>
+							<dd><p>0</p>
+							</dd>
+							<dt>remarks</dt>
+							<dd><p>Every cooldown should be saved in <a href="../modules/index.commandhandler.html#cooldowns">CommandHandler.cooldowns</a>.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="description" class="tsd-anchor"></a>
 					<h3>description</h3>
 					<div class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#description">description</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L47">src/classes/Command.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L167">src/classes/Command.ts:167</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The description of the command.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="name" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L41">src/classes/Command.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L134">src/classes/Command.ts:134</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The name of the command.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="run" class="tsd-anchor"></a>
@@ -231,39 +297,83 @@
 					<div class="tsd-signature tsd-kind-icon">run<span class="tsd-signature-symbol">:</span> <a href="../modules/types.html#runfunction" class="tsd-signature-type" data-tsd-kind="Type alias">RunFunction</a><span class="tsd-signature-symbol"> | </span><a href="../modules/types.html#defaultcommandrunfunction" class="tsd-signature-type" data-tsd-kind="Type alias">DefaultCommandRunFunction</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L51">src/classes/Command.ts:51</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L196">src/classes/Command.ts:196</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The function to run when executing the command.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="tags" class="tsd-anchor"></a>
 					<h3>tags</h3>
 					<div class="tsd-signature tsd-kind-icon">tags<span class="tsd-signature-symbol">:</span> <a href="../enums/classes_command.tag.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Tag</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#tags">tags</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L48">src/classes/Command.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L175">src/classes/Command.ts:175</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The tags of the command.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>remarks</dt>
+							<dd><p>How tags works ?</p>
+							</dd>
+							<dt>see</dt>
+							<dd><p><a href="../enums/index.tag.html">Tag</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="usage" class="tsd-anchor"></a>
 					<h3>usage</h3>
 					<div class="tsd-signature tsd-kind-icon">usage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#usage">usage</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L49">src/classes/Command.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L186">src/classes/Command.ts:186</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The usage of the command.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>example</dt>
+							<dd><pre><code><span style="color: #001080">userinfo</span>
+<span style="color: #001080">userinfo</span><span style="color: #000000"> </span><span style="color: #001080">me</span>
+<span style="color: #001080">userinfo</span><span style="color: #000000"> &lt;</span><span style="color: #0070C1">ID</span><span style="color: #000000">/</span><span style="color: #001080">Username</span><span style="color: #000000">/</span><span style="color: #001080">Mention</span><span style="color: #000000"> </span><span style="color: #0000FF">of</span><span style="color: #000000"> </span><span style="color: #001080">User</span><span style="color: #000000">&gt;</span>
+</code></pre>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="userpermissions" class="tsd-anchor"></a>
 					<h3>user<wbr>Permissions</h3>
 					<div class="tsd-signature tsd-kind-icon">user<wbr>Permissions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">PermissionString</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/classes_command.commandoptions.html">CommandOptions</a>.<a href="../interfaces/classes_command.commandoptions.html#userpermissions">userPermissions</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L50">src/classes/Command.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L192">src/classes/Command.ts:192</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The user permissions needed to run the command (if using the default message event).</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>defaultvalue</dt>
+							<dd><p><code>[&#39;SEND_MESSAGES&#39;]</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -272,22 +382,31 @@
 					<a name="deletemessage" class="tsd-anchor"></a>
 					<h3>delete<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">delete<wbr>Message<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DeleteMessageOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>Message<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/classes_command.deletemessageoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">DeleteMessageOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L67">src/classes/Command.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L222">src/classes/Command.ts:222</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Deletes a message if deletable.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-type">DeleteMessageOptions</span></h5>
+									<h5>options: <a href="../interfaces/classes_command.deletemessageoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">DeleteMessageOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The options, see <a href="../interfaces/index.deletemessageoptions.html">DeleteMessageOptions</a>.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>The deleted message if deleted.</p>
 						</li>
 					</ul>
 				</section>
@@ -301,16 +420,25 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L128">src/classes/Command.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L323">src/classes/Command.ts:323</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>message: <span class="tsd-signature-type">Message</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The message to get the author&#39;s cooldown from.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>cooldown<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>executedAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">; </span>waitMore<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></h4>
+							<p>The user&#39;s cooldown.</p>
 							<ul class="tsd-parameters">
 								<li class="tsd-parameter">
 									<h5>cooldown<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
@@ -335,10 +463,20 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L95">src/classes/Command.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L262">src/classes/Command.ts:262</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the invalid permissions (not presents in <a href="https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS" class="external">Permissions.FLAGS</a>).</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>client<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PermissionString</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>user<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PermissionString</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></h4>
+							<p>The invalid permissions put in <a href="index.command.html#clientpermissions">clientPermissions</a> &amp; <a href="index.command.html#userpermissions">userPermissions</a>.</p>
 							<ul class="tsd-parameters">
 								<li class="tsd-parameter">
 									<h5>client<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PermissionString</span><span class="tsd-signature-symbol">[]</span></h5>
@@ -354,22 +492,31 @@
 					<a name="getmissingpermissions" class="tsd-anchor"></a>
 					<h3>get<wbr>Missing<wbr>Permissions</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Missing<wbr>Permissions<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MissingPermissions</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Missing<wbr>Permissions<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/classes_command.missingpermissions.html" class="tsd-signature-type" data-tsd-kind="Interface">MissingPermissions</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L71">src/classes/Command.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L232">src/classes/Command.ts:232</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the missing permissions from the client &amp; user for a message.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>message: <span class="tsd-signature-type">Message</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The message to check permissions for.</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MissingPermissions</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/classes_command.missingpermissions.html" class="tsd-signature-type" data-tsd-kind="Interface">MissingPermissions</a></h4>
+							<p>The missing permissions.</p>
 						</li>
 					</ul>
 				</section>
@@ -383,16 +530,26 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L104">src/classes/Command.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L278">src/classes/Command.ts:278</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gives the <a href="index.command.html#tags">tags</a> of this command which are not validated by the message.<br>
+									i.e. If a command is executed on a guild and the command has the <code>dmOnly</code> Tag, it will be returned.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>message: <span class="tsd-signature-type">Message</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The message to test tags from.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../enums/classes_command.tag.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Tag</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>Tags that are not validated by the message.</p>
 						</li>
 					</ul>
 				</section>
@@ -406,16 +563,30 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L124">src/classes/Command.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L313">src/classes/Command.ts:313</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns true if the user is in a cooldown for this command.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>remarks</dt>
+									<dd><p>If <a href="index.command.html#cooldown">cooldown</a> not set, this will always return <code>false</code>.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>message: <span class="tsd-signature-type">Message</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The message to test if user in a cooldown.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>Is user in a cooldown.</p>
 						</li>
 					</ul>
 				</section>
@@ -429,16 +600,25 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L117">src/classes/Command.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L297">src/classes/Command.ts:297</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns false if <a href="index.command.html#channels">channels</a> are defined for this command but the message doesn&#39;t come from one of it.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>message: <span class="tsd-signature-type">Message</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The message to test where it comes from.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>If it is on a channel required if used.</p>
 						</li>
 					</ul>
 				</section>
@@ -452,13 +632,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/c588029/src/classes/Command.ts#L136">src/classes/Command.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/32a1631/src/classes/Command.ts#L336">src/classes/Command.ts:336</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Put all the required properties in <a href="../modules/index.commandhandler.html#cooldowns">CommandHandler.cooldowns</a> plus the setTimeout to remove the user from the cooldowns.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>message: <span class="tsd-signature-type">Message</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The message to set the cooldown from.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -503,6 +691,9 @@
 					<li class="current tsd-kind-module">
 						<a href="../modules/index.html">index</a>
 						<ul>
+							<li class=" tsd-kind-namespace tsd-parent-kind-module">
+								<a href="../modules/index.commandhandler.html">Command<wbr>Handler</a>
+							</li>
 							<li class=" tsd-kind-namespace tsd-parent-kind-module tsd-is-external">
 								<a href="../modules/index.dayjs.html">dayjs</a>
 							</li>
@@ -533,26 +724,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#commandhandler" class="tsd-kind-icon">Command<wbr>Handler</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#commandhandlererror" class="tsd-kind-icon">Command<wbr>Handler<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#event" class="tsd-kind-icon">Event</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#argerror" class="tsd-kind-icon">arg<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/index.html#permissionserror" class="tsd-kind-icon">permissions<wbr>Error</a>
-					</li>
 					<li class=" tsd-kind-enum tsd-parent-kind-module">
 						<a href="../enums/index.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-enum tsd-parent-kind-module">
 						<a href="../enums/index.tag.html" class="tsd-kind-icon">Tag</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="index.advancedclient.html" class="tsd-kind-icon">Advanced<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
 						<a href="index.betterembed.html" class="tsd-kind-icon">Better<wbr>Embed</a>
@@ -627,7 +806,25 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="index.commandhandlererror.html" class="tsd-kind-icon">Command<wbr>Handler<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="index.event.html" class="tsd-kind-icon">Event</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
 						<a href="index.logger.html" class="tsd-kind-icon">Logger</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/index.commandoptions.html" class="tsd-kind-icon">Command<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/index.deletemessageoptions.html" class="tsd-kind-icon">Delete<wbr>Message<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/index.eventsoptions.html" class="tsd-kind-icon">Events<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/index.missingpermissions.html" class="tsd-kind-icon">Missing<wbr>Permissions</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="../modules/index.html#colorresolvable" class="tsd-kind-icon">Color<wbr>Resolvable</a>
@@ -645,6 +842,9 @@
 						<a href="../modules/index.html#templates" class="tsd-kind-icon">templates</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/index.html#argerror" class="tsd-kind-icon">arg<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="../modules/index.html#cutiftoolong" class="tsd-kind-icon">cut<wbr>IfToo<wbr>Long</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
@@ -658,6 +858,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="../modules/index.html#isowner" class="tsd-kind-icon">is<wbr>Owner</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/index.html#permissionserror" class="tsd-kind-icon">permissions<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../modules/index.html#random" class="tsd-kind-icon">random</a>
@@ -686,6 +889,9 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 		</div>
 	</div>
