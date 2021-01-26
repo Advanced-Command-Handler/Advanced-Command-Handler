@@ -23,11 +23,10 @@ jobs:
       - name: Install Dependencies
         run: |
           npm ci
-          npm test
 
       - name: Format & Lint
         run: |
-          npm run prettify
+          npm run prettier
           npm run lint
 
       - name: Generate Documentation
