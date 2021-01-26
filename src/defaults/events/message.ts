@@ -1,12 +1,12 @@
 import {Message} from 'discord.js';
 import {Tag} from '../../classes/Command';
-import CommandHandler from '../../CommandHandler';
-import Event from '../../classes/Event';
-import argError from '../../utils/argError';
-import codeError from '../../utils/codeError';
+import {CommandHandler} from '../../CommandHandler';
+import {Event} from '../../classes/Event';
+import {argError} from '../../utils/argError';
+import {codeError} from '../../utils/codeError';
 import {getThing} from '../../utils/getThing';
 import {Logger} from '../../utils/Logger';
-import permissionsError from '../../utils/permissionsError';
+import {permissionsError} from '../../utils/permissionsError';
 
 export default new Event(
 	{

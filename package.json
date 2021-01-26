@@ -12,14 +12,41 @@
 	"description": "A package to help you create a bot with only 1 main file, directories for your events/commands, with some helpers classes and functions.",
 	"devDependencies": {
 		"@types/node": "^14.14.21",
+		"@typescript-eslint/eslint-plugin": "^4.14.0",
+		"@typescript-eslint/parser": "^4.14.0",
 		"eledoc": "^0.2.1",
+		"eslint": "^7.18.0",
+		"eslint-plugin-jsdoc": "^31.2.2",
+		"eslint-plugin-tsdoc": "^0.2.11",
 		"prettier": "^2.2.1",
-		"typedoc": "^0.20.16",
+		"typedoc": "^0.20.17",
 		"typescript": "^4.1.3"
 	},
 	"engineStrict": true,
 	"engines": {
 		"node": ">=14"
+	},
+	"eslintConfig": {
+		"parser": "@typescript-eslint/parser",
+		"parserOptions": {
+			"ecmaVersion": 2021,
+			"sourceType": "module"
+		},
+		"rules": {
+			"tsdoc/syntax": "warn",
+			"require-jsdoc": "warn",
+			"jsdoc/check-tag-names": "off",
+			"jsdoc/require-param-type": "off",
+			"jsdoc/require-returns-type": "off"
+		},
+		"extends": [
+			"plugin:jsdoc/recommended"
+		],
+		"plugins": [
+			"eslint-plugin-tsdoc",
+			"@typescript-eslint",
+			"eslint-plugin-jsdoc"
+		]
 	},
 	"homepage": "https://github.com/Ayfri/Advanced-Command-Handler",
 	"keywords": [
@@ -49,9 +76,10 @@
 	},
 	"scripts": {
 		"build": "tsc",
+		"lint": "eslint src/**/*.ts --fix",
+		"genDocs": "typedoc src --out docs --theme default --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md",
 		"prepare": "npm run build",
-		"prettier": "prettier package.json tsconfig.json README.md src tests --write",
-		"genDocs": "typedoc src --out docs --theme default --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md"
+		"prettier": "prettier package.json tsconfig.json README.md src tests --write"
 	},
 	"types": "types/index.d.ts",
 	"version": "2.2.2"

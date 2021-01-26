@@ -1,55 +1,207 @@
 import {DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
 import {DefaultCommandRunFunction, RunFunction} from '../types';
-import CommandHandler from '../CommandHandler';
+import {CommandHandler} from '../CommandHandler';
 import {isOwner} from '../utils/utils';
 
+/**
+ * # How tags should works ?
+ *
+ * When using commands, you want certain commands to only run on a server or in DM etc.<br>
+ * Most of other CommandHandlers uses boolean properties like `guildOnly`.<br>
+ * To avoid having a ton of these, I imagined a system where you have command tags and for every calls, tags for the command are verified one by one.<br>
+ * And this system works very smoothly !<br>
+ * So if you're using the default message event
+ * ({@link https://github.com/Ayfri/Advanced-Command-Handler/wiki/Defaults#defaults-events | see how to use defaults events }), tags will be checked.
+ *
+ * @example
+ * ```ts
+ * if (command.tags.includes(Tag.guildOnly) && !message.guild) {
+ *     message.channel.send(`You must be on a guild to execute the ${command.name} command !`);
+ * }
+ * ```
+ */
 export enum Tag {
+	/**
+	 * Tag for commands to only run on a guild.
+	 */
 	guildOnly,
+	/**
+	 * Tag for commands to only run if author is an owner defined in {@link CommandHandler.owners}.
+	 */
 	ownerOnly,
+	/**
+	 * Tag for commands to only run on a guild and in an NSFW channel.
+	 */
 	nsfw,
+	/**
+	 * Tag for commands to only run on a guild and if the author is the owner of the guild.
+	 */
 	guildOwnerOnly,
+	/**
+	 * Tag for commands to only run in DM.
+	 */
 	dmOnly,
 }
 
-interface CommandOptions {
+export interface CommandOptions {
+	/**
+	 * The name of the command.
+	 */
 	readonly name: string;
+	/**
+	 * The aliases of the command.
+	 */
 	aliases?: string[];
+	/**
+	 * The category of the command.
+	 */
 	category?: string;
+	/**
+	 * The channels where the command should only be executed if used (if using the default message event).
+	 */
 	channels?: Array<Snowflake | TextChannel>;
+	/**
+	 * The client permissions needed to run the command (if using the default message event).
+	 */
 	clientPermissions?: PermissionString[];
+	/**
+	 * The cooldown of the command.
+	 *
+	 * @defaultValue 0
+	 *
+	 * @remarks
+	 * Every cooldown should be saved in {@link CommandHandler.cooldowns}.
+	 */
 	cooldown?: number;
+	/**
+	 * The description of the command.
+	 */
 	description?: string;
+	/**
+	 * The tags of the command.
+	 *
+	 * @remarks
+	 * How tags works ?
+	 * @see {@link Tag}
+	 */
 	tags?: Tag[];
+	/**
+	 * The usage of the command.
+	 *
+	 * @example
+	 * ```
+	 * userinfo
+	 * userinfo me
+	 * userinfo <ID/Username/Mention of User>
+	 * ```
+	 */
 	usage?: string;
+	/**
+	 * The user permissions needed to run the command (if using the default message event).
+	 */
 	userPermissions?: PermissionString[];
 }
 
-interface DeleteMessageOptions {
+/**
+ * Options for the Command#deleteMessage method.
+ */
+export interface DeleteMessageOptions {
+	/**
+	 * The message to delete.
+	 */
 	message: Message;
+	/**
+	 * The options from {@link https://discord.js.org/#/docs/main/stable/class/Message?scrollTo=delete | Message#delete}.
+	 */
 	options?: {
+		/**
+		 * How long to wait to delete the message in milliseconds.
+		 */
 		timeout?: number;
+		/**
+		 * Reason for deleting this message, if it does not belong to the client user.
+		 */
 		reason?: string;
 	};
 }
 
-interface MissingPermissions {
+export interface MissingPermissions {
 	client: PermissionString[];
 	user: PermissionString[];
 }
 
 export class Command implements CommandOptions {
+	/**
+	 * The name of the command.
+	 */
 	public readonly name: string;
+	/**
+	 * The aliases of the command.
+	 */
 	public aliases: string[];
+	/**
+	 * The category of the command.
+	 *
+	 * @defaultValue The command parent directory.
+	 */
 	public category: string;
+	/**
+	 * The channels where the command should only be executed if used (if using the default message event).
+	 */
 	public channels: Array<Snowflake | TextChannel>;
+	/**
+	 * The client permissions needed to run the command (if using the default message event).
+	 *
+	 * @defaultValue `['SEND_MESSAGES']`
+	 */
 	public clientPermissions: PermissionString[];
+	/**
+	 * The cooldown of the command.
+	 *
+	 * @defaultValue 0
+	 *
+	 * @remarks
+	 * Every cooldown should be saved in {@link CommandHandler.cooldowns}.
+	 */
 	public cooldown: number;
+	/**
+	 * The description of the command.
+	 */
 	public description: string;
+	/**
+	 * The tags of the command.
+	 *
+	 * @remarks
+	 * How tags works ?
+	 * @see {@link Tag}
+	 */
 	public tags: Tag[];
+	/**
+	 * The usage of the command.
+	 *
+	 * @example
+	 * ```
+	 * userinfo
+	 * userinfo me
+	 * userinfo <ID/Username/Mention of User>
+	 * ```
+	 */
 	public usage: string;
+	/**
+	 * The user permissions needed to run the command (if using the default message event).
+	 *
+	 * @defaultValue `['SEND_MESSAGES']`
+	 */
 	public userPermissions: PermissionString[];
+	/**
+	 * The function to run when executing the command.
+	 */
 	public run: RunFunction | DefaultCommandRunFunction;
 
+	/**
+	 * @param options - The options for the command.
+	 * @param runFunction - The function to run when executing the command.
+	 */
 	public constructor(options: CommandOptions, runFunction: RunFunction | DefaultCommandRunFunction) {
 		this.name = options.name;
 		this.run = runFunction;
@@ -64,14 +216,26 @@ export class Command implements CommandOptions {
 		this.cooldown = options.cooldown ?? 0;
 	}
 
-	public deleteMessage({message, options}: DeleteMessageOptions): Promise<Message> | undefined {
-		if (message.deletable) return message.delete(options);
+	/**
+	 * Deletes a message if deletable.
+	 *
+	 * @param options - The options, see {@link DeleteMessageOptions}.
+	 * @returns The deleted message if deleted.
+	 */
+	public deleteMessage(options: DeleteMessageOptions): Promise<Message> | undefined {
+		if (options.message.deletable) return options.message.delete(options.options);
 	}
 
+	/**
+	 * Returns the missing permissions from the client & user for a message.
+	 *
+	 * @param message - The message to check permissions for.
+	 * @returns The missing permissions.
+	 */
 	public getMissingPermissions(message: Message): MissingPermissions {
 		const missingPermissions: MissingPermissions = {
 			client: [],
-			user: [],
+			user: []
 		};
 		if (!message.guild || !message.guild.available) return missingPermissions;
 
@@ -92,15 +256,28 @@ export class Command implements CommandOptions {
 		return missingPermissions;
 	}
 
+	/**
+	 * Returns the invalid permissions (not presents in {@link https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS | Permissions.FLAGS}).
+	 *
+	 * @returns The invalid permissions put in {@link clientPermissions} & {@link userPermissions}.
+	 * @internal
+	 */
 	public getInvalidPermissions() {
 		const permissionsFlags: string[] = [...Object.keys(Permissions.FLAGS)];
 
 		return {
 			user: this.userPermissions.filter(permission => !permissionsFlags.includes(permission)),
-			client: this.clientPermissions.filter(permission => !permissionsFlags.includes(permission)),
+			client: this.clientPermissions.filter(permission => !permissionsFlags.includes(permission))
 		};
 	}
 
+	/**
+	 * Gives the {@link tags} of this command which are not validated by the message.<br>
+	 * i.e. If a command is executed on a guild and the command has the `dmOnly` Tag, it will be returned.
+	 *
+	 * @param message - The message to test tags from.
+	 * @returns Tags that are not validated by the message.
+	 */
 	public getMissingTags(message: Message): Tag[] {
 		const missingTags: Tag[] = [];
 		for (const tag of this.tags) {
@@ -114,6 +291,12 @@ export class Command implements CommandOptions {
 		return missingTags;
 	}
 
+	/**
+	 * Returns false if {@link channels} are defined for this command but the message doesn't come from one of it.
+	 *
+	 * @param message - The message to test where it comes from.
+	 * @returns If it is on a channel required if used.
+	 */
 	public isInRightChannel(message: Message): boolean {
 		if (this.channels.length === 0) return true;
 		return this.channels.every(channel => {
@@ -121,25 +304,45 @@ export class Command implements CommandOptions {
 		});
 	}
 
+	/**
+	 * Returns true if the user is in a cooldown for this command.
+	 *
+	 * @remarks
+	 * If {@link cooldown} not set, this will always return `false`.
+	 *
+	 * @param message - The message to test if user in a cooldown.
+	 * @returns Is user in a cooldown.
+	 */
 	public isInCooldown(message: Message): boolean {
 		return CommandHandler.cooldowns.has(message.author.id) && Object.keys(CommandHandler.cooldowns.get(message.author.id)!).includes(this.name);
 	}
 
+	/**
+	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
+	 *
+	 * @param message - The message to get the author's cooldown from.
+	 * @returns The user's cooldown.
+	 */
 	public getCooldown(message: Message): {waitMore: number; executedAt: Date; cooldown: number} {
 		const cooldown = CommandHandler.cooldowns.get(message.author.id)![this.name];
 		return {
 			...cooldown,
-			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now(),
+			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now()
 		};
 	}
 
+	/**
+	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
+	 *
+	 * @param message - The message to set the cooldown from.
+	 */
 	public setCooldown(message: Message) {
 		if (!CommandHandler.cooldowns.has(message.author.id)) CommandHandler.cooldowns.set(message.author.id, {});
 		if (this.cooldown === 0 ?? !!CommandHandler.cooldowns.get(message.author.id)![this.name]) return;
 
 		CommandHandler.cooldowns.get(message.author.id)![this.name] = {
 			executedAt: message.createdAt,
-			cooldown: this.cooldown,
+			cooldown: this.cooldown
 		};
 
 		setTimeout(() => {
