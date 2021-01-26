@@ -31,3 +31,10 @@ jobs:
 
       - name: Generate Documentation
         run: npm run genDocs
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: 'docs/** --force'
+          message: Generated docs.
+
