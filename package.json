@@ -77,7 +77,8 @@
 	"scripts": {
 		"build": "tsc",
 		"lint": "eslint src/**/*.ts --fix",
-		"genDocs": "typedoc src --watch --out docs --theme default --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md",
+		"genDocs": "typedoc src --out docs --theme default --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md",
+		"genDocs:watch":"typedoc src --watch --out docs --theme default --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md",
 		"prepare": "npm run build",
 		"prettier": "prettier package.json tsconfig.json README.md src tests --write"
 	},
