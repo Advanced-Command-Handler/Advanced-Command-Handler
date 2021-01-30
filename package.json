@@ -7,14 +7,13 @@
 		"chalk": "^4.1.0",
 		"dayjs": "^1.10.4",
 		"discord.js": "^12.5.1",
-		"discord.js-better-embed": "^1.1.0"
+		"discord.js-better-embed": "^1.1.0",
 	},
 	"description": "A package to help you create a bot with only 1 main file, directories for your events/commands, with some helpers classes and functions.",
 	"devDependencies": {
 		"@types/node": "^14.14.21",
 		"@typescript-eslint/eslint-plugin": "^4.14.0",
 		"@typescript-eslint/parser": "^4.14.0",
-		"eledoc": "^0.2.1",
 		"eslint": "^7.18.0",
 		"eslint-plugin-jsdoc": "^31.2.2",
 		"eslint-plugin-tsdoc": "^0.2.11",
@@ -78,7 +77,7 @@
 		"build": "tsc",
 		"lint": "eslint src/**/*.ts --fix",
 		"genDocs": "typedoc src --out docs --theme default --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md",
-		"genDocs:watch":"typedoc src --watch --out docs --theme default --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md",
+		"genDocs:watch": "typedoc src --watch --out docs --theme default --name \"Advanced Command Handler\" --readme https://github.com/Ayfri/Advanced-Command-Handler/blob/master/README.md",
 		"prepare": "npm run build",
 		"prettier": "prettier package.json tsconfig.json README.md src tests --write"
 	},
