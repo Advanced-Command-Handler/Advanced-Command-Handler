@@ -35,6 +35,6 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
         with:
-          add: 'docs/** --force --amend'
+          add: 'docs/** --force'
           message: Generated docs.
 
