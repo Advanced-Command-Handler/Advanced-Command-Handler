@@ -37,8 +37,8 @@ jobs:
           git init
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Action"
-          git add docs -f
           git pull origin master
+          git add docs -f
           git commit --amend --no-edit
-          git push origin master -f
+          git push origin master
 
