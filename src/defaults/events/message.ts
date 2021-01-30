@@ -18,8 +18,8 @@ export default new Event(
 		const prefix = CommandHandler.getPrefixFromMessage(message);
 		if (!prefix) return;
 
-		const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
-		const command = await getThing('command', cmd.toLowerCase().normalize());
+		const [commandArg, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
+		const command = await getThing('command', commandArg.toLowerCase().normalize());
 
 		if (command) {
 			if (command.isInCooldown(message)) return message.channel.send(`You are on a cooldown! Please wait **${command.getCooldown(message).waitMore / 1000}**s.`);
