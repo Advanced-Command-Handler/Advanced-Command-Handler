@@ -35,6 +35,11 @@ export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof Log
 
 export class Logger {
 	/**
+	 * @remarks
+	 * Avoid using it because you can't do anything with it.
+	 */
+	private constructor() {}
+	/**
 	 * If this property is set to `true` the {@link Logger.comment} method won't send logs.
 	 */
 	public static logComments: boolean = true;
