@@ -58,7 +58,7 @@ export namespace CommandHandler {
 	/**
 	 * The CommandHandler events.
 	 *
-	 * @see {@link EventEmitter}.
+	 * @see {@link https://nodejs.org/api/events.html#events_class_eventemitter | EventEmitter}.
 	 */
 	export type CommandHandlerEvents = {
 		/**
