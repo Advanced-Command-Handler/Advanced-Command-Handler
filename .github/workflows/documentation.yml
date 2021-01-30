@@ -34,11 +34,10 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --global pull.ff only
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Action"
           git add docs -f
-          git pull origin master --no-verify
+          git pull origin master --no-verify --rebase
           git commit --amend --no-edit
-          git push origin master
-
+          git pull --rebase
+          git push origin master --ff
