@@ -181,8 +181,8 @@ export namespace CommandHandler {
 	 */
 	export function create(options: CreateCommandHandlerOptions): typeof CommandHandler {
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');
-		commandsDir = options.commandsDir;
-		eventsDir = options.eventsDir;
+		commandsDir = options.commandsDir ?? '';
+		eventsDir = options.eventsDir ?? '';
 		owners = options.owners ?? [];
 		prefixes = options.prefixes ?? [];
 
@@ -206,8 +206,8 @@ export namespace CommandHandler {
 		emit('launch');
 
 		try {
-			await loadCommands(commandsDir ?? '');
-			await loadEvents(eventsDir ?? '');
+			await loadCommands(commandsDir);
+			await loadEvents(eventsDir);
 
 			Logger.comment('Binding events to client.', 'Binding');
 			events.forEach(event => {
