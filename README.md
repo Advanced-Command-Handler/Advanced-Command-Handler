@@ -14,6 +14,7 @@ functions for tedious things that everyone needs for a Discord Bot, and some cla
 This library is here to simplify a lot developing Discord Bots and is far from being completes with every feature I want so watch this repo for futures releases!
 
 **For more information on how to use it, see the Guide and the Documentation :**
+
 -   [Documentation](https://ayfri.github.io/Advanced-Command-Handler/) <br>
 -   [Guide](https://github.com/Ayfri/Advanced-Command-Handler/wiki)
 

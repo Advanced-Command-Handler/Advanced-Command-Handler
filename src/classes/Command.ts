@@ -235,7 +235,7 @@ export class Command implements CommandOptions {
 	public getMissingPermissions(message: Message): MissingPermissions {
 		const missingPermissions: MissingPermissions = {
 			client: [],
-			user: []
+			user: [],
 		};
 		if (!message.guild || !message.guild.available) return missingPermissions;
 
@@ -267,7 +267,7 @@ export class Command implements CommandOptions {
 
 		return {
 			user: this.userPermissions.filter(permission => !permissionsFlags.includes(permission)),
-			client: this.clientPermissions.filter(permission => !permissionsFlags.includes(permission))
+			client: this.clientPermissions.filter(permission => !permissionsFlags.includes(permission)),
 		};
 	}
 
@@ -327,7 +327,7 @@ export class Command implements CommandOptions {
 		const cooldown = CommandHandler.cooldowns.get(message.author.id)![this.name];
 		return {
 			...cooldown,
-			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now()
+			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now(),
 		};
 	}
 
@@ -342,7 +342,7 @@ export class Command implements CommandOptions {
 
 		CommandHandler.cooldowns.get(message.author.id)![this.name] = {
 			executedAt: message.createdAt,
-			cooldown: this.cooldown
+			cooldown: this.cooldown,
 		};
 
 		setTimeout(() => {

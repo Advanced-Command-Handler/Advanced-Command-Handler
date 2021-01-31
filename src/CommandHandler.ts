@@ -52,7 +52,7 @@ export namespace CommandHandler {
 		/**
 		 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
 		 */
-		clientOptions?: ClientOptions
+		clientOptions?: ClientOptions;
 	}
 
 	/**
@@ -186,6 +186,9 @@ export namespace CommandHandler {
 		owners = options.owners ?? [];
 		prefixes = options.prefixes ?? [];
 
+		if (!commandsDir) Logger.warn("No commands dir specified, commands won't load.");
+		if (!eventsDir) Logger.warn("No events dir specified, events won't load.");
+
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
 		emit('create', options);
@@ -241,8 +244,8 @@ export namespace CommandHandler {
 	 * @param name - The filename of the command.
 	 */
 	export async function loadCommand(path: string, name: string) {
-		let command: Command | (Command & {default: Command}) = await import(join(process.cwd(), `./${path}/${name}`));
-		if ('default' in command) command = command.default;
+		let command: Command | (Command & {default: any}) = await import(join(process.cwd(), `./${path}/${name}`));
+		if ('default' in command && command.default instanceof Command) command = command.default;
 		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		if (command.category === 'None') command.category = path.split(/[\\/]/).pop()!;
 
@@ -297,8 +300,8 @@ export namespace CommandHandler {
 
 		if (files) {
 			for (const file of files) {
-				let event: Event | (Event & {default: Event}) = await import(join(process.cwd(), `${path}/${file}`));
-				if ('default' in event) event = event.default;
+				let event: Event | (Event & {default: any}) = await import(join(process.cwd(), `${path}/${file}`));
+				if ('default' in event && event.default instanceof Event) event = event.default;
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 				events.set(event.name, event);
 

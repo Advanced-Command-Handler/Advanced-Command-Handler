@@ -101,7 +101,7 @@ export class Logger {
 	 *
 	 * @remarks
 	 * Using the # color.
-	 * 
+	 *
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 * @param color - The color of the log.
