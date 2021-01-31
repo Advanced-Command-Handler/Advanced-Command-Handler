@@ -186,8 +186,8 @@ export namespace CommandHandler {
 		owners = options.owners ?? [];
 		prefixes = options.prefixes ?? [];
 
-		if (!commandsDir) Logger.warn("No commands dir specified, commands won't load.");
-		if (!eventsDir) Logger.warn("No events dir specified, events won't load.");
+		if (!commandsDir) Logger.warn("No 'commandsDir' specified, commands apart default commands won't load.");
+		if (!eventsDir) Logger.warn("No 'eventsDir' specified, events apart default events won't load.");
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));

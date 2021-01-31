@@ -1,4 +1,4 @@
-const {Command, Tag} = require('advanced-command-hander');
+const {Command, Tag} = require('advanced-command-handler');
 module.exports = new Command(
 	{
 		name: 'say',

@@ -1,4 +1,4 @@
-const {Event, Logger} = require('advanced-command-hander');
+const {Event, Logger} = require('advanced-command-handler');
 module.exports = new Event(
 	{
 		name: 'ready',
