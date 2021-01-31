@@ -36,7 +36,7 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Action"
-          git mv docs/* .
-          git add assets/js assets/images *.html *.css
+          git mv docs/**/* .
+          git add assets *.html
           git commit -m "Generated documentation."
           git push origin docs
