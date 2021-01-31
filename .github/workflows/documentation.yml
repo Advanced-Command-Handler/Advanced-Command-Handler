@@ -1,3 +1,4 @@
+
 name: Generate Documentation
 
 on:
@@ -13,12 +14,7 @@ jobs:
     name: Generate Documentation
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Action"
-          git checkout docs
+      - uses: actions/checkout@v2
 
       - name: Install Node.js
         uses: actions/setup-node@v1
@@ -39,7 +35,8 @@ jobs:
 
       - name: Commit changes
         run: |
-          git pull origin docs -f
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Action"
           git add docs -f
           git commit -m "Generated documentation."
-          git push origin docs -f
+          git push origin master
