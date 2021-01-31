@@ -38,4 +38,4 @@ jobs:
           git config --global user.name "GitHub Action"
           git add docs -f
           git commit -m "Generated documentation."
-          git push origin docs
+          git push origin docs -f
