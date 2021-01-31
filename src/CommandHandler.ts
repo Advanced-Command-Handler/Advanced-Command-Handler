@@ -309,21 +309,4 @@ export namespace CommandHandler {
 			}
 		}
 	}
-
-	/**
-	 * Load an event.
-	 *
-	 * @param event - The event to load.
-	 *
-	 * @returns The event loaded.
-	 */
-	export function loadEvent(event: Event | (Event & {default: Event})): Event {
-		if ('default' in event) event = event.default;
-
-		if (event.once) client?.once(event.name, event.run.bind(null, CommandHandler));
-		else client?.on(event.name, event.run.bind(null, CommandHandler));
-		emit('loadEvent', event);
-
-		return event;
-	}
 }
