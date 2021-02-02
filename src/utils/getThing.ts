@@ -14,73 +14,73 @@ export enum DataType {
 }
 
 /**
- * Find a channel {@link https://discord.js/#/docs/main/stable/class/Channel} from the text or the message content and returns null if nothing found.
- * It can found it from ID/name/mention.
+ * Find a channel {@link https://discord.js/#/docs/main/stable/class/Channel} from the text, or the message content and returns null if nothing found.
+ * It can find it from ID/name/mention.
  *
- * @param dataType - channel {@link DataType.channel}.
+ * @param dataType - Channel {@link DataType.channel}.
  * @param text - A string or a Message to find dataType from.
  * @returns The Channel or null if not found.
  */
 export async function getThing(dataType: DataType.channel | 'channel', text: string | Message): Promise<GuildChannel | null>;
 /**
- * Find a Command {@link Command} from the text or the message content and returns null if nothing found.
- * It can found it from the name/alias.
+ * Find a Command {@link Command} from the text, or the message content and returns null if nothing found.
+ * It can find it from the name/alias.
  *
- * @param dataType - command {@link DataType.command}.
+ * @param dataType - Command {@link DataType.command}.
  * @param text - A string or a Message to find dataType from.
  * @returns The Command  or null if not found.
  */
 export async function getThing(dataType: DataType.command | 'command', text: string | Message): Promise<Command | null>;
 /**
- * Find a Emoji {@link https://discord.js.org/#/docs/main/stable/class/Emoji} from the text or the message content and returns null if nothing found.
- * It can found it from the name/emoji itself/ID.
+ * Find an Emoji {@link https://discord.js.org/#/docs/main/stable/class/Emoji} from the text, or the message content and returns null if nothing found.
+ * It can find it from the name/emoji itself/ID.
  *
- * @param dataType - emote {@link DataType.emote}.
+ * @param dataType - Emote {@link DataType.emote}.
  * @param text - A string or a Message to find dataType from.
  * @returns The Emoji or null if not found.
  */
 export async function getThing(dataType: DataType.emote | 'emote', text: string | Message): Promise<Emoji | null>;
 /**
- * Find a Guild {@link https://discord.js.org/#/docs/main/stable/class/Guild} from the text or the message content and returns null if nothing found.
- * It can found it from the name/ID.
+ * Find a Guild {@link https://discord.js.org/#/docs/main/stable/class/Guild} from the text, or the message content and returns null if nothing found.
+ * It can find it from the name/ID.
  *
- * @param dataType - guild {@link DataType.guild}.
+ * @param dataType - Guild {@link DataType.guild}.
  * @param text - A string or a Message to find dataType from.
  * @returns The Guild or null if not found.
  */
 export async function getThing(dataType: DataType.guild | 'guild', text: string | Message): Promise<Guild | null>;
 /**
- * Find a GuildMember {@link https://discord.js.org/#/docs/main/stable/class/GuildMember} from the text or the message content and returns null if nothing found.
- * It can found it from the username/ID/mention/nickname.
+ * Find a GuildMember {@link https://discord.js.org/#/docs/main/stable/class/GuildMember} from the text, or the message content and returns null if nothing found.
+ * It can find it from the username/ID/mention/nickname.
  *
- * @param dataType - guild {@link DataType.guild}.
+ * @param dataType - Member {@link DataType.member}.
  * @param text - A string or a Message to find dataType from.
  * @returns The Guild or null if not found.
  */
 export async function getThing(dataType: DataType.member | 'member', text: string | Message): Promise<GuildMember | null>;
 /**
- * Find a Message {@link https://discord.js.org/#/docs/main/stable/class/Message} from the text or the message content and returns null if nothing found.
- * It can found it from the name/ID/link.
+ * Find a Message {@link https://discord.js.org/#/docs/main/stable/class/Message} from the text, or the message content and returns null if nothing found.
+ * It can find it from the name/ID/link.
  *
- * @param dataType - message {@link DataType.message}.
+ * @param dataType - Message {@link DataType.message}.
  * @param text - A string or a Message to find dataType from.
  * @returns The Message or null if not found.
  */
 export async function getThing(dataType: DataType.message | 'message', text: string | Message): Promise<Message | null>;
 /**
- * Find a Role {@link https://discord.js.org/#/docs/main/stable/class/Role} from the text or the message content and returns null if nothing found.
- * It can found it from the name/ID/mention.
+ * Find a Role {@link https://discord.js.org/#/docs/main/stable/class/Role} from the text, or the message content and returns null if nothing found.
+ * It can find it from the name/ID/mention.
  *
- * @param dataType - role {@link DataType.role}.
+ * @param dataType - Role {@link DataType.role}.
  * @param text - A string or a Message to find dataType from.
  * @returns The Role or null if not found.
  */
 export async function getThing(dataType: DataType.role | 'role', text: string | Message): Promise<Role | null>;
 /**
- * Find a User {@link https://discord.js.org/#/docs/main/stable/class/User} from the text or the message content and returns null if nothing found.<br>
- * It can found it from the username/ID.
+ * Find a User {@link https://discord.js.org/#/docs/main/stable/class/User} from the text, or the message content and returns null if nothing found.<br>
+ * It can find it from the username/ID.
  *
- * @param dataType - user {@link DataType.user}.
+ * @param dataType - User {@link DataType.user}.
  * @param text - A string or a Message to find dataType from.
  * @returns The User or null if not found.
  */
@@ -90,7 +90,7 @@ export async function getThing(dataType: DataType.user | 'user', text: string | 
  *
  * @param dataType - The data type {@link DataType}.
  * @param text - A string or a Message to find dataType from.
- * @returns The Data found or null or undefined.
+ * @returns The Data found or null if not found.
  */
 export async function getThing(
 	dataType: DataType | keyof typeof DataType,
