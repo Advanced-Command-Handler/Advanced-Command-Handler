@@ -1,10 +1,10 @@
-const {Command, Tag} = require('advanced-command-handler');
+const {Command} = require('advanced-command-handler');
 module.exports = new Command(
 	{
 		name: 'tests',
 		aliases: ['test', 't'],
 		channels: [],
-		tags: [Tag.nsfw],
+		tags: ['nsfw'],
 		userPermissions: ['MANAGE_MESSAGES'],
 	},
 	async (handler, message) => {
