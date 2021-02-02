@@ -24,23 +24,23 @@ export enum Tag {
 	/**
 	 * Tag for commands to only run on a guild.
 	 */
-	guildOnly,
+	guildOnly = 'guildOnly',
 	/**
 	 * Tag for commands to only run if author is an owner defined in {@link CommandHandler.owners}.
 	 */
-	ownerOnly,
+	ownerOnly = 'ownerOnly',
 	/**
 	 * Tag for commands to only run on a guild and in an NSFW channel.
 	 */
-	nsfw,
+	nsfw = 'nsfw',
 	/**
 	 * Tag for commands to only run on a guild and if the author is the owner of the guild.
 	 */
-	guildOwnerOnly,
+	guildOwnerOnly = 'guildOwnerOnly',
 	/**
 	 * Tag for commands to only run in DM.
 	 */
-	dmOnly,
+	dmOnly = 'dmOnly',
 }
 
 export interface CommandOptions {
@@ -84,7 +84,7 @@ export interface CommandOptions {
 	 * How tags works ?
 	 * @see {@link Tag}
 	 */
-	tags?: Tag[];
+	tags?: Array<Tag | keyof typeof Tag>;
 	/**
 	 * The usage of the command.
 	 *
@@ -175,7 +175,7 @@ export class Command implements CommandOptions {
 	 * How tags works ?
 	 * @see {@link Tag}
 	 */
-	public tags: Tag[];
+	public tags: Array<Tag | keyof typeof Tag>;
 	/**
 	 * The usage of the command.
 	 *

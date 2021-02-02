@@ -1,8 +1,8 @@
-const {Command, Tag} = require('advanced-command-handler');
+const {Command} = require('advanced-command-handler');
 module.exports = new Command(
 	{
 		name: 'say',
-		tags: [Tag.guildOnly],
+		tags: ['guildOnly'],
 		userPermissions: ['MANAGE_MESSAGES'],
 		cooldown: 10,
 	},

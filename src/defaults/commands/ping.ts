@@ -1,11 +1,11 @@
 import {Message} from 'discord.js';
-import {Command, Tag} from '../../classes/Command';
+import {Command} from '../../classes/Command';
 import {CommandHandler} from '../../CommandHandler';
 
 export default new Command(
 	{
 		name: 'ping',
-		tags: [Tag.guildOnly],
+		tags: ['guildOnly'],
 		userPermissions: ['MANAGE_MESSAGES'],
 		category: 'utils',
 	},
