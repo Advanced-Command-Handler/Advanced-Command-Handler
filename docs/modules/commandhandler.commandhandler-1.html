@@ -155,7 +155,7 @@
 					<div class="tsd-signature tsd-kind-icon">Command<wbr>Handler<wbr>Events<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>create<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="../interfaces/commandhandler.commandhandler-1.createcommandhandleroptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CreateCommandHandlerOptions</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="../classes/classes_commandhandlererror.commandhandlererror.html" class="tsd-signature-type" data-tsd-kind="Class">CommandHandlerError</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>launch<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>launched<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>loadCommand<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="../classes/classes_command.command.html" class="tsd-signature-type" data-tsd-kind="Class">Command</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>loadEvent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="../classes/classes_event.event.html" class="tsd-signature-type" data-tsd-kind="Class">Event</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L63">src/CommandHandler.ts:63</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L69">src/CommandHandler.ts:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -228,7 +228,7 @@
 					<div class="tsd-signature tsd-kind-icon">Cooldown<wbr>User<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L42">src/CommandHandler.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L48">src/CommandHandler.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -255,9 +255,14 @@
 					<div class="tsd-signature tsd-kind-icon">client<span class="tsd-signature-symbol">:</span> <a href="../classes/classes_advancedclient.advancedclient.html" class="tsd-signature-type" data-tsd-kind="Class">AdvancedClient</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L118">src/CommandHandler.ts:118</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L139">src/CommandHandler.ts:139</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The client of the handler, null before <a href="commandhandler.commandhandler-1.html#launch-1">launch</a> function executed.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
 					<a name="commands" class="tsd-anchor"></a>
@@ -265,9 +270,14 @@
 					<div class="tsd-signature tsd-kind-icon">commands<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../classes/classes_command.command.html" class="tsd-signature-type" data-tsd-kind="Class">Command</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L97">src/CommandHandler.ts:97</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L109">src/CommandHandler.ts:109</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The commands registered by the CommandHandler.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
 					<a name="commandsdir" class="tsd-anchor"></a>
@@ -275,7 +285,7 @@
 					<div class="tsd-signature tsd-kind-icon">commands<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#x27;&#x27;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L114">src/CommandHandler.ts:114</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L132">src/CommandHandler.ts:132</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -285,7 +295,7 @@
 					<div class="tsd-signature tsd-kind-icon">cooldowns<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Snowflake</span><span class="tsd-signature-symbol">, </span><a href="commandhandler.commandhandler-1.html#cooldownuser" class="tsd-signature-type" data-tsd-kind="Type alias">CooldownUser</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L112">src/CommandHandler.ts:112</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L124">src/CommandHandler.ts:124</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -309,7 +319,7 @@
 					<div class="tsd-signature tsd-kind-icon">emitter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EventEmitter</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L96">src/CommandHandler.ts:96</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L105">src/CommandHandler.ts:105</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -328,9 +338,19 @@
 					<div class="tsd-signature tsd-kind-icon">events<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../classes/classes_event.event.html" class="tsd-signature-type" data-tsd-kind="Class">Event</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L113">src/CommandHandler.ts:113</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L131">src/CommandHandler.ts:131</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The events registered by the CommandHandler.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>remarks</dt>
+							<dd><p>These events may not be bound to the <a href="commandhandler.commandhandler-1.html#client">client</a>.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-namespace">
 					<a name="eventsdir" class="tsd-anchor"></a>
@@ -338,7 +358,7 @@
 					<div class="tsd-signature tsd-kind-icon">events<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#x27;&#x27;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L115">src/CommandHandler.ts:115</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L133">src/CommandHandler.ts:133</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -348,7 +368,7 @@
 					<div class="tsd-signature tsd-kind-icon">owners<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L116">src/CommandHandler.ts:116</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L134">src/CommandHandler.ts:134</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -358,7 +378,7 @@
 					<div class="tsd-signature tsd-kind-icon">prefixes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L117">src/CommandHandler.ts:117</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L135">src/CommandHandler.ts:135</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -368,9 +388,14 @@
 					<div class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L90">src/CommandHandler.ts:90</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L99">src/CommandHandler.ts:99</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The version of the handler.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -385,7 +410,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L181">src/CommandHandler.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L202">src/CommandHandler.ts:202</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -417,7 +442,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L133">src/CommandHandler.ts:133</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L154">src/CommandHandler.ts:154</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -455,7 +480,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L235">src/CommandHandler.ts:235</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L256">src/CommandHandler.ts:256</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -487,7 +512,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L203">src/CommandHandler.ts:203</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L224">src/CommandHandler.ts:224</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -519,7 +544,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L245">src/CommandHandler.ts:245</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L266">src/CommandHandler.ts:266</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -556,7 +581,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L270">src/CommandHandler.ts:270</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L291">src/CommandHandler.ts:291</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -592,7 +617,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L294">src/CommandHandler.ts:294</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L315">src/CommandHandler.ts:315</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -623,7 +648,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L125">src/CommandHandler.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L146">src/CommandHandler.ts:146</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -682,7 +707,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L164">src/CommandHandler.ts:164</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L185">src/CommandHandler.ts:185</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -710,7 +735,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/515a0db/src/CommandHandler.ts#L145">src/CommandHandler.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/b49eb34/src/CommandHandler.ts#L166">src/CommandHandler.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

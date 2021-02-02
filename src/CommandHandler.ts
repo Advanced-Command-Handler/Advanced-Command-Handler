@@ -12,7 +12,13 @@ import {Event} from './classes/Event';
 
 export namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
+		/**
+		 * The directory of your commands.
+		 */
 		commandsDir: string;
+		/**
+		 * The directory of your events.
+		 */
 		eventsDir: string;
 		/**
 		 * The owners IDs from discord of the bot.
@@ -87,6 +93,9 @@ export namespace CommandHandler {
 		launched: [];
 	};
 
+	/**
+	 * The version of the handler.
+	 */
 	export const version: string = require('../package.json').version;
 	/**
 	 * The event emitter for the CommandHandler.
@@ -94,6 +103,9 @@ export namespace CommandHandler {
 	 * @eventProperty
 	 */
 	export const emitter: EventEmitter = new EventEmitter();
+	/**
+	 * The commands registered by the CommandHandler.
+	 */
 	export const commands: Collection<string, Command> = new Collection();
 	/**
 	 * The cooldowns mapped by ID and cooldown user.
@@ -110,11 +122,20 @@ export namespace CommandHandler {
 	 * ```
 	 */
 	export const cooldowns: Collection<Snowflake, CooldownUser> = new Collection();
+	/**
+	 * The events registered by the CommandHandler.
+	 *
+	 * @remarks
+	 * These events may not be bound to the {@link client}.
+	 */
 	export const events: Collection<string, Event> = new Collection();
 	export let commandsDir: string = '';
 	export let eventsDir: string = '';
 	export let owners: string[] = [];
 	export let prefixes: string[] = [];
+	/**
+	 * The client of the handler, null before {@link launch} function executed.
+	 */
 	export let client: AdvancedClient | null = null;
 
 	/**
