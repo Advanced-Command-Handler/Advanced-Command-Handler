@@ -84,7 +84,7 @@ export interface CommandOptions {
 	 * How tags works ?
 	 * @see {@link Tag}
 	 */
-	tags?: Tag[];
+	tags?: Array<Tag | keyof typeof Tag>;
 	/**
 	 * The usage of the command.
 	 *
@@ -175,7 +175,7 @@ export class Command implements CommandOptions {
 	 * How tags works ?
 	 * @see {@link Tag}
 	 */
-	public tags: Tag[];
+	public tags: Array<Tag | keyof typeof Tag>;
 	/**
 	 * The usage of the command.
 	 *
