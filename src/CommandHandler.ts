@@ -97,8 +97,8 @@ export namespace CommandHandler {
 	export const commands: Collection<string, Command> = new Collection();
 	/**
 	 * The cooldowns mapped by ID and cooldown user.
-	 * **A simple explication** :
 	 *
+	 * **A simple explication** :<br>
 	 * When a user executes a command with a cooldown, a new value is added.
 	 * ```ts
 	 * [ID]: {
@@ -115,7 +115,6 @@ export namespace CommandHandler {
 	export let eventsDir: string = '';
 	export let owners: string[] = [];
 	export let prefixes: string[] = [];
-
 	export let client: AdvancedClient | null = null;
 
 	/**
@@ -141,7 +140,7 @@ export namespace CommandHandler {
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
 	 *
-	 * @returns Itself.
+	 * @returns It returns itself so that afterward you can use the other functions.
 	 */
 	export function setDefaultEvents(): typeof CommandHandler {
 		Logger.info('Loading default events.', 'Loading');
@@ -160,7 +159,7 @@ export namespace CommandHandler {
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
 	 *
-	 * @returns Itself.
+	 * @returns It returns itself so that afterward you can use the other functions .
 	 */
 	export function setDefaultCommands(): typeof CommandHandler {
 		Logger.info('Loading default commands.', 'Loading');
@@ -177,7 +176,7 @@ export namespace CommandHandler {
 	 * Creates a new CommandHandler, wrap up the last one.
 	 *
 	 * @param options - Options for creating a new CommandHandler.
-	 * @returns Itself.
+	 * @returns It returns itself so that afterward you can use the other functions.
 	 */
 	export function create(options: CreateCommandHandlerOptions): typeof CommandHandler {
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');

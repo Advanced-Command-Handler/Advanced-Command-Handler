@@ -14,7 +14,7 @@ export enum DataType {
 }
 
 /**
- * Find a channel {@link https://discord.js/#/docs/main/stable/class/Channel} from the text, or the message content and returns null if nothing found.
+ * Finds a channel {@link https://discord.js/#/docs/main/stable/class/Channel} from the text, or the message content and returns null if nothing found.
  * It can find it from ID/name/mention.
  *
  * @param dataType - Channel {@link DataType.channel}.
@@ -23,7 +23,7 @@ export enum DataType {
  */
 export async function getThing(dataType: DataType.channel | 'channel', text: string | Message): Promise<GuildChannel | null>;
 /**
- * Find a Command {@link Command} from the text, or the message content and returns null if nothing found.
+ * Finds a Command {@link Command} from the text, or the message content and returns null if nothing found.
  * It can find it from the name/alias.
  *
  * @param dataType - Command {@link DataType.command}.
@@ -32,7 +32,7 @@ export async function getThing(dataType: DataType.channel | 'channel', text: str
  */
 export async function getThing(dataType: DataType.command | 'command', text: string | Message): Promise<Command | null>;
 /**
- * Find an Emoji {@link https://discord.js.org/#/docs/main/stable/class/Emoji} from the text, or the message content and returns null if nothing found.
+ * Finds an Emoji {@link https://discord.js.org/#/docs/main/stable/class/Emoji} from the text, or the message content and returns null if nothing found.
  * It can find it from the name/emoji itself/ID.
  *
  * @param dataType - Emote {@link DataType.emote}.
@@ -41,7 +41,7 @@ export async function getThing(dataType: DataType.command | 'command', text: str
  */
 export async function getThing(dataType: DataType.emote | 'emote', text: string | Message): Promise<Emoji | null>;
 /**
- * Find a Guild {@link https://discord.js.org/#/docs/main/stable/class/Guild} from the text, or the message content and returns null if nothing found.
+ * Finds a Guild {@link https://discord.js.org/#/docs/main/stable/class/Guild} from the text, or the message content and returns null if nothing found.
  * It can find it from the name/ID.
  *
  * @param dataType - Guild {@link DataType.guild}.
@@ -50,7 +50,7 @@ export async function getThing(dataType: DataType.emote | 'emote', text: string 
  */
 export async function getThing(dataType: DataType.guild | 'guild', text: string | Message): Promise<Guild | null>;
 /**
- * Find a GuildMember {@link https://discord.js.org/#/docs/main/stable/class/GuildMember} from the text, or the message content and returns null if nothing found.
+ * Finds a GuildMember {@link https://discord.js.org/#/docs/main/stable/class/GuildMember} from the text, or the message content and returns null if nothing found.
  * It can find it from the username/ID/mention/nickname.
  *
  * @param dataType - Member {@link DataType.member}.
@@ -59,7 +59,7 @@ export async function getThing(dataType: DataType.guild | 'guild', text: string 
  */
 export async function getThing(dataType: DataType.member | 'member', text: string | Message): Promise<GuildMember | null>;
 /**
- * Find a Message {@link https://discord.js.org/#/docs/main/stable/class/Message} from the text, or the message content and returns null if nothing found.
+ * Finds a Message {@link https://discord.js.org/#/docs/main/stable/class/Message} from the text, or the message content and returns null if nothing found.
  * It can find it from the name/ID/link.
  *
  * @param dataType - Message {@link DataType.message}.
@@ -68,7 +68,7 @@ export async function getThing(dataType: DataType.member | 'member', text: strin
  */
 export async function getThing(dataType: DataType.message | 'message', text: string | Message): Promise<Message | null>;
 /**
- * Find a Role {@link https://discord.js.org/#/docs/main/stable/class/Role} from the text, or the message content and returns null if nothing found.
+ * Finds a Role {@link https://discord.js.org/#/docs/main/stable/class/Role} from the text, or the message content and returns null if nothing found.
  * It can find it from the name/ID/mention.
  *
  * @param dataType - Role {@link DataType.role}.
@@ -77,7 +77,7 @@ export async function getThing(dataType: DataType.message | 'message', text: str
  */
 export async function getThing(dataType: DataType.role | 'role', text: string | Message): Promise<Role | null>;
 /**
- * Find a User {@link https://discord.js.org/#/docs/main/stable/class/User} from the text, or the message content and returns null if nothing found.<br>
+ * Finds a User {@link https://discord.js.org/#/docs/main/stable/class/User} from the text, or the message content and returns null if nothing found.<br>
  * It can find it from the username/ID.
  *
  * @param dataType - User {@link DataType.user}.
@@ -86,7 +86,7 @@ export async function getThing(dataType: DataType.role | 'role', text: string | 
  */
 export async function getThing(dataType: DataType.user | 'user', text: string | Message): Promise<User | null>;
 /**
- * Find the data from a string or a Message and returns null if nothing found.
+ * Finds the data from a string or a Message and returns null if nothing found.
  *
  * @param dataType - The data type {@link DataType}.
  * @param text - A string or a Message to find dataType from.
