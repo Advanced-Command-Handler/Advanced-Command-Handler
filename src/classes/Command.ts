@@ -1,6 +1,6 @@
 import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
-import {DefaultCommandRunFunction, RunFunction} from '../types';
 import {CommandHandler} from '../CommandHandler';
+import {DefaultCommandRunFunction, RunFunction} from '../types';
 import {isOwner} from '../utils/utils';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
@@ -313,13 +313,14 @@ export class Command implements CommandOptions {
 	/**
 	 * Returns false if {@link channels} are defined for this command but the message doesn't come from one of it.
 	 *
-	 * @param message - The message to test where it comes from.
+	 * @param from - The message or channel to test where it comes from.
 	 * @returns If it is on a channel required if used.
 	 */
-	public isInRightChannel(message: Message): boolean {
+	public isInRightChannel(from: Message | TextChannel): boolean {
+		const channel = from instanceof Message ? from.channel as TextChannel : from;
 		if (this.channels.length === 0) return true;
-		return this.channels.every(channel => {
-			return message.channel instanceof TextChannel ? (channel instanceof TextChannel ? channel.id === message.channel.id : channel === message.channel.id) : false;
+		return this.channels.every(ch => {
+			return ch instanceof TextChannel ? channel.id === ch.id : false;
 		});
 	}
 
