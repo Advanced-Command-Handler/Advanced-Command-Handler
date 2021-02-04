@@ -111,6 +111,8 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/index.commandoptions.html"
 								class="tsd-kind-icon">Command<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/index.cooldown.html"
+								class="tsd-kind-icon">Cooldown</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/index.deletemessageoptions.html"
 								class="tsd-kind-icon">Delete<wbr>Message<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/index.eventsoptions.html"
@@ -171,7 +173,7 @@
 					<div class="tsd-signature tsd-kind-icon">Color<wbr>Resolvable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">NonNullable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-symbol">typeof </span><a href="utils_logger.html#colors" class="tsd-signature-type" data-tsd-kind="Variable">colors</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-symbol">typeof </span><a href="utils_logger.html#logtype" class="tsd-signature-type" data-tsd-kind="Variable">LogType</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/Logger.ts#L34">src/utils/Logger.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/Logger.ts#L34">src/utils/Logger.ts:34</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -184,7 +186,7 @@
 					<div class="tsd-signature tsd-kind-icon">Log<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>comment<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>info<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>log<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>test<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>warn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/Logger.ts#L5">src/utils/Logger.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/Logger.ts#L5">src/utils/Logger.ts:5</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -220,7 +222,7 @@
 					<div class="tsd-signature tsd-kind-icon">colors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>black<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>blue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>brown<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>default<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>gold<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>green<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>grey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>indigo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>magenta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>orange<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>pink<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>red<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>teal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>violet<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>white<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>yellow<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/Logger.ts#L15">src/utils/Logger.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/Logger.ts#L15">src/utils/Logger.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -359,7 +361,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/argError.ts#L14">src/utils/argError.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/argError.ts#L14">src/utils/argError.ts:14</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -403,7 +405,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/utils.ts#L12">src/utils/utils.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/utils.ts#L12">src/utils/utils.ts:12</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -515,7 +517,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/utils.ts#L24">src/utils/utils.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/utils.ts#L24">src/utils/utils.ts:24</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -569,7 +571,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/getThing.ts#L24">src/utils/getThing.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/getThing.ts#L24">src/utils/getThing.ts:24</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -599,7 +601,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/getThing.ts#L33">src/utils/getThing.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/getThing.ts#L33">src/utils/getThing.ts:33</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -629,7 +631,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/getThing.ts#L42">src/utils/getThing.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/getThing.ts#L42">src/utils/getThing.ts:42</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -659,7 +661,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/getThing.ts#L51">src/utils/getThing.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/getThing.ts#L51">src/utils/getThing.ts:51</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -689,7 +691,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/getThing.ts#L60">src/utils/getThing.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/getThing.ts#L60">src/utils/getThing.ts:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -719,7 +721,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/getThing.ts#L69">src/utils/getThing.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/getThing.ts#L69">src/utils/getThing.ts:69</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -749,7 +751,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/getThing.ts#L78">src/utils/getThing.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/getThing.ts#L78">src/utils/getThing.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -779,7 +781,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/getThing.ts#L87">src/utils/getThing.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/getThing.ts#L87">src/utils/getThing.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -818,7 +820,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/utils.ts#L34">src/utils/utils.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/utils.ts#L34">src/utils/utils.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -850,7 +852,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/permissionsError.ts#L15">src/utils/permissionsError.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/permissionsError.ts#L15">src/utils/permissionsError.ts:15</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -900,7 +902,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/4acf18c/src/utils/utils.ts#L45">src/utils/utils.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/utils/utils.ts#L45">src/utils/utils.ts:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -981,6 +983,9 @@
 						<a href="types.html">types</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="utils_jsonutils.html">utils/JSONUtils</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="utils_logger.html">utils/<wbr>Logger</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -1028,6 +1033,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/index.commandoptions.html" class="tsd-kind-icon">Command<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/index.cooldown.html" class="tsd-kind-icon">Cooldown</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/index.deletemessageoptions.html" class="tsd-kind-icon">Delete<wbr>Message<wbr>Options</a>
