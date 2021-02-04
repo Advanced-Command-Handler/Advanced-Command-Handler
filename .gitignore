@@ -2,6 +2,7 @@
 node_modules
 dist
 types
+package-lock.json
 
 # Tests
 .env
