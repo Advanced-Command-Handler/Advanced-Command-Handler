@@ -323,46 +323,16 @@ export class Command implements CommandOptions {
 		});
 	}
 
+
 	/**
 	 * Returns true if the user is in a cooldown for this command.
 	 *
 	 * @remarks
 	 * If {@link cooldown} not set, this will always return `false`.
 	 *
-	 * @param guildMember - The guildMember to test if it is in a cooldown.
+	 * @param from - From where to test if user is in a cooldown, see types.
 	 * @returns Is user in a cooldown.
 	 */
-	public isInCooldown(guildMember: GuildMember): boolean;
-	/**
-	 * Returns true if the user is in a cooldown for this command.
-	 *
-	 * @remarks
-	 * If {@link cooldown} not set, this will always return `false`.
-	 *
-	 * @param user - The user to test if it is in a cooldown.
-	 * @returns Is user in a cooldown.
-	 */
-	public isInCooldown(user: User): boolean;
-	/**
-	 * Returns true if the user is in a cooldown for this command.
-	 *
-	 * @remarks
-	 * If {@link cooldown} not set, this will always return `false`.
-	 *
-	 * @param userID - The user ID to test if user is in a cooldown.
-	 * @returns Is user in a cooldown.
-	 */
-	public isInCooldown(userID: Snowflake): boolean;
-	/**
-	 * Returns true if the user is in a cooldown for this command.
-	 *
-	 * @remarks
-	 * If {@link cooldown} not set, this will always return `false`.
-	 *
-	 * @param message - The message to test if author of message is in a cooldown.
-	 * @returns Is user in a cooldown.
-	 */
-	public isInCooldown(message: Message): boolean;
 	public isInCooldown(from: Message | User | Snowflake | GuildMember): boolean {
 		const id = Command.getSnowflake(from);
 		return CommandHandler.cooldowns.has(id) && Object.keys(CommandHandler.cooldowns.get(id)!).includes(this.name);
@@ -371,34 +341,9 @@ export class Command implements CommandOptions {
 	/**
 	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
 	 *
-	 * @param guildMember - The guild member to get the cooldown from.
+	 * @param from - Where to get the cooldown from, see types.
 	 * @returns The user's cooldown.
 	 */
-	public getCooldown(guildMember: GuildMember): Cooldown;
-
-	/**
-	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
-	 *
-	 * @param user - The user to get the cooldown from.
-	 * @returns The user's cooldown.
-	 */
-	public getCooldown(user: User): Cooldown;
-
-	/**
-	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
-	 *
-	 * @param userID - The user's ID to get the cooldown from.
-	 * @returns The user's cooldown.
-	 */
-	public getCooldown(userID: Snowflake): Cooldown;
-
-	/**
-	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
-	 *
-	 * @param message - The message to get the author's cooldown from.
-	 * @returns The user's cooldown.
-	 */
-	public getCooldown(message: Message): Cooldown;
 	public getCooldown(from: Message | User | Snowflake | GuildMember): Cooldown {
 		const cooldown = CommandHandler.cooldowns.get(Command.getSnowflake(from))![this.name];
 		return {
@@ -410,27 +355,8 @@ export class Command implements CommandOptions {
 	/**
 	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
 	 *
-	 * @param guildMember - The guildMember to set the cooldown.
+	 * @param from - What to use to select the user to set the cooldown from.
 	 */
-	public setCooldown(guildMember: GuildMember): void;
-	/**
-	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
-	 *
-	 * @param user - The user to set the cooldown.
-	 */
-	public setCooldown(user: User): void;
-	/**
-	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
-	 *
-	 * @param userID - The userID of the user to set the cooldown from.
-	 */
-	public setCooldown(userID: Snowflake): void;
-	/**
-	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
-	 *
-	 * @param message - The message to set the cooldown from.
-	 */
-	public setCooldown(message: Message): void;
 	public setCooldown(from: Message | User | Snowflake | GuildMember): void {
 		const id = Command.getSnowflake(from);
 		if (!CommandHandler.cooldowns.has(id)) CommandHandler.cooldowns.set(id, {});
