@@ -1,7 +1,8 @@
-import {DMChannel, GuildChannel, Message, Permissions, PermissionString, Snowflake, TextChannel} from 'discord.js';
+import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {DefaultCommandRunFunction, RunFunction} from '../types';
 import {CommandHandler} from '../CommandHandler';
 import {isOwner} from '../utils/utils';
+import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**
  * # How tags should works ?
@@ -41,6 +42,13 @@ export enum Tag {
 	 * Tag for commands to only run in DM.
 	 */
 	dmOnly = 'dmOnly',
+}
+
+export interface Cooldown extends CommandCooldown {
+	/**
+	 * The time to wait, in seconds & milliseconds.
+	 */
+	waitMore: number;
 }
 
 export interface CommandOptions {
@@ -217,6 +225,17 @@ export class Command implements CommandOptions {
 	}
 
 	/**
+	 * Get an user ID from different sources, only here to simplify code.
+	 *
+	 * @param from - Where to get ID from.
+	 * @returns The ID.
+	 * @internal
+	 */
+	private static getSnowflake(from: Message | User | Snowflake | GuildMember): Snowflake {
+		return from instanceof Message ? from.author.id : from instanceof User ? from.id : from instanceof GuildMember ? from.user.id : from;
+	}
+
+	/**
 	 * Deletes a message if deletable.
 	 *
 	 * @param options - The options, see {@link DeleteMessageOptions}.
@@ -235,7 +254,7 @@ export class Command implements CommandOptions {
 	public getMissingPermissions(message: Message): MissingPermissions {
 		const missingPermissions: MissingPermissions = {
 			client: [],
-			user: [],
+			user: []
 		};
 		if (!message.guild || !message.guild.available) return missingPermissions;
 
@@ -267,7 +286,7 @@ export class Command implements CommandOptions {
 
 		return {
 			user: this.userPermissions.filter(permission => !permissionsFlags.includes(permission)),
-			client: this.clientPermissions.filter(permission => !permissionsFlags.includes(permission)),
+			client: this.clientPermissions.filter(permission => !permissionsFlags.includes(permission))
 		};
 	}
 
@@ -310,12 +329,68 @@ export class Command implements CommandOptions {
 	 * @remarks
 	 * If {@link cooldown} not set, this will always return `false`.
 	 *
-	 * @param message - The message to test if user in a cooldown.
+	 * @param guildMember - The guildMember to test if it is in a cooldown.
 	 * @returns Is user in a cooldown.
 	 */
-	public isInCooldown(message: Message): boolean {
-		return CommandHandler.cooldowns.has(message.author.id) && Object.keys(CommandHandler.cooldowns.get(message.author.id)!).includes(this.name);
+	public isInCooldown(guildMember: GuildMember): boolean;
+	/**
+	 * Returns true if the user is in a cooldown for this command.
+	 *
+	 * @remarks
+	 * If {@link cooldown} not set, this will always return `false`.
+	 *
+	 * @param user - The user to test if it is in a cooldown.
+	 * @returns Is user in a cooldown.
+	 */
+	public isInCooldown(user: User): boolean;
+	/**
+	 * Returns true if the user is in a cooldown for this command.
+	 *
+	 * @remarks
+	 * If {@link cooldown} not set, this will always return `false`.
+	 *
+	 * @param userID - The user ID to test if user is in a cooldown.
+	 * @returns Is user in a cooldown.
+	 */
+	public isInCooldown(userID: Snowflake): boolean;
+	/**
+	 * Returns true if the user is in a cooldown for this command.
+	 *
+	 * @remarks
+	 * If {@link cooldown} not set, this will always return `false`.
+	 *
+	 * @param message - The message to test if author of message is in a cooldown.
+	 * @returns Is user in a cooldown.
+	 */
+	public isInCooldown(message: Message): boolean;
+	public isInCooldown(from: Message | User | Snowflake | GuildMember): boolean {
+		const id = Command.getSnowflake(from);
+		return CommandHandler.cooldowns.has(id) && Object.keys(CommandHandler.cooldowns.get(id)!).includes(this.name);
 	}
+
+	/**
+	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
+	 *
+	 * @param guildMember - The guild member to get the cooldown from.
+	 * @returns The user's cooldown.
+	 */
+	public getCooldown(guildMember: GuildMember): Cooldown;
+
+	/**
+	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
+	 *
+	 * @param user - The user to get the cooldown from.
+	 * @returns The user's cooldown.
+	 */
+	public getCooldown(user: User): Cooldown;
+
+	/**
+	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
+	 *
+	 * @param userID - The user's ID to get the cooldown from.
+	 * @returns The user's cooldown.
+	 */
+	public getCooldown(userID: Snowflake): Cooldown;
 
 	/**
 	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
@@ -323,30 +398,51 @@ export class Command implements CommandOptions {
 	 * @param message - The message to get the author's cooldown from.
 	 * @returns The user's cooldown.
 	 */
-	public getCooldown(message: Message): {waitMore: number; executedAt: Date; cooldown: number} {
-		const cooldown = CommandHandler.cooldowns.get(message.author.id)![this.name];
+	public getCooldown(message: Message): Cooldown;
+	public getCooldown(from: Message | User | Snowflake | GuildMember): Cooldown {
+		const cooldown = CommandHandler.cooldowns.get(Command.getSnowflake(from))![this.name];
 		return {
 			...cooldown,
-			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now(),
+			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now()
 		};
 	}
 
 	/**
 	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
 	 *
+	 * @param guildMember - The guildMember to set the cooldown.
+	 */
+	public setCooldown(guildMember: GuildMember): void;
+	/**
+	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
+	 *
+	 * @param user - The user to set the cooldown.
+	 */
+	public setCooldown(user: User): void;
+	/**
+	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
+	 *
+	 * @param userID - The userID of the user to set the cooldown from.
+	 */
+	public setCooldown(userID: Snowflake): void;
+	/**
+	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
+	 *
 	 * @param message - The message to set the cooldown from.
 	 */
-	public setCooldown(message: Message) {
-		if (!CommandHandler.cooldowns.has(message.author.id)) CommandHandler.cooldowns.set(message.author.id, {});
-		if (this.cooldown === 0 ?? !!CommandHandler.cooldowns.get(message.author.id)![this.name]) return;
+	public setCooldown(message: Message): void;
+	public setCooldown(from: Message | User | Snowflake | GuildMember): void {
+		const id = Command.getSnowflake(from);
+		if (!CommandHandler.cooldowns.has(id)) CommandHandler.cooldowns.set(id, {});
+		if (this.cooldown === 0 ?? !!CommandHandler.cooldowns.get(id)![this.name]) return;
 
-		CommandHandler.cooldowns.get(message.author.id)![this.name] = {
-			executedAt: message.createdAt,
-			cooldown: this.cooldown,
+		CommandHandler.cooldowns.get(id)![this.name] = {
+			executedAt: from instanceof Message ? from.createdAt : new Date(),
+			cooldown: this.cooldown
 		};
 
 		setTimeout(() => {
-			delete CommandHandler.cooldowns.get(message.author.id)![this.name];
+			delete CommandHandler.cooldowns.get(id)![this.name];
 		}, this.cooldown * 1000);
 	}
 }
