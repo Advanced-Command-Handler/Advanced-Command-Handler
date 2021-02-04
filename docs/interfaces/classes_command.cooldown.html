@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MissingPermissions
+	<title>Cooldown
 	| Advanced Command Handler - v2.3.0</title>
 	<meta name="description" content="Documentation for Advanced Command Handler - v2.3.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -57,13 +57,13 @@
 					<a href="../modules.html">Advanced Command Handler - v2.3.0</a>
 				</li>
 				<li>
-					<a href="../modules/index.html">index</a>
+					<a href="../modules/classes_command.html">classes/Command</a>
 				</li>
 				<li>
-					<a href="index.missingpermissions.html">MissingPermissions</a>
+					<a href="classes_command.cooldown.html">Cooldown</a>
 				</li>
 			</ul>
-			<h1>Interface MissingPermissions</h1>
+			<h1>Interface Cooldown</h1>
 		</div>
 	</div>
 </header>
@@ -74,7 +74,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">MissingPermissions</span>
+						<a href="commandhandler.commandhandler-1.commandcooldown.html" class="tsd-signature-type" data-tsd-kind="Interface">CommandCooldown</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">Cooldown</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -85,10 +90,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.missingpermissions.html#client"
-								class="tsd-kind-icon">client</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.missingpermissions.html#user"
-								class="tsd-kind-icon">user</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="classes_command.cooldown.html#cooldown"
+								class="tsd-kind-icon">cooldown</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="classes_command.cooldown.html#executedat"
+								class="tsd-kind-icon">executed<wbr>At</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="classes_command.cooldown.html#waitmore"
+								class="tsd-kind-icon">wait<wbr>More</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,25 +103,42 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="client" class="tsd-anchor"></a>
-					<h3>client</h3>
-					<div class="tsd-signature tsd-kind-icon">client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">PermissionString</span><span class="tsd-signature-symbol">[]</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="cooldown" class="tsd-anchor"></a>
+					<h3>cooldown</h3>
+					<div class="tsd-signature tsd-kind-icon">cooldown<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="commandhandler.commandhandler-1.commandcooldown.html">CommandCooldown</a>.<a href="commandhandler.commandhandler-1.commandcooldown.html#cooldown">cooldown</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/classes/Command.ts#L137">src/classes/Command.ts:137</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/CommandHandler.ts#L42">src/CommandHandler.ts:42</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="executedat" class="tsd-anchor"></a>
+					<h3>executed<wbr>At</h3>
+					<div class="tsd-signature tsd-kind-icon">executed<wbr>At<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="commandhandler.commandhandler-1.commandcooldown.html">CommandCooldown</a>.<a href="commandhandler.commandhandler-1.commandcooldown.html#executedat">executedAt</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/CommandHandler.ts#L41">src/CommandHandler.ts:41</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="user" class="tsd-anchor"></a>
-					<h3>user</h3>
-					<div class="tsd-signature tsd-kind-icon">user<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">PermissionString</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="waitmore" class="tsd-anchor"></a>
+					<h3>wait<wbr>More</h3>
+					<div class="tsd-signature tsd-kind-icon">wait<wbr>More<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/classes/Command.ts#L138">src/classes/Command.ts:138</a></li>
+							<li>Defined in <a href="https://github.com/Ayfri/Advanced-Command-Handler/blob/0283d76/src/classes/Command.ts#L51">src/classes/Command.ts:51</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The time to wait, in seconds &amp; milliseconds.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -130,7 +154,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/classes_advancedclient.html">classes/<wbr>Advanced<wbr>Client</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/classes_command.html">classes/<wbr>Command</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -151,16 +175,8 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/defaults_events_message.html">defaults/events/message</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/index.html">index</a>
-						<ul>
-							<li class=" tsd-kind-namespace tsd-parent-kind-module">
-								<a href="../modules/index.commandhandler.html">Command<wbr>Handler</a>
-							</li>
-							<li class=" tsd-kind-namespace tsd-parent-kind-module tsd-is-external">
-								<a href="../modules/index.dayjs.html">dayjs</a>
-							</li>
-						</ul>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/types.html">types</a>
@@ -191,94 +207,37 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/index.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/index.tag.html" class="tsd-kind-icon">Tag</a>
+						<a href="../enums/classes_command.tag.html" class="tsd-kind-icon">Tag</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/index.advancedclient.html" class="tsd-kind-icon">Advanced<wbr>Client</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
-						<a href="../classes/index.betterembed.html" class="tsd-kind-icon">Better<wbr>Embed</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/index.command.html" class="tsd-kind-icon">Command</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/index.commandhandlererror.html" class="tsd-kind-icon">Command<wbr>Handler<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/index.event.html" class="tsd-kind-icon">Event</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/index.logger.html" class="tsd-kind-icon">Logger</a>
+						<a href="../classes/classes_command.command.html" class="tsd-kind-icon">Command</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="index.commandoptions.html" class="tsd-kind-icon">Command<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="index.cooldown.html" class="tsd-kind-icon">Cooldown</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="index.deletemessageoptions.html" class="tsd-kind-icon">Delete<wbr>Message<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="index.eventsoptions.html" class="tsd-kind-icon">Events<wbr>Options</a>
+						<a href="classes_command.commandoptions.html" class="tsd-kind-icon">Command<wbr>Options</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="index.missingpermissions.html" class="tsd-kind-icon">Missing<wbr>Permissions</a>
+						<a href="classes_command.cooldown.html" class="tsd-kind-icon">Cooldown</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.missingpermissions.html#client" class="tsd-kind-icon">client</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="classes_command.cooldown.html#cooldown" class="tsd-kind-icon">cooldown</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="classes_command.cooldown.html#executedat" class="tsd-kind-icon">executed<wbr>At</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.missingpermissions.html#user" class="tsd-kind-icon">user</a>
+								<a href="classes_command.cooldown.html#waitmore" class="tsd-kind-icon">wait<wbr>More</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/index.html#colorresolvable" class="tsd-kind-icon">Color<wbr>Resolvable</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="classes_command.deletemessageoptions.html" class="tsd-kind-icon">Delete<wbr>Message<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/index.html#logtype" class="tsd-kind-icon">Log<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/index.html#colors" class="tsd-kind-icon">colors</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-external">
-						<a href="../modules/index.html#limits" class="tsd-kind-icon">limits</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-external">
-						<a href="../modules/index.html#templates" class="tsd-kind-icon">templates</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#argerror" class="tsd-kind-icon">arg<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#cutiftoolong" class="tsd-kind-icon">cut<wbr>IfToo<wbr>Long</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<a href="../modules/index.html#dayjs-1" class="tsd-kind-icon">dayjs</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/index.html#getkeybyvalue" class="tsd-kind-icon">get<wbr>Key<wbr>ByValue</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#getthing" class="tsd-kind-icon">get<wbr>Thing</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#isowner" class="tsd-kind-icon">is<wbr>Owner</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#permissionserror" class="tsd-kind-icon">permissions<wbr>Error</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/index.html#random" class="tsd-kind-icon">random</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="classes_command.missingpermissions.html" class="tsd-kind-icon">Missing<wbr>Permissions</a>
 					</li>
 				</ul>
 			</nav>
