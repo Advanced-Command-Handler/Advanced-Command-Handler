@@ -8,7 +8,7 @@ export type JSONLike = {[k: string]: any[] | number | string | JSONLike};
  * @param content - The content to save.
  * @returns - True if operation has successfully worked.
  */
-export function save(path: string, content: any): boolean {
+export function saveJSON(path: string, content: any): boolean {
 	if (!fs.existsSync(path)) {
 		Logger.warn(`Cannot save JSON content to '${path}', file not found.`);
 		return false;
