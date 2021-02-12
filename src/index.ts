@@ -10,6 +10,7 @@ export * from './classes/Event';
 export * from './utils/argError';
 export * from './utils/codeError'
 export * from './utils/getThing';
+export * from './utils/JSONUtils.js';
 export * from './utils/Logger';
 export * from './utils/permissionsError';
 export * from './utils/utils';
