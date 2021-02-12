@@ -13,6 +13,6 @@ jobs:
     name: Generate Documentation
     runs-on: ubuntu-latest
     steps:
-        run: |
+      - run: |
           curl -X POST -H "Authorization: token ${{secrets.GH_TOKEN}}" -H "Accept: application/vnd.github.v3+json" -H "Content-Type: application/json" https://api.github.com/repos/Advanced-Command-Handler/docs/actions/workflows/5566837/dispatches -d '{\"ref\": \"master\"}'
 
