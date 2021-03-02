@@ -7,6 +7,6 @@ module.exports = new Command(
 		cooldown: 10,
 	},
 	async (handler, message, args) => {
-		await message.channel.send(args.length ? args.join(' ') : 'You must specify a message.');
+		message.channel.send(args.length ? args.join(' ') : 'You must specify a message.');
 	}
 );

@@ -8,6 +8,6 @@ module.exports = new Command(
 		userPermissions: ['MANAGE_MESSAGES'],
 	},
 	async (handler, message) => {
-		await message.channel.send('testing');
+		message.channel.send('testing');
 	}
 );
