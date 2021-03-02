@@ -81,5 +81,5 @@
 		"prettier": "prettier package.json tsconfig.json README.md src tests --write"
 	},
 	"types": "types/index.d.ts",
-	"version": "2.3.0"
+	"version": "2.4.0"
 }
