@@ -1,18 +1,20 @@
-import {Message} from 'discord.js';
 import {Command} from '../../classes/Command';
-import {CommandHandler} from '../../CommandHandler';
+import {CommandContext} from '../../classes/CommandContext.js';
 
-export default new Command(
-	{
-		name: 'ping',
-		tags: ['guildOnly'],
-		userPermissions: ['MANAGE_MESSAGES'],
-		category: 'utils',
-	},
-	async (handler: typeof CommandHandler, message: Message) => {
-		const msg = await message.channel.send('Ping ?');
-		const botPing = handler.client?.ws.ping;
-		const apiPing = msg.createdTimestamp - message.createdTimestamp;
+export class PingCommand extends Command {
+	constructor() {
+		super({
+			name: 'ping',
+			tags: ['guildOnly'],
+			userPermissions: ['MANAGE_MESSAGES'],
+			category: 'utils'
+		});
+	}
+
+	public async run(ctx: CommandContext) {
+		const msg = await ctx.message.channel.send('Ping ?');
+		const botPing = ctx.handler.client?.ws.ping;
+		const apiPing = msg.createdTimestamp - ctx.message.createdTimestamp;
 		await msg.edit(`Bot Latency: **${botPing}**ms\nAPI Latency: **${apiPing}**ms`);
 	}
-);
+}
