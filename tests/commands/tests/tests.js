@@ -1,13 +1,16 @@
 const {Command} = require('advanced-command-handler');
-module.exports = new Command(
-	{
-		name: 'tests',
-		aliases: ['test', 't'],
-		channels: [],
-		tags: ['nsfw'],
-		userPermissions: ['MANAGE_MESSAGES'],
-	},
-	async (handler, message) => {
-		message.channel.send('testing');
+module.exports = class TestCommand extends Command {
+	constructor() {
+		super({
+			name:            'tests',
+			aliases:         ['test', 't'],
+			channels:        [],
+			tags:            ['nsfw'],
+			userPermissions: ['MANAGE_MESSAGES']
+		});
 	}
-);
+
+	async run(ctx) {
+		ctx.message.channel.send('testing');
+	}
+};
