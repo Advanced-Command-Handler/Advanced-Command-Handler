@@ -2,6 +2,7 @@ import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionSt
 import {CommandHandler} from '../CommandHandler';
 import {DefaultCommandRunFunction, RunFunction} from '../types';
 import {isOwner} from '../utils/utils';
+import {CommandContext} from './CommandContext.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**
@@ -138,7 +139,7 @@ export interface MissingPermissions {
 	user: PermissionString[];
 }
 
-export class Command implements CommandOptions {
+export abstract class Command implements CommandOptions {
 	/**
 	 * The name of the command.
 	 */
@@ -204,15 +205,13 @@ export class Command implements CommandOptions {
 	/**
 	 * The function to run when executing the command.
 	 */
-	public run: RunFunction | DefaultCommandRunFunction;
+	public abstract run(ctx: CommandContext): Promise<void>;
 
 	/**
 	 * @param options - The options for the command.
-	 * @param runFunction - The function to run when executing the command.
 	 */
-	public constructor(options: CommandOptions, runFunction: RunFunction | DefaultCommandRunFunction) {
+	protected constructor(options: CommandOptions) {
 		this.name = options.name;
-		this.run = runFunction;
 		this.description = options.description ?? '';
 		this.usage = options.usage ?? '';
 		this.category = options.category ?? 'None';
