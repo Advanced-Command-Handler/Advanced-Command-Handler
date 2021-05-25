@@ -1,14 +1,13 @@
 import {ClientEvents} from 'discord.js';
-import {RunFunction} from '../types';
 import {AdvancedClient} from './AdvancedClient';
 import {CommandHandler} from '../CommandHandler';
 import {EventContext} from './EventContext.js';
 
-export abstract class Event<Name extends keyof ClientEvents> {
+export abstract class Event {
 	/**
 	 * The name of the event.
 	 */
-	public abstract readonly name: Name;
+	public abstract readonly name: keyof ClientEvents;
 	/**
 	 * If the event should be fired only once.
 	 */
@@ -17,7 +16,7 @@ export abstract class Event<Name extends keyof ClientEvents> {
 	/**
 	 * The run function, executed when the event is fired.
 	 */
-	public abstract run(ctx: EventContext<Name, this>, ...args: ClientEvents[Name]): void;
+	public abstract run(ctx: EventContext<this>, ...args: ClientEvents[this['name']]): void;
 
 	/**
 	 * Bind the event to the client, when the `something` event from {@link AdvancedClient} will be fire, this event will be also fired.
@@ -25,10 +24,9 @@ export abstract class Event<Name extends keyof ClientEvents> {
 	 * @param client - The client to bind the event from.
 	 */
 	public bind(client: AdvancedClient): void {
-		const context: EventContext<Name, this> = new EventContext({
+		const context: EventContext<this> = new EventContext({
 			event: this,
 			handler: CommandHandler,
-			values: this.run.arguments
 		});
 
 		if (this.once) client?.once(this.name, this.run.bind(null, context));
@@ -45,7 +43,6 @@ export abstract class Event<Name extends keyof ClientEvents> {
 			new EventContext({
 				event: this,
 				handler: CommandHandler,
-				values: this.run.arguments
 			})
 		) as (...args: any[]) => void);
 	}

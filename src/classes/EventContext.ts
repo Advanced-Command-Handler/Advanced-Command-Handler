@@ -2,20 +2,17 @@ import {ClientEvents} from 'discord.js';
 import {CommandHandler} from '../CommandHandler.js';
 import {Event} from './Event.js';
 
-interface EventContextBuilder<T extends keyof ClientEvents, E extends Event<T>> {
+interface EventContextBuilder<E extends Event> {
 	event: E;
 	handler: typeof CommandHandler;
-	values: T;
 }
 
-export class EventContext<T extends keyof ClientEvents, E extends Event<T>> implements EventContextBuilder<T, E>{
+export class EventContext<E extends Event> implements EventContextBuilder<E>{
 	public event: E;
 	public handler: typeof CommandHandler;
-	public values: T;
 
-	public constructor(options: EventContextBuilder<T, E>) {
+	public constructor(options: EventContextBuilder<E>) {
 		this.event = options.event;
 		this.handler = options.handler;
-		this.values = options.values;
 	}
 }

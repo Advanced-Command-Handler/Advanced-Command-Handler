@@ -1,6 +1,5 @@
 import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../CommandHandler';
-import {DefaultCommandRunFunction, RunFunction} from '../types';
 import {isOwner} from '../utils/utils';
 import {CommandContext} from './CommandContext.js';
 import CommandCooldown = CommandHandler.CommandCooldown;

@@ -10,12 +10,10 @@ import {getThing} from '../../utils/getThing';
 import {Logger} from '../../utils/Logger';
 import {permissionsError} from '../../utils/permissionsError';
 
-export type DefaultCommandRunFunction = [commandHandler?: typeof CommandHandler, message?: Message, args?: string[]];
-
-export class MessageEvent extends Event<'message'> {
+export class MessageEvent extends Event{
 	public name = 'message' as const;
 
-	public async run(ctx: EventContext<'message', this>, message: Message): Promise<any> {
+	public async run(ctx: EventContext<this>, message: Message): Promise<any> {
 		if (message.author.bot || message.system) return;
 
 		const prefix = CommandHandler.getPrefixFromMessage(message);

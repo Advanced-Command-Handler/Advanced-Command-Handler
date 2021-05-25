@@ -4,6 +4,7 @@ import {promises as fsPromises} from 'fs';
 import {join} from 'path';
 import * as defaultCommands from './defaults/commands/index';
 import * as defaultEvents from './defaults/events/index';
+import {MaybeCommand, MaybeEvent} from './types.js';
 import {Logger} from './utils/Logger';
 import {AdvancedClient} from './classes/AdvancedClient';
 import {Command} from './classes/Command';
@@ -166,8 +167,9 @@ export namespace CommandHandler {
 	export function setDefaultEvents(): typeof CommandHandler {
 		Logger.info('Loading default events.', 'Loading');
 		for (let event of Object.values(defaultEvents)) {
-			events.set(event.default.name, event.default);
-			Logger.comment(`Default ${Logger.setColor('green', event.default.name) + Logger.setColor('comment', ' event loaded.')}`, 'Loading');
+			const instance = new event();
+			events.set(instance.name, instance);
+			Logger.comment(`Default ${Logger.setColor('green', instance.name) + Logger.setColor('comment', ' event loaded.')}`, 'Loading');
 		}
 		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'Loading');
 
@@ -185,8 +187,9 @@ export namespace CommandHandler {
 	export function setDefaultCommands(): typeof CommandHandler {
 		Logger.info('Loading default commands.', 'Loading');
 		for (let command of Object.values(defaultCommands)) {
-			commands.set(command.default.name, command.default);
-			Logger.comment(`Default ${Logger.setColor('green', command.default.name) + Logger.setColor('comment', ' command loaded.')}`, 'Loading');
+			const instance = new command();
+			commands.set(instance.name, instance);
+			Logger.comment(`Default ${Logger.setColor('green', instance.name) + Logger.setColor('comment', ' command loaded.')}`, 'Loading');
 		}
 		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands)})`, 'Loading');
 
@@ -206,8 +209,8 @@ export namespace CommandHandler {
 		owners = options.owners ?? [];
 		prefixes = options.prefixes ?? [];
 
-		if (!commandsDir) Logger.warn("No 'commandsDir' specified, commands apart default commands won't load.");
-		if (!eventsDir) Logger.warn("No 'eventsDir' specified, events apart default events won't load.");
+		if (!commandsDir) Logger.warn('No \'commandsDir\' specified, commands apart default commands won\'t load.');
+		if (!eventsDir) Logger.warn('No \'eventsDir\' specified, events apart default events won\'t load.');
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
@@ -264,19 +267,22 @@ export namespace CommandHandler {
 	 * @param name - The filename of the command.
 	 */
 	export async function loadCommand(path: string, name: string) {
-		let command: Command | (Command & {default: any}) = await import(join(process.cwd(), `./${path}/${name}`));
-		if ('default' in command && command.default instanceof Command) command = command.default;
-		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-		if (command.category === 'None') command.category = path.split(/[\\/]/).pop()!;
 
-		const invalidPermissions = command.getInvalidPermissions();
+		let command: MaybeCommand = await import(join(process.cwd(), `./${path}/${name}`));
+		if ('default' in command) command = command.default;
+
+		const instance = new command();
+		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
+		if (instance.category === 'None') instance.category = path.split(/[\\/]/).pop()!;
+
+		const invalidPermissions = instance.getInvalidPermissions();
 		if (invalidPermissions.client.length > 0)
-			throw new CommandHandlerError(`Invalid client permissions for '${command.name}' command.\nInvalid Permissions: '${invalidPermissions.client.sort().join(',')}'`, 'Loading');
+			throw new CommandHandlerError(`Invalid client permissions for '${instance.name}' command.\nInvalid Permissions: '${invalidPermissions.client.sort().join(',')}'`, 'Loading');
 		if (invalidPermissions.user.length > 0)
-			throw new CommandHandlerError(`Invalid user permissions for '${command.name}' command.\nInvalid Permissions: '${invalidPermissions.user.sort().join(',')}'`, 'Loading');
+			throw new CommandHandlerError(`Invalid user permissions for '${instance.name}' command.\nInvalid Permissions: '${invalidPermissions.user.sort().join(',')}'`, 'Loading');
 
-		commands.set(command.name, command);
-		emit('loadCommand', command);
+		commands.set(instance.name, instance);
+		emit('loadCommand', instance);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'Loading');
 	}
 
@@ -307,6 +313,7 @@ export namespace CommandHandler {
 		Logger.info(`${commands.size} commands loaded.`, 'Loading');
 	}
 
+
 	/**
 	 * Load all the events from a directory.
 	 *
@@ -320,12 +327,14 @@ export namespace CommandHandler {
 
 		if (files) {
 			for (const file of files) {
-				let event: Event | (Event & {default: any}) = await import(join(process.cwd(), `${path}/${file}`));
-				if ('default' in event && event.default instanceof Event) event = event.default;
-				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
-				events.set(event.name, event);
+				let event: MaybeEvent = await import(join(process.cwd(), `${path}/${file}`));
+				if ('default' in event) event = event.default;
 
-				Logger.comment(`Event ${event.name} loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'Loading');
+				const instance = new event();
+				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
+				events.set(instance.name, instance);
+
+				Logger.comment(`Event ${instance.name} loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'Loading');
 			}
 		}
 	}
