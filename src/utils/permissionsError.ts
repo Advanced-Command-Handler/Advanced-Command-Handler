@@ -1,4 +1,4 @@
-import {Message, PermissionString} from 'discord.js';
+import {Message, Permissions, PermissionString} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
 import {Command} from '../classes/Command';
 
@@ -22,4 +22,14 @@ export function permissionsError(message: Message, missingPermissions: Permissio
 
 	if (command.usage) embed.addField('Syntax :', command.usage);
 	return message.channel.send(embed);
+}
+
+/**
+ * Check if some permission is a valid permission that exists.
+ *
+ * @param permission - The permission to test.
+ * @returns - Is the permission is a valid permission.
+ */
+export function isPermission(permission: string): permission is PermissionString {
+	return Object.keys(Permissions.FLAGS).includes(permission);
 }

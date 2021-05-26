@@ -11,7 +11,7 @@ export abstract class Event {
 	/**
 	 * If the event should be fired only once.
 	 */
-	public once?: boolean = false;
+	public once: boolean = false;
 
 	/**
 	 * The run function, executed when the event is fired.

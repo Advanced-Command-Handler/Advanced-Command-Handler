@@ -1,15 +1,13 @@
+import {PermissionString} from 'discord.js';
 import {Command} from '../../classes/Command';
 import {CommandContext} from '../../classes/CommandContext.js';
 
 export class PingCommand extends Command {
-	constructor() {
-		super({
-			name: 'ping',
-			tags: ['guildOnly'],
-			userPermissions: ['MANAGE_MESSAGES'],
-			category: 'utils'
-		});
-	}
+	name = 'ping';
+	category = 'utils';
+	description = 'Test ';
+	tags = ['guildOnly'];
+	userPermissions = ['MANAGE_MESSAGES'];
 
 	public async run(ctx: CommandContext) {
 		const msg = await ctx.message.channel.send('Ping ?');
@@ -17,4 +15,5 @@ export class PingCommand extends Command {
 		const apiPing = msg.createdTimestamp - ctx.message.createdTimestamp;
 		await msg.edit(`Bot Latency: **${botPing}**ms\nAPI Latency: **${apiPing}**ms`);
 	}
+
 }

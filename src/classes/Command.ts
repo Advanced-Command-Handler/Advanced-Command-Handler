@@ -1,5 +1,6 @@
-import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
+import {DMChannel, GuildChannel, GuildMember, Message, PermissionOverwrites, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../CommandHandler';
+import {isPermission} from '../utils/permissionsError.js';
 import {isOwner} from '../utils/utils';
 import {CommandContext} from './CommandContext.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
@@ -51,65 +52,6 @@ export interface Cooldown extends CommandCooldown {
 	waitMore: number;
 }
 
-export interface CommandOptions {
-	/**
-	 * The name of the command.
-	 */
-	readonly name: string;
-	/**
-	 * The aliases of the command.
-	 */
-	aliases?: string[];
-	/**
-	 * The category of the command.
-	 */
-	category?: string;
-	/**
-	 * The channels where the command should only be executed if used (if using the default message event).
-	 */
-	channels?: Array<Snowflake | TextChannel>;
-	/**
-	 * The client permissions needed to run the command (if using the default message event).
-	 */
-	clientPermissions?: PermissionString[];
-	/**
-	 * The cooldown of the command.
-	 *
-	 * @defaultValue 0
-	 *
-	 * @remarks
-	 * Every cooldown should be saved in {@link CommandHandler.cooldowns}.
-	 */
-	cooldown?: number;
-	/**
-	 * The description of the command.
-	 */
-	description?: string;
-	/**
-	 * The tags of the command.
-	 *
-	 * @remarks
-	 * How tags works ?
-	 * @see {@link Tag}
-	 */
-	tags?: Array<Tag | keyof typeof Tag>;
-	/**
-	 * The usage of the command.
-	 *
-	 * @example
-	 * ```
-	 * userinfo
-	 * userinfo me
-	 * userinfo <ID/Username/Mention of User>
-	 * ```
-	 */
-	usage?: string;
-	/**
-	 * The user permissions needed to run the command (if using the default message event).
-	 */
-	userPermissions?: PermissionString[];
-}
-
 /**
  * Options for the Command#deleteMessage method.
  */
@@ -138,31 +80,31 @@ export interface MissingPermissions {
 	user: PermissionString[];
 }
 
-export abstract class Command implements CommandOptions {
+export abstract class Command {
 	/**
 	 * The name of the command.
 	 */
-	public readonly name: string;
+	public readonly abstract name: string = '';
 	/**
 	 * The aliases of the command.
 	 */
-	public aliases: string[];
+	public aliases?: string[];
 	/**
 	 * The category of the command.
 	 *
 	 * @defaultValue The command parent directory.
 	 */
-	public category: string;
+	public category?: string;
 	/**
 	 * The channels where the command should only be executed if used (if using the default message event).
 	 */
-	public channels: Array<Snowflake | TextChannel>;
+	public channels?: Array<Snowflake | TextChannel>;
 	/**
 	 * The client permissions needed to run the command (if using the default message event).
 	 *
 	 * @defaultValue `['SEND_MESSAGES']`
 	 */
-	public clientPermissions: PermissionString[];
+	public clientPermissions?: Array<PermissionString | string>;
 	/**
 	 * The cooldown of the command.
 	 *
@@ -171,11 +113,11 @@ export abstract class Command implements CommandOptions {
 	 * @remarks
 	 * Every cooldown should be saved in {@link CommandHandler.cooldowns}.
 	 */
-	public cooldown: number;
+	public cooldown?: number;
 	/**
 	 * The description of the command.
 	 */
-	public description: string;
+	public description?: string;
 	/**
 	 * The tags of the command.
 	 *
@@ -183,7 +125,7 @@ export abstract class Command implements CommandOptions {
 	 * How tags works ?
 	 * @see {@link Tag}
 	 */
-	public tags: Array<Tag | keyof typeof Tag>;
+	public tags?: Array<Tag | keyof typeof Tag | string>;
 	/**
 	 * The usage of the command.
 	 *
@@ -194,33 +136,13 @@ export abstract class Command implements CommandOptions {
 	 * userinfo <ID/Username/Mention of User>
 	 * ```
 	 */
-	public usage: string;
+	public usage?: string;
 	/**
 	 * The user permissions needed to run the command (if using the default message event).
 	 *
 	 * @defaultValue `['SEND_MESSAGES']`
 	 */
-	public userPermissions: PermissionString[];
-	/**
-	 * The function to run when executing the command.
-	 */
-	public abstract run(ctx: CommandContext): Promise<void>;
-
-	/**
-	 * @param options - The options for the command.
-	 */
-	protected constructor(options: CommandOptions) {
-		this.name = options.name;
-		this.description = options.description ?? '';
-		this.usage = options.usage ?? '';
-		this.category = options.category ?? 'None';
-		this.aliases = options.aliases ?? [];
-		this.clientPermissions = options.clientPermissions ?? ['SEND_MESSAGES'];
-		this.userPermissions = options.userPermissions ?? ['SEND_MESSAGES'];
-		this.channels = options.channels ?? [];
-		this.tags = options.tags ?? [];
-		this.cooldown = options.cooldown ?? 0;
-	}
+	public userPermissions?: Array<PermissionString | string>;
 
 	/**
 	 * Get an user ID from different sources, only here to simplify code.
@@ -232,6 +154,13 @@ export abstract class Command implements CommandOptions {
 	private static getSnowflake(from: Message | User | Snowflake | GuildMember): Snowflake {
 		return from instanceof Message ? from.author.id : from instanceof User ? from.id : from instanceof GuildMember ? from.user.id : from;
 	}
+
+	/**
+	 * The function to run when executing the command.
+	 *
+	 * @param ctx
+	 */
+	public abstract run(ctx: CommandContext): Promise<any>;
 
 	/**
 	 * Deletes a message if deletable.
@@ -256,16 +185,27 @@ export abstract class Command implements CommandOptions {
 		};
 		if (!message.guild || !message.guild.available) return missingPermissions;
 
-		missingPermissions.client.push(
-			...this.clientPermissions.filter(permission => {
-				if (!(message.channel instanceof DMChannel)) return !message.channel.permissionsFor(message.guild?.me!!)?.has(permission, false);
-			})
-		);
-		missingPermissions.user.push(
-			...this.userPermissions.filter(permission => {
-				if (!(message.channel instanceof DMChannel)) return !message.channel.permissionsFor(message.member!!)?.has(permission, false);
-			})
-		);
+		if (this.clientPermissions) {
+			missingPermissions.client.push(
+				//@ts-ignore
+				...this.clientPermissions.filter(permission => {
+					if (isPermission(permission) && !(message.channel instanceof DMChannel)) {
+						return !message.channel.permissionsFor(message.guild?.me!!)?.has(permission as PermissionString, false);
+					}
+				})
+			);
+		}
+
+		if (this.userPermissions) {
+			missingPermissions.user.push(
+				// @ts-ignore
+				...this.userPermissions.filter(permission => {
+					if (isPermission(permission) && !(message.channel instanceof DMChannel)) {
+						return !message.channel.permissionsFor(message.member!!)?.has(permission, false);
+					}
+				})
+			);
+		}
 
 		if (message.guild.me?.hasPermission('ADMINISTRATOR')) missingPermissions.client = [];
 		if (message.member?.hasPermission('ADMINISTRATOR')) missingPermissions.user = [];
@@ -283,8 +223,8 @@ export abstract class Command implements CommandOptions {
 		const permissionsFlags: string[] = [...Object.keys(Permissions.FLAGS)];
 
 		return {
-			user: this.userPermissions.filter(permission => !permissionsFlags.includes(permission)),
-			client: this.clientPermissions.filter(permission => !permissionsFlags.includes(permission))
+			user: this.userPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
+			client: this.clientPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? []
 		};
 	}
 
@@ -297,7 +237,7 @@ export abstract class Command implements CommandOptions {
 	 */
 	public getMissingTags(message: Message): Tag[] {
 		const missingTags: Tag[] = [];
-		for (const tag of this.tags) {
+		for (const tag of this.tags ?? []) {
 			if (tag === Tag.ownerOnly && !isOwner(message.author.id)) missingTags.push(Tag.ownerOnly);
 			if (tag === Tag.nsfw && message.channel instanceof GuildChannel && !message.channel.nsfw) missingTags.push(Tag.nsfw);
 			if (tag === Tag.guildOnly && message.guild === null) missingTags.push(Tag.guildOnly);
@@ -316,10 +256,10 @@ export abstract class Command implements CommandOptions {
 	 */
 	public isInRightChannel(from: Message | TextChannel): boolean {
 		const channel = from instanceof Message ? from.channel as TextChannel : from;
-		if (this.channels.length === 0) return true;
-		return this.channels.every(ch => {
+		if (this.channels?.length === 0) return true;
+		return this.channels?.every(ch => {
 			return ch instanceof TextChannel ? channel.id === ch.id : false;
-		});
+		}) ?? true;
 	}
 
 
@@ -357,17 +297,18 @@ export abstract class Command implements CommandOptions {
 	 * @param from - What to use to select the user to set the cooldown from.
 	 */
 	public setCooldown(from: Message | User | Snowflake | GuildMember): void {
+		const cooldown: number = this.cooldown ?? 0;
 		const id = Command.getSnowflake(from);
 		if (!CommandHandler.cooldowns.has(id)) CommandHandler.cooldowns.set(id, {});
 		if (this.cooldown === 0 ?? !!CommandHandler.cooldowns.get(id)![this.name]) return;
 
 		CommandHandler.cooldowns.get(id)![this.name] = {
 			executedAt: from instanceof Message ? from.createdAt : new Date(),
-			cooldown: this.cooldown
+			cooldown
 		};
 
 		setTimeout(() => {
 			delete CommandHandler.cooldowns.get(id)![this.name];
-		}, this.cooldown * 1000);
+		}, cooldown * 1000);
 	}
 }
