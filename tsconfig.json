@@ -1,7 +1,6 @@
 {
 	"compilerOptions": {
 		"declaration": true,
-		"declarationDir": "types",
 		"esModuleInterop": true,
 		"lib": ["ESNext"],
 		"module": "commonjs",
