@@ -76,7 +76,7 @@
 		"build": "tsc",
 		"lint": "eslint src/**/*.ts --fix",
 		"prepare": "npm run build",
-		"prettier": "prettier package.json tsconfig.json README.md src tests --write"
+		"prettier": "prettier **.json **.md src tests --write"
 	},
 	"types": "types/index.d.ts",
 	"version": "2.4.0"
