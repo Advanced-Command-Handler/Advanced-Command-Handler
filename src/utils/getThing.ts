@@ -105,7 +105,7 @@ export async function getThing(
 	const client = CommandHandler.client;
 	switch (dataType) {
 		case DataType.command:
-			return CommandHandler.commands.find((c: Command) => c.name === text || (c.aliases && c.aliases.includes(text as string))) || null;
+			return CommandHandler.commands.find((c: Command) => c.name === text || (c.aliases?.includes(text as string) ?? false)) ?? null;
 
 		case DataType.channel:
 			return (

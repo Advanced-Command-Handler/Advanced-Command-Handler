@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import {Logger} from './Logger.js';
 
-export type JSONLike = {[k: string]: any[] | number | string | JSONLike};
+export type JSONLike = {[k: string]: number | string | boolean | JSONLike | JSONLike[]};
 
 /**
  * @param path - The path of the JSON file.
@@ -32,7 +32,6 @@ export function saveJSON(path: string, content: any): boolean {
  *
  * @remarks
  * Prefer using `import` or `require`.
- *
  * @param path - The path to the JSON file.
  * @returns The JSON.
  */
@@ -42,7 +41,6 @@ export function readJSON(path: string): any;
  *
  * @remarks
  * Prefer using `import` or `require`.
- *
  * @typeParam O - The type of the JSON if any.
  * @param path - The path to the JSON file.
  * @returns The JSON.
@@ -53,7 +51,6 @@ export function readJSON<O extends JSONLike | any[]>(path: string): O;
  *
  * @remarks
  * Prefer using `import` or `require`.
- *
  * @typeParam O - The type of the JSON if any.
  * @param path - The path to the JSON file.
  * @returns The JSON.
