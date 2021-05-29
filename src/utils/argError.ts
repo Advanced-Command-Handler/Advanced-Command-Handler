@@ -8,7 +8,6 @@ import {Command} from '../classes/Command';
  * @param message - The message where the error is from.
  * @param error - The error.
  * @param command - The command to be executed.
- *
  * @returns The error message sent.
  */
 export function argError(message: Message, error: string, command: Command): Promise<Message> {

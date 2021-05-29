@@ -10,7 +10,7 @@ interface CommandContextBuilder {
 	message: Message;
 }
 
-export class CommandContext implements CommandContextBuilder{
+export class CommandContext implements CommandContextBuilder {
 	public args: string[];
 	public argString: string;
 	public command: Command;

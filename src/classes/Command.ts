@@ -84,7 +84,7 @@ export abstract class Command {
 	/**
 	 * The name of the command.
 	 */
-	public readonly abstract name: string = '';
+	public abstract readonly name: string = '';
 	/**
 	 * The aliases of the command.
 	 */
@@ -109,7 +109,6 @@ export abstract class Command {
 	 * The cooldown of the command.
 	 *
 	 * @defaultValue 0
-	 *
 	 * @remarks
 	 * Every cooldown should be saved in {@link CommandHandler.cooldowns}.
 	 */
@@ -181,7 +180,7 @@ export abstract class Command {
 	public getMissingPermissions(message: Message): MissingPermissions {
 		const missingPermissions: MissingPermissions = {
 			client: [],
-			user: []
+			user: [],
 		};
 		if (!message.guild || !message.guild.available) return missingPermissions;
 
@@ -224,7 +223,7 @@ export abstract class Command {
 
 		return {
 			user: this.userPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
-			client: this.clientPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? []
+			client: this.clientPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
 		};
 	}
 
@@ -255,20 +254,16 @@ export abstract class Command {
 	 * @returns If it is on a channel required if used.
 	 */
 	public isInRightChannel(from: Message | TextChannel): boolean {
-		const channel = from instanceof Message ? from.channel as TextChannel : from;
+		const channel = from instanceof Message ? (from.channel as TextChannel) : from;
 		if (this.channels?.length === 0) return true;
-		return this.channels?.every(ch => {
-			return ch instanceof TextChannel ? channel.id === ch.id : false;
-		}) ?? true;
+		return this.channels?.every(ch => (ch instanceof TextChannel ? channel.id === ch.id : false)) ?? true;
 	}
-
 
 	/**
 	 * Returns true if the user is in a cooldown for this command.
 	 *
 	 * @remarks
 	 * If {@link cooldown} not set, this will always return `false`.
-	 *
 	 * @param from - From where to test if user is in a cooldown, see types.
 	 * @returns Is user in a cooldown.
 	 */
@@ -287,7 +282,7 @@ export abstract class Command {
 		const cooldown = CommandHandler.cooldowns.get(Command.getSnowflake(from))![this.name];
 		return {
 			...cooldown,
-			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now()
+			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now(),
 		};
 	}
 
@@ -304,11 +299,9 @@ export abstract class Command {
 
 		CommandHandler.cooldowns.get(id)![this.name] = {
 			executedAt: from instanceof Message ? from.createdAt : new Date(),
-			cooldown
+			cooldown,
 		};
 
-		setTimeout(() => {
-			delete CommandHandler.cooldowns.get(id)![this.name];
-		}, cooldown * 1000);
+		setTimeout(() => delete CommandHandler.cooldowns.get(id)![this.name], cooldown * 1000);
 	}
 }

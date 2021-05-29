@@ -1,19 +1,19 @@
 import {Message} from 'discord.js';
 import {Tag} from '../../classes/Command';
 import {CommandContext} from '../../classes/CommandContext.js';
+import {Event} from '../../classes/Event';
 import {EventContext} from '../../classes/EventContext.js';
 import {CommandHandler} from '../../CommandHandler';
-import {Event} from '../../classes/Event';
 import {argError} from '../../utils/argError';
 import {codeError} from '../../utils/codeError';
 import {getThing} from '../../utils/getThing';
 import {Logger} from '../../utils/Logger';
 import {permissionsError} from '../../utils/permissionsError';
 
-export class MessageEvent extends Event{
-	public name = 'message' as const;
+export class MessageEvent extends Event {
+	name = 'message' as const;
 
-	public async run(ctx: EventContext<this>, message: Message): Promise<any> {
+	public override async run(ctx: EventContext<this>, message: Message): Promise<any> {
 		if (message.author.bot || message.system) return;
 
 		const prefix = CommandHandler.getPrefixFromMessage(message);
@@ -44,13 +44,15 @@ export class MessageEvent extends Event{
 					command
 				);
 			try {
-				await command.run(new CommandContext({
-					args,
-					command,
-					message,
-					handler: ctx.handler,
-					member: message.member,
-				}));
+				await command.run(
+					new CommandContext({
+						args,
+						command,
+						message,
+						handler: ctx.handler,
+						member: message.member,
+					})
+				);
 				command.setCooldown(message);
 				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
 			} catch (error) {

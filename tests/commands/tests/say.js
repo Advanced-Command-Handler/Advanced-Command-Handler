@@ -9,4 +9,4 @@ module.exports = class SayCommand extends Command {
 	async run(ctx) {
 		ctx.message.channel.send(ctx.args.length ? ctx.argString : 'You must specify a message.');
 	}
-}
+};

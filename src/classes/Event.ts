@@ -1,6 +1,6 @@
 import {ClientEvents} from 'discord.js';
-import {AdvancedClient} from './AdvancedClient';
 import {CommandHandler} from '../CommandHandler';
+import {AdvancedClient} from './AdvancedClient';
 import {EventContext} from './EventContext.js';
 
 export abstract class Event {
@@ -39,11 +39,15 @@ export abstract class Event {
 	 * @param client - The client to unbind the event from.
 	 */
 	public unbind(client: AdvancedClient): void {
-		client.removeListener(this.name, this.run.bind(null,
-			new EventContext({
-				event: this,
-				handler: CommandHandler,
-			})
-		) as (...args: any[]) => void);
+		client.removeListener(
+			this.name,
+			this.run.bind(
+				null,
+				new EventContext({
+					event: this,
+					handler: CommandHandler,
+				})
+			) as (...args: any[]) => void
+		);
 	}
 }

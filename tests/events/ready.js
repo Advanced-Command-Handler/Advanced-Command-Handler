@@ -1,6 +1,5 @@
 const {Event, Logger} = require('advanced-command-handler');
 
-
 module.exports = class ReadyEvent extends Event {
 	name = 'ready';
 
@@ -8,4 +7,4 @@ module.exports = class ReadyEvent extends Event {
 		console.log(context);
 		Logger.log('ready !');
 	}
-}
+};

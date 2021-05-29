@@ -1,4 +1,3 @@
-import {ClientEvents} from 'discord.js';
 import {CommandHandler} from '../CommandHandler.js';
 import {Event} from './Event.js';
 
@@ -7,7 +6,7 @@ interface EventContextBuilder<E extends Event> {
 	handler: typeof CommandHandler;
 }
 
-export class EventContext<E extends Event> implements EventContextBuilder<E>{
+export class EventContext<E extends Event> implements EventContextBuilder<E> {
 	public event: E;
 	public handler: typeof CommandHandler;
 

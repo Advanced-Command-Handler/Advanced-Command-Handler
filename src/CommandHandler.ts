@@ -2,14 +2,14 @@ import {ClientOptions, Collection, Message, Snowflake} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
-import * as defaultCommands from './defaults/commands/index';
-import * as defaultEvents from './defaults/events/index';
-import {MaybeCommand, MaybeEvent} from './types.js';
-import {Logger} from './utils/Logger';
 import {AdvancedClient} from './classes/AdvancedClient';
 import {Command} from './classes/Command';
 import {CommandHandlerError} from './classes/CommandHandlerError';
 import {Event} from './classes/Event';
+import * as defaultCommands from './defaults/commands/index';
+import * as defaultEvents from './defaults/events/index';
+import {MaybeCommand, MaybeEvent} from './types.js';
+import {Logger} from './utils/Logger';
 
 export namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
@@ -111,7 +111,7 @@ export namespace CommandHandler {
 	/**
 	 * The cooldowns mapped by ID and cooldown user.
 	 *
-	 * **A simple explication** :<br>
+	 * A simple explication** :<br>
 	 * When a user executes a command with a cooldown, a new value is added.
 	 * ```ts
 	 * [ID]: {
@@ -161,7 +161,6 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
-	 *
 	 * @returns It returns itself so that afterward you can use the other functions.
 	 */
 	export function setDefaultEvents(): typeof CommandHandler {
@@ -181,7 +180,6 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
-	 *
 	 * @returns It returns itself so that afterward you can use the other functions .
 	 */
 	export function setDefaultCommands(): typeof CommandHandler {
@@ -209,8 +207,8 @@ export namespace CommandHandler {
 		owners = options.owners ?? [];
 		prefixes = options.prefixes ?? [];
 
-		if (!commandsDir) Logger.warn('No \'commandsDir\' specified, commands apart default commands won\'t load.');
-		if (!eventsDir) Logger.warn('No \'eventsDir\' specified, events apart default events won\'t load.');
+		if (!commandsDir) Logger.warn("No 'commandsDir' specified, commands apart default commands won't load.");
+		if (!eventsDir) Logger.warn("No 'eventsDir' specified, events apart default events won't load.");
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
@@ -267,7 +265,6 @@ export namespace CommandHandler {
 	 * @param name - The filename of the command.
 	 */
 	export async function loadCommand(path: string, name: string) {
-
 		let command: MaybeCommand = await import(join(process.cwd(), `./${path}/${name}`));
 		if ('default' in command) command = command.default;
 
@@ -291,7 +288,6 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * The path must be a directory containing sub-directories.
-	 *
 	 * @param path - The path of the directory to load the commands from.
 	 */
 	export async function loadCommands(path: string) {
@@ -312,7 +308,6 @@ export namespace CommandHandler {
 		}
 		Logger.info(`${commands.size} commands loaded.`, 'Loading');
 	}
-
 
 	/**
 	 * Load all the events from a directory.
