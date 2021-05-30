@@ -9,14 +9,14 @@ export abstract class SlowCommand extends Command {
 	 * @remarks
 	 * Feel free to modify the emoji to use a custom one.
 	 */
-	waitEmoji = ':hourglass_flowing_sand:';
+	public readonly waitEmoji = ':hourglass_flowing_sand:';
 
 	/**
 	 * Reacts with the {@link waitEmoji}.
 	 *
 	 * @param message - The message to react to.
 	 */
-	async startWait(message: Message) {
+	public async startWait(message: Message) {
 		await message.react(this.waitEmoji);
 	}
 
@@ -25,7 +25,7 @@ export abstract class SlowCommand extends Command {
 	 *
 	 * @param message - The message to remove the reaction to.
 	 */
-	async stopWait(message: Message) {
+	public async stopWait(message: Message) {
 		await message.reactions.cache.find(r => r.emoji.name === this.waitEmoji)?.users.remove(CommandHandler.client!!.id);
 	}
 }
