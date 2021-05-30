@@ -2,6 +2,18 @@ import chalk from 'chalk';
 import dayjs from 'dayjs';
 import {inspect} from 'util';
 
+export enum LogLevel {
+	OFF = 0,
+	ERROR = 1,
+	WARNING = 2,
+	INFO = 3,
+	EVENT = 4,
+	LOG = 5,
+	TEST = 6,
+	COMMENT = 7,
+	ALL = 7,
+}
+
 export const LogType = {
 	error: 'red',
 	warn: 'yellow',
@@ -34,15 +46,17 @@ export const colors = {
 export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | string>;
 
 export class Logger {
+	public static LEVEL: LogLevel = LogLevel.ALL;
+	/**
+	 * If this property is set to `true` the {@link Logger.comment} method won't send logs.
+	 */
+	public static logComments: boolean = true;
+
 	/**
 	 * @remarks
 	 * Avoid using it because you can't do anything with it.
 	 */
 	private constructor() {}
-	/**
-	 * If this property is set to `true` the {@link Logger.comment} method won't send logs.
-	 */
-	public static logComments: boolean = true;
 
 	/**
 	 * Log a message in the console as a comment.
@@ -53,6 +67,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static comment(message: any, title: string = 'comment'): void {
+		if (Logger.LEVEL > LogLevel.COMMENT) return;
 		if (Logger.logComments) Logger.process(message, LogType.comment, title);
 	}
 
@@ -65,6 +80,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static error(message: any, title: string = 'error'): void {
+		if (Logger.LEVEL > LogLevel.ERROR) return;
 		Logger.process(message, LogType.error, title);
 	}
 
@@ -77,6 +93,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static event(message: any, title: string = 'event'): void {
+		if (Logger.LEVEL > LogLevel.EVENT) return;
 		Logger.process(message, LogType.event, title);
 	}
 
@@ -89,6 +106,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static info(message: any, title: string = 'info'): void {
+		if (Logger.LEVEL > LogLevel.INFO) return;
 		Logger.process(message, LogType.info, title);
 	}
 
@@ -102,6 +120,7 @@ export class Logger {
 	 * @param color - The color of the log.
 	 */
 	public static log(message: any, title: string = 'log', color: ColorResolvable = LogType.log): void {
+		if (Logger.LEVEL > LogLevel.LOG) return;
 		Logger.process(message, color, title);
 	}
 
@@ -122,6 +141,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static test(message: any, title: string = 'test'): void {
+		if (Logger.LEVEL > LogLevel.TEST) return;
 		Logger.process(message, LogType.test, title);
 	}
 
@@ -134,6 +154,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static warn(message: any, title: string = 'warn'): void {
+		if (Logger.LEVEL > LogLevel.WARNING) return;
 		Logger.process(message, LogType.warn, title);
 	}
 
@@ -146,6 +167,7 @@ export class Logger {
 	 * @internal
 	 */
 	protected static process(text: any, color: ColorResolvable = 'test', title: string = ''): void {
+		if (Logger.LEVEL === LogLevel.OFF) return;
 		text = typeof text === 'string' ? text : inspect(text);
 		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string): string => chalk.yellow(match));
 		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
