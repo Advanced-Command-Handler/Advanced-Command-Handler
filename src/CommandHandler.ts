@@ -111,9 +111,9 @@ export namespace CommandHandler {
 	/**
 	 * The cooldowns mapped by ID and cooldown user.
 	 *
-	 * A simple explication** :<br>
+	 * <strong>A simple explication</strong> :<br>
 	 * When a user executes a command with a cooldown, a new value is added.
-	 * ```ts
+	 * ```typescript
 	 * [ID]: {
 	 *    [commandName]: {
 	 *        executedAt: Date,
