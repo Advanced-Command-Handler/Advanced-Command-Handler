@@ -61,18 +61,9 @@ export interface DeleteMessageOptions {
 	 */
 	message: Message;
 	/**
-	 * The options from {@link https://discord.js.org/#/docs/main/stable/class/Message?scrollTo=delete | Message#delete}.
+	 * How long to wait to delete the message in milliseconds.
 	 */
-	options?: {
-		/**
-		 * How long to wait to delete the message in milliseconds.
-		 */
-		timeout?: number;
-		/**
-		 * Reason for deleting this message, if it does not belong to the client user.
-		 */
-		reason?: string;
-	};
+	timeout?: number;
 }
 
 export interface MissingPermissions {
@@ -168,7 +159,7 @@ export abstract class Command {
 	 * @returns The deleted message if deleted.
 	 */
 	public deleteMessage(options: DeleteMessageOptions): Promise<Message> | undefined {
-		if (options.message.deletable) return options.message.delete(options.options);
+		if (options.message.deletable) return options.message.delete({timeout: options.timeout});
 	}
 
 	/**
