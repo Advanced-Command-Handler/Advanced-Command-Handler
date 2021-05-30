@@ -9,7 +9,7 @@ export enum LogLevel {
 	INFO = 3,
 	EVENT = 4,
 	LOG = 5,
-	TEST = 6,
+	DEBUG = 6,
 	COMMENT = 7,
 	ALL = 7,
 }
@@ -20,7 +20,7 @@ export const LogType = {
 	info: 'blue',
 	event: 'green',
 	log: 'default',
-	test: 'white',
+	debug: 'white',
 	comment: 'gray',
 };
 
@@ -133,16 +133,16 @@ export class Logger {
 	}
 
 	/**
-	 * Log a message in the console as a test.
+	 * Log a message in the console as a debug.
 	 *
 	 * @remarks
 	 * Using the default color.
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
-	public static test(message: any, title: string = 'test'): void {
-		if (Logger.LEVEL > LogLevel.TEST) return;
-		Logger.process(message, LogType.test, title);
+	public static debug(message: any, title: string = 'debug'): void {
+		if (Logger.LEVEL > LogLevel.DEBUG) return;
+		Logger.process(message, LogType.debug, title);
 	}
 
 	/**
@@ -166,7 +166,7 @@ export class Logger {
 	 * @param title - The title of the text.
 	 * @internal
 	 */
-	protected static process(text: any, color: ColorResolvable = 'test', title: string = ''): void {
+	protected static process(text: any, color: ColorResolvable = 'debug', title: string = ''): void {
 		if (Logger.LEVEL === LogLevel.OFF) return;
 		text = typeof text === 'string' ? text : inspect(text);
 		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string): string => chalk.yellow(match));

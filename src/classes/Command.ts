@@ -231,7 +231,7 @@ export abstract class Command {
 	 * Gives the {@link tags} of this command which are not validated by the message.<br>
 	 * i.e. If a command is executed on a guild and the command has the `dmOnly` Tag, it will be returned.
 	 *
-	 * @param message - The message to test tags from.
+	 * @param message - The message to debug tags from.
 	 * @returns Tags that are not validated by the message.
 	 */
 	public getMissingTags(message: Message): Tag[] {
@@ -250,7 +250,7 @@ export abstract class Command {
 	/**
 	 * Returns false if {@link channels} are defined for this command but the message doesn't come from one of it.
 	 *
-	 * @param from - The message or channel to test where it comes from.
+	 * @param from - The message or channel to debug where it comes from.
 	 * @returns If it is on a channel required if used.
 	 */
 	public isInRightChannel(from: Message | TextChannel): boolean {
@@ -264,7 +264,7 @@ export abstract class Command {
 	 *
 	 * @remarks
 	 * If {@link cooldown} not set, this will always return `false`.
-	 * @param from - From where to test if user is in a cooldown, see types.
+	 * @param from - From where to debug if user is in a cooldown, see types.
 	 * @returns Is user in a cooldown.
 	 */
 	public isInCooldown(from: Message | User | Snowflake | GuildMember): boolean {

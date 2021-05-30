@@ -9,7 +9,6 @@ import {Command} from '../classes/Command';
  * @param missingPermissions - The error.
  * @param command - The command to be executed.
  * @param fromClient - If the error is from the client.
- *
  * @returns The error message sent.
  */
 export function permissionsError(message: Message, missingPermissions: PermissionString[], command: Command, fromClient: boolean = false): Promise<Message> {
@@ -27,7 +26,7 @@ export function permissionsError(message: Message, missingPermissions: Permissio
 /**
  * Check if some permission is a valid permission that exists.
  *
- * @param permission - The permission to test.
+ * @param permission - The permission to debug.
  * @returns - Is the permission is a valid permission.
  */
 export function isPermission(permission: string): permission is PermissionString {
