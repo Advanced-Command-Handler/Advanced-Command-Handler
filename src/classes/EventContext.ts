@@ -14,4 +14,12 @@ export class EventContext<E extends Event> implements EventContextBuilder<E> {
 		this.event = options.event;
 		this.handler = options.handler;
 	}
+
+	get eventName() {
+		return this.event.name;
+	}
+
+	get client() {
+		return this.handler.client!!;
+	}
 }

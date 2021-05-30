@@ -1,6 +1,5 @@
 import {APIMessage, APIMessageContentResolvable, Message, MessageAdditions, MessageOptions, SplitOptions, StringResolvable} from 'discord.js';
 import {CommandHandler} from '../CommandHandler.js';
-import {AdvancedClient} from './AdvancedClient.js';
 import {Command} from './Command.js';
 
 interface CommandContextBuilder {
@@ -31,11 +30,11 @@ export class CommandContext implements CommandContextBuilder {
 		return this.message.channel;
 	}
 
-	get client(): AdvancedClient {
+	get client() {
 		return this.handler.client!!;
 	}
 
-	get commandName(): string {
+	get commandName() {
 		return this.command.name;
 	}
 
