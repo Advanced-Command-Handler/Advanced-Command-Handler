@@ -189,7 +189,7 @@ export namespace CommandHandler {
 			commands.set(instance.name, instance);
 			Logger.comment(`Default ${Logger.setColor('green', instance.name) + Logger.setColor('comment', ' command loaded.')}`, 'Loading');
 		}
-		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands)})`, 'Loading');
+		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands).length})`, 'Loading');
 
 		return CommandHandler;
 	}
@@ -231,9 +231,7 @@ export namespace CommandHandler {
 			await loadEvents(eventsDir);
 
 			Logger.comment('Binding events to client.', 'Binding');
-			events.forEach(event => {
-				event.bind(client!!);
-			});
+			events.forEach(event => event.bind(client!!));
 
 			Logger.info(`${client?.eventNames().length ?? 0} events loaded & bind.`, 'Loading');
 		} catch (e) {
