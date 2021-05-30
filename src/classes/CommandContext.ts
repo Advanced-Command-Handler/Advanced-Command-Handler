@@ -58,6 +58,10 @@ export class CommandContext implements CommandContextBuilder {
 		return this.message.author;
 	}
 
+	public deleteMessage(timeout: number = 0) {
+		return this.message.delete({timeout});
+	}
+
 	public send(content: APIMessageContentResolvable | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
 
 	public send(options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
