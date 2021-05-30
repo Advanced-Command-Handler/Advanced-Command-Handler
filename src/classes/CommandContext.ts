@@ -1,31 +1,91 @@
-import {GuildMember, Message, User} from 'discord.js';
+import {APIMessage, APIMessageContentResolvable, Message, MessageAdditions, MessageOptions, SplitOptions, StringResolvable} from 'discord.js';
 import {CommandHandler} from '../CommandHandler.js';
+import {AdvancedClient} from './AdvancedClient.js';
 import {Command} from './Command.js';
 
 interface CommandContextBuilder {
 	args: string[];
 	command: Command;
 	handler: typeof CommandHandler;
-	member: GuildMember | null;
 	message: Message;
 }
 
 export class CommandContext implements CommandContextBuilder {
 	public args: string[];
-	public argString: string;
 	public command: Command;
 	public handler: typeof CommandHandler;
-	public member: GuildMember | null;
 	public message: Message;
-	public user: User;
 
 	public constructor(options: CommandContextBuilder) {
 		this.command = options.command;
-		this.member = options.member;
 		this.message = options.message;
 		this.handler = options.handler;
 		this.args = options.args;
-		this.argString = options.args.join(' ');
-		this.user = options.message.author;
+	}
+
+	get argsString() {
+		return this.args.join(' ');
+	}
+
+	get channel() {
+		return this.message.channel;
+	}
+
+	get client(): AdvancedClient {
+		return this.handler.client!!;
+	}
+
+	get commandName(): string {
+		return this.command.name;
+	}
+
+	get content() {
+		return this.message.content;
+	}
+
+	get guild() {
+		return this.message.guild;
+	}
+
+	get member() {
+		return this.message.member;
+	}
+
+	get prefix(): string {
+		return this.handler.getPrefixFromMessage(this.message)!!;
+	}
+
+	get user() {
+		return this.message.author;
+	}
+
+	public send(content: APIMessageContentResolvable | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
+
+	public send(options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
+
+	public send(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
+
+	public send(content: StringResolvable, options: (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
+
+	public send(content: StringResolvable, options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
+
+	public send(content: StringResolvable, options: MessageOptions): Promise<Message | Message[]>;
+
+	public send(content: StringResolvable, options?: MessageOptions | (MessageOptions & {split?: boolean | SplitOptions}) | MessageAdditions): Promise<Message | Message[]> {
+		return this.channel.send(content, options as any);
+	}
+
+	public reply(content: APIMessageContentResolvable | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
+
+	public reply(options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
+
+	public reply(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
+
+	public reply(content: StringResolvable, options: (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
+
+	public reply(content: StringResolvable, options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
+
+	public reply(content: StringResolvable, options?: MessageOptions | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message | Message[]> {
+		return this.message.reply(content, options as any);
 	}
 }
