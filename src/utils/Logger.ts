@@ -49,7 +49,6 @@ export class Logger {
 	 *
 	 * @remarks
 	 * Using the grey color.
-	 *
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
@@ -62,7 +61,6 @@ export class Logger {
 	 *
 	 * @remarks
 	 * Using the red color.
-	 *
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
@@ -75,7 +73,6 @@ export class Logger {
 	 *
 	 * @remarks
 	 * Using the green color.
-	 *
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
@@ -88,7 +85,6 @@ export class Logger {
 	 *
 	 * @remarks
 	 * Using the blue color.
-	 *
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
@@ -101,7 +97,6 @@ export class Logger {
 	 *
 	 * @remarks
 	 * Using the # color.
-	 *
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 * @param color - The color of the log.
@@ -123,7 +118,6 @@ export class Logger {
 	 *
 	 * @remarks
 	 * Using the default color.
-	 *
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
@@ -136,7 +130,6 @@ export class Logger {
 	 *
 	 * @remarks
 	 * Using the yellow color.
-	 *
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
@@ -157,7 +150,7 @@ export class Logger {
 		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string): string => chalk.yellow(match));
 		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
 
-		color = Logger.propertyInEnum(LogType, color) ?? color;
+		color = propertyInEnum(LogType, color) ?? color;
 		text = `${Logger.setColor('#847270', `[${dayjs().format('D HH:mm:ss.SSS')}]`)}${Logger.setColor(color, `[${title.toUpperCase()}] ${text + chalk.reset()}`)}`;
 		console.log(text);
 	}
@@ -167,31 +160,30 @@ export class Logger {
 	 *
 	 * @remarks
 	 * Returns the default color if it cannot be resolved.
-	 *
 	 * @param color - The ColorResolvable.
 	 * @returns The color.
 	 * @internal
 	 */
 	private static getColorFromColorResolvable(color: ColorResolvable): string {
 		return (
-			Logger.propertyInEnum(LogType, Logger.propertyInEnum(colors, color) ?? '') ??
-			Logger.propertyInEnum(colors, color) ??
-			Logger.propertyInEnum(LogType, color)?.match(/#[0-9|a-f]{6}/i)?.[0] ??
+			propertyInEnum(LogType, propertyInEnum(colors, color) ?? '') ??
+			propertyInEnum(colors, color) ??
+			propertyInEnum(LogType, color)?.match(/#[0-9|a-f]{6}/i)?.[0] ??
 			color.match(/#[0-9|a-f]{6}/i)?.[0] ??
 			colors.default.substring(1, 7)
 		);
 	}
+}
 
-	/**
-	 * Get the value of an enum.
-	 *
-	 * @typeParam V - An object.
-	 * @param enumObject - The enum as an object.
-	 * @param property - The property to get.
-	 * @returns The value from the key of the enum or undefined if not found.
-	 * @internal
-	 */
-	private static propertyInEnum<V extends {[k: string]: any}>(enumObject: V, property: string): keyof V | undefined {
-		return enumObject[property] ?? undefined;
-	}
+/**
+ * Get the value of an enum.
+ *
+ * @typeParam V - An object.
+ * @param enumObject - The enum as an object.
+ * @param property - The property to get.
+ * @returns The value from the key of the enum or undefined if not found.
+ * @internal
+ */
+function propertyInEnum<V extends {[k: string]: any}>(enumObject: V, property: string): keyof V | undefined {
+	return enumObject[property] ?? undefined;
 }
