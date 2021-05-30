@@ -8,7 +8,7 @@ import {argError} from '../../utils/argError';
 import {codeError} from '../../utils/codeError';
 import {getThing} from '../../utils/getThing';
 import {Logger} from '../../utils/Logger';
-import {permissionsError} from '../../utils/permissionsError';
+import {permissionsError} from '../../utils/permissionUtils.js';
 
 export class MessageEvent extends Event {
 	name = 'message' as const;
@@ -25,7 +25,7 @@ export class MessageEvent extends Event {
 		if (command) {
 			if (command.isInCooldown(message)) return message.channel.send(`You are on a cooldown! Please wait **${command.getCooldown(message).waitMore / 1000}**s.`);
 
-			if (!command.isInRightChannel(message)) return message.channel.send(`This command is not in the correct channel.`);
+			if (!command.isInRightChannel(message)) return message.channel.send('This command is not in the correct channel.');
 
 			const missingPermissions = command.getMissingPermissions(message);
 			const missingTags = command.getMissingTags(message);
@@ -50,7 +50,6 @@ export class MessageEvent extends Event {
 						command,
 						message,
 						handler: ctx.handler,
-						member: message.member,
 					})
 				);
 				command.setCooldown(message);
