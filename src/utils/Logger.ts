@@ -47,10 +47,6 @@ export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof Log
 
 export class Logger {
 	public static LEVEL: LogLevel = LogLevel.ALL;
-	/**
-	 * If this property is set to `true` the {@link Logger.comment} method won't send logs.
-	 */
-	public static logComments: boolean = true;
 
 	/**
 	 * @remarks
@@ -68,7 +64,7 @@ export class Logger {
 	 */
 	public static comment(message: any, title: string = 'comment'): void {
 		if (Logger.LEVEL < LogLevel.COMMENT) return;
-		if (Logger.logComments) Logger.process(message, LogType.comment, title);
+		Logger.process(message, LogType.comment, title);
 	}
 
 	/**
