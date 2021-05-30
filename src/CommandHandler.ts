@@ -331,4 +331,24 @@ export namespace CommandHandler {
 			}
 		}
 	}
+
+	/**
+	 * Unloads an event.
+	 *
+	 * @param name - The event to unload.
+	 */
+	export function unloadEvent(name: string) {
+		if (events.delete(name)) Logger.info(`${name} event unloaded.`, 'UnLoading');
+		else Logger.warn(`${name} event not found.`, 'UnLoading');
+	}
+
+	/**
+	 * Unloads a command.
+	 *
+	 * @param name - The command to unload.
+	 */
+	export function unloadCommand(name: string) {
+		if (commands.delete(name)) Logger.info(`${name} command unloaded.`, 'UnLoading');
+		else Logger.warn(`${name} command not found.`, 'UnLoading');
+	}
 }
