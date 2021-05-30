@@ -67,7 +67,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static comment(message: any, title: string = 'comment'): void {
-		if (Logger.LEVEL > LogLevel.COMMENT) return;
+		if (Logger.LEVEL < LogLevel.COMMENT) return;
 		if (Logger.logComments) Logger.process(message, LogType.comment, title);
 	}
 
@@ -80,7 +80,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static error(message: any, title: string = 'error'): void {
-		if (Logger.LEVEL > LogLevel.ERROR) return;
+		if (Logger.LEVEL < LogLevel.ERROR) return;
 		Logger.process(message, LogType.error, title);
 	}
 
@@ -93,7 +93,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static event(message: any, title: string = 'event'): void {
-		if (Logger.LEVEL > LogLevel.EVENT) return;
+		if (Logger.LEVEL < LogLevel.EVENT) return;
 		Logger.process(message, LogType.event, title);
 	}
 
@@ -106,7 +106,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static info(message: any, title: string = 'info'): void {
-		if (Logger.LEVEL > LogLevel.INFO) return;
+		if (Logger.LEVEL < LogLevel.INFO) return;
 		Logger.process(message, LogType.info, title);
 	}
 
@@ -120,7 +120,7 @@ export class Logger {
 	 * @param color - The color of the log.
 	 */
 	public static log(message: any, title: string = 'log', color: ColorResolvable = LogType.log): void {
-		if (Logger.LEVEL > LogLevel.LOG) return;
+		if (Logger.LEVEL < LogLevel.LOG) return;
 		Logger.process(message, color, title);
 	}
 
@@ -141,7 +141,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static debug(message: any, title: string = 'debug'): void {
-		if (Logger.LEVEL > LogLevel.DEBUG) return;
+		if (Logger.LEVEL < LogLevel.DEBUG) return;
 		Logger.process(message, LogType.debug, title);
 	}
 
@@ -154,7 +154,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static warn(message: any, title: string = 'warn'): void {
-		if (Logger.LEVEL > LogLevel.WARNING) return;
+		if (Logger.LEVEL < LogLevel.WARNING) return;
 		Logger.process(message, LogType.warn, title);
 	}
 
