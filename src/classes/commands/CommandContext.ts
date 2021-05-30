@@ -1,5 +1,5 @@
 import {APIMessage, APIMessageContentResolvable, Message, MessageAdditions, MessageOptions, SplitOptions, StringResolvable} from 'discord.js';
-import {CommandHandler} from '../CommandHandler.js';
+import {CommandHandler} from '../../CommandHandler.js';
 import {Command} from './Command.js';
 
 interface CommandContextBuilder {

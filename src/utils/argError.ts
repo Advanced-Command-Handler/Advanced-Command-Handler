@@ -1,6 +1,6 @@
 import {Message} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command} from '../classes/Command';
+import {Command} from '../classes/commands/Command.js';
 
 /**
  * A function to use when a user fail on an argument of a command.

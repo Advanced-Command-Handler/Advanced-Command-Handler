@@ -1,6 +1,6 @@
 import {Message} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command} from '../classes/Command';
+import {Command} from '../classes/commands/Command.js';
 import {Logger} from './Logger';
 import {cutIfTooLong, isOwner} from './utils';
 

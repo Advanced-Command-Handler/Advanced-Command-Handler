@@ -1,4 +1,4 @@
-import {Command} from './classes/Command.js';
+import {Command} from './classes/commands/Command.js';
 import {Event} from './classes/Event.js';
 
 export type Constructor<T extends {} = {}> = new (...args: any[]) => T;

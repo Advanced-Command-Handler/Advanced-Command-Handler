@@ -1,7 +1,7 @@
 import {DMChannel, GuildChannel, GuildMember, Message, PermissionOverwrites, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
-import {CommandHandler} from '../CommandHandler';
-import {isPermission} from '../utils/permissionUtils.js';
-import {isOwner} from '../utils/utils';
+import {CommandHandler} from '../../CommandHandler.js';
+import {isPermission} from '../../utils/permissionUtils.js';
+import {isOwner} from '../../utils/utils.js';
 import {CommandContext} from './CommandContext.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
