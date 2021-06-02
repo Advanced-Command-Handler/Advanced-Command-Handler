@@ -1,12 +1,6 @@
-import {Message} from 'discord.js';
-import {CommandHandler} from './CommandHandler';
+import {Command} from './classes/commands/Command.js';
+import {Event} from './classes/Event.js';
 
-/**
- * The runFunction to use for commands and commands.
- */
-export type RunFunction = (...options: any[]) => Promise<any>;
-
-/**
- * The runFunction for the commands when using the default message event.
- */
-export type DefaultCommandRunFunction = (commandHandler: typeof CommandHandler, message: Message, args: string[]) => Promise<void>;
+export type Constructor<T extends {} = {}> = new (...args: any[]) => T;
+export type MaybeCommand = Constructor<Command> | {default: Constructor<Command>};
+export type MaybeEvent = Constructor<Event> | {default: Constructor<Event>};

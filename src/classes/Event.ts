@@ -1,42 +1,22 @@
-import {RunFunction} from '../types';
-import {AdvancedClient} from './AdvancedClient';
+import {ClientEvents} from 'discord.js';
 import {CommandHandler} from '../CommandHandler';
+import {AdvancedClient} from './AdvancedClient';
+import {EventContext} from './EventContext.js';
 
-export interface EventsOptions {
+export abstract class Event {
 	/**
 	 * The name of the event.
 	 */
-	readonly name: string;
+	public abstract readonly name: keyof ClientEvents;
 	/**
 	 * If the event should be fired only once.
 	 */
-	once?: boolean;
-}
+	public once: boolean = false;
 
-export class Event implements EventsOptions {
-	/**
-	 * The name of the event.
-	 */
-	public readonly name: string;
-	/**
-	 * If the event should be fired only once.
-	 */
-	public once: boolean;
 	/**
 	 * The run function, executed when the event is fired.
 	 */
-	public run: RunFunction;
-
-	/**
-	 * @param options - Options for the event.
-	 * @param runFunction - The run function, executed when the event is fired.
-	 * {@link "@discord.js".GuildMember}
-	 */
-	public constructor(options: EventsOptions, runFunction: RunFunction) {
-		this.run = runFunction;
-		this.name = options.name;
-		this.once = options.once ?? false;
-	}
+	public abstract run(ctx: EventContext<this>, ...args: ClientEvents[this['name']]): void;
 
 	/**
 	 * Bind the event to the client, when the `something` event from {@link AdvancedClient} will be fire, this event will be also fired.
@@ -44,8 +24,13 @@ export class Event implements EventsOptions {
 	 * @param client - The client to bind the event from.
 	 */
 	public bind(client: AdvancedClient): void {
-		if (this.once) client?.once(this.name, this.run.bind(null, CommandHandler));
-		else client?.on(this.name, this.run.bind(null, CommandHandler));
+		const context: EventContext<this> = new EventContext({
+			event: this,
+			handler: CommandHandler,
+		});
+
+		if (this.once) client?.once(this.name, this.run.bind(null, context));
+		else client?.on(this.name, this.run.bind(null, context));
 	}
 
 	/**
@@ -54,6 +39,15 @@ export class Event implements EventsOptions {
 	 * @param client - The client to unbind the event from.
 	 */
 	public unbind(client: AdvancedClient): void {
-		client.removeListener(this.name, this.run.bind(null, CommandHandler));
+		client.removeListener(
+			this.name,
+			this.run.bind(
+				null,
+				new EventContext({
+					event: this,
+					handler: CommandHandler,
+				})
+			) as (...args: any[]) => void
+		);
 	}
 }

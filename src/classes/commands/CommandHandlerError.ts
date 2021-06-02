@@ -1,4 +1,4 @@
-import {CommandHandler} from '../CommandHandler';
+import {CommandHandler} from '../../CommandHandler.js';
 
 export class CommandHandlerError extends Error {
 	/**
@@ -15,7 +15,7 @@ export class CommandHandlerError extends Error {
 	 * @param message - The error message to explain what happens.
 	 * @param where - Where the error occurred.
 	 */
-	constructor(message: string, where: string) {
+	public constructor(message: string, where: string) {
 		super(message);
 
 		if (Error.captureStackTrace) Error.captureStackTrace(this, CommandHandlerError);

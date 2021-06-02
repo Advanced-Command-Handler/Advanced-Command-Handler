@@ -1,14 +1,15 @@
-import {ClientOptions, Collection, Message, Snowflake} from 'discord.js';
+import {ClientOptions, Collection, Message, Snowflake, Team} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
+import {AdvancedClient} from './classes/AdvancedClient';
+import {Command} from './classes/commands/Command.js';
+import {CommandHandlerError} from './classes/commands/CommandHandlerError.js';
+import {Event} from './classes/Event';
 import * as defaultCommands from './defaults/commands/index';
 import * as defaultEvents from './defaults/events/index';
+import {MaybeCommand, MaybeEvent} from './types.js';
 import {Logger} from './utils/Logger';
-import {AdvancedClient} from './classes/AdvancedClient';
-import {Command} from './classes/Command';
-import {CommandHandlerError} from './classes/CommandHandlerError';
-import {Event} from './classes/Event';
 
 export namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
@@ -110,9 +111,9 @@ export namespace CommandHandler {
 	/**
 	 * The cooldowns mapped by ID and cooldown user.
 	 *
-	 * **A simple explication** :<br>
+	 * <strong>A simple explication</strong> :<br>
 	 * When a user executes a command with a cooldown, a new value is added.
-	 * ```ts
+	 * ```typescript
 	 * [ID]: {
 	 *    [commandName]: {
 	 *        executedAt: Date,
@@ -160,14 +161,14 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
-	 *
 	 * @returns It returns itself so that afterward you can use the other functions.
 	 */
 	export function setDefaultEvents(): typeof CommandHandler {
 		Logger.info('Loading default events.', 'Loading');
 		for (let event of Object.values(defaultEvents)) {
-			events.set(event.default.name, event.default);
-			Logger.comment(`Default ${Logger.setColor('green', event.default.name) + Logger.setColor('comment', ' event loaded.')}`, 'Loading');
+			const instance = new event();
+			events.set(instance.name, instance);
+			Logger.comment(`Default ${Logger.setColor('green', instance.name) + Logger.setColor('comment', ' event loaded.')}`, 'Loading');
 		}
 		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'Loading');
 
@@ -179,16 +180,16 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
-	 *
 	 * @returns It returns itself so that afterward you can use the other functions .
 	 */
 	export function setDefaultCommands(): typeof CommandHandler {
 		Logger.info('Loading default commands.', 'Loading');
 		for (let command of Object.values(defaultCommands)) {
-			commands.set(command.default.name, command.default);
-			Logger.comment(`Default ${Logger.setColor('green', command.default.name) + Logger.setColor('comment', ' command loaded.')}`, 'Loading');
+			const instance = new command();
+			commands.set(instance.name, instance);
+			Logger.comment(`Default ${Logger.setColor('green', instance.name) + Logger.setColor('comment', ' command loaded.')}`, 'Loading');
 		}
-		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands)})`, 'Loading');
+		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands).length})`, 'Loading');
 
 		return CommandHandler;
 	}
@@ -230,9 +231,7 @@ export namespace CommandHandler {
 			await loadEvents(eventsDir);
 
 			Logger.comment('Binding events to client.', 'Binding');
-			events.forEach(event => {
-				event.bind(client!!);
-			});
+			events.forEach(event => event.bind(client!!));
 
 			Logger.info(`${client?.eventNames().length ?? 0} events loaded & bind.`, 'Loading');
 		} catch (e) {
@@ -242,7 +241,16 @@ export namespace CommandHandler {
 		await client.login(options.token);
 		prefixes.push(`<@${client?.user?.id}> `);
 		prefixes.push(`<@!${client?.user?.id}> `);
-		owners.push((await client.fetchApplication()).owner?.id ?? '');
+		const appOwner = (await client.fetchApplication()).owner
+		if (appOwner) {
+			if (appOwner instanceof Team) {
+				for(const member of appOwner.members.map(m => m)) {
+					owners.push(member.id)
+				}
+			} else {
+				owners.push(appOwner.id)
+			}
+		}
 		emit('launched');
 		return CommandHandler;
 	}
@@ -264,19 +272,21 @@ export namespace CommandHandler {
 	 * @param name - The filename of the command.
 	 */
 	export async function loadCommand(path: string, name: string) {
-		let command: Command | (Command & {default: any}) = await import(join(process.cwd(), `./${path}/${name}`));
-		if ('default' in command && command.default instanceof Command) command = command.default;
-		if (!command) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-		if (command.category === 'None') command.category = path.split(/[\\/]/).pop()!;
+		let command: MaybeCommand = await import(join(process.cwd(), `./${path}/${name}`));
+		if ('default' in command) command = command.default;
 
-		const invalidPermissions = command.getInvalidPermissions();
+		const instance = new command();
+		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
+		if (instance.category === 'None') instance.category = path.split(/[\\/]/).pop()!;
+
+		const invalidPermissions = instance.getInvalidPermissions();
 		if (invalidPermissions.client.length > 0)
-			throw new CommandHandlerError(`Invalid client permissions for '${command.name}' command.\nInvalid Permissions: '${invalidPermissions.client.sort().join(',')}'`, 'Loading');
+			throw new CommandHandlerError(`Invalid client permissions for '${instance.name}' command.\nInvalid Permissions: '${invalidPermissions.client.sort().join(',')}'`, 'Loading');
 		if (invalidPermissions.user.length > 0)
-			throw new CommandHandlerError(`Invalid user permissions for '${command.name}' command.\nInvalid Permissions: '${invalidPermissions.user.sort().join(',')}'`, 'Loading');
+			throw new CommandHandlerError(`Invalid user permissions for '${instance.name}' command.\nInvalid Permissions: '${invalidPermissions.user.sort().join(',')}'`, 'Loading');
 
-		commands.set(command.name, command);
-		emit('loadCommand', command);
+		commands.set(instance.name, instance);
+		emit('loadCommand', instance);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'Loading');
 	}
 
@@ -285,7 +295,6 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * The path must be a directory containing sub-directories.
-	 *
 	 * @param path - The path of the directory to load the commands from.
 	 */
 	export async function loadCommands(path: string) {
@@ -320,13 +329,35 @@ export namespace CommandHandler {
 
 		if (files) {
 			for (const file of files) {
-				let event: Event | (Event & {default: any}) = await import(join(process.cwd(), `${path}/${file}`));
-				if ('default' in event && event.default instanceof Event) event = event.default;
-				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
-				events.set(event.name, event);
+				let event: MaybeEvent = await import(join(process.cwd(), `${path}/${file}`));
+				if ('default' in event) event = event.default;
 
-				Logger.comment(`Event ${event.name} loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'Loading');
+				const instance = new event();
+				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
+				events.set(instance.name, instance);
+
+				Logger.comment(`Event ${instance.name} loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'Loading');
 			}
 		}
+	}
+
+	/**
+	 * Unloads an event.
+	 *
+	 * @param name - The event to unload.
+	 */
+	export function unloadEvent(name: string) {
+		if (events.delete(name)) Logger.info(`${name} event unloaded.`, 'UnLoading');
+		else Logger.warn(`${name} event not found.`, 'UnLoading');
+	}
+
+	/**
+	 * Unloads a command.
+	 *
+	 * @param name - The command to unload.
+	 */
+	export function unloadCommand(name: string) {
+		if (commands.delete(name)) Logger.info(`${name} command unloaded.`, 'UnLoading');
+		else Logger.warn(`${name} command not found.`, 'UnLoading');
 	}
 }

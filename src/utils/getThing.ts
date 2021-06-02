@@ -1,5 +1,5 @@
 import {Channel, Collection, Emoji, Guild, GuildChannel, GuildMember, Message, NewsChannel, Role, Snowflake, TextChannel, User} from 'discord.js';
-import {Command} from '../classes/Command';
+import {Command} from '../classes/commands/Command.js';
 import {CommandHandler} from '../CommandHandler';
 
 export enum DataType {
@@ -105,7 +105,7 @@ export async function getThing(
 	const client = CommandHandler.client;
 	switch (dataType) {
 		case DataType.command:
-			return CommandHandler.commands.find((c: Command) => c.name === text || (c.aliases && c.aliases.includes(text as string))) || null;
+			return CommandHandler.commands.find((c: Command) => c.name === text || (c.aliases?.includes(text as string) ?? false)) ?? null;
 
 		case DataType.channel:
 			return (
