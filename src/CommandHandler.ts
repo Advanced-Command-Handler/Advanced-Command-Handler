@@ -1,4 +1,4 @@
-import {ClientOptions, Collection, Message, Snowflake} from 'discord.js';
+import {ClientOptions, Collection, Message, Snowflake, Team} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
@@ -241,7 +241,14 @@ export namespace CommandHandler {
 		await client.login(options.token);
 		prefixes.push(`<@${client?.user?.id}> `);
 		prefixes.push(`<@!${client?.user?.id}> `);
-		owners.push((await client.fetchApplication()).owner?.id ?? '');
+		const appOwner = (await client.fetchApplication()).owner;
+		if (appOwner) {
+			if (appOwner instanceof Team) {
+				owners.push(...appOwner.members.array().map(m => m.id));
+			} else {
+				owners.push(appOwner.id);
+			}
+		}
 		emit('launched');
 		return CommandHandler;
 	}

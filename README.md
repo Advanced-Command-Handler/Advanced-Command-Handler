@@ -16,7 +16,7 @@ So feel free to watch this repo for futures releases!
 
 **For more information on how to use it, see the Guide and the Documentation :**
 
--   [Documentation](https://ayfri.github.io/Advanced-Command-Handler/) <br>
+-   [Documentation](https://advanced-command-handler.github.io/docs/) <br>
 -   [Guide](https://github.com/Ayfri/Advanced-Command-Handler/wiki)
 
 You can also see some examples that I've made [here](https://github.com/Ayfri/advanced-command-handler-examples).
