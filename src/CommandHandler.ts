@@ -241,14 +241,14 @@ export namespace CommandHandler {
 		await client.login(options.token);
 		prefixes.push(`<@${client?.user?.id}> `);
 		prefixes.push(`<@!${client?.user?.id}> `);
-		const appOwner = (await client.fetchApplication()).owner
+		const appOwner = (await client.fetchApplication()).owner;
 		if (appOwner) {
 			if (appOwner instanceof Team) {
-				for(const member of appOwner.members.map(m => m)) {
-					owners.push(member.id)
+				for (const member of appOwner.members.array()) {
+					owners.push(member.id);
 				}
 			} else {
-				owners.push(appOwner.id)
+				owners.push(appOwner.id);
 			}
 		}
 		emit('launched');
