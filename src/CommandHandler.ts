@@ -244,9 +244,7 @@ export namespace CommandHandler {
 		const appOwner = (await client.fetchApplication()).owner;
 		if (appOwner) {
 			if (appOwner instanceof Team) {
-				for (const member of appOwner.members.array()) {
-					owners.push(member.id);
-				}
+				owners.push(...appOwner.members.array().map(m => m.id));
 			} else {
 				owners.push(appOwner.id);
 			}
