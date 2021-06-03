@@ -4,7 +4,7 @@ import {isPermission} from '../../utils/permissionUtils.js';
 import {isOwner} from '../../utils/utils.js';
 import {CommandContext} from './CommandContext.js';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from './CommandError.js';
-import {RunSubCommandFunction, SubCommand, SubCommandOptions} from './SubCommand.js';
+import {RunSubCommandFunction, SubCommandOptions} from './SubCommand.js';
 import {SubCommandContext} from './SubCommandContext.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
@@ -305,7 +305,6 @@ export abstract class Command {
 		const error = await this.validate(ctx);
 		if (error) return new CommandError(error);
 
-		await this.run(ctx);
 		this.subCommands.forEach(s => {
 			if (ctx.args.splice(0, s.name.split(' ').length).join(' ') === s.name) {
 				ctx = new SubCommandContext({
@@ -319,7 +318,7 @@ export abstract class Command {
 				s.execute(ctx);
 			}
 		});
-
+		await this.run(ctx);
 		this.setCooldown(ctx.message);
 	}
 
@@ -370,5 +369,29 @@ export abstract class Command {
 		}
 
 		this.subCommands.push(new (class extends SubCommand {})(name, options, callback as RunSubCommandFunction));
+	}
+}
+
+/**
+ * @remarks
+ * This class is not in the SubCommand file because otherwise it won't compile because of circular because of the {@link Command.subCommands} property.
+ */
+export abstract class SubCommand extends Command {
+	public readonly name: string;
+	public readonly runFunction: RunSubCommandFunction;
+
+	public constructor(name: string, options: SubCommandOptions = {}, runFunction: RunSubCommandFunction) {
+		super();
+		this.name = name;
+		this.aliases = options.aliases;
+		this.channels = options.channels;
+		this.description = options.description;
+		this.tags = options.tags;
+		this.usage = options.usage;
+		this.runFunction = runFunction;
+	}
+
+	public override async run(ctx: SubCommandContext): Promise<any> {
+		return await this.runFunction(ctx);
 	}
 }
