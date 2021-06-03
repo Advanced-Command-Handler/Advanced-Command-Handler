@@ -2,10 +2,10 @@ import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionSt
 import {CommandHandler} from '../../CommandHandler.js';
 import {isPermission} from '../../utils/permissionUtils.js';
 import {isOwner} from '../../utils/utils.js';
-import {CommandContext} from './CommandContext.js';
-import {CommandError, CommandErrorBuilder, CommandErrorType} from './CommandError.js';
+import {CommandContext} from '../contexts/CommandContext.js';
+import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors/CommandError.js';
 import {RunSubCommandFunction, SubCommandOptions} from './SubCommand.js';
-import {SubCommandContext} from './SubCommandContext.js';
+import {SubCommandContext} from '../contexts/SubCommandContext.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**

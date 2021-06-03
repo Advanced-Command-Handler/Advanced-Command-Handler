@@ -1,5 +1,5 @@
-import {CommandHandler} from '../CommandHandler.js';
-import {Event} from './Event.js';
+import {CommandHandler} from '../../CommandHandler.js';
+import {Event} from '../Event.js';
 
 interface EventContextBuilder<E extends Event> {
 	event: E;

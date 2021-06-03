@@ -1,5 +1,5 @@
 import {CommandContext, CommandContextBuilder} from './CommandContext.js';
-import {SubCommand} from './Command.js';
+import {SubCommand} from '../commands/Command.js';
 
 export interface SubCommandContextBuilder extends CommandContextBuilder {
 	subCommand: SubCommand;
