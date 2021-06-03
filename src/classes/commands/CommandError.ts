@@ -1,4 +1,4 @@
-import {CommandHandlerError} from './CommandHandlerError.js';
+import {CommandHandlerError} from '../CommandHandlerError.js';
 
 export enum CommandErrorType {
 	CLIENT_MISSING_PERMISSIONS,
