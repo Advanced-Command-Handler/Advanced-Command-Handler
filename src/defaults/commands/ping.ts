@@ -1,6 +1,4 @@
-import {Command} from '../../classes/commands/Command.js';
-import {CommandContext} from '../../classes/contexts/CommandContext.js';
-import {SubCommandContext} from '../../classes/contexts/SubCommandContext.js';
+import {Command, CommandContext} from '../../classes';
 
 export class PingCommand extends Command {
 	name = 'ping';

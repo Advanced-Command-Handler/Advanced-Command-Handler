@@ -1,7 +1,7 @@
 import {ClientEvents} from 'discord.js';
 import {CommandHandler} from '../CommandHandler';
 import {AdvancedClient} from './AdvancedClient';
-import {EventContext} from './contexts/EventContext.js';
+import {EventContext} from './contexts';
 
 export abstract class Event {
 	/**

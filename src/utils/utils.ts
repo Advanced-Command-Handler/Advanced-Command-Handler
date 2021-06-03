@@ -1,5 +1,5 @@
 import {Snowflake} from 'discord.js';
-import {CommandHandler} from '../CommandHandler.js';
+import {CommandHandler} from '../CommandHandler';
 
 /**
  * Return the text cut if length is above `maxLength` arg and add `endTextIfTooLong` at the end.

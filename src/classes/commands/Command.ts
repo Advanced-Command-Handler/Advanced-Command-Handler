@@ -1,11 +1,9 @@
 import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
-import {CommandHandler} from '../../CommandHandler.js';
-import {isPermission} from '../../utils/permissionUtils.js';
-import {isOwner} from '../../utils/utils.js';
-import {CommandContext} from '../contexts/CommandContext.js';
-import {SubCommandContext} from '../contexts/SubCommandContext.js';
-import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors/CommandError.js';
-import {RunSubCommandFunction, SubCommandOptions} from './SubCommand.js';
+import {CommandHandler} from '../../CommandHandler';
+import {isOwner, isPermission} from '../../utils';
+import {CommandContext, SubCommandContext} from '../contexts';
+import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors';
+import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**
@@ -153,7 +151,7 @@ export abstract class Command {
 	/**
 	 * The function to run when executing the command.
 	 *
-	 * @param ctx
+	 * @param ctx - The command context.
 	 */
 	public abstract run(ctx: CommandContext): Promise<any>;
 

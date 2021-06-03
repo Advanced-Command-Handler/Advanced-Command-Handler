@@ -1,6 +1,6 @@
-import {DMChannel, Message, MessageAttachment, TextChannel} from 'discord.js';
+import {DMChannel, TextChannel} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command} from './Command.js';
+import {Command} from './Command';
 
 export interface ImageEmbedOptions {
 	/**

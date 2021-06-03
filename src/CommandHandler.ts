@@ -2,14 +2,11 @@ import {ClientOptions, Collection, Message, Snowflake, Team} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
-import {AdvancedClient} from './classes/AdvancedClient';
-import {Command} from './classes/commands/Command.js';
-import {CommandHandlerError} from './classes/commands/CommandHandlerError.js';
-import {Event} from './classes/Event';
+import {AdvancedClient, Command, CommandHandlerError, Event} from './classes';
 import * as defaultCommands from './defaults/commands/index';
 import * as defaultEvents from './defaults/events/index';
-import {MaybeCommand, MaybeEvent} from './types.js';
-import {Logger} from './utils/Logger';
+import {MaybeCommand, MaybeEvent} from './types';
+import {Logger} from './utils';
 
 export namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
