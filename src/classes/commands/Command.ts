@@ -1,8 +1,10 @@
-import {DMChannel, GuildChannel, GuildMember, Message, PermissionOverwrites, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
+import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler.js';
 import {isPermission} from '../../utils/permissionUtils.js';
 import {isOwner} from '../../utils/utils.js';
 import {CommandContext} from './CommandContext.js';
+import {CommandError, CommandErrorBuilder, CommandErrorType} from './CommandError.js';
+import {RunSubCommandFunction, SubCommand, SubCommandContext, SubCommandOptions} from './SubCommand.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**
@@ -133,6 +135,8 @@ export abstract class Command {
 	 * @defaultValue `['SEND_MESSAGES']`
 	 */
 	public userPermissions?: Array<PermissionString | string>;
+
+	public subCommands: SubCommand[] = [];
 
 	/**
 	 * Get an user ID from different sources, only here to simplify code.
@@ -294,5 +298,76 @@ export abstract class Command {
 		};
 
 		setTimeout(() => delete CommandHandler.cooldowns.get(id)![this.name], cooldown * 1000);
+	}
+
+	public async execute(ctx: CommandContext) {
+		const error = await this.validate(ctx);
+		if (error) return new CommandError(error);
+
+		await this.run(ctx);
+		this.subCommands.forEach(s => {
+			if (ctx.args.splice(0, s.name.split(' ').length).join(' ') === s.name) {
+				ctx = new SubCommandContext({
+					args: ctx.args.slice(0, s.name.split(' ').length),
+					command: this,
+					message: ctx.message,
+					handler: ctx.handler,
+					subCommand: s,
+				});
+
+				s.execute(ctx);
+			}
+		});
+
+		this.setCooldown(ctx.message);
+	}
+
+	public async validate(ctx: CommandContext): Promise<CommandErrorBuilder | undefined> {
+		if (this.isInCooldown(ctx.message))
+			return {
+				message: 'User is in a cooldown.',
+				type: CommandErrorType.COOLDOWN,
+				data: this.getCooldown(ctx.message),
+			};
+
+		if (!this.isInRightChannel(ctx.message))
+			return {
+				message: 'This command is not in the correct channel.',
+				type: CommandErrorType.WRONG_CHANNEL,
+			};
+
+		const missingPermissions = this.getMissingPermissions(ctx.message);
+		const missingTags = this.getMissingTags(ctx.message);
+
+		if (missingPermissions.client.length)
+			return {
+				message: 'The bot is missing permissions.',
+				type: CommandErrorType.CLIENT_MISSING_PERMISSIONS,
+				data: missingPermissions.client.sort(),
+			};
+		if (missingPermissions.user.length)
+			return {
+				message: 'User is missing permissions.',
+				type: CommandErrorType.USER_MISSING_PERMISSIONS,
+				data: missingPermissions.client.sort(),
+			};
+
+		if (missingTags.length)
+			return {
+				message: 'There are missing tags for the message.',
+				type: CommandErrorType.MISSING_TAGS,
+				data: missingTags,
+			};
+	}
+
+	protected subCommand(name: string, callback: RunSubCommandFunction): void;
+	protected subCommand(name: string, options: SubCommandOptions, callback: RunSubCommandFunction): void;
+	protected subCommand(name: string, options: SubCommandOptions | RunSubCommandFunction, callback?: RunSubCommandFunction) {
+		if (typeof options !== 'object') {
+			callback = options;
+			options = {};
+		}
+
+		this.subCommands.push(new (class extends SubCommand {})(name, options, callback as RunSubCommandFunction));
 	}
 }
