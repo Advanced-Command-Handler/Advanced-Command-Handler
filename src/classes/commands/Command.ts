@@ -4,7 +4,8 @@ import {isPermission} from '../../utils/permissionUtils.js';
 import {isOwner} from '../../utils/utils.js';
 import {CommandContext} from './CommandContext.js';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from './CommandError.js';
-import {RunSubCommandFunction, SubCommand, SubCommandContext, SubCommandOptions} from './SubCommand.js';
+import {RunSubCommandFunction, SubCommand, SubCommandOptions} from './SubCommand.js';
+import {SubCommandContext} from './SubCommandContext.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**

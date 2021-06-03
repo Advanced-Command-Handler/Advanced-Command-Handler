@@ -1,5 +1,5 @@
 import {Command, Tag} from './Command.js';
-import {CommandContext, CommandContextBuilder} from './CommandContext.js';
+import {SubCommandContext} from './SubCommandContext.js';
 
 export type RunSubCommandFunction = (ctx: SubCommandContext) => Promise<any>;
 
@@ -28,18 +28,5 @@ export abstract class SubCommand extends Command {
 
 	public async run(ctx: SubCommandContext): Promise<any> {
 		return await this.runFunction(ctx);
-	}
-}
-
-export interface SubCommandContextBuilder extends CommandContextBuilder {
-	subCommand: SubCommand;
-}
-
-export class SubCommandContext extends CommandContext {
-	public subCommand: SubCommand;
-
-	public constructor(options: SubCommandContextBuilder) {
-		super(options);
-		this.subCommand = options.subCommand;
 	}
 }
