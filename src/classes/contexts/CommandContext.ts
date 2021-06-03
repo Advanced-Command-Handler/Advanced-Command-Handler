@@ -1,4 +1,15 @@
-import {APIMessage, APIMessageContentResolvable, Message, MessageAdditions, MessageOptions, SplitOptions, StringResolvable} from 'discord.js';
+import {
+	APIMessage,
+	APIMessageContentResolvable,
+	Emoji,
+	EmojiIdentifierResolvable,
+	Message,
+	MessageAdditions,
+	MessageOptions,
+	MessageReactionResolvable,
+	SplitOptions,
+	StringResolvable,
+} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler.js';
 import {Command} from '../commands/Command.js';
 
@@ -56,6 +67,22 @@ export class CommandContext implements CommandContextBuilder {
 
 	get user() {
 		return this.message.author;
+	}
+
+	public async react(emoji: EmojiIdentifierResolvable) {
+		return await this.message.react(emoji);
+	}
+
+	public async removeReactions() {
+		return this.message.reactions.removeAll();
+	}
+
+	public async removeReaction(emoji: EmojiIdentifierResolvable) {
+		return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.remove();
+	}
+
+	public async removeSelfReaction(emoji: EmojiIdentifierResolvable) {
+		return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.users.remove(this.client.user!.id);
 	}
 
 	public deleteMessage(timeout: number = 0) {
