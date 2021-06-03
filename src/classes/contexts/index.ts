@@ -1,3 +1,3 @@
-export * from './CommandContext.js';
-export * from './EventContext.js';
-export * from './SubCommandContext.js';
+export * from './CommandContext';
+export * from './EventContext';
+export * from './SubCommandContext';

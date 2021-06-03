@@ -1,4 +1,4 @@
 export * from './Command';
-export * from './ImageCommand.js';
-export * from './SlowCommand.js';
-export * from './SubCommand.js';
+export * from './ImageCommand';
+export * from './SlowCommand';
+export * from './SubCommand';
