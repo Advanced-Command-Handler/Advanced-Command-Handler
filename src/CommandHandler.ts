@@ -158,7 +158,7 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
-	 * @returns It returns itself so that afterward you can use the other functions.
+	 * @returns - It returns itself so that afterward you can use the other functions.
 	 */
 	export function setDefaultEvents(): typeof CommandHandler {
 		Logger.info('Loading default events.', 'Loading');
@@ -177,7 +177,7 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
-	 * @returns It returns itself so that afterward you can use the other functions .
+	 * @returns - It returns itself so that afterward you can use the other functions .
 	 */
 	export function setDefaultCommands(): typeof CommandHandler {
 		Logger.info('Loading default commands.', 'Loading');
@@ -195,7 +195,7 @@ export namespace CommandHandler {
 	 * Creates a new CommandHandler, wrap up the last one.
 	 *
 	 * @param options - Options for creating a new CommandHandler.
-	 * @returns It returns itself so that afterward you can use the other functions.
+	 * @returns - It returns itself so that afterward you can use the other functions.
 	 */
 	export function create(options: CreateCommandHandlerOptions): typeof CommandHandler {
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');
@@ -217,7 +217,7 @@ export namespace CommandHandler {
 	 * Launches the CommandHandler, log in the client and load commands/events.
 	 *
 	 * @param options - Options for launching the CommandHandler, see {@link CreateCommandHandlerOptions}.
-	 * @returns Itself in a promise.
+	 * @returns - Itself in a promise.
 	 */
 	export async function launch(options: LaunchCommandHandlerOptions): Promise<typeof CommandHandler> {
 		client = new AdvancedClient(options.token, options.clientOptions ?? {});
@@ -254,7 +254,7 @@ export namespace CommandHandler {
 	 * Get the prefix from the prefixes defined in {@link CommandHandler.launch} or null.
 	 *
 	 * @param message - The message to get the prefix for.
-	 * @returns The prefix found or null if not.
+	 * @returns - The prefix found or null if not.
 	 */
 	export function getPrefixFromMessage(message: Message): string | null {
 		return prefixes.find(prefix => message.content.startsWith(prefix)) ?? null;

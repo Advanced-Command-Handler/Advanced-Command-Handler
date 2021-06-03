@@ -141,7 +141,7 @@ export abstract class Command {
 	 * Get an user ID from different sources, only here to simplify code.
 	 *
 	 * @param from - Where to get ID from.
-	 * @returns The ID.
+	 * @returns - The ID.
 	 * @internal
 	 */
 	private static getSnowflake(from: Message | User | Snowflake | GuildMember): Snowflake {
@@ -159,7 +159,7 @@ export abstract class Command {
 	 * Deletes a message if deletable.
 	 *
 	 * @param options - The options, see {@link DeleteMessageOptions}.
-	 * @returns The deleted message if deleted.
+	 * @returns - The deleted message if deleted.
 	 */
 	public deleteMessage(options: DeleteMessageOptions): Promise<Message> | undefined {
 		if (options.message.deletable) return options.message.delete({timeout: options.timeout});
@@ -169,7 +169,7 @@ export abstract class Command {
 	 * Returns the missing permissions from the client & user for a message.
 	 *
 	 * @param message - The message to check permissions for.
-	 * @returns The missing permissions.
+	 * @returns - The missing permissions.
 	 */
 	public getMissingPermissions(message: Message): MissingPermissions {
 		const missingPermissions: MissingPermissions = {
@@ -209,7 +209,7 @@ export abstract class Command {
 	/**
 	 * Returns the invalid permissions (not presents in {@link https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS | Permissions.FLAGS}).
 	 *
-	 * @returns The invalid permissions put in {@link clientPermissions} & {@link userPermissions}.
+	 * @returns - The invalid permissions put in {@link clientPermissions} & {@link userPermissions}.
 	 * @internal
 	 */
 	public getInvalidPermissions() {
@@ -226,7 +226,7 @@ export abstract class Command {
 	 * i.e. If a command is executed on a guild and the command has the `dmOnly` Tag, it will be returned.
 	 *
 	 * @param message - The message to debug tags from.
-	 * @returns Tags that are not validated by the message.
+	 * @returns - Tags that are not validated by the message.
 	 */
 	public getMissingTags(message: Message): Tag[] {
 		const missingTags: Tag[] = [];
@@ -245,7 +245,7 @@ export abstract class Command {
 	 * Returns false if {@link channels} are defined for this command but the message doesn't come from one of it.
 	 *
 	 * @param from - The message or channel to debug where it comes from.
-	 * @returns If it is on a channel required if used.
+	 * @returns - If it is on a channel required if used.
 	 */
 	public isInRightChannel(from: Message | TextChannel): boolean {
 		const channel = from instanceof Message ? (from.channel as TextChannel) : from;
@@ -259,7 +259,7 @@ export abstract class Command {
 	 * @remarks
 	 * If {@link cooldown} not set, this will always return `false`.
 	 * @param from - From where to debug if user is in a cooldown, see types.
-	 * @returns Is user in a cooldown.
+	 * @returns - Is user in a cooldown.
 	 */
 	public isInCooldown(from: Message | User | Snowflake | GuildMember): boolean {
 		const id = Command.getSnowflake(from);
@@ -270,7 +270,7 @@ export abstract class Command {
 	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
 	 *
 	 * @param from - Where to get the cooldown from, see types.
-	 * @returns The user's cooldown.
+	 * @returns - The user's cooldown.
 	 */
 	public getCooldown(from: Message | User | Snowflake | GuildMember): Cooldown {
 		const cooldown = CommandHandler.cooldowns.get(Command.getSnowflake(from))![this.name];

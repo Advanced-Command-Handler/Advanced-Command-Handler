@@ -179,7 +179,7 @@ export class Logger {
 	 * @remarks
 	 * Returns the default color if it cannot be resolved.
 	 * @param color - The ColorResolvable.
-	 * @returns The color.
+	 * @returns - The color.
 	 * @internal
 	 */
 	private static getColorFromColorResolvable(color: ColorResolvable): string {
@@ -199,7 +199,7 @@ export class Logger {
  * @typeParam V - An object.
  * @param enumObject - The enum as an object.
  * @param property - The property to get.
- * @returns The value from the key of the enum or undefined if not found.
+ * @returns - The value from the key of the enum or undefined if not found.
  * @internal
  */
 function propertyInEnum<V extends {[k: string]: any}>(enumObject: V, property: string): keyof V | undefined {

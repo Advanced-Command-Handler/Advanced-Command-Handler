@@ -48,7 +48,7 @@ export async function getThing(dataType: DataTypeResolver<DataType.EMOTE>, text:
  *
  * @param dataType - Guild {@link DataType.GUILD}.
  * @param text - A string or a Message to find dataType from.
- * @returns The Guild or null if not found.
+ * @returns - The Guild or null if not found.
  */
 export async function getThing(dataType: DataTypeResolver<DataType.GUILD>, text: string | Message): Promise<Guild | null>;
 /**
@@ -57,7 +57,7 @@ export async function getThing(dataType: DataTypeResolver<DataType.GUILD>, text:
  *
  * @param dataType - Member {@link DataType.MEMBER}.
  * @param text - A string or a Message to find dataType from.
- * @returns The Guild or null if not found.
+ * @returns - The Guild or null if not found.
  */
 export async function getThing(dataType: DataTypeResolver<DataType.MEMBER>, text: string | Message): Promise<GuildMember | null>;
 /**
@@ -66,7 +66,7 @@ export async function getThing(dataType: DataTypeResolver<DataType.MEMBER>, text
  *
  * @param dataType - Message {@link DataType.MESSAGE}.
  * @param text - A string or a Message to find dataType from.
- * @returns The Message or null if not found.
+ * @returns - The Message or null if not found.
  */
 export async function getThing(dataType: DataTypeResolver<DataType.MESSAGE>, text: string | Message): Promise<Message | null>;
 /**
@@ -75,7 +75,7 @@ export async function getThing(dataType: DataTypeResolver<DataType.MESSAGE>, tex
  *
  * @param dataType - Role {@link DataType.ROLE}.
  * @param text - A string or a Message to find dataType from.
- * @returns The Role or null if not found.
+ * @returns - The Role or null if not found.
  */
 export async function getThing(dataType: DataTypeResolver<DataType.ROLE>, text: string | Message): Promise<Role | null>;
 /**
@@ -84,7 +84,7 @@ export async function getThing(dataType: DataTypeResolver<DataType.ROLE>, text: 
  *
  * @param dataType - User {@link DataType.USER}.
  * @param text - A string or a Message to find dataType from.
- * @returns The User or null if not found.
+ * @returns - The User or null if not found.
  */
 export async function getThing(dataType: DataTypeResolver<DataType.USER>, text: string | Message): Promise<User | null>;
 /**
@@ -92,7 +92,7 @@ export async function getThing(dataType: DataTypeResolver<DataType.USER>, text: 
  *
  * @param dataType - The data type {@link DataType}.
  * @param text - A string or a Message to find dataType from.
- * @returns The Data found or null if not found.
+ * @returns - The Data found or null if not found.
  */
 export async function getThing(
 	dataType: DataTypeResolver<any>,

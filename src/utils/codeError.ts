@@ -12,7 +12,7 @@ import {cutIfTooLong, isOwner} from './utils';
  * @param message - The message where the error is from.
  * @param error - The native error.
  * @param command - The command to be executed.
- * @returns The error message sent.
+ * @returns - The error message sent.
  * @remarks
  * Do not use for sending string as errors.
  */
