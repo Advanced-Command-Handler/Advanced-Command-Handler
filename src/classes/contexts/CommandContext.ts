@@ -79,31 +79,20 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	public send(content: APIMessageContentResolvable | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
-
 	public send(options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
-
 	public send(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
-
 	public send(content: StringResolvable, options: (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
-
 	public send(content: StringResolvable, options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
-
 	public send(content: StringResolvable, options: MessageOptions): Promise<Message | Message[]>;
-
 	public send(content: StringResolvable, options?: MessageOptions | (MessageOptions & {split?: boolean | SplitOptions}) | MessageAdditions): Promise<Message | Message[]> {
 		return this.channel.send(content, options as any);
 	}
 
 	public reply(content: APIMessageContentResolvable | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
-
 	public reply(options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
-
 	public reply(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
-
 	public reply(content: StringResolvable, options: (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
-
 	public reply(content: StringResolvable, options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
-
 	public reply(content: StringResolvable, options?: MessageOptions | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message | Message[]> {
 		return this.message.reply(content, options as any);
 	}
