@@ -12,12 +12,12 @@ export enum CommandErrorType {
 export interface CommandErrorBuilder {
 	message: string;
 	type: CommandErrorType;
-	data?: unknown;
+	data?: any;
 }
 
 export class CommandError extends CommandHandlerError {
 	public readonly type: CommandErrorType;
-	public readonly data: unknown;
+	public readonly data: any;
 
 	public constructor(options: CommandErrorBuilder) {
 		super(options.message, 'CommandExecution');

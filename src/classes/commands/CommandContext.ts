@@ -2,7 +2,7 @@ import {APIMessage, APIMessageContentResolvable, Message, MessageAdditions, Mess
 import {CommandHandler} from '../../CommandHandler.js';
 import {Command} from './Command.js';
 
-interface CommandContextBuilder {
+export interface CommandContextBuilder {
 	args: string[];
 	command: Command;
 	handler: typeof CommandHandler;
