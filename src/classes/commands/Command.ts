@@ -3,9 +3,9 @@ import {CommandHandler} from '../../CommandHandler.js';
 import {isPermission} from '../../utils/permissionUtils.js';
 import {isOwner} from '../../utils/utils.js';
 import {CommandContext} from '../contexts/CommandContext.js';
+import {SubCommandContext} from '../contexts/SubCommandContext.js';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors/CommandError.js';
 import {RunSubCommandFunction, SubCommandOptions} from './SubCommand.js';
-import {SubCommandContext} from '../contexts/SubCommandContext.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**
@@ -176,7 +176,7 @@ export abstract class Command {
 	public getMissingPermissions(message: Message): MissingPermissions {
 		const missingPermissions: MissingPermissions = {
 			client: [],
-			user: [],
+			user: []
 		};
 		if (!message.guild || !message.guild.available) return missingPermissions;
 
@@ -219,7 +219,7 @@ export abstract class Command {
 
 		return {
 			user: this.userPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
-			client: this.clientPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
+			client: this.clientPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? []
 		};
 	}
 
@@ -278,7 +278,7 @@ export abstract class Command {
 		const cooldown = CommandHandler.cooldowns.get(Command.getSnowflake(from))![this.name];
 		return {
 			...cooldown,
-			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now(),
+			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now()
 		};
 	}
 
@@ -295,30 +295,33 @@ export abstract class Command {
 
 		CommandHandler.cooldowns.get(id)![this.name] = {
 			executedAt: from instanceof Message ? from.createdAt : new Date(),
-			cooldown,
+			cooldown
 		};
 
 		setTimeout(() => delete CommandHandler.cooldowns.get(id)![this.name], cooldown * 1000);
 	}
 
-	public async execute(ctx: CommandContext) {
+	public async execute(ctx: CommandContext): Promise<CommandError | undefined> {
 		const error = await this.validate(ctx);
 		if (error) return new CommandError(error);
 
-		this.subCommands.forEach(s => {
-			if (ctx.args.splice(0, s.name.split(' ').length).join(' ') === s.name) {
+		await this.run(ctx);
+		for (const subCommand of this.subCommands) {
+			if (ctx.args.splice(0, subCommand.name.split(' ').length).join(' ') === subCommand.name) {
+
 				ctx = new SubCommandContext({
-					args: ctx.args.slice(0, s.name.split(' ').length),
+					args: ctx.args.slice(0, subCommand.name.split(' ').length),
 					command: this,
 					message: ctx.message,
 					handler: ctx.handler,
-					subCommand: s,
+					subCommand
 				});
 
-				s.execute(ctx);
+				const subCommandError: CommandError | undefined = await subCommand.execute(ctx);
+				if (subCommandError) subCommandError.name = 'SubCommandError';
+				return subCommandError;
 			}
-		});
-		await this.run(ctx);
+		}
 		this.setCooldown(ctx.message);
 	}
 
@@ -327,13 +330,13 @@ export abstract class Command {
 			return {
 				message: 'User is in a cooldown.',
 				type: CommandErrorType.COOLDOWN,
-				data: this.getCooldown(ctx.message),
+				data: this.getCooldown(ctx.message)
 			};
 
 		if (!this.isInRightChannel(ctx.message))
 			return {
 				message: 'This command is not in the correct channel.',
-				type: CommandErrorType.WRONG_CHANNEL,
+				type: CommandErrorType.WRONG_CHANNEL
 			};
 
 		const missingPermissions = this.getMissingPermissions(ctx.message);
@@ -343,20 +346,20 @@ export abstract class Command {
 			return {
 				message: 'The bot is missing permissions.',
 				type: CommandErrorType.CLIENT_MISSING_PERMISSIONS,
-				data: missingPermissions.client.sort(),
+				data: missingPermissions.client.sort()
 			};
 		if (missingPermissions.user.length)
 			return {
 				message: 'User is missing permissions.',
 				type: CommandErrorType.USER_MISSING_PERMISSIONS,
-				data: missingPermissions.client.sort(),
+				data: missingPermissions.client.sort()
 			};
 
 		if (missingTags.length)
 			return {
 				message: 'There are missing tags for the message.',
 				type: CommandErrorType.MISSING_TAGS,
-				data: missingTags,
+				data: missingTags
 			};
 	}
 
@@ -368,7 +371,8 @@ export abstract class Command {
 			options = {};
 		}
 
-		this.subCommands.push(new (class extends SubCommand {})(name, options, callback as RunSubCommandFunction));
+		this.subCommands.push(new (class extends SubCommand {
+		})(name, options, callback as RunSubCommandFunction));
 	}
 }
 
@@ -378,6 +382,11 @@ export abstract class Command {
  */
 export abstract class SubCommand extends Command {
 	public readonly name: string;
+
+	public override async run(ctx: SubCommandContext): Promise<any> {
+		return await this.runFunction(ctx);
+	}
+
 	public readonly runFunction: RunSubCommandFunction;
 
 	public constructor(name: string, options: SubCommandOptions = {}, runFunction: RunSubCommandFunction) {
@@ -389,9 +398,5 @@ export abstract class SubCommand extends Command {
 		this.tags = options.tags;
 		this.usage = options.usage;
 		this.runFunction = runFunction;
-	}
-
-	public override async run(ctx: SubCommandContext): Promise<any> {
-		return await this.runFunction(ctx);
 	}
 }
