@@ -1,15 +1,4 @@
-import {
-	APIMessage,
-	APIMessageContentResolvable,
-	Emoji,
-	EmojiIdentifierResolvable,
-	Message,
-	MessageAdditions,
-	MessageOptions,
-	MessageReactionResolvable,
-	SplitOptions,
-	StringResolvable,
-} from 'discord.js';
+import {APIMessage, APIMessageContentResolvable, EmojiIdentifierResolvable, Message, MessageAdditions, MessageOptions, SplitOptions, StringResolvable} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler.js';
 import {Command} from '../commands/Command.js';
 

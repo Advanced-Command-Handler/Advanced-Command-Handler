@@ -308,7 +308,6 @@ export abstract class Command {
 		await this.run(ctx);
 		for (const subCommand of this.subCommands) {
 			if (ctx.args.splice(0, subCommand.name.split(' ').length).join(' ') === subCommand.name) {
-
 				ctx = new SubCommandContext({
 					args: ctx.args.slice(0, subCommand.name.split(' ').length),
 					command: this,
