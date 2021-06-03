@@ -1,8 +1,9 @@
 import {Message} from 'discord.js';
 import {Tag} from '../../classes/commands/Command.js';
-import {CommandContext} from '../../classes/commands/CommandContext.js';
+import {CommandContext} from '../../classes/contexts/CommandContext.js';
+import {EventContext} from '../../classes/contexts/EventContext.js';
+import {CommandErrorType} from '../../classes/errors/CommandError.js';
 import {Event} from '../../classes/Event';
-import {EventContext} from '../../classes/EventContext.js';
 import {CommandHandler} from '../../CommandHandler';
 import {argError} from '../../utils/argError';
 import {codeError} from '../../utils/codeError';
@@ -22,41 +23,47 @@ export class MessageEvent extends Event {
 		const [commandArg, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
 		const command = await getThing('command', commandArg.toLowerCase().normalize());
 
-		if (command) {
-			if (command.isInCooldown(message)) return message.channel.send(`You are on a cooldown! Please wait **${command.getCooldown(message).waitMore / 1000}**s.`);
+		if (!command) return;
 
-			if (!command.isInRightChannel(message)) return message.channel.send('This command is not in the correct channel.');
-
-			const missingPermissions = command.getMissingPermissions(message);
-			const missingTags = command.getMissingTags(message);
-
-			if (missingPermissions.client.length) return permissionsError(message, missingPermissions.client, command, true);
-			if (missingPermissions.user.length) return permissionsError(message, missingPermissions.user, command);
-
-			if (missingTags.length)
-				return argError(
+		try {
+			const error = await command.execute(
+				new CommandContext({
+					args,
+					command,
 					message,
-					`There are missing tags for the message: \n\`${missingTags
-						.map(tag => Tag[tag])
-						.sort()
-						.join('\n')
-						.toUpperCase()}\``,
-					command
-				);
-			try {
-				await command.run(
-					new CommandContext({
-						args,
-						command,
-						message,
-						handler: ctx.handler,
-					})
-				);
-				command.setCooldown(message);
+					handler: ctx.handler
+				})
+			);
+
+			if (error) {
+				console.log(error);
+				switch (error.type) {
+					case CommandErrorType.CLIENT_MISSING_PERMISSIONS:
+						return permissionsError(message, error.data, command, true);
+					case CommandErrorType.USER_MISSING_PERMISSIONS:
+						return permissionsError(message, error.data, command);
+					case CommandErrorType.MISSING_TAGS:
+						return argError(
+							message,
+							`There are missing tags for the message: \n\`${(error.data as Tag[])
+								.map(tag => Tag[tag])
+								.sort()
+								.join('\n')
+								.toUpperCase()}\``,
+							command
+						);
+					case CommandErrorType.WRONG_CHANNEL:
+						return message.channel.send('This command is not in the correct channel.');
+					case CommandErrorType.COOLDOWN:
+						return message.channel.send(`You are on a cooldown! Please wait **${error.data.waitMore / 1000}**s.`);
+					case CommandErrorType.ERROR:
+						return await codeError(message, error, command);
+				}
+			} else {
 				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
-			} catch (error) {
-				await codeError(message, error, command);
 			}
+		} catch (error) {
+			await codeError(message, error, command);
 		}
 	}
 }
