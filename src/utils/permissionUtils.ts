@@ -3,13 +3,13 @@ import {BetterEmbed} from 'discord.js-better-embed';
 import {Command} from '../classes';
 
 /**
- * A function to use when an user or the client hasn't all the permissions needed.
+ * A function to use when a user, or the client hasn't all the permissions needed.
  *
  * @param message - The message where the error is from.
  * @param missingPermissions - The error.
  * @param command - The command to be executed.
  * @param fromClient - If the error is from the client.
- * @returns The error message sent.
+ * @returns - The error message sent.
  */
 export function permissionsError(message: Message, missingPermissions: PermissionString[], command: Command, fromClient: boolean = false): Promise<Message> {
 	const embed = BetterEmbed.fromTemplate('complete', {
@@ -34,11 +34,11 @@ export function isPermission(permission: string): permission is PermissionString
 }
 
 /**
- * Tells you if the client has permissions from a message in a fancy way than the {@link https://discord.js.org/#/docs/main/stable/class/GuildMember?scrollTo=hasPermission | GuildMember#hasPermission} method.
+ * Tells you if the client has permissions from a message in a fancier way than the {@link https://discord.js.org/#/docs/main/stable/class/GuildMember?scrollTo=hasPermission | GuildMember#hasPermission} method.
  *
  * @param message - The message to check permissions from.
  * @param permission - The permission to check.
- * @returns If the user has the permission.
+ * @returns - If the user has the permission.
  */
 function hasPermission(message: Message, permission: PermissionResolvable) {
 	return message.guild

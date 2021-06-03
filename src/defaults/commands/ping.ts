@@ -1,11 +1,11 @@
 import {Command, CommandContext} from '../../classes';
 
 export class PingCommand extends Command {
-	name = 'ping';
-	category = 'utils';
-	description = 'Get the ping of the bot.';
-	tags = ['guildOnly'];
-	userPermissions = ['MANAGE_MESSAGES'];
+	override name = 'ping';
+	override category = 'utils';
+	override description = 'Get the ping of the bot.';
+	override tags = ['guildOnly'];
+	override userPermissions = ['MANAGE_messageS'];
 
 	public override async run(ctx: CommandContext) {
 		const msg = await ctx.reply('Ping ?');

@@ -27,7 +27,7 @@ export namespace CommandHandler {
 		 *
 		 * @remarks
 		 * There are two default prefixes that are `<@!botID>` & `<@botID>`, they're the text versions of mentions in Discord.
-		 * There are two ones because the `!` is only here in DM to indicate that that's a user mention and not a member mention.
+		 * There are two ones because the `!` is only here in private messages to indicate that that's a user mention and not a member mention.
 		 */
 		prefixes?: string[];
 	}

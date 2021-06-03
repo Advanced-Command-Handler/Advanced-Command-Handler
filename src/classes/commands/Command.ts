@@ -7,11 +7,11 @@ import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**
- * # How tags should works ?
+ * # How tags should work ?
  *
- * When using commands, you want certain commands to only run on a server or in DM etc.<br>
- * Most of other CommandHandlers uses boolean properties like `guildOnly`.<br>
- * To avoid having a ton of these, I imagined a system where you have command tags and for every calls, tags for the command are verified one by one.<br>
+ * When using commands, you want certain commands to only run on a server or in private messages etc.<br>
+ * Most other CommandHandlers uses boolean properties like `guildOnly`.<br>
+ * To avoid having a ton of these, I imagined a system where you have command tags and for every call, tags of the command are verified one by one.<br>
  * And this system works very smoothly !<br>
  * So if you're using the default message event
  * ({@link https://github.com/Ayfri/Advanced-Command-Handler/wiki/Defaults#defaults-events | see how to use defaults events }), tags will be checked.
