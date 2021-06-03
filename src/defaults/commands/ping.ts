@@ -1,5 +1,6 @@
 import {Command} from '../../classes/commands/Command.js';
-import {CommandContext} from '../../classes/commands/CommandContext.js';
+import {CommandContext} from '../../classes/contexts/CommandContext.js';
+import {SubCommandContext} from '../../classes/contexts/SubCommandContext.js';
 
 export class PingCommand extends Command {
 	name = 'ping';
@@ -12,6 +13,6 @@ export class PingCommand extends Command {
 		const msg = await ctx.reply('Ping ?');
 		const botPing = ctx.client.ping;
 		const apiPing = msg.createdTimestamp - ctx.message.createdTimestamp;
-		await msg.edit(`Bot Latency: **${botPing}**ms\nAPI Latency: **${apiPing}**ms`);
+		await msg.edit(`WS Ping: **${botPing}**ms\nAPI Latency: **${apiPing}**ms`);
 	}
 }
