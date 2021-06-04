@@ -161,6 +161,25 @@ export namespace CommandHandler {
 	}
 
 	/**
+	 * Returns the list of names and aliases of all commands, useful to find a command by name.
+	 *
+	 * @returns - All the names and aliases in a flat array.
+	 */
+	export function getCommandAliasesAndNames() {
+		return commands.map(c => [c.name, ...(c.aliases ?? [])]).flat();
+	}
+
+	/**
+	 * Find a command by name or alias.
+	 *
+	 * @param name - The name or alias of the command.
+	 * @returns - The command found or `undefined`.
+	 */
+	export function findCommand(name: string) {
+		return commands.find(c => c.name === name || (c.aliases ?? []).includes(name));
+	}
+
+	/**
 	 * Add the defaults events to your CommandHandler.
 	 *
 	 * @remarks
