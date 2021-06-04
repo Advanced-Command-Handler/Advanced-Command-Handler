@@ -1,4 +1,4 @@
-import {APIMessage, APIMessageContentResolvable, EmojiIdentifierResolvable, Message, MessageAdditions, MessageOptions, SplitOptions, StringResolvable} from 'discord.js';
+import {APIMessage, APIMessageContentResolvable, Collection, DMChannel, EmojiIdentifierResolvable, Message, MessageAdditions, MessageOptions, MessageResolvable, SplitOptions, StringResolvable, TextChannel} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
 import {Command} from '../commands';
 
@@ -61,17 +61,35 @@ export class CommandContext implements CommandContextBuilder {
 	public async react(emoji: EmojiIdentifierResolvable) {
 		return await this.message.react(emoji);
 	}
+	
+	public async reacts(emojis: EmojiIdentifierResolvable[]) {
+		for (const emoji of emojis) {
+			await this.message.react(emoji);
+		}
+	}
 
-	public async removeReactions() {
+	public async removeReactionsAll() {
 		return this.message.reactions.removeAll();
 	}
 
 	public async removeReaction(emoji: EmojiIdentifierResolvable) {
 		return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.remove();
 	}
+	
+	public async removeReactions(emojis: EmojiIdentifierResolvable[]) {
+		for (const emoji of emojis) {
+			this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.remove();
+		}
+	}
 
 	public async removeSelfReaction(emoji: EmojiIdentifierResolvable) {
 		return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.users.remove(this.client.user!.id);
+	}
+	
+	public async removeSelfReactions(emojis: EmojiIdentifierResolvable[]) {
+		for (const emoji of emojis) {
+			this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.users.remove(this.client.user!.id);
+		}
 	}
 
 	public deleteMessage(timeout: number = 0) {
