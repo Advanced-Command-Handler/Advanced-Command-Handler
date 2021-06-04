@@ -153,7 +153,7 @@ export abstract class Command {
 	 *
 	 * @param ctx - The command context.
 	 */
-	public abstract run(ctx: CommandContext): Promise<any>;
+	public abstract run(ctx: CommandContext): any | Promise<any>;
 
 	/**
 	 * Deletes a message if deletable.

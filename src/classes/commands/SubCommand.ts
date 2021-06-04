@@ -3,7 +3,7 @@
 import {SubCommandContext} from '../contexts';
 import {Tag} from './Command';
 
-export type RunSubCommandFunction = (ctx: SubCommandContext) => Promise<any>;
+export type RunSubCommandFunction = (ctx: SubCommandContext) => any | Promise<any>;
 
 export interface SubCommandOptions {
 	aliases?: string[];
