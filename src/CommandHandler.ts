@@ -272,7 +272,7 @@ export namespace CommandHandler {
 
 		const instance = new command();
 		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
-		if (instance.category === 'None') instance.category = path.split(/[\\/]/).pop()!;
+		if (!instance.category) instance.category = path.split(/[\\/]/).pop()!;
 
 		const invalidPermissions = instance.getInvalidPermissions();
 		if (invalidPermissions.client.length > 0)
