@@ -305,9 +305,9 @@ export abstract class Command {
 
 		await this.run(ctx);
 		for (const subCommand of this.subCommands) {
-			if (ctx.args.splice(0, subCommand.name.split(' ').length).join(' ') === subCommand.name) {
+			if ([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' ') === subCommand.name) {
 				ctx = new SubCommandContext({
-					args: ctx.args.slice(0, subCommand.name.split(' ').length),
+					args: [...ctx.args].splice(0, subCommand.name.split(' ').length),
 					command: this,
 					message: ctx.message,
 					handler: ctx.handler,
@@ -363,6 +363,8 @@ export abstract class Command {
 	protected subCommand(name: string, callback: RunSubCommandFunction): void;
 	protected subCommand(name: string, options: SubCommandOptions, callback: RunSubCommandFunction): void;
 	protected subCommand(name: string, options: SubCommandOptions | RunSubCommandFunction, callback?: RunSubCommandFunction) {
+		if(this.subCommands.map(c => c.name).includes(name)) return;
+
 		if (typeof options !== 'object') {
 			callback = options;
 			options = {};
@@ -381,7 +383,7 @@ export abstract class SubCommand extends Command {
 	public readonly name: string;
 
 	public override async run(ctx: SubCommandContext): Promise<any> {
-		return await this.runFunction(ctx);
+		return this.runFunction(ctx);
 	}
 
 	public readonly runFunction: RunSubCommandFunction;
