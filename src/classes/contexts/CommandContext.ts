@@ -96,6 +96,12 @@ export class CommandContext implements CommandContextBuilder {
 		return this.message.delete({timeout});
 	}
 
+	public bulkDeleteChannel(number: number | Collection<string, Message> | readonly MessageResolvable[], filterOld?: boolean | undefined) {
+		if (!(this.channel instanceof DMChannel)) {
+			return this.channel.bulkDelete(number, filterOld)
+		}
+	}
+
 	public send(content: APIMessageContentResolvable | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
 	public send(options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
 	public send(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
