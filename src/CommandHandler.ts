@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+import dayjsDuration from 'dayjs/plugin/duration';
 import {ClientOptions, Collection, Message, Snowflake, Team} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
@@ -7,6 +9,11 @@ import * as defaultCommands from './defaults/commands/index';
 import * as defaultEvents from './defaults/events/index';
 import {MaybeCommand, MaybeEvent} from './types';
 import {Logger} from './utils';
+
+dayjs.extend(dayjsDuration);
+dayjs.duration('a');
+
+export {dayjs};
 
 export namespace CommandHandler {
 	export interface CreateCommandHandlerOptions {
@@ -210,6 +217,7 @@ export namespace CommandHandler {
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
 		emit('create', options);
+
 		return CommandHandler;
 	}
 
