@@ -28,7 +28,6 @@ export class MessageEvent extends Event {
 			);
 
 			if (error) {
-				console.log(error);
 				switch (error.type) {
 					case CommandErrorType.CLIENT_MISSING_PERMISSIONS:
 						return permissionsError(message, error.data, command, true);
