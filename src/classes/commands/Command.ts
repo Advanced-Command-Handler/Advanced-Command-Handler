@@ -1,6 +1,6 @@
 import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
-import {isOwner, isPermission} from '../../utils';
+import {isOwner, isPermission, Logger} from '../../utils';
 import {CommandContext, SubCommandContext} from '../contexts';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors';
 import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
@@ -72,6 +72,15 @@ export interface MissingPermissions {
 	user: PermissionString[];
 }
 
+export interface Command {
+	/**
+	 * Override this method to register your subCommands.
+	 *
+	 * @param handler - The command handler.
+	 */
+	registerSubCommands?(handler: typeof CommandHandler): any | Promise<any>
+}
+
 export abstract class Command {
 	/**
 	 * The name of the command.
@@ -98,7 +107,7 @@ export abstract class Command {
 	 */
 	public clientPermissions?: Array<PermissionString | string>;
 	/**
-	 * The cooldown of the command.
+	 * The cooldown of the command in seconds.
 	 *
 	 * @defaultValue 0
 	 * @remarks
@@ -372,6 +381,8 @@ export abstract class Command {
 
 		this.subCommands.push(new (class extends SubCommand {
 		})(name, options, callback as RunSubCommandFunction));
+
+		Logger.comment(`Loaded subcommand '${this.name} ${name}'.`, 'SubCommandLoading');
 	}
 }
 

@@ -254,6 +254,8 @@ export namespace CommandHandler {
 			await loadCommands(commandsDir);
 			await loadEvents(eventsDir);
 
+			Logger.comment('Loading subcommands.', 'SubCommandLoading');
+			commands.forEach(c => c.registerSubCommands?.(CommandHandler));
 			Logger.comment('Binding events to client.', 'Binding');
 			events.forEach(event => event.bind(client!!));
 
