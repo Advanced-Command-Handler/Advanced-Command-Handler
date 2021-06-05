@@ -63,7 +63,7 @@ export class CommandContext implements CommandContextBuilder {
 			for (const e of emoji) {
 				await this.message.react(e);
 			}
-		} else return await this.message.react(emoji);
+		} else return this.message.react(emoji);
 	}
 
 	public async removeReaction(emoji: EmojiIdentifierResolvable) {
