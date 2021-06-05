@@ -1,4 +1,4 @@
-import {APIMessage, APIMessageContentResolvable, EmojiIdentifierResolvable, Message, MessageAdditions, MessageOptions, SplitOptions, StringResolvable} from 'discord.js';
+import {APIMessage, APIMessageContentResolvable, Collection, DMChannel, EmojiIdentifierResolvable, Message, MessageAdditions, MessageOptions, MessageResolvable, SplitOptions, StringResolvable, TextChannel} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
 import {Command} from '../commands';
 
@@ -58,24 +58,41 @@ export class CommandContext implements CommandContextBuilder {
 		return this.message.author;
 	}
 
-	public async react(emoji: EmojiIdentifierResolvable) {
-		return await this.message.react(emoji);
-	}
-
-	public async removeReactions() {
-		return this.message.reactions.removeAll();
+	public async react(emoji: EmojiIdentifierResolvable|EmojiIdentifierResolvable[]) {
+		if (emoji instanceof Array) {
+			for (const e of emoji) {
+				await this.message.react(e);
+			}
+		} else return this.message.react(emoji);
 	}
 
 	public async removeReaction(emoji: EmojiIdentifierResolvable) {
 		return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.remove();
 	}
+	
+	public async removeReactions(emojis?: EmojiIdentifierResolvable[]) {
+		if (!emojis) return this.message.reactions.removeAll();
+		for (const emoji of emojis) {
+			this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.remove();
+		}
+	}
 
-	public async removeSelfReaction(emoji: EmojiIdentifierResolvable) {
-		return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.users.remove(this.client.user!.id);
+	public async removeSelfReaction(emoji: EmojiIdentifierResolvable|EmojiIdentifierResolvable[]) {
+		if (emoji instanceof Array) {
+			for (const e of emoji) {
+				this.message.reactions.resolve(typeof e === 'object' ? e.id! : e)!.users.remove(this.client.user!.id);
+			}
+		} else return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.users.remove(this.client.user!.id);
 	}
 
 	public deleteMessage(timeout: number = 0) {
 		return this.message.delete({timeout});
+	}
+
+	public bulkDeleteInChannel(number: number | Collection<string, Message> | readonly MessageResolvable[], filterOld?: boolean | undefined) {
+		if (!(this.channel instanceof DMChannel)) {
+			return this.channel.bulkDelete(number, filterOld)
+		}
 	}
 
 	public send(content: APIMessageContentResolvable | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
