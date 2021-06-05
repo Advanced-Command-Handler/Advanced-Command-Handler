@@ -58,45 +58,38 @@ export class CommandContext implements CommandContextBuilder {
 		return this.message.author;
 	}
 
-	public async react(emoji: EmojiIdentifierResolvable) {
-		return await this.message.react(emoji);
-	}
-	
-	public async reacts(emojis: EmojiIdentifierResolvable[]) {
-		for (const emoji of emojis) {
-			await this.message.react(emoji);
-		}
-	}
-
-	public async removeReactionsAll() {
-		return this.message.reactions.removeAll();
+	public async react(emoji: EmojiIdentifierResolvable|EmojiIdentifierResolvable[]) {
+		if (emoji instanceof Array) {
+			for (const e of emoji) {
+				await this.message.react(e);
+			}
+		} else return await this.message.react(emoji);
 	}
 
 	public async removeReaction(emoji: EmojiIdentifierResolvable) {
 		return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.remove();
 	}
 	
-	public async removeReactions(emojis: EmojiIdentifierResolvable[]) {
+	public async removeReactions(emojis?: EmojiIdentifierResolvable[]) {
+		if (!emojis) return this.message.reactions.removeAll();
 		for (const emoji of emojis) {
 			this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.remove();
 		}
 	}
 
-	public async removeSelfReaction(emoji: EmojiIdentifierResolvable) {
-		return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.users.remove(this.client.user!.id);
-	}
-	
-	public async removeSelfReactions(emojis: EmojiIdentifierResolvable[]) {
-		for (const emoji of emojis) {
-			this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.users.remove(this.client.user!.id);
-		}
+	public async removeSelfReaction(emoji: EmojiIdentifierResolvable|EmojiIdentifierResolvable[]) {
+		if (emoji instanceof Array) {
+			for (const e of emoji) {
+				this.message.reactions.resolve(typeof e === 'object' ? e.id! : e)!.users.remove(this.client.user!.id);
+			}
+		} else return this.message.reactions.resolve(typeof emoji === 'object' ? emoji.id! : emoji)!.users.remove(this.client.user!.id);
 	}
 
 	public deleteMessage(timeout: number = 0) {
 		return this.message.delete({timeout});
 	}
 
-	public bulkDeleteChannel(number: number | Collection<string, Message> | readonly MessageResolvable[], filterOld?: boolean | undefined) {
+	public bulkDeleteInChannel(number: number | Collection<string, Message> | readonly MessageResolvable[], filterOld?: boolean | undefined) {
 		if (!(this.channel instanceof DMChannel)) {
 			return this.channel.bulkDelete(number, filterOld)
 		}
