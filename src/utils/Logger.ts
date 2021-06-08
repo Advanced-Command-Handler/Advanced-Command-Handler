@@ -48,7 +48,24 @@ export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof Log
 export type LoggerIgnore = [title: string, level: LogLevel | keyof typeof LogLevel];
 
 export class Logger {
+	/**
+	 * Let you set the minimum level required for a log to be sent to console.<br><br>
+	 * For example if you set the level to `LogLevel.LOG`, the `Logger.debug()` and `Logger.comments()` methods won't log anything.
+	 */
 	public static LEVEL: LogLevel = LogLevel.ALL;
+	/**
+	 * Let you ignore Logs by title or by titles and levels.
+	 *
+	 * @example
+	 * // This will ignore any logs with the title 'mylogs'.
+	 * Logger.ignores.push('mylogs');
+	 *
+	 * // This will ignore any logs with the title 'mylogs', and the level 'LOG' or less.
+	 * Logger.ignores.push(['mylogs', LogLevel.LOG]);
+	 *
+	 * // It can also work by setting the string version of the LogLevel.
+	 * Logger.ignores.push(['mylogs', 'LOG']);
+	 */
 	public static ignores: Array<string | LoggerIgnore> = [];
 
 	/**
@@ -145,7 +162,7 @@ export class Logger {
 	}
 
 	/**
-	 * Log a message in the console as a warn.
+	 * Log a message in the console as a warning.
 	 *
 	 * @remarks
 	 * Using the yellow color.
@@ -158,7 +175,7 @@ export class Logger {
 	}
 
 	/**
-	 * Log something in the console and transform the ColorResolvable into a ASCII Escape Sequence containing the color.
+	 * Log something in the console and transform the ColorResolvable into an ASCII Escape Sequence containing the color.
 	 *
 	 * @param text - The text to log.
 	 * @param color - The color of the text.
@@ -179,7 +196,15 @@ export class Logger {
 		console.log(text);
 	}
 
-	private static isIgnored(title: string, level: LogLevel) {
+	/**
+	 * Test if a title and level is ignored.
+	 *
+	 * @param title - The title of the log.
+	 * @param level - The level of the log.
+	 * @returns - Is it ignored or not.
+	 * @internal
+	 */
+	public static isIgnored(title: string, level: LogLevel) {
 		const ignores: LoggerIgnore[] = Logger.ignores.map(s => (typeof s === 'string' ? [s, LogLevel.ALL] : [s[0], s[1]]));
 		return ignores.filter(i => i[0].toUpperCase() === title.toUpperCase()).some(i => (typeof i[1] === 'string' ? LogLevel[i[1]] >= level : i[1] >= level));
 	}
