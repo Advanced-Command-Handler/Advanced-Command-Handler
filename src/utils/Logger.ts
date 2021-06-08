@@ -45,9 +45,11 @@ export const colors = {
 
 export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | string>;
 
+export type LoggerIgnore = [title: string, level: LogLevel | keyof typeof LogLevel];
+
 export class Logger {
 	public static LEVEL: LogLevel = LogLevel.ALL;
-	public static ignores: string[] = [];
+	public static ignores: Array<string | LoggerIgnore> = [];
 
 	/**
 	 * @remarks
@@ -64,7 +66,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static comment(message: any, title: string = 'comment'): void {
-		if (Logger.LEVEL < LogLevel.COMMENT) return;
+		if (Logger.LEVEL < LogLevel.COMMENT || Logger.isIgnored(title, LogLevel.COMMENT)) return;
 		Logger.process(message, LogType.comment, title);
 	}
 
@@ -77,7 +79,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static error(message: any, title: string = 'error'): void {
-		if (Logger.LEVEL < LogLevel.ERROR) return;
+		if (Logger.LEVEL < LogLevel.ERROR || Logger.isIgnored(title, LogLevel.ERROR)) return;
 		Logger.process(message, LogType.error, title);
 	}
 
@@ -90,7 +92,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static event(message: any, title: string = 'event'): void {
-		if (Logger.LEVEL < LogLevel.EVENT) return;
+		if (Logger.LEVEL < LogLevel.EVENT || Logger.isIgnored(title, LogLevel.EVENT)) return;
 		Logger.process(message, LogType.event, title);
 	}
 
@@ -103,7 +105,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static info(message: any, title: string = 'info'): void {
-		if (Logger.LEVEL < LogLevel.INFO) return;
+		if (Logger.LEVEL < LogLevel.INFO || Logger.isIgnored(title, LogLevel.INFO)) return;
 		Logger.process(message, LogType.info, title);
 	}
 
@@ -117,7 +119,7 @@ export class Logger {
 	 * @param color - The color of the log.
 	 */
 	public static log(message: any, title: string = 'log', color: ColorResolvable = LogType.log): void {
-		if (Logger.LEVEL < LogLevel.LOG) return;
+		if (Logger.LEVEL < LogLevel.LOG || Logger.isIgnored(title, LogLevel.LOG)) return;
 		Logger.process(message, color, title);
 	}
 
@@ -138,7 +140,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 */
 	public static debug(message: any, title: string = 'debug'): void {
-		if (Logger.LEVEL < LogLevel.DEBUG) return;
+		if (Logger.LEVEL < LogLevel.DEBUG || Logger.isIgnored(title, LogLevel.DEBUG)) return;
 		Logger.process(message, LogType.debug, title);
 	}
 
@@ -165,8 +167,6 @@ export class Logger {
 	 */
 	protected static process(text: any, color: ColorResolvable = 'debug', title: string = ''): void {
 		if (Logger.LEVEL === LogLevel.OFF) return;
-		if (Logger.ignores.map(s => s.toUpperCase()).includes(title.toUpperCase())) return;
-
 		text = typeof text === 'string' ? text : inspect(text);
 		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string): string => chalk.yellow(match));
 		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
@@ -177,6 +177,11 @@ export class Logger {
 			`[${title.toUpperCase()}] ${text + chalk.reset()}`
 		)}`;
 		console.log(text);
+	}
+
+	private static isIgnored(title: string, level: LogLevel) {
+		const ignores: LoggerIgnore[] = Logger.ignores.map(s => (typeof s === 'string' ? [s, LogLevel.ALL] : [s[0], s[1]]));
+		return ignores.filter(i => i[0].toUpperCase() === title.toUpperCase()).some(i => (typeof i[1] === 'string' ? LogLevel[i[1]] >= level : i[1] >= level));
 	}
 
 	/**
