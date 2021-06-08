@@ -25,26 +25,26 @@
 		"node": ">=14"
 	},
 	"eslintConfig": {
+		"extends": [
+			"plugin:jsdoc/recommended"
+		],
 		"parser": "@typescript-eslint/parser",
 		"parserOptions": {
 			"ecmaVersion": 2021,
 			"sourceType": "module"
 		},
+		"plugins": [
+			"eslint-plugin-tsdoc",
+			"@typescript-eslint",
+			"eslint-plugin-jsdoc"
+		],
 		"rules": {
 			"tsdoc/syntax": "warn",
 			"require-jsdoc": "warn",
 			"jsdoc/check-tag-names": "off",
 			"jsdoc/require-param-type": "off",
 			"jsdoc/require-returns-type": "off"
-		},
-		"extends": [
-			"plugin:jsdoc/recommended"
-		],
-		"plugins": [
-			"eslint-plugin-tsdoc",
-			"@typescript-eslint",
-			"eslint-plugin-jsdoc"
-		]
+		}
 	},
 	"homepage": "https://github.com/Ayfri/Advanced-Command-Handler",
 	"keywords": [
@@ -62,9 +62,10 @@
 	"prettier": {
 		"arrowParens": "avoid",
 		"bracketSpacing": false,
-		"printWidth": 200,
+		"printWidth": 160,
 		"singleQuote": true,
 		"tabWidth": 4,
+		"trailingComma": "es5",
 		"useTabs": true
 	},
 	"readme": "https://github.com/Ayfri/Advanced-Command-Handler/blob/package/README.md",
