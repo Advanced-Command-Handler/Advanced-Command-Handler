@@ -78,7 +78,7 @@ export interface Command {
 	 *
 	 * @param handler - The command handler.
 	 */
-	registerSubCommands?(handler: typeof CommandHandler): any | Promise<any>
+	registerSubCommands?(handler: typeof CommandHandler): any | Promise<any>;
 }
 
 export abstract class Command {
@@ -145,6 +145,10 @@ export abstract class Command {
 	public userPermissions?: Array<PermissionString | string>;
 
 	public subCommands: SubCommand[] = [];
+
+	public get namesAndAliases(): string[] {
+		return [this.name, ...this.aliases ?? []];
+	}
 
 	/**
 	 * Get an user ID from different sources, only here to simplify code.
@@ -314,7 +318,7 @@ export abstract class Command {
 
 		await this.run(ctx);
 		for (const subCommand of this.subCommands) {
-			if ([subCommand.name, ...subCommand.aliases ?? []].includes([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' '))) {
+			if (subCommand.namesAndAliases.includes([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' '))) {
 				ctx = new SubCommandContext({
 					args: [...ctx.args].splice(0, subCommand.name.split(' ').length),
 					command: this,
@@ -372,7 +376,7 @@ export abstract class Command {
 	protected subCommand(name: string, callback: RunSubCommandFunction): void;
 	protected subCommand(name: string, options: SubCommandOptions, callback: RunSubCommandFunction): void;
 	protected subCommand(name: string, options: SubCommandOptions | RunSubCommandFunction, callback?: RunSubCommandFunction) {
-		if(this.subCommands.map(c => c.name).includes(name)) return;
+		if (this.subCommands.map(c => c.name).includes(name)) return;
 
 		if (typeof options !== 'object') {
 			callback = options;
