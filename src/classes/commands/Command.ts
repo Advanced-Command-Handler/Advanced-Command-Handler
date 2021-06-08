@@ -147,7 +147,7 @@ export abstract class Command {
 	public subCommands: SubCommand[] = [];
 
 	public get namesAndAliases(): string[] {
-		return [this.name, ...this.aliases ?? []];
+		return [this.name, ...(this.aliases ?? [])];
 	}
 
 	/**
@@ -187,7 +187,7 @@ export abstract class Command {
 	public getMissingPermissions(message: Message): MissingPermissions {
 		const missingPermissions: MissingPermissions = {
 			client: [],
-			user: []
+			user: [],
 		};
 		if (!message.guild || !message.guild.available) return missingPermissions;
 
@@ -230,7 +230,7 @@ export abstract class Command {
 
 		return {
 			user: this.userPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
-			client: this.clientPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? []
+			client: this.clientPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
 		};
 	}
 
@@ -289,7 +289,7 @@ export abstract class Command {
 		const cooldown = CommandHandler.cooldowns.get(Command.getSnowflake(from))![this.name];
 		return {
 			...cooldown,
-			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now()
+			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now(),
 		};
 	}
 
@@ -306,7 +306,7 @@ export abstract class Command {
 
 		CommandHandler.cooldowns.get(id)![this.name] = {
 			executedAt: from instanceof Message ? from.createdAt : new Date(),
-			cooldown
+			cooldown,
 		};
 
 		setTimeout(() => delete CommandHandler.cooldowns.get(id)![this.name], cooldown * 1000);
@@ -324,7 +324,7 @@ export abstract class Command {
 					command: this,
 					message: ctx.message,
 					handler: ctx.handler,
-					subCommand
+					subCommand,
 				});
 
 				const subCommandError: CommandError | undefined = await subCommand.execute(ctx);
@@ -340,13 +340,13 @@ export abstract class Command {
 			return {
 				message: 'User is in a cooldown.',
 				type: CommandErrorType.COOLDOWN,
-				data: this.getCooldown(ctx.message)
+				data: this.getCooldown(ctx.message),
 			};
 
 		if (!this.isInRightChannel(ctx.message))
 			return {
 				message: 'This command is not in the correct channel.',
-				type: CommandErrorType.WRONG_CHANNEL
+				type: CommandErrorType.WRONG_CHANNEL,
 			};
 
 		const missingPermissions = this.getMissingPermissions(ctx.message);
@@ -356,20 +356,20 @@ export abstract class Command {
 			return {
 				message: 'The bot is missing permissions.',
 				type: CommandErrorType.CLIENT_MISSING_PERMISSIONS,
-				data: missingPermissions.client.sort()
+				data: missingPermissions.client.sort(),
 			};
 		if (missingPermissions.user.length)
 			return {
 				message: 'User is missing permissions.',
 				type: CommandErrorType.USER_MISSING_PERMISSIONS,
-				data: missingPermissions.client.sort()
+				data: missingPermissions.client.sort(),
 			};
 
 		if (missingTags.length)
 			return {
 				message: 'There are missing tags for the message.',
 				type: CommandErrorType.MISSING_TAGS,
-				data: missingTags
+				data: missingTags,
 			};
 	}
 
@@ -383,8 +383,7 @@ export abstract class Command {
 			options = {};
 		}
 
-		this.subCommands.push(new (class extends SubCommand {
-		})(name, options, callback as RunSubCommandFunction));
+		this.subCommands.push(new (class extends SubCommand {})(name, options, callback as RunSubCommandFunction));
 
 		Logger.comment(`Loaded subcommand '${this.name} ${name}'.`, 'SubCommandLoading');
 	}

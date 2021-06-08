@@ -113,11 +113,17 @@ export async function getThing(
 			return (
 				message?.guild?.channels.cache.get(text) ||
 				message?.mentions.channels.first() ||
-				message?.guild?.channels.cache.find((c: GuildChannel) => c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
+				message?.guild?.channels.cache.find(
+					(c: GuildChannel) => c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1
+				) ||
 				null
 			);
 		case DataType.GUILD:
-			return client?.guilds.cache.get(text) || client?.guilds.cache.find((g: Guild) => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) || null;
+			return (
+				client?.guilds.cache.get(text) ||
+				client?.guilds.cache.find((g: Guild) => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
+				null
+			);
 
 		case DataType.MEMBER:
 			return (
@@ -125,12 +131,19 @@ export async function getThing(
 				message?.mentions?.members?.first() ||
 				message?.guild?.members.cache.find(
 					(m: GuildMember) =>
-						(m.displayName.toLowerCase().includes((text as string).toLowerCase()) || m.user.username.toLowerCase().includes((text as string).toLowerCase())) && (text as string).length > 1
+						(m.displayName.toLowerCase().includes((text as string).toLowerCase()) ||
+							m.user.username.toLowerCase().includes((text as string).toLowerCase())) &&
+						(text as string).length > 1
 				) ||
 				null
 			);
 		case DataType.USER:
-			return client?.users.cache.get(text) || client?.users.cache.find((u: User) => u.username.toLowerCase() === (text as string).toLowerCase()) || message?.mentions?.users.first() || null;
+			return (
+				client?.users.cache.get(text) ||
+				client?.users.cache.find((u: User) => u.username.toLowerCase() === (text as string).toLowerCase()) ||
+				message?.mentions?.users.first() ||
+				null
+			);
 
 		case DataType.ROLE:
 			return (
@@ -140,7 +153,11 @@ export async function getThing(
 				null
 			);
 		case DataType.EMOTE:
-			return client?.emojis.cache.get(text) || client?.emojis.cache.find((e: Emoji) => e.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) || null;
+			return (
+				client?.emojis.cache.get(text) ||
+				client?.emojis.cache.find((e: Emoji) => e.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
+				null
+			);
 
 		case DataType.MESSAGE:
 			const m = await message?.channel.messages.fetch(text);

@@ -25,5 +25,7 @@ export function codeError(message: Message, error: Error, command: Command): Pro
 	});
 
 	Logger.error(error, 'CodeError');
-	return isOwner(message.author.id) ? message.channel.send(embed) : message.channel.send(`An error occurred while executing the \`${command.name}\` command.`);
+	return isOwner(message.author.id)
+		? message.channel.send(embed)
+		: message.channel.send(`An error occurred while executing the \`${command.name}\` command.`);
 }

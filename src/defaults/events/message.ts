@@ -23,7 +23,7 @@ export class MessageEvent extends Event {
 					args,
 					command,
 					message,
-					handler: ctx.handler
+					handler: ctx.handler,
 				})
 			);
 

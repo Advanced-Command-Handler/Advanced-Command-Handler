@@ -305,9 +305,15 @@ export namespace CommandHandler {
 
 		const invalidPermissions = instance.getInvalidPermissions();
 		if (invalidPermissions.client.length > 0)
-			throw new CommandHandlerError(`Invalid client permissions for '${instance.name}' command.\nInvalid Permissions: '${invalidPermissions.client.sort().join(',')}'`, 'Loading');
+			throw new CommandHandlerError(
+				`Invalid client permissions for '${instance.name}' command.\nInvalid Permissions: '${invalidPermissions.client.sort().join(',')}'`,
+				'Loading'
+			);
 		if (invalidPermissions.user.length > 0)
-			throw new CommandHandlerError(`Invalid user permissions for '${instance.name}' command.\nInvalid Permissions: '${invalidPermissions.user.sort().join(',')}'`, 'Loading');
+			throw new CommandHandlerError(
+				`Invalid user permissions for '${instance.name}' command.\nInvalid Permissions: '${invalidPermissions.user.sort().join(',')}'`,
+				'Loading'
+			);
 
 		commands.set(instance.name, instance);
 		emit('loadCommand', instance);

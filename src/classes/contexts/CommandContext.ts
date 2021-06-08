@@ -1,4 +1,13 @@
-import {APIMessage, APIMessageContentResolvable, EmojiIdentifierResolvable, Message, MessageAdditions, MessageOptions, SplitOptions, StringResolvable} from 'discord.js';
+import {
+	APIMessage,
+	APIMessageContentResolvable,
+	EmojiIdentifierResolvable,
+	Message,
+	MessageAdditions,
+	MessageOptions,
+	SplitOptions,
+	StringResolvable,
+} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
 import {Command} from '../commands';
 
@@ -84,7 +93,10 @@ export class CommandContext implements CommandContextBuilder {
 	public send(content: StringResolvable, options: (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
 	public send(content: StringResolvable, options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
 	public send(content: StringResolvable, options: MessageOptions): Promise<Message | Message[]>;
-	public send(content: StringResolvable, options?: MessageOptions | (MessageOptions & {split?: boolean | SplitOptions}) | MessageAdditions): Promise<Message | Message[]> {
+	public send(
+		content: StringResolvable,
+		options?: MessageOptions | (MessageOptions & {split?: boolean | SplitOptions}) | MessageAdditions
+	): Promise<Message | Message[]> {
 		return this.channel.send(content, options as any);
 	}
 

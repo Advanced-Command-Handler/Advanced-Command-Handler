@@ -169,7 +169,10 @@ export class Logger {
 		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
 
 		color = propertyInEnum(LogType, color) ?? color;
-		text = `${Logger.setColor('#847270', `[${dayjs().format('D HH:mm:ss.SSS')}]`)}${Logger.setColor(color, `[${title.toUpperCase()}] ${text + chalk.reset()}`)}`;
+		text = `${Logger.setColor('#847270', `[${dayjs().format('D HH:mm:ss.SSS')}]`)}${Logger.setColor(
+			color,
+			`[${title.toUpperCase()}] ${text + chalk.reset()}`
+		)}`;
 		console.log(text);
 	}
 
