@@ -47,6 +47,7 @@ export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof Log
 
 export class Logger {
 	public static LEVEL: LogLevel = LogLevel.ALL;
+	public static ignores: string[] = [];
 
 	/**
 	 * @remarks
@@ -164,6 +165,8 @@ export class Logger {
 	 */
 	protected static process(text: any, color: ColorResolvable = 'debug', title: string = ''): void {
 		if (Logger.LEVEL === LogLevel.OFF) return;
+		if (Logger.ignores.map(s => s.toUpperCase()).includes(title.toUpperCase())) return;
+
 		text = typeof text === 'string' ? text : inspect(text);
 		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string): string => chalk.yellow(match));
 		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
