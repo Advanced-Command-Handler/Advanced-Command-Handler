@@ -255,7 +255,7 @@ export namespace CommandHandler {
 			await loadEvents(eventsDir);
 
 			Logger.comment('Loading subcommands.', 'SubCommandLoading');
-			commands.forEach(c => c.registerSubCommands?.(CommandHandler));
+			commands.forEach(c => c.registerSubCommands?.());
 			Logger.comment('Binding events to client.', 'Binding');
 			events.forEach(event => event.bind(client!!));
 
@@ -388,6 +388,6 @@ export namespace CommandHandler {
 	 */
 	export function unloadCommand(name: string) {
 		if (commands.delete(name)) Logger.info(`${name} command unloaded.`, 'UnLoading');
-		else Logger.warn(`${name} command not found.`, 'UnLoading');
+		else Logger.warn(`Command '${name}' not found.`, 'UnLoading');
 	}
 }

@@ -75,10 +75,8 @@ export interface MissingPermissions {
 export interface Command {
 	/**
 	 * Override this method to register your subCommands.
-	 *
-	 * @param handler - The command handler.
 	 */
-	registerSubCommands?(handler: typeof CommandHandler): any | Promise<any>;
+	registerSubCommands?(): any | Promise<any>;
 }
 
 export abstract class Command {
