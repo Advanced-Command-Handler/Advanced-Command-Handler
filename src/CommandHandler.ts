@@ -37,6 +37,13 @@ export namespace CommandHandler {
 		 * There are two ones because the `!` is only here in private messages to indicate that that's a user mention and not a member mention.
 		 */
 		prefixes?: string[];
+
+		/**
+		 * Save all the logs in these files.
+		 *
+		 * @remarks If one of the files is not found, it will create it.
+		 */
+		saveLogsInFile?: string[];
 	}
 
 	/**
@@ -224,6 +231,7 @@ export namespace CommandHandler {
 	 * @returns - It returns itself so that afterward you can use the other functions.
 	 */
 	export function create(options: CreateCommandHandlerOptions): typeof CommandHandler {
+		options.saveLogsInFile?.forEach(Logger.saveInFile);
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');
 		commandsDir = options.commandsDir ?? '';
 		eventsDir = options.eventsDir ?? '';

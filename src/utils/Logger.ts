@@ -1,5 +1,7 @@
 import chalk from 'chalk';
 import dayjs from 'dayjs';
+import * as fs from 'fs';
+import * as paths from 'path';
 import {inspect} from 'util';
 
 export enum LogLevel {
@@ -68,11 +70,28 @@ export class Logger {
 	 */
 	public static ignores: Array<string | LoggerIgnore> = [];
 
+	private static savingFiles: string[] = [];
+
 	/**
 	 * @remarks
 	 * Avoid using it because you can't do anything with it.
 	 */
 	private constructor() {}
+
+	public static saveInFile(path: string) {
+		const file = paths.resolve(process.cwd(), path);
+
+		if (!fs.existsSync(file)) {
+			Logger.comment(
+				`File ${Logger.setColor('violet', file)} ${Logger.setColor('comment', `not found, creating new one, logs will be saved into it.`)}`,
+				'LoggingWriter'
+			);
+			fs.appendFileSync(file, '');
+		} else {
+			Logger.comment(`File ${Logger.setColor('violet', file)} ${Logger.setColor('comment', `found, logs will be saved into it.`)}`, 'LoggingWriter');
+		}
+		Logger.savingFiles.push(file);
+	}
 
 	/**
 	 * Log a message in the console as a comment.
@@ -175,28 +194,6 @@ export class Logger {
 	}
 
 	/**
-	 * Log something in the console and transform the ColorResolvable into an ASCII Escape Sequence containing the color.
-	 *
-	 * @param text - The text to log.
-	 * @param color - The color of the text.
-	 * @param title - The title of the text.
-	 * @internal
-	 */
-	protected static process(text: any, color: ColorResolvable = 'debug', title: string = ''): void {
-		if (Logger.LEVEL === LogLevel.OFF) return;
-		text = typeof text === 'string' ? text : inspect(text);
-		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string): string => chalk.yellow(match));
-		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
-
-		color = propertyInEnum(LogType, color) ?? color;
-		text = `${Logger.setColor('#847270', `[${dayjs().format('YYYY/MM/DD HH:mm:ss.SSS')}]`)}${Logger.setColor(
-			color,
-			`[${title.toUpperCase()}] ${text + chalk.reset()}`
-		)}`;
-		console.log(text);
-	}
-
-	/**
 	 * Test if a title and level is ignored.
 	 *
 	 * @param title - The title of the log.
@@ -207,6 +204,41 @@ export class Logger {
 	public static isIgnored(title: string, level: LogLevel) {
 		const ignores: LoggerIgnore[] = Logger.ignores.map(s => (typeof s === 'string' ? [s, LogLevel.ALL] : [s[0], s[1]]));
 		return ignores.filter(i => i[0].toUpperCase() === title.toUpperCase()).some(i => (typeof i[1] === 'string' ? LogLevel[i[1]] >= level : i[1] >= level));
+	}
+
+	/**
+	 * Log something in the console and transform the ColorResolvable into an ASCII Escape Sequence containing the color.
+	 *
+	 * @param text - The text to log.
+	 * @param color - The color of the text.
+	 * @param title - The title of the text.
+	 * @internal
+	 */
+	protected static process(text: any, color: ColorResolvable = 'debug', title: string = ''): void {
+		if (Logger.LEVEL === LogLevel.OFF) return;
+		const datePart = `[${dayjs().format('YYYY/MM/DD HH:mm:ss.SSS')}]`;
+		const titlePart = `[${title.toUpperCase()}]`;
+		let textPart = text;
+
+		text = typeof text === 'string' ? text : inspect(text);
+		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string): string => chalk.yellow(match));
+		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
+
+		color = propertyInEnum(LogType, color) ?? color;
+		text = `${Logger.setColor('#847270', datePart)}${Logger.setColor(color, `${titlePart} ${text + chalk.reset()}`)}`;
+		console.log(text);
+		Logger.savingFiles.forEach((s, index) => {
+			if (!fs.existsSync(s)) {
+				Logger.savingFiles.slice(index, 1);
+				Logger.warn(
+					`File ${Logger.setColor('violet', s)} ${Logger.setColor('comment', `not found, removed from files to save logs.`)}`,
+					'LoggingWriter'
+				);
+			} else {
+				textPart = textPart.replace(/\[(\d{1,3};){0,6}\d{1,3}m/gm, '');
+				fs.appendFileSync(s, `${datePart}${titlePart} ${textPart}\n`);
+			}
+		});
 	}
 
 	/**
