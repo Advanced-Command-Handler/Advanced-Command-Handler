@@ -186,7 +186,7 @@ export namespace CommandHandler {
 	 * Must use after {@link CommandHandler.create}.
 	 * @returns - It returns itself so that afterward you can use the other functions.
 	 */
-	export function setDefaultEvents(): typeof CommandHandler {
+	export function useDefaultEvents(): typeof CommandHandler {
 		Logger.info('Loading default events.', 'Loading');
 		for (let event of Object.values(defaultEvents)) {
 			const instance = new event();
@@ -205,7 +205,7 @@ export namespace CommandHandler {
 	 * Must use after {@link CommandHandler.create}.
 	 * @returns - It returns itself so that afterward you can use the other functions .
 	 */
-	export function setDefaultCommands(): typeof CommandHandler {
+	export function useDefaultCommands(): typeof CommandHandler {
 		Logger.info('Loading default commands.', 'Loading');
 		for (let command of Object.values(defaultCommands)) {
 			const instance = new command();
