@@ -7,6 +7,6 @@ module.exports = class SayCommand extends Command {
 	cooldown = 10;
 
 	async run(ctx) {
-		ctx.message.channel.send(ctx.args.length ? ctx.argString : 'You must specify a message.');
+		ctx.message.channel.send(ctx.args.length ? ctx.argsString : 'You must specify a MESSAGE.');
 	}
 };
