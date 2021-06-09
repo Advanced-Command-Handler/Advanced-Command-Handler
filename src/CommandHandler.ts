@@ -16,6 +16,9 @@ dayjs.duration('a');
 export {dayjs};
 
 export namespace CommandHandler {
+	/**
+	 * The options for creating a new CommandHandler instance.
+	 */
 	export interface CreateCommandHandlerOptions {
 		/**
 		 * The directory of your commands.
@@ -50,7 +53,13 @@ export namespace CommandHandler {
 	 * @internal
 	 */
 	export interface CommandCooldown {
+		/**
+		 * The date the cooldown has started.
+		 */
 		executedAt: Date;
+		/**
+		 * The actual cooldown of the Command.
+		 */
 		cooldown: number;
 	}
 
@@ -132,6 +141,7 @@ export namespace CommandHandler {
 	 *    }
 	 * }
 	 * ```
+	 * So cooldowns are mapped by IDs then mapped by commands.
 	 */
 	export const cooldowns: Collection<Snowflake, CooldownUser> = new Collection();
 	/**
@@ -151,6 +161,8 @@ export namespace CommandHandler {
 	export let client: AdvancedClient | null = null;
 
 	/**
+	 * Adds a listener for the {@link eventName} event.
+	 *
 	 * @typeParam K - Events names for CommandHandler.
 	 * @param eventName - The event name.
 	 * @param fn - The callback to execute.
@@ -160,6 +172,8 @@ export namespace CommandHandler {
 	}
 
 	/**
+	 * Execute an event throughout the CommandHandler.
+	 *
 	 * @param eventName - The event name.
 	 * @param args - The arguments to pass.
 	 */

@@ -4,6 +4,8 @@ import {Logger} from './Logger';
 export type JSONLike = {[k: string]: number | string | boolean | JSONLike | JSONLike[]};
 
 /**
+ * Saves a JSON into a JSON file.
+ *
  * @param path - The path of the JSON file.
  * @param content - The content to save.
  * @returns - True if operation has successfully worked.

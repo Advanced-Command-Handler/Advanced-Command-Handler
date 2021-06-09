@@ -28,7 +28,7 @@ export function getKeyByValue<O extends {[key: string]: any}>(object: O, value: 
 /**
  * Test if the ID is in the {@link CommandHandler.owners}.
  *
- * @param id - The ID of the user to debug
+ * @param id - The ID of the user to debug.
  * @returns - Is the user an owner.
  */
 export function isOwner(id: Snowflake): boolean {

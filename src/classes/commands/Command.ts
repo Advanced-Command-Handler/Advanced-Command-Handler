@@ -1,6 +1,6 @@
-import {DMChannel, GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
+import {DMChannel, GuildChannel, GuildMember, Message, PermissionString, Permissions, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
-import {isOwner, isPermission, Logger} from '../../utils';
+import {Logger, isOwner, isPermission} from '../../utils';
 import {CommandContext, SubCommandContext} from '../contexts';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors';
 import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
@@ -41,11 +41,14 @@ export enum Tag {
 	 */
 	guildOwnerOnly = 'guildOwnerOnly',
 	/**
-	 * Tag for commands to only run in DM.
+	 * Tag for commands to only run in private messages.
 	 */
 	dmOnly = 'dmOnly',
 }
 
+/**
+ * The cooldown object.
+ */
 export interface Cooldown extends CommandCooldown {
 	/**
 	 * The time to wait, in seconds & milliseconds.
@@ -67,11 +70,23 @@ export interface DeleteMessageOptions {
 	timeout?: number;
 }
 
+/**
+ * The object for missing permissions.
+ */
 export interface MissingPermissions {
+	/**
+	 * Missing permissions of the client.
+	 */
 	client: PermissionString[];
+	/**
+	 * Missing permissions of the user.
+	 */
 	user: PermissionString[];
 }
 
+/**
+ * An interface to put optional methods for the {@link Command} class.
+ */
 export interface Command {
 	/**
 	 * Override this method to register your subCommands.
@@ -142,14 +157,22 @@ export abstract class Command {
 	 */
 	public userPermissions?: Array<PermissionString | string>;
 
+	/**
+	 * The SubCommands of this command.
+	 *
+	 * @remarks Register SubCommands using the {@link Command#registerSubCommands} method.
+	 */
 	public subCommands: SubCommand[] = [];
 
+	/**
+	 * Returns the names and aliases of this command in an array.
+	 */
 	public get namesAndAliases(): string[] {
 		return [this.name, ...(this.aliases ?? [])];
 	}
 
 	/**
-	 * Get an user ID from different sources, only here to simplify code.
+	 * Get a user ID from different sources, only here to simplify code.
 	 *
 	 * @param from - Where to get ID from.
 	 * @returns - The ID.
@@ -162,6 +185,7 @@ export abstract class Command {
 	/**
 	 * The function to run when executing the command.
 	 *
+	 * @remarks Use the {@link Command#execute} method if you want to have a validation before executing the run method.
 	 * @param ctx - The command context.
 	 */
 	public abstract run(ctx: CommandContext): any | Promise<any>;
@@ -310,6 +334,12 @@ export abstract class Command {
 		setTimeout(() => delete CommandHandler.cooldowns.get(id)![this.name], cooldown * 1000);
 	}
 
+	/**
+	 * Execute the run method, but perform validations before, prefer using this method in your custom Message Event.
+	 *
+	 * @param ctx - The CContext.
+	 * @returns - An error related to the command if any, for example : a tag not satisfied.
+	 */
 	public async execute(ctx: CommandContext): Promise<CommandError | undefined> {
 		const error = await this.validate(ctx);
 		if (error) return new CommandError(error);
@@ -333,6 +363,12 @@ export abstract class Command {
 		this.setCooldown(ctx.message);
 	}
 
+	/**
+	 * Validate a command, returning an error if any of the validation methods are not valid.
+	 *
+	 * @param ctx - The CommandContext.
+	 * @returns - The error if any.
+	 */
 	public async validate(ctx: CommandContext): Promise<CommandErrorBuilder | undefined> {
 		if (this.isInCooldown(ctx.message))
 			return {
@@ -373,6 +409,15 @@ export abstract class Command {
 
 	protected subCommand(name: string, callback: RunSubCommandFunction): void;
 	protected subCommand(name: string, options: SubCommandOptions, callback: RunSubCommandFunction): void;
+	/**
+	 * Creates a new SubCommand for the command.
+	 *
+	 * @remarks Make sure to creates the Subcommands in the {@link Command#registerSubCommands} method.
+	 * @param name - The name of the SubCommand.
+	 * @param options - The options of the Subcommand.
+	 * @param callback - The callback executed when the SubCommand is executed.
+	 * @returns - The SubCommand itself.
+	 */
 	protected subCommand(name: string, options: SubCommandOptions | RunSubCommandFunction, callback?: RunSubCommandFunction) {
 		if (this.subCommands.map(c => c.name).includes(name)) return;
 
@@ -381,9 +426,11 @@ export abstract class Command {
 			options = {};
 		}
 
-		this.subCommands.push(new (class extends SubCommand {})(name, options, callback as RunSubCommandFunction));
+		const subCommand = new (class extends SubCommand {})(name, options, callback as RunSubCommandFunction);
+		this.subCommands.push(subCommand);
 
 		Logger.comment(`Loaded subcommand '${this.name} ${name}'.`, 'SubCommandLoading');
+		return subCommand;
 	}
 }
 
@@ -392,14 +439,34 @@ export abstract class Command {
  * This class is not in the SubCommand file because otherwise it won't compile because of circular because of the {@link Command.subCommands} property.
  */
 export abstract class SubCommand extends Command {
+	/**
+	 * The name of the SubCommand.
+	 */
 	public readonly name: string;
 
+	/**
+	 * The method executed when the SubCommand is executed.
+	 *
+	 * @param ctx - The SubCommandContext.
+	 * @returns - Any.
+	 */
 	public override async run(ctx: SubCommandContext): Promise<any> {
 		return this.runFunction(ctx);
 	}
 
+	/**
+	 * The function executed when the SubCommand is executed.
+	 */
 	public readonly runFunction: RunSubCommandFunction;
 
+	/**
+	 * Creates a new SubCommand.
+	 *
+	 * @remarks Make sure to creates the Subcommands in the {@link Command#registerSubCommands} method.
+	 * @param name - The name of the SubCommand.
+	 * @param options - The options of the Subcommand.
+	 * @param runFunction - The callback executed when the SubCommand is executed.
+	 */
 	public constructor(name: string, options: SubCommandOptions = {}, runFunction: RunSubCommandFunction) {
 		super();
 		this.name = name;

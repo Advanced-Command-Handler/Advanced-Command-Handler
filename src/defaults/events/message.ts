@@ -1,7 +1,8 @@
+/* eslint-disable jsdoc/require-jsdoc */
 import {Message} from 'discord.js';
 import {CommandContext, CommandErrorType, Event, EventContext, Tag} from '../../classes';
 import {CommandHandler} from '../../CommandHandler';
-import {argError, codeError, getThing, Logger, permissionsError} from '../../utils';
+import {Logger, argError, codeError, getThing, permissionsError} from '../../utils';
 
 export class MessageEvent extends Event {
 	name = 'message' as const;

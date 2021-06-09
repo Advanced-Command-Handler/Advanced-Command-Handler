@@ -1,4 +1,4 @@
-import {Message, PermissionResolvable, Permissions, PermissionString} from 'discord.js';
+import {Message, PermissionResolvable, PermissionString, Permissions} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
 import {Command} from '../classes';
 

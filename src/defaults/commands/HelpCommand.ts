@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 import {BetterEmbed} from 'discord.js-better-embed';
 import {Command, CommandContext, Tag} from '../../classes';
 import {CommandHandler, dayjs} from '../../CommandHandler';

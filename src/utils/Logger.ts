@@ -70,7 +70,10 @@ export class Logger {
 	 */
 	public static ignores: Array<string | LoggerIgnore> = [];
 
-	private static savingFiles: string[] = [];
+	/**
+	 * The files where the logs are saved.
+	 */
+	public static savingFiles: string[] = [];
 
 	/**
 	 * @remarks
@@ -78,6 +81,11 @@ export class Logger {
 	 */
 	private constructor() {}
 
+	/**
+	 * Save from now the logs in the file.
+	 *
+	 * @param path - The path of the file.
+	 */
 	public static saveInFile(path: string) {
 		const file = paths.resolve(process.cwd(), path);
 
@@ -159,6 +167,13 @@ export class Logger {
 		Logger.process(message, color, title);
 	}
 
+	/**
+	 * Set the color for the following text.
+	 *
+	 * @param color - The color of the text.
+	 * @param text - The text to colorize.
+	 * @returns - The text colored, adapted for consoles using escape sequences.
+	 */
 	public static setColor(color: ColorResolvable = colors.default, text: string = ''): string {
 		let finalColor: chalk.Chalk;
 		if ((color = this.getColorFromColorResolvable(color))) finalColor = chalk.hex(color);
