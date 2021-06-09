@@ -35,15 +35,39 @@
 		},
 		"plugins": [
 			"eslint-plugin-tsdoc",
-			"@typescript-eslint",
-			"eslint-plugin-jsdoc"
+			"eslint-plugin-jsdoc",
+			"@typescript-eslint"
 		],
 		"rules": {
-			"tsdoc/syntax": "warn",
-			"require-jsdoc": "warn",
 			"jsdoc/check-tag-names": "off",
+			"jsdoc/require-description": [
+				"warn",
+				{
+					"checkConstructors": false
+				}
+			],
+			"jsdoc/require-description-complete-sentence": "warn",
+			"jsdoc/require-jsdoc": [
+				"warn",
+				{
+					"checkGetters": true,
+					"checkSetters": true,
+					"contexts": ["ClassProperty"],
+					"publicOnly": false,
+					"require": {
+						"MethodDefinition": true
+					}
+				}
+			],
 			"jsdoc/require-param-type": "off",
-			"jsdoc/require-returns-type": "off"
+			"jsdoc/require-returns": [
+				"warn",
+				{
+					"checkGetters": false
+				}
+			],
+			"jsdoc/require-returns-type": "off",
+			"tsdoc/syntax": "warn"
 		}
 	},
 	"homepage": "https://github.com/Ayfri/Advanced-Command-Handler",
