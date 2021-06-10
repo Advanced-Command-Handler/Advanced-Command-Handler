@@ -62,15 +62,21 @@ export class HelpCommand extends Command {
 			description: `\`${ctx.handler.prefixes[0]}${ctx.commandName} <command>\` to get more information on a command.`,
 		});
 
-		const list = Object.entries(commandList).sort((a, b) => a[0].localeCompare(b[0]));
-		for (const [category, commands] of list) {
-			const command = commands
-				.filter(c => c.category === category && c.validate(ctx))
-				.map(c => c.name)
-				.sort();
-			if (!command.length) continue;
-			embed.addField(category, `\`${command.join('`, `')}\``);
-		}
+		Object.entries(commandList)
+			.sort((a, b) => a[0].localeCompare(b[0]))
+			.map(c => [c[0], c[1].filter(c => !c.validate(ctx))] as [string, Command[]])
+			.forEach(([category, commands]) => {
+				if (!commands.length) return;
+
+				embed.addField(
+					category,
+					`\`${commands
+						.filter(m => m.category === category)
+						.map(c => c.name)
+						.sort()
+						.join('`, `')}\``
+				);
+			});
 
 		await ctx.reply(embed);
 	}
