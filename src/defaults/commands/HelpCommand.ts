@@ -63,16 +63,6 @@ export class HelpCommand extends Command {
 		});
 
 		const list = Object.entries(commandList).sort((a, b) => a[0].localeCompare(b[0]));
-		//.forEach(([category, command]) => {
-		//	embed.addField(
-		//		category,
-		//		`\`${command
-		//			.filter(m => m.category === category)
-		//			.map(c => c.name)
-		//			.sort()
-		//			.join('`, `')}\``
-		//	);
-		//});
 		for (const [category, commands] of list) {
 			const command = commands
 				.filter(c => c.category === category && c.validate(ctx))
