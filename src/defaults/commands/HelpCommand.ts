@@ -64,10 +64,13 @@ export class HelpCommand extends Command {
 
 		Object.entries(commandList)
 			.sort((a, b) => a[0].localeCompare(b[0]))
-			.forEach(([category, command]) => {
+			.map(c => [c[0], c[1].filter(c => !c.validate(ctx))] as [string, Command[]])
+			.forEach(([category, commands]) => {
+				if (!commands.length) return;
+
 				embed.addField(
 					category,
-					`\`${command
+					`\`${commands
 						.filter(m => m.category === category)
 						.map(c => c.name)
 						.sort()

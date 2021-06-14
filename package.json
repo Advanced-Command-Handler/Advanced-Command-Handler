@@ -52,7 +52,9 @@
 				{
 					"checkGetters": true,
 					"checkSetters": true,
-					"contexts": ["ClassProperty"],
+					"contexts": [
+						"ClassProperty"
+					],
 					"publicOnly": false,
 					"require": {
 						"MethodDefinition": true
