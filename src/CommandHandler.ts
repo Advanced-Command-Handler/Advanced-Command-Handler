@@ -99,7 +99,7 @@ export namespace CommandHandler {
 		/**
 		 * The event executed when the CommandHandler starts its launch.
 		 */
-		launch: [];
+		launch: [LaunchCommandHandlerOptions];
 		/**
 		 * The event executed when loading a Command.
 		 */
@@ -270,7 +270,7 @@ export namespace CommandHandler {
 	 */
 	export async function launch(options: LaunchCommandHandlerOptions): Promise<typeof CommandHandler> {
 		client = new AdvancedClient(options.token, options.clientOptions ?? {});
-		emit('launch');
+		emit('launch', options);
 
 		try {
 			await loadCommands(commandsDir);
