@@ -29,7 +29,7 @@ export class HelpCommand extends Command {
 	override usage = 'help\nhelp <command>';
 
 	public override async run(ctx: CommandContext): Promise<any> {
-		if (this.subCommands.find(s => s.name === 'all')!.namesAndAliases.includes(ctx.args[0])) return;
+		if (this.subCommands.find(s => s.name === 'all')!.nameAndAliases.includes(ctx.args[0])) return;
 
 		if (!ctx.args.length || !ctx.handler.getCommandAliasesAndNames().includes(ctx.args[0])) {
 			await this.showGlobalHelp(ctx);

@@ -167,7 +167,7 @@ export abstract class Command {
 	/**
 	 * Returns the names and aliases of this command in an array.
 	 */
-	public get namesAndAliases(): string[] {
+	public get nameAndAliases(): string[] {
 		return [this.name, ...(this.aliases ?? [])];
 	}
 
@@ -346,7 +346,7 @@ export abstract class Command {
 
 		await this.run(ctx);
 		for (const subCommand of this.subCommands) {
-			if (subCommand.namesAndAliases.includes([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' '))) {
+			if (subCommand.nameAndAliases.includes([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' '))) {
 				ctx = new SubCommandContext({
 					args: [...ctx.args].splice(0, subCommand.name.split(' ').length),
 					command: this,
