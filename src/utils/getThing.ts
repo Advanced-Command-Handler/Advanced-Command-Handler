@@ -1,4 +1,4 @@
-import {Channel, Collection, Emoji, Guild, GuildChannel, GuildMember, Message, NewsChannel, Role, Snowflake, TextChannel, User} from 'discord.js';
+import {Emoji, Guild, GuildChannel, GuildMember, Message, NewsChannel, Role, TextChannel, User} from 'discord.js';
 import {Command} from '../classes';
 import {CommandHandler} from '../CommandHandler';
 
@@ -13,7 +13,7 @@ export enum DataType {
 	USER = 'user',
 }
 
-type DataTypeResolver<T extends DataType> = T | `${T}`;
+type DataTypeResolver<T extends DataType> = T | Lowercase<T>;
 
 /**
  * Finds a GuildChannel {@link https://discord.js/#/docs/main/stable/class/Channel} from the text, or the message content and returns null if nothing found.
@@ -107,21 +107,19 @@ export async function getThing(
 	const client = CommandHandler.client;
 	switch (dataType) {
 		case DataType.COMMAND:
-			return CommandHandler.commands.find((c: Command) => c.name === text || (c.aliases?.includes(text as string) ?? false)) ?? null;
+			return CommandHandler.commands.find(c => c.name === text || (c.aliases?.includes(text as string) ?? false)) ?? null;
 
 		case DataType.CHANNEL:
 			return (
 				message?.guild?.channels.cache.get(text) ||
 				message?.mentions.channels.first() ||
-				message?.guild?.channels.cache.find(
-					(c: GuildChannel) => c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1
-				) ||
+				message?.guild?.channels.cache.find(c => c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
 				null
 			);
 		case DataType.GUILD:
 			return (
 				client?.guilds.cache.get(text) ||
-				client?.guilds.cache.find((g: Guild) => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
+				client?.guilds.cache.find(g => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
 				null
 			);
 
@@ -130,7 +128,7 @@ export async function getThing(
 				message?.guild?.members.cache.get(text) ||
 				message?.mentions?.members?.first() ||
 				message?.guild?.members.cache.find(
-					(m: GuildMember) =>
+					m =>
 						(m.displayName.toLowerCase().includes((text as string).toLowerCase()) ||
 							m.user.username.toLowerCase().includes((text as string).toLowerCase())) &&
 						(text as string).length > 1
@@ -140,7 +138,7 @@ export async function getThing(
 		case DataType.USER:
 			return (
 				client?.users.cache.get(text) ||
-				client?.users.cache.find((u: User) => u.username.toLowerCase() === (text as string).toLowerCase()) ||
+				client?.users.cache.find(u => u.username.toLowerCase() === (text as string).toLowerCase()) ||
 				message?.mentions?.users.first() ||
 				null
 			);
@@ -149,13 +147,13 @@ export async function getThing(
 			return (
 				message?.guild?.roles.cache.get(text) ||
 				message?.mentions.roles.first() ||
-				message?.guild?.roles.cache.find((r: Role) => r.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
+				message?.guild?.roles.cache.find(r => r.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
 				null
 			);
 		case DataType.EMOTE:
 			return (
 				client?.emojis.cache.get(text) ||
-				client?.emojis.cache.find((e: Emoji) => e.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
+				client?.emojis.cache.find(e => e.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
 				null
 			);
 
@@ -164,7 +162,7 @@ export async function getThing(
 			if (m) return m;
 
 			const url = text.replace('https://discord.com/channels/', '').split('/');
-			const channels: Collection<Snowflake, Channel> | undefined = client?.channels.cache;
+			const channels = client?.channels.cache;
 			if (text.startsWith('https') && channels?.has(url[1])) {
 				return (await (channels?.filter(c => c.isText()).get(url[1]) as TextChannel)?.messages.fetch(url[2])) || null;
 			}
