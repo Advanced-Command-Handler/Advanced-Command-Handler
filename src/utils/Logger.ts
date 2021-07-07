@@ -244,7 +244,7 @@ export class Logger {
 		console.log(text);
 		Logger.savingFiles.forEach((s, index) => {
 			if (!fs.existsSync(s)) {
-				Logger.savingFiles.slice(index, 1);
+				Logger.savingFiles.splice(index, 1);
 				Logger.warn(
 					`File ${Logger.setColor('violet', s)} ${Logger.setColor('comment', `not found, removed from files to save logs.`)}`,
 					'LoggingWriter'
