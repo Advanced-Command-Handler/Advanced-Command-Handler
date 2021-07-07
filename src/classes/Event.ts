@@ -13,11 +13,10 @@ export abstract class Event {
 	 */
 	public once: boolean = false;
 
-	public abstract run(ctx: EventContext<this>): any | Promise<any>;
 	/**
 	 * The run function, executed when the event is fired.
 	 */
-	public abstract run(ctx: EventContext<this>, ...args: ClientEvents[this['name']]): any | Promise<any>;
+	public abstract run(ctx: EventContext<this>, ...args: ClientEvents[this['name']] | undefined[]): any | Promise<any>;
 
 	/**
 	 * Bind the event to the client, when the `something` event from {@link AdvancedClient} will be fire, this event will be also fired.

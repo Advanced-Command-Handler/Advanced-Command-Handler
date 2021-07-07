@@ -1,5 +1,4 @@
-import {Command} from './classes';
-import {Event} from './classes';
+import {Command, Event} from './classes';
 
 export type Constructor<T extends {} = {}> = new (...args: any[]) => T;
 export type MaybeCommand = Constructor<Command> | {default: Constructor<Command>};
