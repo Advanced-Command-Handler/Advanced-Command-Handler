@@ -4,47 +4,73 @@
 		"url": "https://github.com/Ayfri/Advanced-Command-Handler/issues"
 	},
 	"dependencies": {
-		"chalk": "^4.1.0",
-		"dayjs": "^1.10.4",
-		"discord.js": "^12.5.1",
-		"discord.js-better-embed": "^1.1.0"
+		"chalk": "^4.1.1",
+		"dayjs": "^1.10.6",
+		"discord.js": "^12.5.3",
+		"discord.js-better-embed": "^1.2.1"
 	},
 	"description": "A package to help you create a bot with only 1 main file, directories for your events/commands, with some helpers classes and functions.",
 	"devDependencies": {
-		"@types/node": "^14.14.22",
-		"@typescript-eslint/eslint-plugin": "^4.14.2",
-		"@typescript-eslint/parser": "^4.14.2",
-		"eslint": "^7.19.0",
-		"eslint-plugin-jsdoc": "^31.6.0",
-		"eslint-plugin-tsdoc": "^0.2.11",
-		"prettier": "^2.2.1",
-		"typescript": "^4.1.3"
+		"@types/node": "^16.0.0",
+		"@typescript-eslint/eslint-plugin": "^4.28.2",
+		"@typescript-eslint/parser": "^4.28.2",
+		"eslint": "^7.30.0",
+		"eslint-plugin-jsdoc": "^35.4.1",
+		"eslint-plugin-tsdoc": "^0.2.14",
+		"prettier": "^2.3.2",
+		"typescript": "^4.3.5"
 	},
 	"engineStrict": true,
 	"engines": {
 		"node": ">=14"
 	},
 	"eslintConfig": {
+		"extends": [
+			"plugin:jsdoc/recommended"
+		],
 		"parser": "@typescript-eslint/parser",
 		"parserOptions": {
 			"ecmaVersion": 2021,
 			"sourceType": "module"
 		},
-		"rules": {
-			"tsdoc/syntax": "warn",
-			"require-jsdoc": "warn",
-			"jsdoc/check-tag-names": "off",
-			"jsdoc/require-param-type": "off",
-			"jsdoc/require-returns-type": "off"
-		},
-		"extends": [
-			"plugin:jsdoc/recommended"
-		],
 		"plugins": [
 			"eslint-plugin-tsdoc",
-			"@typescript-eslint",
-			"eslint-plugin-jsdoc"
-		]
+			"eslint-plugin-jsdoc",
+			"@typescript-eslint"
+		],
+		"rules": {
+			"jsdoc/check-tag-names": "off",
+			"jsdoc/require-description": [
+				"warn",
+				{
+					"checkConstructors": false
+				}
+			],
+			"jsdoc/require-description-complete-sentence": "warn",
+			"jsdoc/require-jsdoc": [
+				"warn",
+				{
+					"checkGetters": true,
+					"checkSetters": true,
+					"contexts": [
+						"ClassProperty"
+					],
+					"publicOnly": false,
+					"require": {
+						"MethodDefinition": true
+					}
+				}
+			],
+			"jsdoc/require-param-type": "off",
+			"jsdoc/require-returns": [
+				"warn",
+				{
+					"checkGetters": false
+				}
+			],
+			"jsdoc/require-returns-type": "off",
+			"tsdoc/syntax": "warn"
+		}
 	},
 	"homepage": "https://github.com/Ayfri/Advanced-Command-Handler",
 	"keywords": [
@@ -62,9 +88,10 @@
 	"prettier": {
 		"arrowParens": "avoid",
 		"bracketSpacing": false,
-		"printWidth": 200,
+		"printWidth": 160,
 		"singleQuote": true,
 		"tabWidth": 4,
+		"trailingComma": "es5",
 		"useTabs": true
 	},
 	"readme": "https://github.com/Ayfri/Advanced-Command-Handler/blob/package/README.md",
@@ -76,8 +103,8 @@
 		"build": "tsc",
 		"lint": "eslint src/**/*.ts --fix",
 		"prepare": "npm run build",
-		"prettier": "prettier package.json tsconfig.json README.md src tests --write"
+		"prettier": "prettier **.json **.md src tests --write"
 	},
 	"types": "types/index.d.ts",
-	"version": "2.4.0"
+	"version": "3.0.0-beta.0"
 }

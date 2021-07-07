@@ -1,6 +1,6 @@
 import {Message} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command} from '../classes/Command';
+import {Command} from '../classes';
 import {Logger} from './Logger';
 import {cutIfTooLong, isOwner} from './utils';
 
@@ -9,13 +9,10 @@ import {cutIfTooLong, isOwner} from './utils';
  *
  * @remarks
  * If the message author is an owner, it sends the error stack.
- *
  * @param message - The message where the error is from.
  * @param error - The native error.
  * @param command - The command to be executed.
- *
- * @returns The error message sent.
- *
+ * @returns - The error message sent.
  * @remarks
  * Do not use for sending string as errors.
  */
@@ -28,5 +25,7 @@ export function codeError(message: Message, error: Error, command: Command): Pro
 	});
 
 	Logger.error(error, 'CodeError');
-	return isOwner(message.author.id) ? message.channel.send(embed) : message.channel.send(`An error occurred while executing the \`${command.name}\` command.`);
+	return isOwner(message.author.id)
+		? message.channel.send(embed)
+		: message.channel.send(`An error occurred while executing the \`${command.name}\` command.`);
 }

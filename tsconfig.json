@@ -1,14 +1,13 @@
 {
 	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
 		"declaration": true,
-		"declarationDir": "types",
 		"esModuleInterop": true,
 		"lib": ["ESNext"],
 		"module": "commonjs",
-		"noImplicitAny": true,
+		"noImplicitOverride": true,
 		"noUnusedParameters": true,
 		"outDir": "dist",
-		"pretty": true,
 		"rootDir": "src",
 		"skipLibCheck": true,
 		"strict": true,

@@ -1,1 +1,2 @@
-export * as ping from './ping';
+export * from './PingCommand';
+export * from './HelpCommand';

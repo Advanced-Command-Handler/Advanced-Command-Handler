@@ -1,10 +1,9 @@
 const {Event, Logger} = require('advanced-command-handler');
-module.exports = new Event(
-	{
-		name: 'ready',
-		once: true,
-	},
-	async () => {
+
+module.exports = class ReadyEvent extends Event {
+	name = 'ready';
+
+	async run(context) {
 		Logger.log('ready !');
 	}
-);
+};
