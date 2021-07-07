@@ -2,8 +2,11 @@
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
 		"declaration": true,
+		"declarationDir": "types",
 		"esModuleInterop": true,
-		"lib": ["ESNext"],
+		"lib": [
+			"ESNext"
+		],
 		"module": "commonjs",
 		"noImplicitOverride": true,
 		"noUnusedParameters": true,
@@ -14,7 +17,11 @@
 		"target": "ES2020"
 	},
 	"ts-node": {
-		"require": ["chalk", "dayjs", "discord.js", "discord.js-better-embed"],
-		"pretty": true
+		"require": [
+			"chalk",
+			"dayjs",
+			"discord.js",
+			"discord.js-better-embed"
+		]
 	}
 }

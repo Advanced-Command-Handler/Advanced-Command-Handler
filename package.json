@@ -80,7 +80,7 @@
 		"discordjs"
 	],
 	"license": "ISC",
-	"main": "./dist/index.js",
+	"main": "dist",
 	"maintainers": [
 		"ayfri"
 	],
@@ -105,6 +105,6 @@
 		"prepare": "npm run build",
 		"prettier": "prettier **.json **.md src tests --write"
 	},
-	"types": "types/index.d.ts",
-	"version": "3.0.0-beta.0"
+	"types": "types",
+	"version": "3.0.0-beta.1"
 }
