@@ -84,7 +84,8 @@ export class HelpCommand extends Command {
 		if (!CommandHandler.commands.map(c => c.name).includes(command.name)) return;
 
 		let description = `**Description** : ${command.description ?? 'No description provided.'}\n`;
-		description += `**Category** : \`${command.category}\``;
+		description += `**Category** : \`${command.category}\`\n`;
+		description += `Can you use it here : **${(await command.validate(ctx)) ? 'No' : 'Yes'}**`;
 
 		const embed = BetterEmbed.fromTemplate('complete', {
 			client: ctx.client,
