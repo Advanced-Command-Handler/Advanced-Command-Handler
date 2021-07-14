@@ -7,7 +7,7 @@ import {join} from 'path';
 import {AdvancedClient, Command, CommandHandlerError, Event} from './classes';
 import * as defaultCommands from './defaults/commands/index';
 import * as defaultEvents from './defaults/events/index';
-import {MaybeCommand, MaybeEvent} from './types';
+import {Constructor, MaybeCommand, MaybeEvent} from './types';
 import {Logger} from './utils';
 
 dayjs.extend(dayjsDuration);
@@ -320,8 +320,9 @@ export namespace CommandHandler {
 	export async function loadCommand(path: string, name: string) {
 		let command: MaybeCommand = await import(join(process.cwd(), `./${path}/${name}`));
 		if ('default' in command) command = command.default;
+		if (command.constructor.name === 'Object') command = Object.values(command)[0];
 
-		const instance = new command();
+		const instance = new (command as Constructor<Command>)();
 		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		if (!instance.category) instance.category = path.split(/[\\/]/).pop()!;
 
@@ -383,8 +384,8 @@ export namespace CommandHandler {
 			for (const file of files) {
 				let event: MaybeEvent = await import(join(process.cwd(), `${path}/${file}`));
 				if ('default' in event) event = event.default;
-
-				const instance = new event();
+				if (event.constructor.name === 'Object') event = Object.values(event)[0];
+				const instance = new (event as Constructor<Event>)();
 				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
 				events.set(instance.name, instance);
 
