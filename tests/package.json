@@ -2,7 +2,7 @@
 	"name": "tests",
 	"version": "1.0.0",
 	"dependencies": {
-		"advanced-command-handler": "file://../",
+		"advanced-command-handler": "file:..",
 		"dotenv": "^8.2.0"
 	},
 	"main": "bot.js",
