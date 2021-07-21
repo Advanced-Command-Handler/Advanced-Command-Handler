@@ -450,7 +450,7 @@ export abstract class SubCommand extends Command {
 	 * @param ctx - The SubCommandContext.
 	 * @returns - Any.
 	 */
-	public override async run(ctx: SubCommandContext): any | Promise<any> {
+	public override async run(ctx: SubCommandContext): Promise<any> {
 		return this.runFunction(ctx);
 	}
 

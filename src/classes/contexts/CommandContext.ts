@@ -10,9 +10,11 @@ import {
 	MessageResolvable,
 	SplitOptions,
 	StringResolvable,
+	TextChannel
 } from 'discord.js';
-import {CommandHandler} from '../../CommandHandler';
+
 import {Command} from '../commands';
+import {CommandHandler} from '../../CommandHandler';
 
 /**
  * The interface to create a new CommandContext.
@@ -116,6 +118,13 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	/**
+	 * Returns the channel where the command was executed as a TextChannel or undefined if it isn't'.
+	 */
+	 get textChannel() {
+		return this.message.channel instanceof TextChannel ? this.message.channel : undefined;
+	}
+
+	/**
 	 * Returns the prefix used in the message.
 	 */
 	get prefix() {
@@ -127,6 +136,16 @@ export class CommandContext implements CommandContextBuilder {
 	 */
 	get user() {
 		return this.message.author;
+	}
+
+	/**
+	 * Deletes the message with an optional timeout.
+	 *
+	 * @remarks In Discord.js v13 the timeout for the `delete` method will be removed, so this will be more useful in v13.
+	 * @param timeout - The time to wait in milliseconds before deleting the message.
+	 */
+	public async deleteMessage(timeout: number = 0) {
+		await this.message.delete({timeout});
 	}
 
 	/**
@@ -142,6 +161,13 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	/**
+	 * Remove all the reactions.
+	 */
+	public async removeAllReactions() {
+		await this.message.reactions.removeAll();
+	}
+
+	/**
 	 * Remove one or multiple reactions from emojis.
 	 *
 	 * @param emojis - The list of emoji reactions to remove.
@@ -153,13 +179,6 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	/**
-	 * Remove all the reactions.
-	 */
-	public async removeAllReactions() {
-		await this.message.reactions.removeAll();
-	}
-
-	/**
 	 * Remove one or multiple reactions from the bot.
 	 *
 	 * @param emojis - The emojis the bot has to remove reaction from.
@@ -168,16 +187,6 @@ export class CommandContext implements CommandContextBuilder {
 		for (const e of emojis) {
 			await this.message.reactions.resolve(typeof e === 'object' ? e.id! : e)!.users.remove(this.client.user!.id);
 		}
-	}
-
-	/**
-	 * Deletes the message with an optional timeout.
-	 *
-	 * @remarks In Discord.js v13 the timeout for the `delete` method will be removed, so this will be more useful in v13.
-	 * @param timeout - The time to wait in milliseconds before deleting the message.
-	 */
-	public async deleteMessage(timeout: number = 0) {
-		await this.message.delete({timeout});
 	}
 
 	public bulkDeleteInChannel(number: number, filterOld?: boolean): Promise<Collection<string, Message>>;
