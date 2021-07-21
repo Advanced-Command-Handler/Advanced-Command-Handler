@@ -142,18 +142,18 @@ export namespace CommandHandler {
 	 *    }
 	 * }
 	 * ```
-	 * So cooldowns are mapped by IDs then mapped by commands.
+	 * So cooldowns are mapped by user IDs then mapped by commands.
 	 */
-	export const cooldowns: Collection<Snowflake, CooldownUser> = new Collection();
+	export const cooldowns = new Collection<Snowflake, CooldownUser>();
 	/**
 	 * The events registered by the CommandHandler.
 	 *
 	 * @remarks
 	 * These events may not be bound to the {@link client}.
 	 */
-	export const events: Collection<string, Event> = new Collection();
-	export let commandsDir: string = '';
-	export let eventsDir: string = '';
+	export const events = new Collection<string, Event>();
+	export let commandsDir = '';
+	export let eventsDir = '';
 	export let owners: string[] = [];
 	export let prefixes: string[] = [];
 	/**
@@ -315,11 +315,11 @@ export namespace CommandHandler {
 	/**
 	 * Load a command from the directory & filename.
 	 *
-	 * @param path - The directory to get the command from.
-	 * @param name - The filename of the command.
+	 * @param path - The path of the command folder.
+	 * @param name - The name of the command including the extension.
 	 */
 	export async function loadCommand(path: string, name: string) {
-		let command: MaybeCommand = await import(join(process.cwd(), `./${path}/${name}`));
+		let command: MaybeCommand = await import(join(process.cwd(), path, name));
 		if ('default' in command) command = command.default;
 		if (command.constructor.name === 'Object') command = Object.values(command)[0];
 
@@ -356,18 +356,36 @@ export namespace CommandHandler {
 		const dirs = await fsPromises.readdir(path);
 		Logger.info('Loading commands.', 'Loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'Loading');
-		if (dirs) {
+		if (dirs.length) {
 			for (const dir of dirs) {
-				const files = await fsPromises.readdir(join(process.cwd(), `${path}/${dir}`));
-				if (files.length === 0) continue;
+				const commandsPath = join(process.cwd(), path, dir);
+				const files = await fsPromises.readdir(commandsPath);
+				if (!files.length) continue;
 				Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'Loading');
 
 				for (const file of files) {
-					await loadCommand(`${path}/${dir}`, file);
+					await loadCommand(commandsPath, file);
 				}
 			}
 		}
 		Logger.info(`${commands.size} commands loaded.`, 'Loading');
+	}
+
+	/**
+	 * Load an event from the directory and filename.
+	 *
+	 * @param path - The path of the event folder.
+	 * @param name - The name of the event including the extension.
+	 */
+	export async function loadEvent(path: string, name: string) {
+		let event: MaybeEvent = await import(join(process.cwd(), path, name));
+		if ('default' in event) event = event.default;
+		if (event.constructor.name === 'Object') event = Object.values(event)[0];
+		const instance = new (event as Constructor<Event>)();
+		if (!event) throw new Error(`Event given name or path is not valid.\nPath : ${path}\nName:${name}`);
+		events.set(instance.name, instance);
+
+		Logger.comment(`Event ${instance.name} loading : ${Logger.setColor('gold', `${name.split('.')[0]}.js`)}`, 'Loading');
 	}
 
 	/**
@@ -381,16 +399,9 @@ export namespace CommandHandler {
 		Logger.info('Loading events.', 'Loading');
 		Logger.comment(`Events : (${files.length})`, 'Loading');
 
-		if (files) {
+		if (files.length) {
 			for (const file of files) {
-				let event: MaybeEvent = await import(join(process.cwd(), `${path}/${file}`));
-				if ('default' in event) event = event.default;
-				if (event.constructor.name === 'Object') event = Object.values(event)[0];
-				const instance = new (event as Constructor<Event>)();
-				if (!event) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${file}`);
-				events.set(instance.name, instance);
-
-				Logger.comment(`Event ${instance.name} loading : ${Logger.setColor('gold', `${file.split('.')[0]}.js`)}`, 'Loading');
+				await loadEvent(path, file);
 			}
 		}
 	}
