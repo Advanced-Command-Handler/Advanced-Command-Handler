@@ -1,19 +1,20 @@
-import dayjs from 'dayjs';
-import dayjsDuration from 'dayjs/plugin/duration';
-import {ClientOptions, Collection, Message, Snowflake, Team} from 'discord.js';
-import {EventEmitter} from 'events';
-import {promises as fsPromises} from 'fs';
-import {join} from 'path';
-import {AdvancedClient, Command, CommandHandlerError, Event} from './classes';
 import * as defaultCommands from './defaults/commands/index';
 import * as defaultEvents from './defaults/events/index';
+
+import {AdvancedClient, Command, CommandHandlerError, Event} from './classes';
+import {ClientOptions, Collection, Message, Snowflake, Team} from 'discord.js';
 import {Constructor, MaybeCommand, MaybeEvent} from './types';
+
+import {EventEmitter} from 'events';
 import {Logger} from './utils';
+import d from 'dayjs';
+import dayjsDuration from 'dayjs/plugin/duration';
+import {promises as fsPromises} from 'fs';
+import {join} from 'path';
 
-dayjs.extend(dayjsDuration);
-dayjs.duration('a');
+d.extend(dayjsDuration);
 
-export {dayjs};
+export const dayjs = d;
 
 export namespace CommandHandler {
 	/**
