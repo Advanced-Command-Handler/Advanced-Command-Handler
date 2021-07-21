@@ -28,7 +28,7 @@ export class HelpCommand extends Command {
 	override description = 'Get the list of commands or more information for one.';
 	override usage = 'help\nhelp <command>';
 
-	public override async run(ctx: CommandContext): Promise<any> {
+	public override async run(ctx: CommandContext) {
 		if (this.subCommands.find(s => s.name === 'all')!.nameAndAliases.includes(ctx.args[0])) return;
 
 		if (!ctx.args.length || !ctx.handler.getCommandAliasesAndNames().includes(ctx.args[0])) {

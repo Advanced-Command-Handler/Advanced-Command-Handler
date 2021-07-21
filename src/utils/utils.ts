@@ -9,7 +9,7 @@ import {CommandHandler} from '../CommandHandler';
  * @param endTextIfTooLong - The end text to add if it is too long.
  * @returns - The text, cut if it was too long.
  */
-export function cutIfTooLong(text: string, maxLength: number, endTextIfTooLong: string = '...'): string {
+export function cutIfTooLong(text: string, maxLength: number, endTextIfTooLong: string = '...') {
 	return text.length > maxLength ? `${text.substring(0, maxLength - endTextIfTooLong.length)}${endTextIfTooLong}` : text;
 }
 
@@ -31,8 +31,8 @@ export function getKeyByValue<O extends {[key: string]: any}>(object: O, value: 
  * @param id - The ID of the user to debug.
  * @returns - Is the user an owner.
  */
-export function isOwner(id: Snowflake): boolean {
-	return CommandHandler.owners?.includes(id);
+export function isOwner(id: Snowflake) {
+	return CommandHandler.owners?.includes(id) ?? false;
 }
 
 /**

@@ -9,7 +9,7 @@ export abstract class SlowCommand extends Command {
 	 * @remarks
 	 * Feel free to modify the emoji to use a custom one.
 	 */
-	public readonly waitEmoji = ':hourglass_flowing_sand:';
+	public waitEmoji = ':hourglass_flowing_sand:';
 
 	/**
 	 * Reacts with the {@link waitEmoji}.

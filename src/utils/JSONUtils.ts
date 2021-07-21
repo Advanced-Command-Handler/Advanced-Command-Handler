@@ -37,7 +37,7 @@ export function saveJSON(path: string, content: any): boolean {
  * @param path - The path to the JSON file.
  * @returns - The JSON.
  */
-export function readJSON(path: string): any;
+export function readJSON(path: string): JSONLike;
 /**
  * Reads a JSON through its path.
  *
@@ -47,17 +47,7 @@ export function readJSON(path: string): any;
  * @param path - The path to the JSON file.
  * @returns - The JSON.
  */
-export function readJSON<O extends JSONLike | any[]>(path: string): O;
-/**
- * Reads a JSON through its path.
- *
- * @remarks
- * Prefer using `import` or `require`.
- * @typeParam O - The type of the JSON if any.
- * @param path - The path to the JSON file.
- * @returns - The JSON.
- */
-export function readJSON<O extends JSONLike | any[]>(path: string): any | O {
+export function readJSON<O extends JSONLike>(path: string): O {
 	const bufferedData = fs.readFileSync(path);
 	return JSON.parse(bufferedData.toString('utf8'));
 }

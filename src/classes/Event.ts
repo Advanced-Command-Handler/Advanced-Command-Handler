@@ -23,7 +23,7 @@ export abstract class Event {
 	 *
 	 * @param client - The client to bind the event from.
 	 */
-	public bind(client: AdvancedClient): void {
+	public bind(client: AdvancedClient) {
 		const context: EventContext<this> = new EventContext({
 			event: this,
 			handler: CommandHandler,
@@ -38,7 +38,7 @@ export abstract class Event {
 	 *
 	 * @param client - The client to unbind the event from.
 	 */
-	public unbind(client: AdvancedClient): void {
+	public unbind(client: AdvancedClient) {
 		client.removeListener(
 			this.name,
 			this.run.bind(

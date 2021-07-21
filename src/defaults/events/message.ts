@@ -7,7 +7,7 @@ import {argError, codeError, getThing, Logger, permissionsError} from '../../uti
 export class MessageEvent extends Event {
 	name = 'message' as const;
 
-	public override async run(ctx: EventContext<this>, message: Message): Promise<any> {
+	public override async run(ctx: EventContext<this>, message: Message) {
 		if (message.author.bot || message.system) return;
 
 		const prefix = CommandHandler.getPrefixFromMessage(message);

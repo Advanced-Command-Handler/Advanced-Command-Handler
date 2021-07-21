@@ -118,7 +118,7 @@ export class CommandContext implements CommandContextBuilder {
 	/**
 	 * Returns the prefix used in the message.
 	 */
-	get prefix(): string {
+	get prefix() {
 		return this.handler.getPrefixFromMessage(this.message)!!;
 	}
 

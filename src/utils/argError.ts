@@ -10,7 +10,7 @@ import {Command} from '../classes';
  * @param command - The command to be executed.
  * @returns - The error message sent.
  */
-export function argError(message: Message, error: string, command: Command): Promise<Message> {
+export function argError(message: Message, error: string, command: Command) {
 	const embed = BetterEmbed.fromTemplate('complete', {
 		client: message.client,
 		color: 0xee2200,

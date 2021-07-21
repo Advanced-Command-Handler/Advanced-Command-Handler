@@ -54,7 +54,7 @@ export class Logger {
 	 * Let you set the minimum level required for a log to be sent to console.<br><br>
 	 * For example if you set the level to `LogLevel.LOG`, the `Logger.debug()` and `Logger.comments()` methods won't log anything.
 	 */
-	public static LEVEL: LogLevel = LogLevel.ALL;
+	public static LEVEL = LogLevel.ALL;
 	/**
 	 * Let you ignore Logs by title or by titles and levels.
 	 *
@@ -109,7 +109,7 @@ export class Logger {
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
-	public static comment(message: any, title: string = 'comment'): void {
+	public static comment(message: any, title: string = 'comment') {
 		if (Logger.LEVEL < LogLevel.COMMENT || Logger.isIgnored(title, LogLevel.COMMENT)) return;
 		Logger.process(message, LogType.comment, title);
 	}
@@ -122,7 +122,7 @@ export class Logger {
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
-	public static error(message: any, title: string = 'error'): void {
+	public static error(message: any, title: string = 'error') {
 		if (Logger.LEVEL < LogLevel.ERROR || Logger.isIgnored(title, LogLevel.ERROR)) return;
 		Logger.process(message, LogType.error, title);
 	}
@@ -135,7 +135,7 @@ export class Logger {
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
-	public static event(message: any, title: string = 'event'): void {
+	public static event(message: any, title: string = 'event') {
 		if (Logger.LEVEL < LogLevel.EVENT || Logger.isIgnored(title, LogLevel.EVENT)) return;
 		Logger.process(message, LogType.event, title);
 	}
@@ -148,7 +148,7 @@ export class Logger {
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
-	public static info(message: any, title: string = 'info'): void {
+	public static info(message: any, title: string = 'info') {
 		if (Logger.LEVEL < LogLevel.INFO || Logger.isIgnored(title, LogLevel.INFO)) return;
 		Logger.process(message, LogType.info, title);
 	}
@@ -162,7 +162,7 @@ export class Logger {
 	 * @param title - The title of the log.
 	 * @param color - The color of the log.
 	 */
-	public static log(message: any, title: string = 'log', color: ColorResolvable = LogType.log): void {
+	public static log(message: any, title: string = 'log', color: ColorResolvable = LogType.log) {
 		if (Logger.LEVEL < LogLevel.LOG || Logger.isIgnored(title, LogLevel.LOG)) return;
 		Logger.process(message, color, title);
 	}
@@ -174,9 +174,9 @@ export class Logger {
 	 * @param text - The text to colorize.
 	 * @returns - The text colored, adapted for consoles using escape sequences.
 	 */
-	public static setColor(color: ColorResolvable = colors.default, text: string = ''): string {
+	public static setColor(color: ColorResolvable = colors.default, text: string = '') {
 		let finalColor: chalk.Chalk;
-		if ((color = this.getColorFromColorResolvable(color))) finalColor = chalk.hex(color);
+		if ((color = Logger.getColorFromColorResolvable(color))) finalColor = chalk.hex(color);
 		else throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 
 		return text ? finalColor(text) : finalColor();
@@ -190,7 +190,7 @@ export class Logger {
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
-	public static debug(message: any, title: string = 'debug'): void {
+	public static debug(message: any, title: string = 'debug') {
 		if (Logger.LEVEL < LogLevel.DEBUG || Logger.isIgnored(title, LogLevel.DEBUG)) return;
 		Logger.process(message, LogType.debug, title);
 	}
@@ -203,7 +203,7 @@ export class Logger {
 	 * @param message - The message to log, can be anything.
 	 * @param title - The title of the log.
 	 */
-	public static warn(message: any, title: string = 'warn'): void {
+	public static warn(message: any, title: string = 'warn') {
 		if (Logger.LEVEL < LogLevel.WARNING) return;
 		Logger.process(message, LogType.warn, title);
 	}
@@ -229,7 +229,7 @@ export class Logger {
 	 * @param title - The title of the text.
 	 * @internal
 	 */
-	protected static process(text: any, color: ColorResolvable = 'debug', title: string = ''): void {
+	protected static process(text: any, color: ColorResolvable = 'debug', title: string = '') {
 		if (Logger.LEVEL === LogLevel.OFF) return;
 		const datePart = `[${dayjs().format('YYYY/MM/DD HH:mm:ss.SSS')}]`;
 		const titlePart = `[${title.toUpperCase()}]`;
@@ -265,7 +265,7 @@ export class Logger {
 	 * @returns - The color.
 	 * @internal
 	 */
-	private static getColorFromColorResolvable(color: ColorResolvable): string {
+	private static getColorFromColorResolvable(color: ColorResolvable) {
 		return (
 			propertyInEnum(LogType, propertyInEnum(colors, color) ?? '') ??
 			propertyInEnum(colors, color) ??

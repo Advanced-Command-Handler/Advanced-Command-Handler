@@ -16,7 +16,7 @@ import {cutIfTooLong, isOwner} from './utils';
  * @remarks
  * Do not use for sending string as errors.
  */
-export function codeError(message: Message, error: Error, command: Command): Promise<Message> {
+export function codeError(message: Message, error: Error, command: Command) {
 	const embed = BetterEmbed.fromTemplate('complete', {
 		client: message.client,
 		color: 0xee2200,
@@ -25,7 +25,5 @@ export function codeError(message: Message, error: Error, command: Command): Pro
 	});
 
 	Logger.error(error, 'CodeError');
-	return isOwner(message.author.id)
-		? message.channel.send(embed)
-		: message.channel.send(`An error occurred while executing the \`${command.name}\` command.`);
+	return message.channel.send(isOwner(message.author.id) ? embed : `An error occurred while executing the \`${command.name}\` command.`);
 }

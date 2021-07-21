@@ -206,7 +206,7 @@ export abstract class Command {
 	 * @param message - The message to check permissions for.
 	 * @returns - The missing permissions.
 	 */
-	public getMissingPermissions(message: Message): MissingPermissions {
+	public getMissingPermissions(message: Message) {
 		const missingPermissions: MissingPermissions = {
 			client: [],
 			user: [],
@@ -248,7 +248,7 @@ export abstract class Command {
 	 * @internal
 	 */
 	public getInvalidPermissions() {
-		const permissionsFlags: string[] = [...Object.keys(Permissions.FLAGS)];
+		const permissionsFlags = [...Object.keys(Permissions.FLAGS)];
 
 		return {
 			user: this.userPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
@@ -263,7 +263,7 @@ export abstract class Command {
 	 * @param message - The message to debug tags from.
 	 * @returns - Tags that are not validated by the message.
 	 */
-	public getMissingTags(message: Message): Tag[] {
+	public getMissingTags(message: Message) {
 		const missingTags: Tag[] = [];
 		for (const tag of this.tags ?? []) {
 			if (tag === Tag.ownerOnly && !isOwner(message.author.id)) missingTags.push(Tag.ownerOnly);
@@ -282,7 +282,7 @@ export abstract class Command {
 	 * @param from - The message or channel to debug where it comes from.
 	 * @returns - If it is on a channel required if used.
 	 */
-	public isInRightChannel(from: Message | TextChannel): boolean {
+	public isInRightChannel(from: Message | TextChannel) {
 		const channel = from instanceof Message ? (from.channel as TextChannel) : from;
 		if (this.channels?.length === 0) return true;
 		return this.channels?.every(ch => (ch instanceof TextChannel ? channel.id === ch.id : false)) ?? true;
@@ -296,7 +296,7 @@ export abstract class Command {
 	 * @param from - From where to debug if user is in a cooldown, see types.
 	 * @returns - Is user in a cooldown.
 	 */
-	public isInCooldown(from: Message | User | Snowflake | GuildMember): boolean {
+	public isInCooldown(from: Message | User | Snowflake | GuildMember) {
 		const id = Command.getSnowflake(from);
 		return CommandHandler.cooldowns.has(id) && Object.keys(CommandHandler.cooldowns.get(id)!).includes(this.name);
 	}
@@ -320,7 +320,7 @@ export abstract class Command {
 	 *
 	 * @param from - What to use to select the user to set the cooldown from.
 	 */
-	public setCooldown(from: Message | User | Snowflake | GuildMember): void {
+	public setCooldown(from: Message | User | Snowflake | GuildMember) {
 		const cooldown: number = this.cooldown ?? 0;
 		const id = Command.getSnowflake(from);
 		if (!CommandHandler.cooldowns.has(id)) CommandHandler.cooldowns.set(id, {});
@@ -450,7 +450,7 @@ export abstract class SubCommand extends Command {
 	 * @param ctx - The SubCommandContext.
 	 * @returns - Any.
 	 */
-	public override async run(ctx: SubCommandContext): Promise<any> {
+	public override async run(ctx: SubCommandContext): any | Promise<any> {
 		return this.runFunction(ctx);
 	}
 
