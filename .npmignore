@@ -3,6 +3,7 @@ src
 .idea
 .git
 .github
+.vscode
 tests
 
 # Files

@@ -11,5 +11,8 @@ package-lock.json
 # JetBrains
 .idea
 
+# Visual Studio Code
+.vscode
+
 # Documentation
 docs
