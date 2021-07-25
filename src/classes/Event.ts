@@ -3,6 +3,9 @@ import {CommandHandler} from '../CommandHandler';
 import {AdvancedClient} from './AdvancedClient';
 import {EventContext} from './contexts';
 
+/**
+ * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/events}
+ */
 export abstract class Event {
 	/**
 	 * The name of the event.

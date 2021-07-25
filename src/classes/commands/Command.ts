@@ -14,7 +14,7 @@ import CommandCooldown = CommandHandler.CommandCooldown;
  * To avoid having a ton of these, I imagined a system where you have command tags and for every call, tags of the command are verified one by one.<br>
  * And this system works very smoothly !<br>
  * So if you're using the default message event
- * ({@link https://github.com/Ayfri/Advanced-Command-Handler/wiki/Defaults#defaults-events | see how to use defaults events }), tags will be checked.
+ * ({@link https://ayfri.gitbook.io/advanced-command-handler/defaults | see how to use defaults events }), tags will be checked.
  *
  * @example
  * ```ts
@@ -94,6 +94,9 @@ export interface Command {
 	registerSubCommands?(): any | Promise<any>;
 }
 
+/**
+ * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands}
+ */
 export abstract class Command {
 	/**
 	 * The name of the command.
@@ -435,6 +438,7 @@ export abstract class Command {
 }
 
 /**
+ * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/subcommands}
  * @remarks
  * This class is not in the SubCommand file because otherwise it won't compile because of circular because of the {@link Command.subCommands} property.
  */
@@ -450,7 +454,7 @@ export abstract class SubCommand extends Command {
 	 * @param ctx - The SubCommandContext.
 	 * @returns - Any.
 	 */
-	public override async run(ctx: SubCommandContext): Promise<any> {
+	public override async run(ctx: SubCommandContext) {
 		return this.runFunction(ctx);
 	}
 

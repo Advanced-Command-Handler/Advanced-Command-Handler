@@ -52,6 +52,9 @@ export interface ImageLocal {
 	content: string;
 }
 
+/**
+ * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/templates}
+ */
 export abstract class ImageCommand extends Command {
 	/**
 	 * Send a local image from your files.

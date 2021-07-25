@@ -2,6 +2,9 @@ import {Message} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler.js';
 import {Command} from './Command.js';
 
+/**
+ * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/templates}
+ */
 export abstract class SlowCommand extends Command {
 	/**
 	 * The emoji for waiting.

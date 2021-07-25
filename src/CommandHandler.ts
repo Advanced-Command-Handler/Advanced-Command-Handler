@@ -168,7 +168,7 @@ export namespace CommandHandler {
 	 * @param eventName - The event name.
 	 * @param fn - The callback to execute.
 	 */
-	export function on<K extends keyof CommandHandlerEvents>(eventName: K, fn: (listener: CommandHandlerEvents[K]) => void): void {
+	export function on<K extends keyof CommandHandlerEvents>(eventName: K, fn: (listener: CommandHandlerEvents[K]) => void) {
 		emitter.on(eventName, fn);
 	}
 
@@ -206,6 +206,7 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
+	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults}
 	 * @returns - It returns itself so that afterward you can use the other functions.
 	 */
 	export function useDefaultEvents() {
@@ -225,6 +226,7 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
+	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults}
 	 * @returns - It returns itself so that afterward you can use the other functions .
 	 */
 	export function useDefaultCommands() {
@@ -243,6 +245,7 @@ export namespace CommandHandler {
 	 * Creates a new CommandHandler, wrap up the last one.
 	 *
 	 * @param options - Options for creating a new CommandHandler.
+	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/command-handler#creating-your-commandhandler}
 	 * @returns - It returns itself so that afterward you can use the other functions.
 	 */
 	export function create(options: CreateCommandHandlerOptions) {
@@ -267,6 +270,7 @@ export namespace CommandHandler {
 	 * Launches the CommandHandler, log in the client and load commands/events.
 	 *
 	 * @param options - Options for launching the CommandHandler, see {@link CreateCommandHandlerOptions}.
+	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/command-handler#launching-the-commandhandler}
 	 * @returns - Itself in a promise.
 	 */
 	export async function launch(options: LaunchCommandHandlerOptions) {

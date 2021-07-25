@@ -11,6 +11,9 @@ export interface SubCommandContextBuilder extends CommandContextBuilder {
 	subCommand: SubCommand;
 }
 
+/**
+ * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/context} 
+ */
 export class SubCommandContext extends CommandContext {
 	/**
 	 * The SubCommand related to this SubcommandContext.

@@ -49,6 +49,9 @@ export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof Log
 
 export type LoggerIgnore = [title: string, level: LogLevel | keyof typeof LogLevel];
 
+/**
+ * @see {@link https://ayfri.gitbook.io/advanced-command-handler/utilities/logger}
+ */
 export class Logger {
 	/**
 	 * Let you set the minimum level required for a log to be sent to console.<br><br>

@@ -39,6 +39,9 @@ export interface CommandContextBuilder {
 	message: Message;
 }
 
+/**
+ * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/context}
+ */
 export class CommandContext implements CommandContextBuilder {
 	/**
 	 * The arguments in the message.
