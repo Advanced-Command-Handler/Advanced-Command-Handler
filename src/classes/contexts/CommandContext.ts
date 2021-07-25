@@ -15,6 +15,7 @@ import {
 
 import {Command} from '../commands';
 import {CommandHandler} from '../../CommandHandler';
+import { HelpCommand } from '../../defaults/commands';
 
 /**
  * The interface to create a new CommandContext.
@@ -187,6 +188,25 @@ export class CommandContext implements CommandContextBuilder {
 		for (const e of emojis) {
 			await this.message.reactions.resolve(typeof e === 'object' ? e.id! : e)!.users.remove(this.client.user!.id);
 		}
+	}
+
+	/**
+	 * Sends the help menu from the default `HelpCommand` command (even if you are not using it).
+	 * 
+	 * @returns - The message of the help menu.
+	 */
+	 public async sendGlobalHelpMessage() {
+		return HelpCommand.sendGlobalHelp(this);
+	}
+
+	/**
+	 * Sends the help menu of the command from the default `HelpCommand` command (even if you are not using it).
+	 * 
+	 * @param commandName - The name of the command to send the help menu.
+	 * @returns - The message of the help menu of the command.
+	 */
+	public async sendHelpMessage(commandName = this.commandName) {
+		return HelpCommand.sendCommandHelp(this, this.handler.commands.get(commandName)!!);
 	}
 
 	public bulkDeleteInChannel(number: number, filterOld?: boolean): Promise<Collection<string, Message>>;
