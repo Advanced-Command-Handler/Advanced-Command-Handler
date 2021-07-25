@@ -32,7 +32,7 @@ export class HelpCommand extends Command {
 		if (this.subCommands.find(s => s.name === 'all')!.nameAndAliases.includes(ctx.args[0])) return;
 
 		if (!ctx.args.length || !ctx.handler.getCommandAliasesAndNames().includes(ctx.args[0])) {
-			await this.showGlobalHelp(ctx);
+			await HelpCommand.sendGlobalHelp(ctx);
 		}
 	}
 
@@ -43,17 +43,17 @@ export class HelpCommand extends Command {
 				aliases: ['a', 'list', 'ls'],
 				description: 'List all commands available.',
 			},
-			this.showGlobalHelp
+			HelpCommand.sendGlobalHelp
 		);
 
 		CommandHandler.commands.forEach(c => {
 			this.subCommand(c.name, {aliases: c.aliases}, async ctx => {
-				await this.showCommandHelp(ctx, c);
+				await HelpCommand.sendCommandHelp(ctx, c);
 			});
 		});
 	}
 
-	public async showGlobalHelp(ctx: CommandContext) {
+	public static async sendGlobalHelp(ctx: CommandContext) {
 		const commandList = groupBy(ctx.handler.commands.array(), c => c.category!);
 
 		const embed = BetterEmbed.fromTemplate('complete', {
@@ -77,10 +77,10 @@ export class HelpCommand extends Command {
 				);
 			});
 
-		await ctx.reply(embed);
+		return ctx.reply(embed);
 	}
 
-	public async showCommandHelp(ctx: CommandContext, command: Command) {
+	public static async sendCommandHelp(ctx: CommandContext, command: Command) {
 		if (!CommandHandler.commands.map(c => c.name).includes(command.name)) return;
 
 		let description = `**Description** : ${command.description ?? 'No description provided.'}\n`;
@@ -113,7 +113,8 @@ export class HelpCommand extends Command {
 			});
 			if (subCommandDescription.length > 0) embed.addField('SubCommands :', subCommandDescription);
 		}
+		
 		embed.cutIfTooLong();
-		await ctx.reply(embed);
+		return ctx.reply(embed);
 	}
 }
