@@ -11,11 +11,11 @@
 	},
 	"description": "A package to help you create a bot with only 1 main file, directories for your events/commands, with some helpers classes and functions.",
 	"devDependencies": {
-		"@types/node": "^16.0.0",
+		"@types/node": "^16.4.2",
 		"@typescript-eslint/eslint-plugin": "^4.28.2",
 		"@typescript-eslint/parser": "^4.28.2",
 		"eslint": "^7.30.0",
-		"eslint-plugin-jsdoc": "^35.4.1",
+		"eslint-plugin-jsdoc": "^36.0.2",
 		"eslint-plugin-tsdoc": "^0.2.14",
 		"prettier": "^2.3.2",
 		"typescript": "^4.3.5"
@@ -94,7 +94,7 @@
 		"trailingComma": "es5",
 		"useTabs": true
 	},
-	"readme": "https://github.com/Ayfri/Advanced-Command-Handler/blob/package/README.md",
+	"readme": "https://github.com/Ayfri/Advanced-Command-Handler#readme",
 	"repository": {
 		"type": "github",
 		"url": "git://github.com/Ayfri/Advanced-Command-Handler/tree/package.git"
