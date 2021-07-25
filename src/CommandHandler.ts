@@ -118,17 +118,17 @@ export namespace CommandHandler {
 	/**
 	 * The version of the handler.
 	 */
-	export const version: string = require('../package.json').version;
+	export const version = require('../package.json').version;
 	/**
 	 * The event emitter for the CommandHandler.
 	 *
 	 * @eventProperty
 	 */
-	export const emitter: EventEmitter = new EventEmitter();
+	export const emitter = new EventEmitter();
 	/**
 	 * The commands registered by the CommandHandler.
 	 */
-	export const commands: Collection<string, Command> = new Collection();
+	export const commands = new Collection<string, Command>();
 	/**
 	 * The cooldowns mapped by ID and cooldown user.
 	 *
@@ -208,7 +208,7 @@ export namespace CommandHandler {
 	 * Must use after {@link CommandHandler.create}.
 	 * @returns - It returns itself so that afterward you can use the other functions.
 	 */
-	export function useDefaultEvents(): typeof CommandHandler {
+	export function useDefaultEvents() {
 		Logger.info('Loading default events.', 'Loading');
 		for (let event of Object.values(defaultEvents)) {
 			const instance = new event();
@@ -227,7 +227,7 @@ export namespace CommandHandler {
 	 * Must use after {@link CommandHandler.create}.
 	 * @returns - It returns itself so that afterward you can use the other functions .
 	 */
-	export function useDefaultCommands(): typeof CommandHandler {
+	export function useDefaultCommands() {
 		Logger.info('Loading default commands.', 'Loading');
 		for (let command of Object.values(defaultCommands)) {
 			const instance = new command();
@@ -245,7 +245,7 @@ export namespace CommandHandler {
 	 * @param options - Options for creating a new CommandHandler.
 	 * @returns - It returns itself so that afterward you can use the other functions.
 	 */
-	export function create(options: CreateCommandHandlerOptions): typeof CommandHandler {
+	export function create(options: CreateCommandHandlerOptions) {
 		options.saveLogsInFile?.forEach(Logger.saveInFile);
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');
 		commandsDir = options.commandsDir ?? '';
@@ -269,7 +269,7 @@ export namespace CommandHandler {
 	 * @param options - Options for launching the CommandHandler, see {@link CreateCommandHandlerOptions}.
 	 * @returns - Itself in a promise.
 	 */
-	export async function launch(options: LaunchCommandHandlerOptions): Promise<typeof CommandHandler> {
+	export async function launch(options: LaunchCommandHandlerOptions) {
 		client = new AdvancedClient(options.token, options.clientOptions ?? {});
 		emit('launch', options);
 
@@ -308,8 +308,8 @@ export namespace CommandHandler {
 	 * @param message - The message to get the prefix for.
 	 * @returns - The prefix found or null if not.
 	 */
-	export function getPrefixFromMessage(message: Message): string | null {
-		return prefixes.find(prefix => message.content.startsWith(prefix)) ?? null;
+	export function getPrefixFromMessage(message: Message) {
+		return prefixes.find(prefix => message.content.startsWith(prefix));
 	}
 
 	/**
@@ -358,7 +358,7 @@ export namespace CommandHandler {
 		Logger.comment(`Categories : (${dirs.length})`, 'Loading');
 		if (dirs.length) {
 			for (const dir of dirs) {
-				const commandsPath = join(process.cwd(), path, dir);
+				const commandsPath = join( path, dir);
 				const files = await fsPromises.readdir(commandsPath);
 				if (!files.length) continue;
 				Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'Loading');
