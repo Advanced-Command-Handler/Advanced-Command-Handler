@@ -10,19 +10,20 @@ export type JSONLike = {[k: string]: number | string | boolean | JSONLike | JSON
  * @param content - The content to save.
  * @returns - True if operation has successfully worked.
  */
-export function saveJSON(path: string, content: any): boolean {
+export function saveJSON(path: string, content: JSONLike): boolean {
 	if (!fs.existsSync(path)) {
-		Logger.warn(`Cannot save JSON content to '${path}', file not found.`);
+		Logger.warn(`Cannot save JSON content to '${path}', file not found.`, 'JSONWriter');
 		return false;
 	}
 
-	if ((typeof content === 'string' && content.length === 0) || JSON.stringify(content, null, 4).length === 0) {
-		Logger.warn(`Cannot save JSON content to '${path}', content is empty.`);
+	const stringified = JSON.stringify(content, null, '\t');
+	if (content.length === 0) {
+		Logger.warn(`Cannot save JSON content to '${path}', content is empty.`, 'JSONWriter');
 		return false;
 	}
 
-	fs.writeFile(path, JSON.stringify(content, null, 4), err => {
-		if (err) Logger.error(`Cannot save JSON content to '${path}', error:\n${err.stack}`);
+	fs.writeFile(path, stringified, err => {
+		if (err) Logger.error(`Cannot save JSON content to '${path}', error:\n${err.stack}`, 'JSONWriter');
 		return false;
 	});
 
