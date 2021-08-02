@@ -59,7 +59,7 @@ module.exports = class CommandCommand extends Command {
     }
 
     run(ctx) {
-		if (this.subCommands.map(s => s.nameAndAliases).flat().includes(ctx.args[0])) return;
-		ctx.sendHelpMessage(this.name);	
+		
+		if(!ctx.isCallingASubCommand) ctx.sendHelpMessage(this.name);	
     }
 }

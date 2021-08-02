@@ -108,6 +108,15 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	/**
+	 * Returns true if the arguments are calling a SubCommand.
+	 */
+	get isCallingASubCommand() {
+		const aliases = this.command.subCommandsNamesAndAliases;
+		const longestAliasLength = Math.max(...aliases.map(a => a.split('\s').length));
+		return aliases.includes(this.args.slice(0, longestAliasLength).join(' '));
+	}
+
+	/**
 	 * Returns the guild of the message.
 	 */
 	get guild() {

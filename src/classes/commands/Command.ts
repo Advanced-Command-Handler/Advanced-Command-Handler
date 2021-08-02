@@ -175,6 +175,13 @@ export abstract class Command {
 	}
 
 	/**
+	 * Returns the names and aliases of the subCommands of this command in an array flatted.
+	 */
+	public get subCommandsNamesAndAliases() {
+		return this.subCommands.map(s => s.nameAndAliases).flat();
+	}
+
+	/**
 	 * Get a user ID from different sources, only here to simplify code.
 	 *
 	 * @param from - Where to get ID from.
