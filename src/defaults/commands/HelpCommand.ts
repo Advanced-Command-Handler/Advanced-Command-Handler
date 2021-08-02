@@ -109,11 +109,11 @@ export class HelpCommand extends Command {
 		if (command.subCommands) {
 			let subCommandDescription = '';
 			command.subCommands.forEach(s => {
-				if (s.description) subCommandDescription += `\`${this.name} ${s.name}\` : ${s.description}\n`;
+				if (s.description) subCommandDescription += `\`${command.name} ${s.name}\` : ${s.description}\n`;
 			});
 			if (subCommandDescription.length > 0) embed.addField('SubCommands :', subCommandDescription);
 		}
-		
+
 		embed.cutIfTooLong();
 		return ctx.reply(embed);
 	}
