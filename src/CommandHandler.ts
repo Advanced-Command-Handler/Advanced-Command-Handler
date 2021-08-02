@@ -2,7 +2,7 @@ import * as defaultCommands from './defaults/commands/index';
 import * as defaultEvents from './defaults/events/index';
 
 import {AdvancedClient, Command, CommandHandlerError, Event} from './classes';
-import {ClientOptions, Collection, Message, Snowflake, Team} from 'discord.js';
+import {ClientOptions, Collection, Message, PresenceData, Snowflake, Team} from 'discord.js';
 import {Constructor, MaybeCommand, MaybeEvent} from './types';
 
 import {EventEmitter} from 'events';
@@ -81,6 +81,35 @@ export namespace CommandHandler {
 		 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
 		 */
 		clientOptions?: ClientOptions;
+
+		/**
+		 * The presence of your bot when launched.
+		 *
+		 * @remarks
+		 * If {@link presences} is also set, it will overcome this property.
+		 */
+		presence?: PresenceData;
+
+		/**
+		 * The presences of your bot, if this field is used it will cycle between all if  {@link cycleBetweenPresences} options is set to true.
+		 *
+		 * @remarks
+		 * If {@link presence} is also set, it will still cycle between presences.
+		 */
+		presences?: PresenceData[];
+
+		/**
+		 * If set to true, it will cycle between the {@link presences}.
+		 *
+		 * @defaultValue true
+		 */
+		cycleBetweenPresences?: boolean;
+		/**
+		 * The duration in seconds between the cycle of two presences of {@link presences}.
+		 *
+		 * @defaultValue 60
+		 */
+		cycleDuration?: number;
 	}
 
 	/**
@@ -160,6 +189,11 @@ export namespace CommandHandler {
 	 * The client of the handler, null before {@link launch} function executed.
 	 */
 	export let client: AdvancedClient | null = null;
+
+	/**
+	 * The interval of the cycling presences, undefined if you don't use it.
+	 */
+	export let presencesInterval: NodeJS.Timer;
 
 	/**
 	 * Adds a listener for the {@link eventName} event.
@@ -292,16 +326,30 @@ export namespace CommandHandler {
 		}
 
 		await client.login(options.token);
+		if (options.presence && !options.presences) client.user!.setPresence(options.presence);
+
+		if (options.presences && options.presences.length > 0) {
+			if (options.cycleBetweenPresences && options.presences.length > 1) {
+				let index = 0;
+
+				presencesInterval = setInterval(() => {
+					client!.user!.setPresence(options.presences![index]);
+					index++;
+					if (index > options.presences!.length - 1) index = 0;
+				}, (options.cycleDuration ?? 60) * 1000);
+			} else {
+				client.user!.setPresence(options.presences[0]);
+			}
+		}
+
 		prefixes.push(`<@${client?.user?.id}> `);
 		prefixes.push(`<@!${client?.user?.id}> `);
 		const appOwner = (await client.fetchApplication()).owner;
 		if (appOwner) {
-			if (appOwner instanceof Team) {
-				owners.push(...appOwner.members.array().map(m => m.id));
-			} else {
-				owners.push(appOwner.id);
-			}
+			if (appOwner instanceof Team) owners.push(...appOwner.members.map(m => m.id));
+			else owners.push(appOwner.id);
 		}
+
 		emit('launched');
 		return CommandHandler;
 	}
@@ -362,7 +410,7 @@ export namespace CommandHandler {
 		Logger.comment(`Categories : (${dirs.length})`, 'Loading');
 		if (dirs.length) {
 			for (const dir of dirs) {
-				const commandsPath = join( path, dir);
+				const commandsPath = join(path, dir);
 				const files = await fsPromises.readdir(commandsPath);
 				if (!files.length) continue;
 				Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'Loading');
