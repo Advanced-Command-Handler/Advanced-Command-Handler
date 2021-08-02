@@ -236,10 +236,11 @@ export class Logger {
 		if (Logger.LEVEL === LogLevel.OFF) return;
 		const datePart = `[${dayjs().format('YYYY/MM/DD HH:mm:ss.SSS')}]`;
 		const titlePart = `[${title.toUpperCase()}]`;
+		text = typeof text === 'string' ? text : inspect(text);
+
 		let textPart = text;
 
-		text = typeof text === 'string' ? text : inspect(text);
-		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string): string => chalk.yellow(match));
+		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string) => chalk.yellow(match));
 		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
 
 		color = propertyInEnum(LogType, color) ?? color;
