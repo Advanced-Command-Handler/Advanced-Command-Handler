@@ -16,8 +16,8 @@ module.exports = class CommandCommand extends Command {
 			},
 			async (ctx) => {
 				console.log(ctx.args);
-				if (!ctx.args[0]) return argError(ctx.message, 'Category name argument required.', this);
-				if (!ctx.args[1]) return argError(ctx.message, 'Command name argument required.', this);
+				if (!ctx.args[0]) return argError(ctx, 'Category name argument required.');
+				if (!ctx.args[1]) return argError(ctx, 'Command name argument required.');
 
 				const commandText = `${ctx.args[0]}/${ctx.args[1]}`;
 				let command = ctx.handler.findCommand(ctx.args[1]);
@@ -39,7 +39,7 @@ module.exports = class CommandCommand extends Command {
 				description: 'Disable a command.'
 			},
 			async (ctx) => {
-				if (!ctx.args[0]) return argError(ctx.message, 'Command name argument required.', this);
+				if (!ctx.args[0]) return argError(ctx, 'Command name argument required.');
 				
 				const command = ctx.handler.findCommand(ctx.args[0]);
 				if (!command) ctx.reply(`Command \`${ctx.args[0]}\` not found.`);

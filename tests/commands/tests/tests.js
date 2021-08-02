@@ -1,4 +1,5 @@
 const {Command} = require('advanced-command-handler');
+
 module.exports = class TestCommand extends Command {
 	name = 'tests';
 	aliases = ['test', 't'];
