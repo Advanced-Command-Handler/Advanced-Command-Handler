@@ -351,14 +351,14 @@ export abstract class Command {
 		for (const subCommand of this.subCommands) {
 			if (subCommand.nameAndAliases.includes([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' '))) {
 				ctx = new SubCommandContext({
-					args: [...ctx.args].splice(0, subCommand.name.split(' ').length),
+					args: ctx.args.slice(subCommand.name.split(' ').length),
 					command: this,
 					message: ctx.message,
 					handler: ctx.handler,
 					subCommand,
 				});
 
-				const subCommandError: CommandError | undefined = await subCommand.execute(ctx);
+				const subCommandError = await subCommand.execute(ctx);
 				if (subCommandError) subCommandError.name = 'SubCommandError';
 				return subCommandError;
 			}
