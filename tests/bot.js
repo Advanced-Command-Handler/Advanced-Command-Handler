@@ -16,7 +16,7 @@ CommandHandler.create({
 		token: process.env.TOKEN,
 	});
 
-CommandHandler.on('create', options => Logger.log(options));
+CommandHandler.on('create', Logger.log);
 
 CommandHandler.on('launched', () => {
 	Logger.log('CommandHandler launched successfully !');
