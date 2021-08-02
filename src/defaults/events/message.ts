@@ -15,10 +15,10 @@ export class MessageEvent extends Event {
 
 		const [commandArg, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
 		const command = await getThing('command', commandArg.toLowerCase().normalize());
-
 		if (!command) return;
 
 		const commandContext = new CommandContext({args, command, message, handler: ctx.handler});
+
 		try {
 			const error = await command.execute(commandContext);
 

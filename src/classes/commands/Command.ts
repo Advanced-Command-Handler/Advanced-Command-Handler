@@ -170,7 +170,7 @@ export abstract class Command {
 	/**
 	 * Returns the names and aliases of this command in an array.
 	 */
-	public get nameAndAliases(): string[] {
+	public get nameAndAliases() {
 		return [this.name, ...(this.aliases ?? [])];
 	}
 
@@ -199,7 +199,7 @@ export abstract class Command {
 	 * @param options - The options, see {@link DeleteMessageOptions}.
 	 * @returns - The deleted message if deleted.
 	 */
-	public deleteMessage(options: DeleteMessageOptions): Promise<Message> | undefined {
+	public deleteMessage(options: DeleteMessageOptions) {
 		if (options.message.deletable) return options.message.delete({timeout: options.timeout});
 	}
 
@@ -429,7 +429,7 @@ export abstract class Command {
 			options = {};
 		}
 
-		const subCommand = new (class extends SubCommand {})(name, options, callback as RunSubCommandFunction);
+		const subCommand = new SubCommand(name, options, callback as RunSubCommandFunction);
 		this.subCommands.push(subCommand);
 
 		Logger.comment(`Loaded subcommand '${this.name} ${name}'.`, 'SubCommandLoading');
@@ -442,7 +442,7 @@ export abstract class Command {
  * @remarks
  * This class is not in the SubCommand file because otherwise it won't compile because of circular because of the {@link Command.subCommands} property.
  */
-export abstract class SubCommand extends Command {
+export class SubCommand extends Command {
 	/**
 	 * The name of the SubCommand.
 	 */
