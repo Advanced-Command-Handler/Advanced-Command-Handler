@@ -18,44 +18,37 @@ export class MessageEvent extends Event {
 
 		if (!command) return;
 
+		const commandContext = new CommandContext({args, command, message, handler: ctx.handler});
 		try {
-			const error = await command.execute(
-				new CommandContext({
-					args,
-					command,
-					message,
-					handler: ctx.handler,
-				})
-			);
+			const error = await command.execute(commandContext);
 
 			if (error) {
 				switch (error.type) {
 					case CommandErrorType.CLIENT_MISSING_PERMISSIONS:
-						return permissionsError(message, error.data, command, true);
+						return permissionsError(commandContext, error.data, true);
 					case CommandErrorType.USER_MISSING_PERMISSIONS:
-						return permissionsError(message, error.data, command);
+						return permissionsError(commandContext, error.data);
 					case CommandErrorType.MISSING_TAGS:
 						return argError(
-							message,
+							commandContext,
 							`There are missing tags for the message: \n\`${(error.data as Tag[])
 								.map(tag => Tag[tag])
 								.sort()
 								.join('\n')
-								.toUpperCase()}\``,
-							command
+								.toUpperCase()}\``
 						);
 					case CommandErrorType.WRONG_CHANNEL:
-						return message.channel.send('This command is not in the correct channel.');
+						return commandContext.send('This command is not in the correct channel.');
 					case CommandErrorType.COOLDOWN:
-						return message.channel.send(`You are on a cooldown! Please wait **${error.data.waitMore / 1000}**s.`);
+						return commandContext.send(`You are on a cooldown! Please wait **${error.data.waitMore / 1000}**s.`);
 					case CommandErrorType.ERROR:
-						return await codeError(message, error, command);
+						return codeError(commandContext, error);
 				}
 			} else {
 				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
 			}
 		} catch (error) {
-			await codeError(message, error, command);
+			await codeError(commandContext, error);
 		}
 	}
 }
