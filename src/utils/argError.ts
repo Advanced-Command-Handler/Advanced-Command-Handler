@@ -1,23 +1,21 @@
-import {Message} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command} from '../classes';
+import {CommandContext} from '../classes';
 
 /**
  * A function to use when a user fail on an argument of a command.
  *
- * @param message - The message where the error is from.
+ * @param ctx - The message context where the error come from.
  * @param error - The error.
- * @param command - The command to be executed.
  * @returns - The error message sent.
  */
-export function argError(message: Message, error: string, command: Command) {
+export function argError(ctx: CommandContext, error: string) {
 	const embed = BetterEmbed.fromTemplate('complete', {
-		client: message.client,
+		client: ctx.client,
 		color: 0xee2200,
 		title: 'Argument error :',
 		description: error,
 	});
 
-	if (command.usage) embed.addField('Syntax :', command.usage);
-	return message.channel.send(embed);
+	if (ctx.command.usage) embed.addField('Syntax :', ctx.command.usage);
+	return ctx.send(embed);
 }
