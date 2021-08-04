@@ -329,7 +329,9 @@ export namespace CommandHandler {
 		if (options.presence && !options.presences) client.user!.setPresence(options.presence);
 
 		if (options.presences && options.presences.length > 0) {
-			if (options.cycleBetweenPresences && options.presences.length > 1) {
+			
+			const cycle = options.cycleBetweenPresences ?? true;
+			if (cycle && options.presences.length > 1) {
 				let index = 0;
 
 				presencesInterval = setInterval(() => {
@@ -351,6 +353,7 @@ export namespace CommandHandler {
 		}
 
 		emit('launched');
+
 		return CommandHandler;
 	}
 
