@@ -10,12 +10,12 @@ import {
 	MessageResolvable,
 	SplitOptions,
 	StringResolvable,
-	TextChannel
+	TextChannel,
 } from 'discord.js';
 
 import {Command} from '../commands';
 import {CommandHandler} from '../../CommandHandler';
-import { HelpCommand } from '../../defaults/commands';
+import {HelpCommand} from '../../defaults/commands';
 
 /**
  * The interface to create a new CommandContext.
@@ -112,7 +112,7 @@ export class CommandContext implements CommandContextBuilder {
 	 */
 	get isCallingASubCommand() {
 		const aliases = this.command.subCommandsNamesAndAliases;
-		const longestAliasLength = Math.max(...aliases.map(a => a.split('\s').length));
+		const longestAliasLength = Math.max(...aliases.map(a => a.split('s').length));
 		return aliases.includes(this.args.slice(0, longestAliasLength).join(' '));
 	}
 
@@ -133,7 +133,7 @@ export class CommandContext implements CommandContextBuilder {
 	/**
 	 * Returns the channel where the command was executed as a TextChannel or undefined if it isn't'.
 	 */
-	 get textChannel() {
+	get textChannel() {
 		return this.message.channel instanceof TextChannel ? this.message.channel : undefined;
 	}
 
@@ -204,16 +204,16 @@ export class CommandContext implements CommandContextBuilder {
 
 	/**
 	 * Sends the help menu from the default `HelpCommand` command (even if you are not using it).
-	 * 
+	 *
 	 * @returns - The message of the help menu.
 	 */
-	 public async sendGlobalHelpMessage() {
+	public async sendGlobalHelpMessage() {
 		return HelpCommand.sendGlobalHelp(this);
 	}
 
 	/**
 	 * Sends the help menu of the command from the default `HelpCommand` command (even if you are not using it).
-	 * 
+	 *
 	 * @param commandName - The name of the command to send the help menu.
 	 * @returns - The message of the help menu of the command.
 	 */
