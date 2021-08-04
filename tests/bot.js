@@ -14,6 +14,20 @@ CommandHandler.create({
 	.useDefaultCommands()
 	.launch({
 		token: process.env.TOKEN,
+		cycleDuration: 15,
+		presences: [
+			{
+				activity: {
+					name: 'Test1',
+				},
+				status: 'idle',
+			},
+			{
+				activity: {
+					name: 'Test2',
+				}
+			}
+		],
 	});
 
 CommandHandler.on('create', Logger.log);
