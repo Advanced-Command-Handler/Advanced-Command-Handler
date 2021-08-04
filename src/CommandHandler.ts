@@ -25,20 +25,19 @@ export namespace CommandHandler {
 		 * The directory of your commands.
 		 */
 		commandsDir: string;
+
 		/**
 		 * The directory of your events.
 		 */
 		eventsDir: string;
+
 		/**
 		 * The owners IDs from discord of the bot.
 		 */
 		owners?: string[];
+
 		/**
 		 * The prefixes for the CommandHandler.
-		 *
-		 * @remarks
-		 * There are two default prefixes that are `<@!botID>` & `<@botID>`, they're the text versions of mentions in Discord.
-		 * There are two ones because the `!` is only here in private messages to indicate that that's a user mention and not a member mention.
 		 */
 		prefixes?: string[];
 
@@ -48,6 +47,13 @@ export namespace CommandHandler {
 		 * @remarks If one of the files is not found, it will create it.
 		 */
 		saveLogsInFile?: string[];
+
+		/**
+		 * Add mention of the bot as prefixes.
+		 * 
+		 * @defaultValue true
+		 */
+		useMentionAsPrefix?: boolean;
 	}
 
 	/**
@@ -77,10 +83,25 @@ export namespace CommandHandler {
 		 * The token of your bot.
 		 */
 		token: string;
+
 		/**
 		 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
 		 */
 		clientOptions?: ClientOptions;
+
+		/**
+		 * If set to true, it will cycle between the {@link presences}.
+		 *
+		 * @defaultValue true
+		 */
+		cycleBetweenPresences?: boolean;
+		
+		/**
+		 * The duration in seconds between the cycle of two presences of {@link presences}.
+		 *
+		 * @defaultValue 60
+		 */
+		cycleDuration?: number;
 
 		/**
 		 * The presence of your bot when launched.
@@ -97,19 +118,6 @@ export namespace CommandHandler {
 		 * If {@link presence} is also set, it will still cycle between presences.
 		 */
 		presences?: PresenceData[];
-
-		/**
-		 * If set to true, it will cycle between the {@link presences}.
-		 *
-		 * @defaultValue true
-		 */
-		cycleBetweenPresences?: boolean;
-		/**
-		 * The duration in seconds between the cycle of two presences of {@link presences}.
-		 *
-		 * @defaultValue 60
-		 */
-		cycleDuration?: number;
 	}
 
 	/**
@@ -194,6 +202,11 @@ export namespace CommandHandler {
 	 * The interval of the cycling presences, undefined if you don't use it.
 	 */
 	export let presencesInterval: NodeJS.Timer;
+
+	/**
+	 * @internal
+	 */
+	let useMentionAsPrefix: boolean;
 
 	/**
 	 * Adds a listener for the {@link eventName} event.
@@ -289,6 +302,7 @@ export namespace CommandHandler {
 		eventsDir = options.eventsDir ?? '';
 		owners = options.owners ?? [];
 		prefixes = options.prefixes ?? [];
+		useMentionAsPrefix = options.useMentionAsPrefix ?? true;
 
 		if (!commandsDir) Logger.warn("No 'commandsDir' specified, commands apart default commands won't load.");
 		if (!eventsDir) Logger.warn("No 'eventsDir' specified, events apart default events won't load.");
@@ -344,8 +358,11 @@ export namespace CommandHandler {
 			}
 		}
 
-		prefixes.push(`<@${client?.user?.id}> `);
-		prefixes.push(`<@!${client?.user?.id}> `);
+		if (useMentionAsPrefix) {
+			prefixes.push(`<@${client?.user?.id}> `);
+			prefixes.push(`<@!${client?.user?.id}> `);
+		}
+		
 		const appOwner = (await client.fetchApplication()).owner;
 		if (appOwner) {
 			if (appOwner instanceof Team) owners.push(...appOwner.members.map(m => m.id));
