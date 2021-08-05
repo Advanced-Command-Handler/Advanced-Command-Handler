@@ -39,11 +39,11 @@ module.exports = class CommandCommand extends Command {
 				aliases: ['d'],
 				description: 'Disable a command.',
 			},
-			async ctx => {
+			ctx => {
 				if (!ctx.args[0]) return argError(ctx, 'Command name argument required.');
 
 				const command = ctx.handler.findCommand(ctx.args[0]);
-				if (!command) ctx.reply(`Command \`${ctx.args[0]}\` not found.`);
+				if (!command) return ctx.send(`Command \`${ctx.args[0]}\` not found.`);
 				else ctx.handler.unloadCommand(ctx.args[0]);
 
 				ctx.send(`Command \`${ctx.args[0]}\` unloaded !`);
