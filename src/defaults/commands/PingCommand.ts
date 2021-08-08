@@ -1,4 +1,3 @@
-/* eslint-disable jsdoc/require-jsdoc */
 import {Command, CommandContext} from '../../classes';
 
 export class PingCommand extends Command {

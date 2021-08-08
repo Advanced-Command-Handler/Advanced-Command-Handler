@@ -28,6 +28,7 @@
 		"extends": [
 			"plugin:jsdoc/recommended"
 		],
+        "ignorePatterns": ["dist","src/defaults", "types", "tests"],
 		"parser": "@typescript-eslint/parser",
 		"parserOptions": {
 			"ecmaVersion": 2021,
@@ -101,7 +102,7 @@
 	},
 	"scripts": {
 		"build": "tsc",
-		"lint": "eslint src/**/*.ts --fix",
+		"lint": "eslint . --ext .ts",
 		"prepare": "npm run build",
 		"prettier": "prettier **.json **.md src tests --write"
 	},
