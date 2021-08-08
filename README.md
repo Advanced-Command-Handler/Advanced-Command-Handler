@@ -11,8 +11,17 @@ This is an Advanced Command Handler for Discord Bots, which uses classes for com
 You have a plethora of utils like functions that everyone uses, functions for errors,
 functions for tedious things that everyone needs for a Discord Bot, and some classes to simplify Logging things and manipulating embeds.
 
+**Version 3.0 uses Discord.js v12, wait for 3.1 to use Discord.js v13.**
+
 This library is here to simplify a lot developing Discord Bots and is far from being finished with every feature I want to add.
 So feel free to watch this repo for futures releases!
+For now it offers :
+- Command Handling
+- SubCommand Handling
+- Event Handling
+- Default message event & help command
+- A complete Logger
+- Some utilities functions for errors, jsons and other
 
 **For more information on how to use it, see the Guide and the Documentation :**
 
