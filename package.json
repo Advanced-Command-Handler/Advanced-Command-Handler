@@ -6,7 +6,7 @@
 	"dependencies": {
 		"chalk": "^4.1.1",
 		"dayjs": "^1.10.6",
-		"discord.js": "^12.5.3",
+		"discord.js": "^13.0.1",
 		"discord.js-better-embed": "^1.2.1"
 	},
 	"description": "A package to help you create a bot with only 1 main file, directories for your events/commands, with some helpers classes and functions.",
