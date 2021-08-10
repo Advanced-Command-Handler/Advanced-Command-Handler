@@ -1,6 +1,4 @@
-import {Message} from 'discord.js';
-import {CommandHandler} from '../../CommandHandler.js';
-import {Command} from './Command.js';
+import {Command, CommandContext, CommandHandler} from '../../';
 
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/templates}
@@ -17,18 +15,18 @@ export abstract class SlowCommand extends Command {
 	/**
 	 * Reacts with the {@link waitEmoji}.
 	 *
-	 * @param message - The message to react to.
+	 * @param ctx - The context to react to.
 	 */
-	public async startWait(message: Message) {
-		await message.react(this.waitEmoji);
+	public async startWait(ctx: CommandContext) {
+		await ctx.message.react(this.waitEmoji);
 	}
 
 	/**
 	 * Remove the reaction {@link waitEmoji} of the bot.
 	 *
-	 * @param message - The message to remove the reaction to.
+	 * @param ctx - The context to remove the reaction to.
 	 */
-	public async stopWait(message: Message) {
-		await message.reactions.cache.find(r => r.emoji.name === this.waitEmoji)?.users.remove(CommandHandler.client!!.id);
+	public async stopWait(ctx: CommandContext) {
+		await ctx.message.reactions.cache.find(r => r.emoji.name === this.waitEmoji)?.users.remove(CommandHandler.client!!.id);
 	}
 }
