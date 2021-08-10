@@ -1,21 +1,26 @@
 import {
-	APIMessage,
-	APIMessageContentResolvable,
 	Collection,
-	DMChannel,
 	EmojiIdentifierResolvable,
 	Message,
-	MessageAdditions,
+	MessageEmbed,
 	MessageOptions,
 	MessageResolvable,
-	SplitOptions,
-	StringResolvable,
-	TextChannel,
+    NewsChannel,
+	ReplyMessageOptions,
+	TextChannel
 } from 'discord.js';
 
 import {Command} from '../commands';
 import {CommandHandler} from '../../CommandHandler';
 import {HelpCommand} from '../../defaults/commands';
+
+interface ReplyOptions extends ReplyMessageOptions {
+    embed?: MessageEmbed;
+}
+
+interface SendOptions extends MessageOptions {
+    embed?: MessageEmbed;
+}
 
 /**
  * The interface to create a new CommandContext.
@@ -134,7 +139,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * Returns the channel where the command was executed as a TextChannel or undefined if it isn't'.
 	 */
 	get textChannel() {
-		return this.message.channel instanceof TextChannel ? this.message.channel : undefined;
+		return this.message.channel instanceof TextChannel || this.message.channel instanceof NewsChannel ? this.message.channel : undefined;
 	}
 
 	/**
@@ -154,11 +159,17 @@ export class CommandContext implements CommandContextBuilder {
 	/**
 	 * Deletes the message with an optional timeout.
 	 *
-	 * @remarks In Discord.js v13 the timeout for the `delete` method will be removed, so this will be more useful in v13.
 	 * @param timeout - The time to wait in milliseconds before deleting the message.
+     * @returns - The deleted message.
 	 */
 	public async deleteMessage(timeout: number = 0) {
-		await this.message.delete({timeout});
+		if (timeout) {
+            return await new Promise<Message>((resolve) => {
+                setTimeout(() => {
+                    resolve(this.message.delete());
+                }, timeout);
+            });
+        } else return await this.message.delete();
 	}
 
 	/**
@@ -232,17 +243,14 @@ export class CommandContext implements CommandContextBuilder {
 	 * @returns - The collection of the deleted messages.
 	 */
 	public async bulkDeleteInChannel(number: number | Collection<string, Message> | readonly MessageResolvable[], filterOld?: boolean) {
-		if (!(this.channel instanceof DMChannel)) {
-			return this.channel.bulkDelete(number, filterOld);
+		if (this.textChannel) {
+			return this.textChannel.bulkDelete(number, filterOld);
 		}
 	}
 
-	public send(content: APIMessageContentResolvable | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
-	public send(options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
-	public send(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
-	public send(content: StringResolvable, options: (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
-	public send(content: StringResolvable, options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
-	public send(content: StringResolvable, options: MessageOptions): Promise<Message | Message[]>;
+    public send(options: SendOptions): Promise<Message>;
+    public send(content: string): Promise<Message>;
+    public send(content: string, options: SendOptions): Promise<Message>;
 	/**
 	 * Send a message in the channel.
 	 *
@@ -250,18 +258,20 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param options - The options.
 	 * @returns - The message sent.
 	 */
-	public send(
-		content: StringResolvable,
-		options?: MessageOptions | (MessageOptions & {split?: boolean | SplitOptions}) | MessageAdditions
-	): Promise<Message | Message[]> {
-		return this.channel.send(content, options as any);
+	public send(content: string | SendOptions, options?: SendOptions): Promise<Message> {
+        if (typeof content !== 'string') options = content;
+        else if (content && options) options.content === content;
+        else if (content && !options) options = {content};
+
+        if (options && options.embed && !options.embeds) options.embeds = [options.embed];
+
+		return this.channel.send(options ?? '');
 	}
 
-	public reply(content: APIMessageContentResolvable | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
-	public reply(options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
-	public reply(options: MessageOptions | APIMessage): Promise<Message | Message[]>;
-	public reply(content: StringResolvable, options: (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message>;
-	public reply(content: StringResolvable, options: MessageOptions & {split: true | SplitOptions}): Promise<Message[]>;
+	
+    public reply(options: ReplyOptions): Promise<Message | Message[]>;
+    public reply(content: string): Promise<Message | Message[]>;
+    public reply(content: string, options: ReplyOptions): Promise<Message | Message[]>;
 	/**
 	 * Reply to the message in the channel.
 	 *
@@ -269,7 +279,13 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param options - The options.
 	 * @returns - The message sent.
 	 */
-	public reply(content: StringResolvable, options?: MessageOptions | (MessageOptions & {split?: false}) | MessageAdditions): Promise<Message | Message[]> {
-		return this.message.reply(content, options as any);
+	public reply(content: string | ReplyMessageOptions, options?: ReplyOptions): Promise<Message | Message[]> {
+        if (typeof content !== 'string') options = content;
+        else if (content && options) options.content === content;
+        else if (content && !options) options = {content};
+
+        if (options && options.embed && !options.embeds) options.embeds = [options.embed];
+
+        return this.message.reply(options ?? '');
 	}
 }
