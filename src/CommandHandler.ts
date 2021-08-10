@@ -1,20 +1,13 @@
 import * as defaultCommands from './defaults/commands/index';
 import * as defaultEvents from './defaults/events/index';
 
-import {AdvancedClient, Command, CommandHandlerError, Event} from './classes';
 import {ClientOptions, Collection, Message, PresenceData, Snowflake, Team} from 'discord.js';
-import {Constructor, MaybeCommand, MaybeEvent} from './types';
+import {AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent} from './';
 
 import {EventEmitter} from 'events';
-import {Logger} from './utils';
-import d from 'dayjs';
-import dayjsDuration from 'dayjs/plugin/duration';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
 
-d.extend(dayjsDuration);
-
-export const dayjs = d;
 
 export namespace CommandHandler {
 	/**
@@ -87,7 +80,7 @@ export namespace CommandHandler {
 		/**
 		 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
 		 */
-		clientOptions?: ClientOptions;
+		clientOptions: ClientOptions;
 
 		/**
 		 * If set to true, it will cycle between the {@link presences}.
@@ -172,18 +165,18 @@ export namespace CommandHandler {
 	 * <strong>A simple explication</strong> :<br>
 	 * When a user executes a command with a cooldown, a new value is added.
 	 * ```typescript
-	 * [ID]: {
+	 * [anyID]: {
 	 *    [commandName]: {
 	 *        executedAt: Date,
 	 *        cooldown: [command cooldown]
 	 *    }
 	 * }
 	 * ```
-	 * So cooldowns are mapped by user IDs then mapped by commands.
+	 * So cooldowns are mapped by IDs (can be anything, user IDs recommended) then mapped by commands.
 	 */
 	export const cooldowns = new Collection<Snowflake, CooldownUser>();
 	/**
-	 * The events registered by the CommandHandler.
+	 * The events registered by the EventHandler.
 	 *
 	 * @remarks
 	 * These events may not be bound to the {@link client}.
@@ -208,25 +201,37 @@ export namespace CommandHandler {
 	 */
 	let useMentionAsPrefix: boolean;
 
+    /**
+     * Execute the event you want from the {@link emitter | listener} throughout the CommandHandler.
+     *
+     * @typeParam K - Event names of the CommandHandler listener.
+     * @param eventName - The event name.
+     * @param args - The arguments to pass.
+     */
+    export function emit<K extends keyof CommandHandlerEvents>(eventName: K, ...args: CommandHandlerEvents[K]) {
+        emitter.emit(eventName, args);
+    }
+
 	/**
 	 * Adds a listener for the {@link eventName} event.
 	 *
-	 * @typeParam K - Events names for CommandHandler.
+	 * @typeParam K - Event names of the CommandHandler listener.
 	 * @param eventName - The event name.
 	 * @param fn - The callback to execute.
 	 */
-	export function on<K extends keyof CommandHandlerEvents>(eventName: K, fn: (listener: CommandHandlerEvents[K]) => void) {
+    export function on<K extends keyof CommandHandlerEvents>(eventName: K, fn: (listener: CommandHandlerEvents[K]) => void) {
 		emitter.on(eventName, fn);
 	}
 
 	/**
-	 * Execute an event throughout the CommandHandler.
+	 * Adds a one-time listener for the {@link eventName} event.
 	 *
+	 * @typeParam K - Event names of the CommandHandler listener.
 	 * @param eventName - The event name.
-	 * @param args - The arguments to pass.
+	 * @param fn - The callback to execute.
 	 */
-	export function emit<K extends keyof CommandHandlerEvents>(eventName: K, ...args: CommandHandlerEvents[K]) {
-		emitter.emit(eventName, args);
+	export function once<K extends keyof CommandHandlerEvents>(eventName: K, fn: (listener: CommandHandlerEvents[K]) => void) {
+		emitter.once(eventName, fn);
 	}
 
 	/**
@@ -245,7 +250,7 @@ export namespace CommandHandler {
 	 * @returns - The command found or `undefined`.
 	 */
 	export function findCommand(name: string) {
-		return commands.find(c => c.name === name || (c.aliases ?? []).includes(name));
+		return commands.find(c => c.nameAndAliases.includes(name));
 	}
 
 	/**
@@ -253,8 +258,8 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
-	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults}
-	 * @returns - It returns itself so that afterward you can use the other functions.
+	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults | Default Events}
+	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
 	export function useDefaultEvents() {
 		Logger.info('Loading default events.', 'Loading');
@@ -273,8 +278,8 @@ export namespace CommandHandler {
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
-	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults}
-	 * @returns - It returns itself so that afterward you can use the other functions .
+	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults | Default Commands}
+	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
 	export function useDefaultCommands() {
 		Logger.info('Loading default commands.', 'Loading');
@@ -293,7 +298,7 @@ export namespace CommandHandler {
 	 *
 	 * @param options - Options for creating a new CommandHandler.
 	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/command-handler#creating-your-commandhandler}
-	 * @returns - It returns itself so that afterward you can use the other functions.
+	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
 	export function create(options: CreateCommandHandlerOptions) {
 		options.saveLogsInFile?.forEach(Logger.saveInFile);
@@ -319,10 +324,10 @@ export namespace CommandHandler {
 	 *
 	 * @param options - Options for launching the CommandHandler, see {@link CreateCommandHandlerOptions}.
 	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/command-handler#launching-the-commandhandler}
-	 * @returns - Itself in a promise.
+	 * @returns - Itself in a promise so that afterward you can chain with other functions.
 	 */
 	export async function launch(options: LaunchCommandHandlerOptions) {
-		client = new AdvancedClient(options.token, options.clientOptions ?? {});
+		client = new AdvancedClient(options.token, options.clientOptions);
 		emit('launch', options);
 
 		try {
@@ -363,9 +368,9 @@ export namespace CommandHandler {
 			prefixes.push(`<@!${client?.user?.id}> `);
 		}
 		
-		const appOwner = (await client.fetchApplication()).owner;
+		const appOwner = client.application?.owner;
 		if (appOwner) {
-			if (appOwner instanceof Team) owners.push(...appOwner.members.map(m => m.id));
+			if (appOwner instanceof Team) owners.push(...appOwner.members.filter(m => m.membershipState === 'ACCEPTED').map(m => m.id));
 			else owners.push(appOwner.id);
 		}
 
@@ -389,6 +394,7 @@ export namespace CommandHandler {
 	 *
 	 * @param path - The path of the command folder.
 	 * @param name - The name of the command including the extension.
+     * @returns - The command itself.
 	 */
 	export async function loadCommand(path: string, name: string) {
 		let command: MaybeCommand = await import(join(process.cwd(), path, name));
@@ -414,6 +420,8 @@ export namespace CommandHandler {
 		commands.set(instance.name, instance);
 		emit('loadCommand', instance);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'Loading');
+
+        return instance;
 	}
 
 	/**
@@ -448,6 +456,7 @@ export namespace CommandHandler {
 	 *
 	 * @param path - The path of the event folder.
 	 * @param name - The name of the event including the extension.
+     * @returns - The event itself.
 	 */
 	export async function loadEvent(path: string, name: string) {
 		let event: MaybeEvent = await import(join(process.cwd(), path, name));
@@ -458,6 +467,8 @@ export namespace CommandHandler {
 		events.set(instance.name, instance);
 
 		Logger.comment(`Event ${instance.name} loading : ${Logger.setColor('gold', `${name.split('.')[0]}.js`)}`, 'Loading');
+        
+        return instance;
 	}
 
 	/**
@@ -472,9 +483,7 @@ export namespace CommandHandler {
 		Logger.comment(`Events : (${files.length})`, 'Loading');
 
 		if (files.length) {
-			for (const file of files) {
-				await loadEvent(path, file);
-			}
+            files.forEach(async (file) => await loadEvent(path, file));
 		}
 	}
 
