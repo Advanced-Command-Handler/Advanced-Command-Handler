@@ -7,6 +7,6 @@ module.exports = class TestCommand extends Command {
 	userPermissions = ['MANAGE_MESSAGES'];
 
 	async run(ctx) {
-		ctx.message.channel.send('testing');
+		await ctx.reply('testing');
 	}
 };
