@@ -5,7 +5,7 @@ import {
 	MessageEmbed,
 	MessageOptions,
 	MessageResolvable,
-    NewsChannel,
+	NewsChannel,
 	ReplyMessageOptions,
 	TextChannel
 } from 'discord.js';
@@ -258,7 +258,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param options - The options.
 	 * @returns - The message sent.
 	 */
-	public send(content: string | SendOptions, options?: SendOptions): Promise<Message> {
+	public send(content: string | SendOptions, options?: SendOptions) {
         if (typeof content !== 'string') options = content;
         else if (content && options) options.content === content;
         else if (content && !options) options = {content};
@@ -269,9 +269,9 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	
-    public reply(options: ReplyOptions): Promise<Message | Message[]>;
-    public reply(content: string): Promise<Message | Message[]>;
-    public reply(content: string, options: ReplyOptions): Promise<Message | Message[]>;
+    public reply(options: ReplyOptions): Promise<Message>;
+    public reply(content: string): Promise<Message>;
+    public reply(content: string, options: ReplyOptions): Promise<Message>;
 	/**
 	 * Reply to the message in the channel.
 	 *
@@ -279,7 +279,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param options - The options.
 	 * @returns - The message sent.
 	 */
-	public reply(content: string | ReplyMessageOptions, options?: ReplyOptions): Promise<Message | Message[]> {
+	public reply(content: string | ReplyMessageOptions, options?: ReplyOptions) {
         if (typeof content !== 'string') options = content;
         else if (content && options) options.content === content;
         else if (content && !options) options = {content};
