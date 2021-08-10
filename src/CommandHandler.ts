@@ -1,5 +1,5 @@
-import * as defaultCommands from './defaults/commands/index';
-import * as defaultEvents from './defaults/events/index';
+import * as defaultCommands from './defaults/commands';
+import * as defaultEvents from './defaults/events';
 
 import {ClientOptions, Collection, Message, PresenceData, Snowflake, Team} from 'discord.js';
 import {AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent} from './';
