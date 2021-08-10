@@ -1,1 +1,1 @@
-export {MessageEvent} from './message';
+export * from './message';

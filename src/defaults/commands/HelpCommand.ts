@@ -1,6 +1,5 @@
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command, CommandContext, Tag} from '../../classes';
-import {CommandHandler, dayjs} from '../../CommandHandler';
+import {Command, CommandContext, CommandHandler, dayjs, Tag} from '../../';
 
 /**
  * Group an array by property with a predicate.
@@ -49,7 +48,7 @@ export class HelpCommand extends Command {
 	}
 
 	public static async sendGlobalHelp(ctx: CommandContext) {
-		const commandList = groupBy(ctx.handler.commands.array(), c => c.category!);
+		const commandList = groupBy([...ctx.handler.commands.values()], c => c.category!);
 
 		const embed = BetterEmbed.fromTemplate('complete', {
 			client: ctx.client,
@@ -72,7 +71,7 @@ export class HelpCommand extends Command {
 				);
 			});
 
-		return ctx.reply(embed);
+		return ctx.reply({embed});
 	}
 
 	public static async sendCommandHelp(ctx: CommandContext, command: Command) {
@@ -110,6 +109,6 @@ export class HelpCommand extends Command {
 		}
 
 		embed.cutIfTooLong();
-		return ctx.reply(embed);
+		return ctx.reply({embed});
 	}
 }

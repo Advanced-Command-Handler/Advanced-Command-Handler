@@ -1,4 +1,4 @@
-import {Command, CommandContext} from '../../classes';
+import {Command, CommandContext} from '../../';
 
 export class PingCommand extends Command {
 	override name = 'ping';

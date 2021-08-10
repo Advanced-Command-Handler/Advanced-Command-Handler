@@ -1,7 +1,5 @@
 import {Message} from 'discord.js';
-import {CommandContext, CommandErrorType, Event, EventContext, Tag} from '../../classes';
-import {CommandHandler} from '../../CommandHandler';
-import {argError, codeError, getThing, Logger, permissionsError} from '../../utils';
+import {argError, codeError, CommandContext, CommandErrorType, CommandHandler, Event, EventContext, getThing, Logger, permissionsError, Tag} from '../../';
 
 export class MessageEvent extends Event {
 	name = 'message' as const;
