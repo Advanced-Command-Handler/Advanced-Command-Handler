@@ -1,4 +1,4 @@
-import {DMChannel, GuildChannel, GuildMember, Message, PermissionString, Permissions, Snowflake, TextChannel, User} from 'discord.js';
+import {GuildChannel, GuildMember, Message, PermissionString, Permissions, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
 import {Logger, isOwner, isPermission} from '../../utils';
 import {CommandContext, SubCommandContext} from '../contexts';
@@ -204,49 +204,49 @@ export abstract class Command {
 	 * Deletes a message if deletable.
 	 *
 	 * @param options - The options, see {@link DeleteMessageOptions}.
-	 * @returns - The deleted message if deleted.
+	 * @returns - If not deletable nothing, else the deleted message or the Node.js Timer if a timeout is set.
 	 */
 	public deleteMessage(options: DeleteMessageOptions) {
-		if (options.message.deletable) return options.message.delete({timeout: options.timeout});
+		if (!options.message.deletable) return
+        if (options.timeout) return setTimeout(options.message.delete, options.timeout);
+        else return options.message.delete();
 	}
 
 	/**
-	 * Returns the missing permissions from the client & user for a message.
+	 * Returns the missing permissions from the client & user for a context.
 	 *
-	 * @param message - The message to check permissions for.
+	 * @param ctx - The context to check permissions for.
 	 * @returns - The missing permissions.
 	 */
-	public getMissingPermissions(message: Message) {
-		const missingPermissions: MissingPermissions = {
+	public getMissingPermissions(ctx: CommandContext) {
+        const missingPermissions: MissingPermissions = {
 			client: [],
 			user: [],
 		};
-		if (!message.guild || !message.guild.available) return missingPermissions;
+		if (!ctx.guild || !ctx.guild.available || !ctx.textChannel) return missingPermissions;
 
 		if (this.clientPermissions) {
 			missingPermissions.client.push(
-				//@ts-ignore
 				...this.clientPermissions.filter(permission => {
-					if (isPermission(permission) && !(message.channel instanceof DMChannel)) {
-						return !message.channel.permissionsFor(message.guild?.me!!)?.has(permission as PermissionString, false);
+					if (isPermission(permission)) {
+						return !ctx.textChannel?.permissionsFor(ctx.guild?.me!!)?.has(permission, false);
 					}
-				})
+				}) as PermissionString[]
 			);
 		}
 
 		if (this.userPermissions) {
 			missingPermissions.user.push(
-				// @ts-ignore
 				...this.userPermissions.filter(permission => {
-					if (isPermission(permission) && !(message.channel instanceof DMChannel)) {
-						return !message.channel.permissionsFor(message.member!!)?.has(permission, false);
+					if (isPermission(permission)) {
+						return !ctx.textChannel?.permissionsFor(ctx.member!!)?.has(permission, false);
 					}
-				})
+				}) as PermissionString[]
 			);
 		}
 
-		if (message.guild.me?.hasPermission('ADMINISTRATOR')) missingPermissions.client = [];
-		if (message.member?.hasPermission('ADMINISTRATOR')) missingPermissions.user = [];
+		if (ctx.guild.me?.permissions.has('ADMINISTRATOR')) missingPermissions.client = [];
+		if (ctx.member?.permissions.has('ADMINISTRATOR')) missingPermissions.user = [];
 
 		return missingPermissions;
 	}
@@ -267,20 +267,20 @@ export abstract class Command {
 	}
 
 	/**
-	 * Gives the {@link tags} of this command which are not validated by the message.<br>
+	 * Gives the {@link tags} of this command which are not validated by the context.<br>
 	 * i.e. If a command is executed on a guild and the command has the `dmOnly` Tag, it will be returned.
 	 *
-	 * @param message - The message to debug tags from.
+	 * @param ctx - The context to test tags from.
 	 * @returns - Tags that are not validated by the message.
 	 */
-	public getMissingTags(message: Message) {
+	public getMissingTags(ctx: CommandContext) {
 		const missingTags: Tag[] = [];
 		for (const tag of this.tags ?? []) {
-			if (tag === Tag.ownerOnly && !isOwner(message.author.id)) missingTags.push(Tag.ownerOnly);
-			if (tag === Tag.nsfw && message.channel instanceof GuildChannel && !message.channel.nsfw) missingTags.push(Tag.nsfw);
-			if (tag === Tag.guildOnly && message.guild === null) missingTags.push(Tag.guildOnly);
-			if (tag === Tag.guildOwnerOnly && message.guild?.ownerID !== message.author.id) missingTags.push(Tag.guildOwnerOnly);
-			if (tag === Tag.dmOnly && message.channel.type !== 'dm') missingTags.push(Tag.dmOnly);
+			if (tag === Tag.ownerOnly && !isOwner(ctx.user.id)) missingTags.push(Tag.ownerOnly);
+			if (tag === Tag.nsfw && ctx.channel instanceof GuildChannel && !ctx.channel.nsfw) missingTags.push(Tag.nsfw);
+			if (tag === Tag.guildOnly && !ctx.guild) missingTags.push(Tag.guildOnly);
+			if (tag === Tag.guildOwnerOnly && ctx.guild?.ownerId !== ctx.user.id) missingTags.push(Tag.guildOwnerOnly);
+			if (tag === Tag.dmOnly && ctx.channel.type !== 'DM') missingTags.push(Tag.dmOnly);
 		}
 
 		return missingTags;
@@ -289,13 +289,12 @@ export abstract class Command {
 	/**
 	 * Returns false if {@link channels} are defined for this command but the message doesn't come from one of it.
 	 *
-	 * @param from - The message or channel to debug where it comes from.
+	 * @param ctx - The context to test where it comes from.
 	 * @returns - If it is on a channel required if used.
 	 */
-	public isInRightChannel(from: Message | TextChannel) {
-		const channel = from instanceof Message ? (from.channel as TextChannel) : from;
+	public isInRightChannel(ctx: CommandContext) {
 		if (this.channels?.length === 0) return true;
-		return this.channels?.every(ch => (ch instanceof TextChannel ? channel.id === ch.id : false)) ?? true;
+		return !this.channels?.find(ch => typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id) ?? true;
 	}
 
 	/**
@@ -303,7 +302,7 @@ export abstract class Command {
 	 *
 	 * @remarks
 	 * If {@link cooldown} not set, this will always return `false`.
-	 * @param from - From where to debug if user is in a cooldown, see types.
+	 * @param from - From where to test if user/guild/message is in a cooldown, see types.
 	 * @returns - Is user in a cooldown.
 	 */
 	public isInCooldown(from: Message | User | Snowflake | GuildMember) {
@@ -314,7 +313,7 @@ export abstract class Command {
 	/**
 	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
 	 *
-	 * @param from - Where to get the cooldown from, see types.
+	 * @param from - Where to get the cooldown from, can be a user/guild/message, see types.
 	 * @returns - The user's cooldown.
 	 */
 	public getCooldown(from: Message | User | Snowflake | GuildMember): Cooldown {
@@ -328,7 +327,7 @@ export abstract class Command {
 	/**
 	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
 	 *
-	 * @param from - What to use to select the user to set the cooldown from.
+	 * @param from - What to use to select the user to set the cooldown from, can be a guild/message/member.
 	 */
 	public setCooldown(from: Message | User | Snowflake | GuildMember) {
 		const cooldown: number = this.cooldown ?? 0;
@@ -387,14 +386,14 @@ export abstract class Command {
 				data: this.getCooldown(ctx.message),
 			};
 
-		if (!this.isInRightChannel(ctx.message))
+		if (!this.isInRightChannel(ctx))
 			return {
 				message: 'This command is not in the correct channel.',
 				type: CommandErrorType.WRONG_CHANNEL,
 			};
 
-		const missingPermissions = this.getMissingPermissions(ctx.message);
-		const missingTags = this.getMissingTags(ctx.message);
+		const missingPermissions = this.getMissingPermissions(ctx);
+		const missingTags = this.getMissingTags(ctx);
 
 		if (missingPermissions.client.length)
 			return {
