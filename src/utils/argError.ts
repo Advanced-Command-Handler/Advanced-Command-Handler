@@ -1,5 +1,5 @@
 import {BetterEmbed} from 'discord.js-better-embed';
-import {CommandContext} from '../classes';
+import {CommandContext} from '../';
 
 /**
  * A function to use when a user fail on an argument of a command.
@@ -17,5 +17,5 @@ export function argError(ctx: CommandContext, error: string) {
 	});
 
 	if (ctx.command.usage) embed.addField('Syntax :', ctx.command.usage);
-	return ctx.send(embed);
+	return ctx.reply({embed});
 }

@@ -1,6 +1,7 @@
 import {Message, PermissionString, Permissions} from 'discord.js';
+
 import {BetterEmbed} from 'discord.js-better-embed';
-import {CommandContext} from '../classes';
+import {CommandContext} from '../';
 
 /**
  * A function to use when a user, or the client hasn't all the permissions needed.
@@ -19,13 +20,13 @@ export function permissionsError(ctx: CommandContext, missingPermissions: Permis
 	});
 
 	if (ctx.command.usage) embed.addField('Syntax :', ctx.command.usage);
-	return ctx.send(embed);
+	return ctx.reply({embed});
 }
 
 /**
  * Check if some permission is a valid permission that exists.
  *
- * @param permission - The permission to debug.
+ * @param permission - The permission to test.
  * @returns - Is the permission is a valid permission.
  */
 export function isPermission(permission: string): permission is PermissionString {

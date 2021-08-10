@@ -1,10 +1,10 @@
 import * as fs from 'fs';
-import {Logger} from './Logger';
+import {Logger} from './';
 
-export type JSONLike = {[k: string]: number | string | boolean | JSONLike | JSONLike[]};
+export type JSONLike = {[k: string]: number | string | boolean | JSONLike | JSONLike[]} | JSONLike[];
 
 /**
- * Saves a JSON into a JSON file.
+ * Saves a JSON-Like object into a JSON file.
  *
  * @param path - The path of the JSON file.
  * @param content - The content to save.

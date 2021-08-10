@@ -1,7 +1,5 @@
 import {BetterEmbed} from 'discord.js-better-embed';
-import {CommandContext} from '../classes';
-import {Logger} from './Logger';
-import {cutIfTooLong, isOwner} from './utils';
+import {CommandContext, cutIfTooLong, isOwner, Logger} from '../';
 
 /**
  * A function to use when a code error occurs in a command for example.
@@ -21,5 +19,6 @@ export function codeError(ctx: CommandContext, error: Error) {
 	});
 
 	Logger.error(error, 'CodeError');
-	return ctx.send(isOwner(ctx.user.id) ? embed : `An error occurred while executing the \`${ctx.command.name}\` command.`);
+    if (isOwner(ctx.user.id)) return ctx.reply({embed});
+    return ctx.reply(`An error occurred while executing the \`${ctx.command.name}\` command.`);
 }
