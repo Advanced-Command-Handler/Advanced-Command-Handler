@@ -1,5 +1,4 @@
-import {CommandHandler} from '../../CommandHandler';
-
+import {CommandHandler} from '../../';
 export class CommandHandlerError extends Error {
 	/**
 	 * Where the error occurred.
@@ -24,6 +23,6 @@ export class CommandHandlerError extends Error {
 		this.where = where;
 		this.date = new Date();
 
-		CommandHandler.emit('error', this);
+        if (this instanceof CommandHandlerError) CommandHandler.emit('error', this);
 	}
 }
