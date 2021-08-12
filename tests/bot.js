@@ -4,6 +4,9 @@ require('dotenv').config();
 // Logger.LEVEL = LogLevel.LOG;
 Logger.ignores.push(['subCommandLoading', 'COMMENT']);
 
+CommandHandler.on('create', Logger.log);
+CommandHandler.on('error', Logger.error);
+
 CommandHandler.create({
 	eventsDir: 'events',
 	commandsDir: 'commands',
@@ -16,7 +19,7 @@ CommandHandler.create({
 		token: process.env.TOKEN,
 		cycleDuration: 15,
         clientOptions: {
-            intents: ['GUILD_MESSAGES']
+            intents: ['GUILDS', 'GUILD_MESSAGES'],
         },
 		presences: [
 			{
@@ -32,8 +35,6 @@ CommandHandler.create({
 			}
 		],
 	});
-
-CommandHandler.on('create', Logger.log);
 
 CommandHandler.on('launched', () => {
 	Logger.log('CommandHandler launched successfully !');
