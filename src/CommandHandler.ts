@@ -1,13 +1,12 @@
-import * as defaultCommands from './defaults/commands';
+import * as defaultCommands from './defaults/commands/';
 import * as defaultEvents from './defaults/events';
 
-import {ClientOptions, Collection, Message, PresenceData, Snowflake, Team} from 'discord.js';
 import {AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent} from './';
+import {ClientOptions, Collection, Message, PresenceData, Snowflake, Team} from 'discord.js';
 
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
-
 
 export namespace CommandHandler {
 	/**
@@ -125,6 +124,9 @@ export namespace CommandHandler {
 		create: [CreateCommandHandlerOptions];
 		/**
 		 * The event executed when a CommandHandlerError is created.
+         * 
+         * @remarks You need to add a listener to this event for every bots otherwise it will crash in some places with a weird error.
+         * @see {@link https://nodejs.org/api/errors.html#errors_err_unhandled_error}
 		 */
 		error: [CommandHandlerError];
 		/**
@@ -219,8 +221,8 @@ export namespace CommandHandler {
 	 * @param eventName - The event name.
 	 * @param fn - The callback to execute.
 	 */
-    export function on<K extends keyof CommandHandlerEvents>(eventName: K, fn: (listener: CommandHandlerEvents[K]) => void) {
-		emitter.on(eventName, fn);
+    export function on<K extends keyof CommandHandlerEvents>(eventName: K, fn: (...args: CommandHandlerEvents[K]) => void) {
+		emitter.on(eventName, fn as (...args: any[]) => void);
 	}
 
 	/**
@@ -230,8 +232,8 @@ export namespace CommandHandler {
 	 * @param eventName - The event name.
 	 * @param fn - The callback to execute.
 	 */
-	export function once<K extends keyof CommandHandlerEvents>(eventName: K, fn: (listener: CommandHandlerEvents[K]) => void) {
-		emitter.once(eventName, fn);
+	export function once<K extends keyof CommandHandlerEvents>(eventName: K, fn: (...args: CommandHandlerEvents[K]) => void) {
+		emitter.once(eventName, fn as (...args: any[]) => void);
 	}
 
 	/**
@@ -309,8 +311,8 @@ export namespace CommandHandler {
 		prefixes = options.prefixes ?? [];
 		useMentionAsPrefix = options.useMentionAsPrefix ?? true;
 
-		if (!commandsDir) Logger.warn("No 'commandsDir' specified, commands apart default commands won't load.");
-		if (!eventsDir) Logger.warn("No 'eventsDir' specified, events apart default events won't load.");
+		if (!commandsDir) Logger.warn("No 'commandsDir' specified, commands appart default commands won't load.");
+		if (!eventsDir) Logger.warn("No 'eventsDir' specified, events appart default events won't load.");
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
@@ -348,7 +350,6 @@ export namespace CommandHandler {
 		if (options.presence && !options.presences) client.user!.setPresence(options.presence);
 
 		if (options.presences && options.presences.length > 0) {
-			
 			const cycle = options.cycleBetweenPresences ?? true;
 			if (cycle && options.presences.length > 1) {
 				let index = 0;
@@ -368,11 +369,12 @@ export namespace CommandHandler {
 			prefixes.push(`<@!${client?.user?.id}> `);
 		}
 		
-		const appOwner = client.application?.owner;
-		if (appOwner) {
-			if (appOwner instanceof Team) owners.push(...appOwner.members.filter(m => m.membershipState === 'ACCEPTED').map(m => m.id));
-			else owners.push(appOwner.id);
-		}
+        const appOwner = (await client.application?.fetch())?.owner;
+        if (appOwner) {
+            if (appOwner instanceof Team) owners.push(...appOwner.members.filter(m => m.membershipState === 'ACCEPTED').map(m => m.id));
+            else owners.push(appOwner.id);
+        }
+		
 
 		emit('launched');
 
@@ -466,7 +468,7 @@ export namespace CommandHandler {
 		if (!event) throw new Error(`Event given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		events.set(instance.name, instance);
 
-		Logger.comment(`Event ${instance.name} loading : ${Logger.setColor('gold', `${name.split('.')[0]}.js`)}`, 'Loading');
+		Logger.comment(`Event ${Logger.setColor('green', instance.name)} loaded : ${Logger.setColor('gold', `${name.split('.')[0]}.js`)}`, 'Loading');
         
         return instance;
 	}
@@ -482,9 +484,7 @@ export namespace CommandHandler {
 		Logger.info('Loading events.', 'Loading');
 		Logger.comment(`Events : (${files.length})`, 'Loading');
 
-		if (files.length) {
-            files.forEach(async (file) => await loadEvent(path, file));
-		}
+		if (files.length) for (const file of files) await loadEvent(path, file);
 	}
 
 	/**
