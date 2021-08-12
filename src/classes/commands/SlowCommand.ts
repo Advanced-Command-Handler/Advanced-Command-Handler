@@ -1,4 +1,5 @@
-import {Command, CommandContext, CommandHandler} from '../../';
+import {Command} from './';
+import {CommandContext} from '../../';
 
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/templates}
@@ -18,7 +19,7 @@ export abstract class SlowCommand extends Command {
 	 * @param ctx - The context to react to.
 	 */
 	public async startWait(ctx: CommandContext) {
-		await ctx.message.react(this.waitEmoji);
+		await ctx.react(this.waitEmoji);
 	}
 
 	/**
@@ -27,6 +28,6 @@ export abstract class SlowCommand extends Command {
 	 * @param ctx - The context to remove the reaction to.
 	 */
 	public async stopWait(ctx: CommandContext) {
-		await ctx.message.reactions.cache.find(r => r.emoji.name === this.waitEmoji)?.users.remove(CommandHandler.client!!.id);
+		await ctx.removeSelfReaction(this.waitEmoji);
 	}
 }
