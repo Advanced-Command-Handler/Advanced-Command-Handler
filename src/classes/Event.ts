@@ -1,6 +1,6 @@
-import {ClientEvents} from 'discord.js';
-import {CommandHandler} from '../CommandHandler';
 import {AdvancedClient} from './AdvancedClient';
+import type {ClientEvents} from 'discord.js';
+import {CommandHandler} from '../CommandHandler';
 import {EventContext} from './contexts';
 
 /**
@@ -27,7 +27,7 @@ export abstract class Event {
 	 * @param client - The client to bind the event from.
 	 */
 	public bind(client: AdvancedClient) {
-		const context: EventContext<this> = new EventContext({
+		const context = new EventContext<this>({
 			event: this,
 			handler: CommandHandler,
 		});
