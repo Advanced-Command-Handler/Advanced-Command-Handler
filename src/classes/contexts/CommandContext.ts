@@ -10,8 +10,7 @@ import {
 	TextChannel
 } from 'discord.js';
 
-import {Command} from '../commands';
-import {CommandHandler} from '../../CommandHandler';
+import {Command, CommandHandler} from '../../';
 import {HelpCommand} from '../../defaults/commands';
 
 interface ReplyOptions extends ReplyMessageOptions {
@@ -218,7 +217,7 @@ export class CommandContext implements CommandContextBuilder {
 	 *
 	 * @returns - The message of the help menu.
 	 */
-	public async sendGlobalHelpMessage() {
+	public sendGlobalHelpMessage() {
 		return HelpCommand.sendGlobalHelp(this);
 	}
 
@@ -228,7 +227,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param commandName - The name of the command to send the help menu.
 	 * @returns - The message of the help menu of the command.
 	 */
-	public async sendHelpMessage(commandName = this.commandName) {
+	public sendHelpMessage(commandName = this.commandName) {
 		return HelpCommand.sendCommandHelp(this, this.handler.commands.get(commandName)!!);
 	}
 
