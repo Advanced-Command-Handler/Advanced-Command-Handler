@@ -1,6 +1,11 @@
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command, CommandContext, CommandHandler, dayjs, Tag} from '../../';
+import dayjs from 'dayjs';
+import durationPlugin from 'dayjs/plugin/duration';
+import {CommandHandler} from '../../';
+import {Command, Tag} from '../../classes/commands';
+import {CommandContext} from '../../classes/contexts';
 
+dayjs.extend(durationPlugin);
 /**
  * Group an array by property with a predicate.
  *
