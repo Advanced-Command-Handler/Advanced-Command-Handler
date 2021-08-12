@@ -236,8 +236,7 @@ export class Logger {
 		if (Logger.LEVEL === LogLevel.OFF) return;
 		const datePart = `[${dayjs().format('YYYY/MM/DD HH:mm:ss.SSS')}]`;
 		const titlePart = `[${title.toUpperCase()}]`;
-		text = typeof text === 'string' ? text : inspect(text);
-
+		text = typeof text === 'object' ? inspect(text) : text.toString();
 		let textPart = text;
 
 		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string) => chalk.yellow(match));
