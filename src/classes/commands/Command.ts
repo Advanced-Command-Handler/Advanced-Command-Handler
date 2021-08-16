@@ -25,9 +25,21 @@ import CommandCooldown = CommandHandler.CommandCooldown;
  */
 export enum Tag {
 	/**
+	 * Tag for commands to not run in a thread.
+	 */
+	channelOnly = 'channelOnly',
+	/**
+	 * Tag for commands to only run in private messages.
+	 */
+	dmOnly = 'dmOnly',
+	/**
 	 * Tag for commands to only run on a guild.
 	 */
 	guildOnly = 'guildOnly',
+	/**
+	 * Tag for commands to only run on a guild and if the author is the owner of the guild.
+	 */
+	guildOwnerOnly = 'guildOwnerOnly',
 	/**
 	 * Tag for commands to only run if author is an owner defined in {@link CommandHandler.owners}.
 	 */
@@ -37,13 +49,9 @@ export enum Tag {
 	 */
 	nsfw = 'nsfw',
 	/**
-	 * Tag for commands to only run on a guild and if the author is the owner of the guild.
+	 * Tag for commands to only run in a thread.
 	 */
-	guildOwnerOnly = 'guildOwnerOnly',
-	/**
-	 * Tag for commands to only run in private messages.
-	 */
-	dmOnly = 'dmOnly',
+	threadOnly = 'threadOnly',
 }
 
 /**
@@ -99,10 +107,6 @@ export interface Command {
  */
 export abstract class Command {
 	/**
-	 * The name of the command.
-	 */
-	public abstract readonly name: string = '';
-	/**
 	 * The aliases of the command.
 	 */
 	public aliases?: string[];
@@ -135,6 +139,16 @@ export abstract class Command {
 	 */
 	public description?: string;
 	/**
+	 * The name of the command.
+	 */
+	public abstract readonly name: string = '';
+	/**
+	 * The SubCommands of this command.
+	 *
+	 * @remarks Register SubCommands using the {@link Command#registerSubCommands} method.
+	 */
+	public subCommands: SubCommand[] = [];
+	/**
 	 * The tags of the command.
 	 *
 	 * @remarks
@@ -159,13 +173,6 @@ export abstract class Command {
 	 * @defaultValue `['SEND_MESSAGES']`
 	 */
 	public userPermissions?: Array<PermissionString | string>;
-
-	/**
-	 * The SubCommands of this command.
-	 *
-	 * @remarks Register SubCommands using the {@link Command#registerSubCommands} method.
-	 */
-	public subCommands: SubCommand[] = [];
 
 	/**
 	 * Returns the names and aliases of this command in an array.
@@ -193,14 +200,6 @@ export abstract class Command {
 	}
 
 	/**
-	 * The function to run when executing the command.
-	 *
-	 * @remarks Use the {@link Command#execute} method if you want to have a validation before executing the run method.
-	 * @param ctx - The command context.
-	 */
-	public abstract run(ctx: CommandContext): any | Promise<any>;
-
-	/**
 	 * Deletes a message if deletable.
 	 *
 	 * @param options - The options, see {@link DeleteMessageOptions}.
@@ -210,6 +209,64 @@ export abstract class Command {
 		if (!options.message.deletable) return;
 		if (options.timeout) return setTimeout(options.message.delete, options.timeout);
 		else return options.message.delete();
+	}
+
+	/**
+	 * Execute the run method, but perform validations before, prefer using this method in your custom Message Event.
+	 *
+	 * @param ctx - The CContext.
+	 * @returns - An error related to the command if any, for example : a tag not satisfied.
+	 */
+	public async execute(ctx: CommandContext): Promise<CommandError | undefined> {
+		const error = await this.validate(ctx);
+		if (error) return new CommandError(error);
+
+		await this.run(ctx);
+		for (const subCommand of this.subCommands) {
+			if (subCommand.nameAndAliases.includes([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' '))) {
+				ctx = new SubCommandContext({
+					args: ctx.args.slice(subCommand.name.split(' ').length),
+					command: this,
+					message: ctx.message,
+					handler: ctx.handler,
+					subCommand,
+				});
+
+				const subCommandError = await subCommand.execute(ctx);
+				if (subCommandError) subCommandError.name = 'SubCommandError';
+				return subCommandError;
+			}
+		}
+		this.setCooldown(ctx.message);
+	}
+
+	/**
+	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
+	 *
+	 * @param from - Where to get the cooldown from, can be a user/guild/message, see types.
+	 * @returns - The user's cooldown.
+	 */
+	public getCooldown(from: Message | User | Snowflake | GuildMember): Cooldown {
+		const cooldown = CommandHandler.cooldowns.get(Command.getSnowflake(from))![this.name];
+		return {
+			...cooldown,
+			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now(),
+		};
+	}
+
+	/**
+	 * Returns the invalid permissions (not presents in {@link https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS | Permissions.FLAGS}).
+	 *
+	 * @returns - The invalid permissions put in {@link clientPermissions} & {@link userPermissions}.
+	 * @internal
+	 */
+	public getInvalidPermissions() {
+		const permissionsFlags = [...Object.keys(Permissions.FLAGS)];
+
+		return {
+			user: this.userPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
+			client: this.clientPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
+		};
 	}
 
 	/**
@@ -248,21 +305,6 @@ export abstract class Command {
 	}
 
 	/**
-	 * Returns the invalid permissions (not presents in {@link https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS | Permissions.FLAGS}).
-	 *
-	 * @returns - The invalid permissions put in {@link clientPermissions} & {@link userPermissions}.
-	 * @internal
-	 */
-	public getInvalidPermissions() {
-		const permissionsFlags = [...Object.keys(Permissions.FLAGS)];
-
-		return {
-			user: this.userPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
-			client: this.clientPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
-		};
-	}
-
-	/**
 	 * Gives the {@link tags} of this command which are not validated by the context.<br>
 	 * i.e. If a command is executed on a guild and the command has the `dmOnly` Tag, it will be returned.
 	 *
@@ -272,25 +314,16 @@ export abstract class Command {
 	public getMissingTags(ctx: CommandContext) {
 		const missingTags: Tag[] = [];
 		for (const tag of this.tags ?? []) {
-			if (tag === Tag.ownerOnly && !isOwner(ctx.user.id)) missingTags.push(Tag.ownerOnly);
-			if (tag === Tag.nsfw && ctx.channel instanceof GuildChannel && !ctx.channel.nsfw) missingTags.push(Tag.nsfw);
+			if (tag === Tag.channelOnly && ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
+			if (tag === Tag.dmOnly && ctx.channel.type !== 'DM') missingTags.push(Tag.dmOnly);
 			if (tag === Tag.guildOnly && !ctx.guild) missingTags.push(Tag.guildOnly);
 			if (tag === Tag.guildOwnerOnly && ctx.guild?.ownerId !== ctx.user.id) missingTags.push(Tag.guildOwnerOnly);
-			if (tag === Tag.dmOnly && ctx.channel.type !== 'DM') missingTags.push(Tag.dmOnly);
+			if (tag === Tag.nsfw && ctx.channel instanceof GuildChannel && !ctx.channel.nsfw) missingTags.push(Tag.nsfw);
+			if (tag === Tag.ownerOnly && !isOwner(ctx.user.id)) missingTags.push(Tag.ownerOnly);
+			if (tag === Tag.threadOnly && !ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
 		}
 
 		return missingTags;
-	}
-
-	/**
-	 * Returns false if {@link channels} are defined for this command but the message doesn't come from one of it.
-	 *
-	 * @param ctx - The context to test where it comes from.
-	 * @returns - If it is on a channel required if used.
-	 */
-	public isInRightChannel(ctx: CommandContext) {
-		if (this.channels?.length === 0) return true;
-		return !this.channels?.find(ch => (typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id)) ?? true;
 	}
 
 	/**
@@ -307,18 +340,23 @@ export abstract class Command {
 	}
 
 	/**
-	 * Get the actual cooldown of the user for this command plus when command has been executed and how many seconds to wait.
+	 * Returns false if {@link channels} are defined for this command but the message doesn't come from one of it.
 	 *
-	 * @param from - Where to get the cooldown from, can be a user/guild/message, see types.
-	 * @returns - The user's cooldown.
+	 * @param ctx - The context to test where it comes from.
+	 * @returns - If it is on a channel required if used.
 	 */
-	public getCooldown(from: Message | User | Snowflake | GuildMember): Cooldown {
-		const cooldown = CommandHandler.cooldowns.get(Command.getSnowflake(from))![this.name];
-		return {
-			...cooldown,
-			waitMore: cooldown.executedAt.getTime() + cooldown.cooldown * 1000 - Date.now(),
-		};
+	public isInRightChannel(ctx: CommandContext) {
+		if (this.channels?.length === 0) return true;
+		return !this.channels?.find(ch => (typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id)) ?? true;
 	}
+
+	/**
+	 * The function to run when executing the command.
+	 *
+	 * @remarks Use the {@link Command#execute} method if you want to have a validation before executing the run method.
+	 * @param ctx - The command context.
+	 */
+	public abstract run(ctx: CommandContext): any | Promise<any>;
 
 	/**
 	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.
@@ -337,35 +375,6 @@ export abstract class Command {
 		};
 
 		setTimeout(() => delete CommandHandler.cooldowns.get(id)![this.name], cooldown * 1000);
-	}
-
-	/**
-	 * Execute the run method, but perform validations before, prefer using this method in your custom Message Event.
-	 *
-	 * @param ctx - The CContext.
-	 * @returns - An error related to the command if any, for example : a tag not satisfied.
-	 */
-	public async execute(ctx: CommandContext): Promise<CommandError | undefined> {
-		const error = await this.validate(ctx);
-		if (error) return new CommandError(error);
-
-		await this.run(ctx);
-		for (const subCommand of this.subCommands) {
-			if (subCommand.nameAndAliases.includes([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' '))) {
-				ctx = new SubCommandContext({
-					args: ctx.args.slice(subCommand.name.split(' ').length),
-					command: this,
-					message: ctx.message,
-					handler: ctx.handler,
-					subCommand,
-				});
-
-				const subCommandError = await subCommand.execute(ctx);
-				if (subCommandError) subCommandError.name = 'SubCommandError';
-				return subCommandError;
-			}
-		}
-		this.setCooldown(ctx.message);
 	}
 
 	/**
