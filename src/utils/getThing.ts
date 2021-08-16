@@ -156,6 +156,7 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 				client?.guilds.cache.get(text) ??
 				client?.guilds.cache.find(g => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ??
 				client?.guilds.resolve(text) ??
+				message?.mentions.guild ??
 				null
 			);
 		case DataType.MEMBER:
@@ -175,7 +176,7 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 			const m = await message?.channel.messages.fetch(text);
 			if (m) return m;
 
-			const url = text.replace('https://discord.com/channels/', '').split('/');
+			const url = text.replace(/https:\/\/((canary|ptb).)?discord.com\/channels\//, '').split('/');
 			const channels = client?.channels.cache;
 			if (text.startsWith('https') && channels?.has(url[1])) {
 				return (await (channels?.filter(c => c.isText()).get(url[1]) as TextChannel)?.messages.fetch(url[2])) || null;
