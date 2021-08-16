@@ -10,7 +10,7 @@ interface EventContextBuilder<E extends Event> {
 	 */
 	event: E;
 	/**
-	 * The Handler.
+	 * The CommandHandler.
 	 */
 	handler: typeof CommandHandler;
 }

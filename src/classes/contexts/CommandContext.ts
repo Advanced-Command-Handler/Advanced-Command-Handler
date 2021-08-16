@@ -7,6 +7,7 @@ import {
 	MessageResolvable,
 	NewsChannel,
 	ReplyMessageOptions,
+	StartThreadOptions,
 	TextChannel,
 } from 'discord.js';
 
@@ -142,10 +143,17 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	/**
-	 * Returns the channel where the command was executed as a TextChannel or undefined if it isn't'.
+	 * Returns the channel where the command was executed as a TextChannel or undefined if it isn't.
 	 */
 	get textChannel() {
 		return this.message.channel instanceof TextChannel || this.message.channel instanceof NewsChannel ? this.message.channel : undefined;
+	}
+
+	/**
+	 * Returns the channel where the command was executed as a ThreadChannel or undefined if it isn't.
+	 */
+	get thread() {
+		return this.message.channel.isThread() ? this.message.channel : undefined;
 	}
 
 	/**
@@ -153,6 +161,33 @@ export class CommandContext implements CommandContextBuilder {
 	 */
 	get user() {
 		return this.message.author;
+	}
+
+	public bulkDeleteInChannel(number: number, filterOld?: boolean): Promise<Collection<string, Message>>;
+	public bulkDeleteInChannel(number: Collection<string, Message>, filterOld?: boolean): Promise<Collection<string, Message>>;
+	public bulkDeleteInChannel(number: readonly MessageResolvable[], filterOld?: boolean): Promise<Collection<string, Message>>;
+	/**
+	 * Delete multiple messages from a channel.
+	 *
+	 * @param number - The number of messages to delete, or a collection of messages, or an array of Messages or IDs.
+	 * @param filterOld - Filter messages to remove those, which are older than two weeks automatically.
+	 * @returns - The collection of the deleted messages.
+	 */
+	public async bulkDeleteInChannel(number: number | Collection<string, Message> | readonly MessageResolvable[], filterOld?: boolean) {
+		if (this.textChannel) {
+			return this.textChannel.bulkDelete(number, filterOld);
+		}
+	}
+
+	/**
+	 * Create a Thread, returns undefined if already in a Thread.
+	 *
+	 * @param options - The options of the Thread.
+	 * @returns - The resulting Thread.
+	 */
+	public createThread(options: StartThreadOptions) {
+		if (this.channel.isThread()) return undefined;
+		return this.message.startThread(options);
 	}
 
 	/**
@@ -212,39 +247,24 @@ export class CommandContext implements CommandContextBuilder {
 		}
 	}
 
+	public reply(options: ReplyOptions): Promise<Message>;
+	public reply(content: string): Promise<Message>;
+	public reply(content: string, options: ReplyOptions): Promise<Message>;
 	/**
-	 * Sends the help menu from the default `HelpCommand` command (even if you are not using it).
+	 * Reply to the message in the channel.
 	 *
-	 * @returns - The message of the help menu.
+	 * @param content - The content, or embed, or object with an embed/content/attachments.
+	 * @param options - The options.
+	 * @returns - The message sent.
 	 */
-	public sendGlobalHelpMessage() {
-		return HelpCommand.sendGlobalHelp(this);
-	}
+	public reply(content: string | ReplyMessageOptions, options?: ReplyOptions) {
+		if (typeof content !== 'string') options = content;
+		else if (content && options) options.content === content;
+		else if (content && !options) options = {content};
 
-	/**
-	 * Sends the help menu of the command from the default `HelpCommand` command (even if you are not using it).
-	 *
-	 * @param commandName - The name of the command to send the help menu.
-	 * @returns - The message of the help menu of the command.
-	 */
-	public sendHelpMessage(commandName = this.commandName) {
-		return HelpCommand.sendCommandHelp(this, this.handler.commands.get(commandName)!!);
-	}
+		if (options && options.embed && !options.embeds) options.embeds = [options.embed];
 
-	public bulkDeleteInChannel(number: number, filterOld?: boolean): Promise<Collection<string, Message>>;
-	public bulkDeleteInChannel(number: Collection<string, Message>, filterOld?: boolean): Promise<Collection<string, Message>>;
-	public bulkDeleteInChannel(number: readonly MessageResolvable[], filterOld?: boolean): Promise<Collection<string, Message>>;
-	/**
-	 * Delete multiple messages from a channel.
-	 *
-	 * @param number - The number of messages to delete, or a collection of messages, or an array of Messages or IDs.
-	 * @param filterOld - Filter messages to remove those, which are older than two weeks automatically.
-	 * @returns - The collection of the deleted messages.
-	 */
-	public async bulkDeleteInChannel(number: number | Collection<string, Message> | readonly MessageResolvable[], filterOld?: boolean) {
-		if (this.textChannel) {
-			return this.textChannel.bulkDelete(number, filterOld);
-		}
+		return this.message.reply(options ?? '');
 	}
 
 	public send(options: SendOptions): Promise<Message>;
@@ -267,23 +287,22 @@ export class CommandContext implements CommandContextBuilder {
 		return this.channel.send(options ?? '');
 	}
 
-	public reply(options: ReplyOptions): Promise<Message>;
-	public reply(content: string): Promise<Message>;
-	public reply(content: string, options: ReplyOptions): Promise<Message>;
 	/**
-	 * Reply to the message in the channel.
+	 * Sends the help menu from the default `HelpCommand` command (even if you are not using it).
 	 *
-	 * @param content - The content, or embed, or object with an embed/content/attachments.
-	 * @param options - The options.
-	 * @returns - The message sent.
+	 * @returns - The message of the help menu.
 	 */
-	public reply(content: string | ReplyMessageOptions, options?: ReplyOptions) {
-		if (typeof content !== 'string') options = content;
-		else if (content && options) options.content === content;
-		else if (content && !options) options = {content};
+	public sendGlobalHelpMessage() {
+		return HelpCommand.sendGlobalHelp(this);
+	}
 
-		if (options && options.embed && !options.embeds) options.embeds = [options.embed];
-
-		return this.message.reply(options ?? '');
+	/**
+	 * Sends the help menu of the command from the default `HelpCommand` command (even if you are not using it).
+	 *
+	 * @param commandName - The name of the command to send the help menu.
+	 * @returns - The message of the help menu of the command.
+	 */
+	public sendHelpMessage(commandName = this.commandName) {
+		return HelpCommand.sendCommandHelp(this, this.handler.commands.get(commandName)!!);
 	}
 }
