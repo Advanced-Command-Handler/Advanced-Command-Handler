@@ -1,5 +1,5 @@
-import {Command} from './';
 import {CommandContext} from '../../';
+import {Command} from './';
 
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/templates}

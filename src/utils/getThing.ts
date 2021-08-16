@@ -1,4 +1,4 @@
-import {Channel, DMChannel, Emoji, Guild, GuildChannel, GuildMember, Message, NewsChannel, Role, TextChannel, User} from 'discord.js';
+import {Channel, DMChannel, Emoji, Guild, GuildChannel, GuildMember, Message, Role, TextChannel, User} from 'discord.js';
 import {Command, CommandHandler} from '../';
 
 export enum DataType {
@@ -11,16 +11,17 @@ export enum DataType {
 	ROLE = 'role',
 	USER = 'user',
 }
+
 type ReturnTypes = {[k in Lowercase<DataType>]: any} & {
-    channel: Channel; 
-    command: Command; 
-    emote: Emoji; 
-    guild: Guild; 
-    member: GuildMember; 
-    message: Message; 
-    role: Role; 
-    user: User; 
-}
+	channel: Channel;
+	command: Command;
+	emote: Emoji;
+	guild: Guild;
+	member: GuildMember;
+	message: Message;
+	role: Role;
+	user: User;
+};
 
 type DataTypeResolver<T extends DataType> = T | Lowercase<T>;
 
@@ -105,7 +106,7 @@ export async function getThing(dataType: DataTypeResolver<DataType.USER>, text: 
  * @param text - A string or a Message to find dataType from.
  * @returns - The Data found or null if not found.
  */
- export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>, text: string | Message): Promise<ReturnTypes[Lowercase<T>] | null> {
+export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>, text: string | Message): Promise<ReturnTypes[Lowercase<T>] | null> {
 	let message: Message | null;
 	if (text instanceof Message) {
 		message = text;
@@ -118,16 +119,17 @@ export async function getThing(dataType: DataTypeResolver<DataType.USER>, text: 
 			return CommandHandler.findCommand(text as string) ?? null;
 
 		case DataType.CHANNEL:
-            return (
-                client?.channels.cache.get(text) ??
-                message?.mentions.channels.first() ??
-                client?.channels.cache.find(c => 
-                    (c instanceof GuildChannel && c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
-                    (c instanceof DMChannel && c.recipient.username.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 2) ||
-                    false
-                ) ??
-                null
-            );
+			return (
+				client?.channels.cache.get(text) ??
+				message?.mentions.channels.first() ??
+				client?.channels.cache.find(
+					c =>
+						(c instanceof GuildChannel && c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
+						(c instanceof DMChannel && c.recipient.username.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 2) ||
+						false
+				) ??
+				null
+			);
 		case DataType.GUILD:
 			return (
 				client?.guilds.cache.get(text) ??
@@ -139,10 +141,11 @@ export async function getThing(dataType: DataTypeResolver<DataType.USER>, text: 
 			return (
 				message?.guild?.members.cache.get(text) ??
 				message?.mentions?.members?.first() ??
-				message?.guild?.members.cache.find(m =>
-                    (m.displayName.toLowerCase().includes((text as string).toLowerCase()) ||
-                        m.user.username.toLowerCase().includes((text as string).toLowerCase())) &&
-                    (text as string).length > 1
+				message?.guild?.members.cache.find(
+					m =>
+						(m.displayName.toLowerCase().includes((text as string).toLowerCase()) ||
+							m.user.username.toLowerCase().includes((text as string).toLowerCase())) &&
+						(text as string).length > 1
 				) ??
 				null
 			);
@@ -186,7 +189,7 @@ export async function getThing(dataType: DataTypeResolver<DataType.USER>, text: 
 			}
 
 			return null;
-        default:
-            return null;
+		default:
+			return null;
 	}
 }

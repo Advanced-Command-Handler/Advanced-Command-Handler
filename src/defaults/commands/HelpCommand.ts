@@ -1,11 +1,11 @@
-import {BetterEmbed} from 'discord.js-better-embed';
 import dayjs from 'dayjs';
 import durationPlugin from 'dayjs/plugin/duration';
+import {BetterEmbed} from 'discord.js-better-embed';
 import {CommandHandler} from '../../';
-import {Command, Tag} from '../../classes/commands';
-import {CommandContext} from '../../classes/contexts';
+import {Command, CommandContext, Tag} from '../../classes';
 
 dayjs.extend(durationPlugin);
+
 /**
  * Group an array by property with a predicate.
  *
@@ -33,23 +33,6 @@ export class HelpCommand extends Command {
 
 	public override async run(ctx: CommandContext) {
 		if (!ctx.isCallingASubCommand) await HelpCommand.sendGlobalHelp(ctx);
-	}
-
-	public override async registerSubCommands() {
-		this.subCommand(
-			'all',
-			{
-				aliases: ['a', 'list', 'ls'],
-				description: 'List all commands available.',
-			},
-			HelpCommand.sendGlobalHelp
-		);
-
-		CommandHandler.commands.forEach(c => {
-			this.subCommand(c.name, {aliases: c.aliases}, async ctx => {
-				await HelpCommand.sendCommandHelp(ctx, c);
-			});
-		});
 	}
 
 	public static async sendGlobalHelp(ctx: CommandContext) {
@@ -115,5 +98,22 @@ export class HelpCommand extends Command {
 
 		embed.cutIfTooLong();
 		return ctx.reply({embed});
+	}
+
+	public override async registerSubCommands() {
+		this.subCommand(
+			'all',
+			{
+				aliases: ['a', 'list', 'ls'],
+				description: 'List all commands available.',
+			},
+			HelpCommand.sendGlobalHelp
+		);
+
+		CommandHandler.commands.forEach(c => {
+			this.subCommand(c.name, {aliases: c.aliases}, async ctx => {
+				await HelpCommand.sendCommandHelp(ctx, c);
+			});
+		});
 	}
 }

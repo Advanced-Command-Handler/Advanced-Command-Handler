@@ -7,18 +7,18 @@ import {
 	MessageResolvable,
 	NewsChannel,
 	ReplyMessageOptions,
-	TextChannel
+	TextChannel,
 } from 'discord.js';
 
 import {Command, CommandHandler} from '../../';
 import {HelpCommand} from '../../defaults/commands';
 
 interface ReplyOptions extends ReplyMessageOptions {
-    embed?: MessageEmbed;
+	embed?: MessageEmbed;
 }
 
 interface SendOptions extends MessageOptions {
-    embed?: MessageEmbed;
+	embed?: MessageEmbed;
 }
 
 /**
@@ -112,19 +112,19 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	/**
+	 * Returns the guild of the message.
+	 */
+	get guild() {
+		return this.message.guild;
+	}
+
+	/**
 	 * Returns true if the arguments are calling a SubCommand.
 	 */
 	get isCallingASubCommand() {
 		const aliases = this.command.subCommandsNamesAndAliases;
 		const longestAliasLength = Math.max(...aliases.map(a => a.split('s').length));
 		return aliases.includes(this.args.slice(0, longestAliasLength).join(' '));
-	}
-
-	/**
-	 * Returns the guild of the message.
-	 */
-	get guild() {
-		return this.message.guild;
 	}
 
 	/**
@@ -135,17 +135,17 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	/**
-	 * Returns the channel where the command was executed as a TextChannel or undefined if it isn't'.
-	 */
-	get textChannel() {
-		return this.message.channel instanceof TextChannel || this.message.channel instanceof NewsChannel ? this.message.channel : undefined;
-	}
-
-	/**
 	 * Returns the prefix used in the message.
 	 */
 	get prefix() {
 		return this.handler.getPrefixFromMessage(this.message)!!;
+	}
+
+	/**
+	 * Returns the channel where the command was executed as a TextChannel or undefined if it isn't'.
+	 */
+	get textChannel() {
+		return this.message.channel instanceof TextChannel || this.message.channel instanceof NewsChannel ? this.message.channel : undefined;
 	}
 
 	/**
@@ -159,16 +159,16 @@ export class CommandContext implements CommandContextBuilder {
 	 * Deletes the message with an optional timeout.
 	 *
 	 * @param timeout - The time to wait in milliseconds before deleting the message.
-     * @returns - The deleted message.
+	 * @returns - The deleted message.
 	 */
 	public async deleteMessage(timeout: number = 0) {
 		if (timeout) {
-            return await new Promise<Message>((resolve) => {
-                setTimeout(() => {
-                    resolve(this.message.delete());
-                }, timeout);
-            });
-        } else return await this.message.delete();
+			return await new Promise<Message>(resolve => {
+				setTimeout(() => {
+					resolve(this.message.delete());
+				}, timeout);
+			});
+		} else return await this.message.delete();
 	}
 
 	/**
@@ -247,9 +247,9 @@ export class CommandContext implements CommandContextBuilder {
 		}
 	}
 
-    public send(options: SendOptions): Promise<Message>;
-    public send(content: string): Promise<Message>;
-    public send(content: string, options: SendOptions): Promise<Message>;
+	public send(options: SendOptions): Promise<Message>;
+	public send(content: string): Promise<Message>;
+	public send(content: string, options: SendOptions): Promise<Message>;
 	/**
 	 * Send a message in the channel.
 	 *
@@ -258,19 +258,18 @@ export class CommandContext implements CommandContextBuilder {
 	 * @returns - The message sent.
 	 */
 	public send(content: string | SendOptions, options?: SendOptions) {
-        if (typeof content !== 'string') options = content;
-        else if (content && options) options.content === content;
-        else if (content && !options) options = {content};
+		if (typeof content !== 'string') options = content;
+		else if (content && options) options.content === content;
+		else if (content && !options) options = {content};
 
-        if (options && options.embed && !options.embeds) options.embeds = [options.embed];
+		if (options && options.embed && !options.embeds) options.embeds = [options.embed];
 
 		return this.channel.send(options ?? '');
 	}
 
-	
-    public reply(options: ReplyOptions): Promise<Message>;
-    public reply(content: string): Promise<Message>;
-    public reply(content: string, options: ReplyOptions): Promise<Message>;
+	public reply(options: ReplyOptions): Promise<Message>;
+	public reply(content: string): Promise<Message>;
+	public reply(content: string, options: ReplyOptions): Promise<Message>;
 	/**
 	 * Reply to the message in the channel.
 	 *
@@ -279,12 +278,12 @@ export class CommandContext implements CommandContextBuilder {
 	 * @returns - The message sent.
 	 */
 	public reply(content: string | ReplyMessageOptions, options?: ReplyOptions) {
-        if (typeof content !== 'string') options = content;
-        else if (content && options) options.content === content;
-        else if (content && !options) options = {content};
+		if (typeof content !== 'string') options = content;
+		else if (content && options) options.content === content;
+		else if (content && !options) options = {content};
 
-        if (options && options.embed && !options.embeds) options.embeds = [options.embed];
+		if (options && options.embed && !options.embeds) options.embeds = [options.embed];
 
-        return this.message.reply(options ?? '');
+		return this.message.reply(options ?? '');
 	}
 }

@@ -36,10 +36,10 @@ export interface ImageEmbedOptions {
  * The options for setting an image in an embed to send in a context.
  */
 export interface ImageEmbedContextOptions extends Omit<ImageEmbedOptions, 'channel'> {
-    /**
-     * The context where to send the image.
-     */
-     ctx: CommandContext;
+	/**
+	 * The context where to send the image.
+	 */
+	ctx: CommandContext;
 }
 
 /**
@@ -56,7 +56,7 @@ export interface ImageLocalOptions {
 	 */
 	content: string;
 
-    /**
+	/**
 	 * Local path of the image.
 	 */
 	path: string;
@@ -66,10 +66,10 @@ export interface ImageLocalOptions {
  *The options for setting a local image in a message from a context.
  */
 export interface ImageLocalContextOptions extends Omit<ImageLocalOptions, 'channel'> {
-    /**
-     * The context where to send the image.
-     */
-    ctx: CommandContext;
+	/**
+	 * The context where to send the image.
+	 */
+	ctx: CommandContext;
 }
 
 /**
@@ -80,28 +80,31 @@ export abstract class ImageCommand extends Command {
 	 * Send a local image from your files.
 	 *
 	 * @param options - The options.
-     * @returns - The message with the image sent.
+	 * @returns - The message with the image sent.
 	 */
 	public async sendLocalImage(options: ImageLocalOptions | ImageLocalContextOptions) {
-        const channel = 'ctx' in options ? options.ctx.channel : options.channel;
-		return await channel.send({content: options.content, files: [options.path]});
+		const channel = 'ctx' in options ? options.ctx.channel : options.channel;
+		return await channel.send({
+			content: options.content,
+			files: [options.path],
+		});
 	}
 
 	/**
 	 * Send a local image in an embed from your files.
 	 *
 	 * @param options - The options.
-     * @returns - The message with the embed sent.
+	 * @returns - The message with the embed sent.
 	 */
 	public async sendImageEmbed(options: ImageEmbedOptions | ImageEmbedContextOptions) {
-        const channel = 'ctx' in options ? options.ctx.channel : options.channel;
+		const channel = 'ctx' in options ? options.ctx.channel : options.channel;
 		const link = options.link ?? options.path ?? '';
 		const embed = BetterEmbed.fromTemplate('image', {
 			...options,
 			image: link,
 		});
 
-        const attachment = new MessageAttachment(link);
+		const attachment = new MessageAttachment(link);
 		if (options.path) embed.setImageFromFile(attachment);
 		return await channel.send({embeds: [embed]});
 	}

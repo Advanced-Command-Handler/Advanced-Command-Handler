@@ -19,6 +19,6 @@ export function codeError(ctx: CommandContext, error: Error) {
 	});
 
 	Logger.error(error, 'CodeError');
-    if (isOwner(ctx.user.id)) return ctx.reply({embed});
-    return ctx.reply(`An error occurred while executing the \`${ctx.command.name}\` command.`);
+	if (isOwner(ctx.user.id)) return ctx.reply({embed});
+	return ctx.reply(`An error occurred while executing the \`${ctx.command.name}\` command.`);
 }

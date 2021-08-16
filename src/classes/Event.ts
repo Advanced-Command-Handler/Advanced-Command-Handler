@@ -1,6 +1,6 @@
-import {AdvancedClient} from './AdvancedClient';
 import type {ClientEvents} from 'discord.js';
 import {CommandHandler} from '../CommandHandler';
+import {AdvancedClient} from './AdvancedClient';
 import {EventContext} from './contexts';
 
 /**
@@ -10,7 +10,7 @@ export abstract class Event {
 	/**
 	 * The name of the event.
 	 */
-	public abstract readonly name: keyof ClientEvents;
+	public abstract readonly name: keyof ClientEvents & string;
 	/**
 	 * If the event should be fired only once.
 	 */

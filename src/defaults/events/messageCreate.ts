@@ -1,9 +1,6 @@
 import {Message} from 'discord.js';
 import {argError, codeError, CommandHandler, getThing, Logger, permissionsError} from '../..';
-import {Event} from '../../classes';
-import {Tag} from '../../classes/commands';
-import {CommandContext, EventContext} from '../../classes/contexts';
-import {CommandErrorType} from '../../classes/errors';
+import {CommandContext, CommandErrorType, Event, EventContext, Tag} from '../../classes';
 
 export class MessageEvent extends Event {
 	override readonly name = 'messageCreate';
@@ -18,8 +15,13 @@ export class MessageEvent extends Event {
 		const command = await getThing('command', commandArg.toLowerCase().normalize());
 		if (!command) return;
 
-		const commandContext = new CommandContext({args, command, message, handler: ctx.handler});
-        
+		const commandContext = new CommandContext({
+			args,
+			command,
+			message,
+			handler: ctx.handler,
+		});
+
 		try {
 			const error = await command.execute(commandContext);
 

@@ -1,6 +1,6 @@
-import {GuildChannel, GuildMember, Message, PermissionString, Permissions, Snowflake, TextChannel, User} from 'discord.js';
+import {GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
-import {Logger, isOwner, isPermission} from '../../utils';
+import {isOwner, isPermission, Logger} from '../../utils';
 import {CommandContext, SubCommandContext} from '../contexts';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors';
 import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
@@ -207,9 +207,9 @@ export abstract class Command {
 	 * @returns - If not deletable nothing, else the deleted message or the Node.js Timer if a timeout is set.
 	 */
 	public deleteMessage(options: DeleteMessageOptions) {
-		if (!options.message.deletable) return
-        if (options.timeout) return setTimeout(options.message.delete, options.timeout);
-        else return options.message.delete();
+		if (!options.message.deletable) return;
+		if (options.timeout) return setTimeout(options.message.delete, options.timeout);
+		else return options.message.delete();
 	}
 
 	/**
@@ -219,7 +219,7 @@ export abstract class Command {
 	 * @returns - The missing permissions.
 	 */
 	public getMissingPermissions(ctx: CommandContext) {
-        const missingPermissions: MissingPermissions = {
+		const missingPermissions: MissingPermissions = {
 			client: [],
 			user: [],
 		};
@@ -227,21 +227,17 @@ export abstract class Command {
 
 		if (this.clientPermissions) {
 			missingPermissions.client.push(
-				...this.clientPermissions.filter(permission => {
-					if (isPermission(permission)) {
-						return !ctx.textChannel?.permissionsFor(ctx.guild?.me!!)?.has(permission, false);
-					}
-				}) as PermissionString[]
+				...(this.clientPermissions.filter(permission => {
+					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.guild?.me!!)?.has(permission, false);
+				}) as PermissionString[])
 			);
 		}
 
 		if (this.userPermissions) {
 			missingPermissions.user.push(
-				...this.userPermissions.filter(permission => {
-					if (isPermission(permission)) {
-						return !ctx.textChannel?.permissionsFor(ctx.member!!)?.has(permission, false);
-					}
-				}) as PermissionString[]
+				...(this.userPermissions.filter(permission => {
+					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.member!!)?.has(permission, false);
+				}) as PermissionString[])
 			);
 		}
 
@@ -294,7 +290,7 @@ export abstract class Command {
 	 */
 	public isInRightChannel(ctx: CommandContext) {
 		if (this.channels?.length === 0) return true;
-		return !this.channels?.find(ch => typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id) ?? true;
+		return !this.channels?.find(ch => (typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id)) ?? true;
 	}
 
 	/**
