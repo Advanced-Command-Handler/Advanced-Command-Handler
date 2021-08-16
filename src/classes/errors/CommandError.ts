@@ -52,6 +52,7 @@ export class CommandError extends CommandHandlerError {
 	 */
 	public constructor(options: CommandErrorBuilder) {
 		super(options.message, 'CommandExecution');
+		this.name = 'CommandError';
 		this.type = options.type;
 		this.data = options.data ?? {};
 	}
