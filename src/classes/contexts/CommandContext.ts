@@ -27,10 +27,6 @@ interface SendOptions extends MessageOptions {
  */
 export interface CommandContextBuilder {
 	/**
-	 * The arguments in the message.
-	 */
-	args: string[];
-	/**
 	 * The command.
 	 */
 	command: Command;
@@ -42,16 +38,16 @@ export interface CommandContextBuilder {
 	 * The message that executed the command.
 	 */
 	message: Message;
+	/**
+	 * The arguments in the message.
+	 */
+	rawArgs: string[];
 }
 
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/context}
  */
 export class CommandContext implements CommandContextBuilder {
-	/**
-	 * The arguments in the message.
-	 */
-	public args: string[];
 	/**
 	 * The command itself.
 	 */
@@ -64,6 +60,10 @@ export class CommandContext implements CommandContextBuilder {
 	 * The message that executed the command.
 	 */
 	public message: Message;
+	/**
+	 * The arguments in the message.
+	 */
+	public rawArgs: string[];
 
 	/**
 	 * Creates a new CommandContext associated to a Command.
@@ -74,14 +74,21 @@ export class CommandContext implements CommandContextBuilder {
 		this.command = options.command;
 		this.message = options.message;
 		this.handler = options.handler;
-		this.args = options.args;
+		this.rawArgs = options.rawArgs;
+	}
+
+	/**
+	 * @deprecated
+	 */
+	get args() {
+		return this.rawArgs;
 	}
 
 	/**
 	 * Returns the arguments joined with a space between each.
 	 */
 	get argsString() {
-		return this.args.join(' ');
+		return this.rawArgs.join(' ');
 	}
 
 	/**
@@ -125,7 +132,7 @@ export class CommandContext implements CommandContextBuilder {
 	get isCallingASubCommand() {
 		const aliases = this.command.subCommandsNamesAndAliases;
 		const longestAliasLength = Math.max(...aliases.map(a => a.split('s').length));
-		return aliases.includes(this.args.slice(0, longestAliasLength).join(' '));
+		return aliases.includes(this.rawArgs.slice(0, longestAliasLength).join(' '));
 	}
 
 	/**

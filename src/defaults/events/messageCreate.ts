@@ -16,7 +16,7 @@ export class MessageEvent extends Event {
 		if (!command) return;
 
 		const commandContext = new CommandContext({
-			args,
+			rawArgs: args,
 			command,
 			message,
 			handler: ctx.handler,
