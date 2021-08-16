@@ -93,13 +93,10 @@ export class Logger {
 		const file = paths.resolve(process.cwd(), path);
 
 		if (!fs.existsSync(file)) {
-			Logger.comment(
-				`File ${Logger.setColor('violet', file)} ${Logger.setColor('comment', `not found, creating new one, logs will be saved into it.`)}`,
-				'LoggingWriter'
-			);
+			Logger.comment(`File ${Logger.setColor('violet', file)} not found, creating new one, logs will be saved into it.`, 'LoggingWriter');
 			fs.appendFileSync(file, '');
 		} else {
-			Logger.comment(`File ${Logger.setColor('violet', file)} ${Logger.setColor('comment', `found, logs will be saved into it.`)}`, 'LoggingWriter');
+			Logger.comment(`File ${Logger.setColor('violet', file)} found, logs will be saved into it.`, 'LoggingWriter');
 		}
 		Logger.savingFiles.push(file);
 	}
@@ -237,10 +234,14 @@ export class Logger {
 		const datePart = `[${dayjs().format('YYYY/MM/DD HH:mm:ss.SSS')}]`;
 		const titlePart = `[${title.toUpperCase()}]`;
 		text = typeof text === 'object' ? inspect(text) : text.toString();
-		let textPart = text;
+		let textPart = text as string;
 
-		text = text.replace(/(?<![;\d])\d+(\.\d+)?(?!;|\d)/g, (match: string) => chalk.yellow(match));
-		text = text.replace(/\u001b\[\u001b\[33m39\u001b\[39mm/gi, chalk.reset());
+		text = text
+			.split(' ')
+			.map((word: string) =>
+				/\d/.test(word) && !/\x1b\[\d+((;\d+){1,4})?m/.test(word) ? word.replace(/\d+/, (match: string) => chalk.yellow(match)) : word
+			)
+			.join(' ');
 
 		color = propertyInEnum(LogType, color) ?? color;
 		text = `${Logger.setColor('#847270', datePart)}${Logger.setColor(color, `${titlePart} ${text + chalk.reset()}`)}`;
@@ -248,10 +249,7 @@ export class Logger {
 		Logger.savingFiles.forEach((s, index) => {
 			if (!fs.existsSync(s)) {
 				Logger.savingFiles.splice(index, 1);
-				Logger.warn(
-					`File ${Logger.setColor('violet', s)} ${Logger.setColor('comment', `not found, removed from files to save logs.`)}`,
-					'LoggingWriter'
-				);
+				Logger.warn(`File ${Logger.setColor('violet', s)} not found, removed from files to save logs.`, 'LoggingWriter');
 			} else {
 				textPart = textPart.replace(/\[(\d{1,3};){0,6}\d{1,3}m/gm, '');
 				fs.appendFileSync(s, `${datePart}${titlePart} ${textPart}\n`);

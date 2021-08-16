@@ -1,12 +1,10 @@
-import * as defaultCommands from './defaults/commands/';
-import * as defaultEvents from './defaults/events';
-
-import {AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent} from './';
 import {ClientOptions, Collection, Message, PresenceData, Snowflake, Team} from 'discord.js';
-
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
+import {AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent} from './';
+import * as defaultCommands from './defaults/commands/';
+import * as defaultEvents from './defaults/events';
 
 export namespace CommandHandler {
 	/**
@@ -42,7 +40,7 @@ export namespace CommandHandler {
 
 		/**
 		 * Add mention of the bot as prefixes.
-		 * 
+		 *
 		 * @defaultValue true
 		 */
 		useMentionAsPrefix?: boolean;
@@ -87,7 +85,7 @@ export namespace CommandHandler {
 		 * @defaultValue true
 		 */
 		cycleBetweenPresences?: boolean;
-		
+
 		/**
 		 * The duration in seconds between the cycle of two presences of {@link presences}.
 		 *
@@ -124,9 +122,9 @@ export namespace CommandHandler {
 		create: [CreateCommandHandlerOptions];
 		/**
 		 * The event executed when a CommandHandlerError is created.
-         * 
-         * @remarks You need to add a listener to this event for every bots otherwise it will crash in some places with a weird error.
-         * @see {@link https://nodejs.org/api/errors.html#errors_err_unhandled_error}
+		 *
+		 * @remarks You need to add a listener to this event for every bots otherwise it will crash in some places with a weird error.
+		 * @see {@link https://nodejs.org/api/errors.html#errors_err_unhandled_error}
 		 */
 		error: [CommandHandlerError];
 		/**
@@ -203,16 +201,16 @@ export namespace CommandHandler {
 	 */
 	let useMentionAsPrefix: boolean;
 
-    /**
-     * Execute the event you want from the {@link emitter | listener} throughout the CommandHandler.
-     *
-     * @typeParam K - Event names of the CommandHandler listener.
-     * @param eventName - The event name.
-     * @param args - The arguments to pass.
-     */
-    export function emit<K extends keyof CommandHandlerEvents>(eventName: K, ...args: CommandHandlerEvents[K]) {
-        emitter.emit(eventName, args);
-    }
+	/**
+	 * Execute the event you want from the {@link emitter | listener} throughout the CommandHandler.
+	 *
+	 * @typeParam K - Event names of the CommandHandler listener.
+	 * @param eventName - The event name.
+	 * @param args - The arguments to pass.
+	 */
+	export function emit<K extends keyof CommandHandlerEvents>(eventName: K, ...args: CommandHandlerEvents[K]) {
+		emitter.emit(eventName, args);
+	}
 
 	/**
 	 * Adds a listener for the {@link eventName} event.
@@ -221,7 +219,7 @@ export namespace CommandHandler {
 	 * @param eventName - The event name.
 	 * @param fn - The callback to execute.
 	 */
-    export function on<K extends keyof CommandHandlerEvents>(eventName: K, fn: (...args: CommandHandlerEvents[K]) => void) {
+	export function on<K extends keyof CommandHandlerEvents>(eventName: K, fn: (...args: CommandHandlerEvents[K]) => void) {
 		emitter.on(eventName, fn as (...args: any[]) => void);
 	}
 
@@ -268,7 +266,7 @@ export namespace CommandHandler {
 		for (let event of Object.values(defaultEvents)) {
 			const instance = new event();
 			events.set(instance.name, instance);
-			Logger.comment(`Default ${Logger.setColor('green', instance.name) + Logger.setColor('comment', ' event loaded.')}`, 'Loading');
+			Logger.comment(`Default ${Logger.setColor('green', instance.name)} event loaded.`, 'Loading');
 		}
 		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'Loading');
 
@@ -288,7 +286,7 @@ export namespace CommandHandler {
 		for (let command of Object.values(defaultCommands)) {
 			const instance = new command();
 			commands.set(instance.name, instance);
-			Logger.comment(`Default ${Logger.setColor('green', instance.name) + Logger.setColor('comment', ' command loaded.')}`, 'Loading');
+			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
 		}
 		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands).length})`, 'Loading');
 
@@ -311,8 +309,8 @@ export namespace CommandHandler {
 		prefixes = options.prefixes ?? [];
 		useMentionAsPrefix = options.useMentionAsPrefix ?? true;
 
-		if (!commandsDir) Logger.warn("No 'commandsDir' specified, commands appart default commands won't load.");
-		if (!eventsDir) Logger.warn("No 'eventsDir' specified, events appart default events won't load.");
+		if (!commandsDir) Logger.warn("No 'commandsDir' specified, commands apart default commands won't load.");
+		if (!eventsDir) Logger.warn("No 'eventsDir' specified, events apart default events won't load.");
 
 		process.on('warning', error => Logger.error(`An error occurred. \n${error.stack}`));
 		process.on('uncaughtException', error => Logger.error(`An error occurred. \n${error.stack}`));
@@ -368,13 +366,12 @@ export namespace CommandHandler {
 			prefixes.push(`<@${client?.user?.id}> `);
 			prefixes.push(`<@!${client?.user?.id}> `);
 		}
-		
-        const appOwner = (await client.application?.fetch())?.owner;
-        if (appOwner) {
-            if (appOwner instanceof Team) owners.push(...appOwner.members.filter(m => m.membershipState === 'ACCEPTED').map(m => m.id));
-            else owners.push(appOwner.id);
-        }
-		
+
+		const appOwner = (await client.application?.fetch())?.owner;
+		if (appOwner) {
+			if (appOwner instanceof Team) owners.push(...appOwner.members.filter(m => m.membershipState === 'ACCEPTED').map(m => m.id));
+			else owners.push(appOwner.id);
+		}
 
 		emit('launched');
 
@@ -396,7 +393,7 @@ export namespace CommandHandler {
 	 *
 	 * @param path - The path of the command folder.
 	 * @param name - The name of the command including the extension.
-     * @returns - The command itself.
+	 * @returns - The command itself.
 	 */
 	export async function loadCommand(path: string, name: string) {
 		let command: MaybeCommand = await import(join(process.cwd(), path, name));
@@ -423,7 +420,7 @@ export namespace CommandHandler {
 		emit('loadCommand', instance);
 		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'Loading');
 
-        return instance;
+		return instance;
 	}
 
 	/**
@@ -458,7 +455,7 @@ export namespace CommandHandler {
 	 *
 	 * @param path - The path of the event folder.
 	 * @param name - The name of the event including the extension.
-     * @returns - The event itself.
+	 * @returns - The event itself.
 	 */
 	export async function loadEvent(path: string, name: string) {
 		let event: MaybeEvent = await import(join(process.cwd(), path, name));
@@ -469,8 +466,8 @@ export namespace CommandHandler {
 		events.set(instance.name, instance);
 
 		Logger.comment(`Event ${Logger.setColor('green', instance.name)} loaded : ${Logger.setColor('gold', `${name.split('.')[0]}.js`)}`, 'Loading');
-        
-        return instance;
+
+		return instance;
 	}
 
 	/**
