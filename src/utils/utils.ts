@@ -1,5 +1,6 @@
-import {Snowflake} from 'discord.js';
+import {NewsChannel, Snowflake, TextChannel} from 'discord.js';
 import {CommandHandler} from '../CommandHandler';
+import {TextChannelLike} from '../types';
 
 /**
  * Return the text cut if length is above `maxLength` arg and add `endTextIfTooLong` at the end.
@@ -33,6 +34,16 @@ export function getKeyByValue<O extends {[key: string]: any}>(object: O, value: 
  */
 export function isOwner(id: Snowflake) {
 	return CommandHandler.owners?.includes(id) ?? false;
+}
+
+/**
+ * Returns true if the value is a TextChannel or a NewsChannel.
+ *
+ * @param value - The value you want to test.
+ * @returns - Is the value a TextChannelLike.
+ */
+export function isTextChannelLike(value: any): value is TextChannelLike {
+	return value instanceof TextChannel || value instanceof NewsChannel;
 }
 
 /**
