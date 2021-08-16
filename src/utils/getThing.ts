@@ -138,6 +138,7 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 					c =>
 						(c instanceof GuildChannel && c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
 						(c instanceof DMChannel && c.recipient.username.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 2) ||
+						c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') ||
 						false
 				) ??
 				client?.channels.resolve(text) ??
@@ -165,9 +166,10 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 				message?.mentions?.members?.first() ??
 				message?.guild?.members.cache.find(
 					m =>
-						(m.displayName.toLowerCase().includes((text as string).toLowerCase()) ||
+						((m.displayName.toLowerCase().includes((text as string).toLowerCase()) ||
 							m.user.username.toLowerCase().includes((text as string).toLowerCase())) &&
-						(text as string).length > 1
+							(text as string).length > 1) ||
+						m.toString() === text.toString().replace(/<@!?(\d{17,19})>/, '<@$1>')
 				) ??
 				message?.guild?.members.resolve(text) ??
 				null
@@ -196,7 +198,10 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 				client?.channels.cache.filter(c => isTextChannelLike(c)).get(text) ??
 				message?.mentions.channels.filter(c => isTextChannelLike(c)).first() ??
 				client?.channels.cache.find(
-					c => (isTextChannelLike(c) && c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) || false
+					c =>
+						(isTextChannelLike(c) && c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
+						c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') ||
+						false
 				) ??
 				client?.channels.resolve(text) ??
 				null;
@@ -206,7 +211,11 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 			return (
 				message?.guild?.roles.cache.get(text) ??
 				message?.mentions.roles.first() ??
-				message?.guild?.roles.cache.find(r => r.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ??
+				message?.guild?.roles.cache.find(
+					r =>
+						(r.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
+						r.toString() === text.toString().replace(/<@&(\d{17,19})>/, '<@$1>')
+				) ??
 				message?.guild?.roles.resolve(text) ??
 				null
 			);
@@ -214,7 +223,9 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 		case DataType.USER:
 			return (
 				client?.users.cache.get(text) ??
-				client?.users.cache.find(u => u.username.toLowerCase() === (text as string).toLowerCase()) ??
+				client?.users.cache.find(
+					u => u.username.toLowerCase() === (text as string).toLowerCase() || u.toString() === text.toString().replace(/<@!?(\d{17,19})>/, '<@$1>')
+				) ??
 				message?.mentions?.users.first() ??
 				client?.users.resolve(text) ??
 				null
