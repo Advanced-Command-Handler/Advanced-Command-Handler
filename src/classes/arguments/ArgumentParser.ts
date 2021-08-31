@@ -16,7 +16,6 @@ export class ArgumentParser {
 		argumentRequiresOneValue: (argumentName: string) => `Argument '${argumentName}' requires exactly one value bot none or multiple were provided.`,
 		errorInArgument: (argumentName: string) => `Cannot resolve argument '${argumentName}', bad input from user.`,
 	};
-	public hasParsedAllArguments = false;
 	public parsed?: Map<string, MaybePromise<CommandError | null | any>>;
 	public parser: Parser;
 
@@ -59,6 +58,7 @@ export class ArgumentParser {
 	public async parseArguments<A extends any[]>(context: CommandContext) {
 		let argsMap = new Map<string, MaybePromise<ArgumentResolved<A>>>();
 		const keywordArgs = new Map<string, string[]>();
+		const argsToParse = this.args.slice();
 
 		this.parser.parseNamed().forEach(named => {
 			const name = named.name.toLowerCase();
@@ -71,7 +71,7 @@ export class ArgumentParser {
 
 		while (true) {
 			let argumentResult: MapToValuesType<typeof argsMap> = null;
-			currentArgument = this.args.shift();
+			currentArgument = argsToParse.shift();
 			if (!currentArgument) break;
 			const keywordValue = keywordArgs.get(currentArgument.name.toLowerCase());
 			const hasKeywordArgs = keywordValue !== undefined;
@@ -92,10 +92,10 @@ export class ArgumentParser {
 			if (currentArgument.isSimple) {
 				argumentResult = error ?? !parsed ? ArgumentParser.argumentNotFoundError(argumentContext) : parsed;
 			} else if (currentArgument.defaultValue) {
-				if (!parsed && this.args.length > 0) this.parser.cursor.index = actualCursorIndex;
+				if (!parsed && argsToParse.length > 0) this.parser.cursor.index = actualCursorIndex;
 				argumentResult = parsed ?? currentArgument.defaultValue;
 			} else if (currentArgument.optional) {
-				if (!parsed && this.args.length > 0) {
+				if (!parsed && argsToParse.length > 0) {
 					this.parser.cursor.index = actualCursorIndex;
 					i++;
 					continue;
@@ -123,7 +123,20 @@ export class ArgumentParser {
 			argsMap.set(currentArgument.name, argumentResult);
 			i++;
 		}
-		this.hasParsedAllArguments = true;
+
+		const argsRequiredCount = this.args.filter(a => a.isSimple);
+		if (argsMap.size < argsRequiredCount.length) {
+			for (let i = argsMap.size; i < argsRequiredCount.length; i++) {
+				const currentArgument = argsRequiredCount[i];
+				const argumentContext = new ArgumentContext({
+					...context,
+					index: i,
+				});
+				argumentContext.currentArgument = currentArgument;
+				argsMap.set(currentArgument.name, ArgumentParser.argumentNotFoundError(argumentContext));
+			}
+		}
+
 		this.parsed = argsMap;
 	}
 
