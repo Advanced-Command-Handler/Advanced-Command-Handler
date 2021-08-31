@@ -36,6 +36,10 @@ export function isOwner(id: Snowflake) {
 	return CommandHandler.owners?.includes(id) ?? false;
 }
 
+export function isSnowflake(value: string): value is Snowflake {
+	return /\d{17,19}/.test(value);
+}
+
 /**
  * Returns true if the value is a TextChannel or a NewsChannel.
  *
