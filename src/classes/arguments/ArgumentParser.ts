@@ -34,7 +34,7 @@ export class ArgumentParser {
 
 	private static argumentNotFoundError(argumentContext: ArgumentContext) {
 		return new CommandError({
-			type: CommandErrorType.INVALID_ARGUMENT,
+			type: CommandErrorType.ARGUMENT_NOT_FOUND,
 			data: argumentContext,
 			message: ArgumentParser.errors.argumentNotFound(argumentContext.currentArgument.name),
 		});
