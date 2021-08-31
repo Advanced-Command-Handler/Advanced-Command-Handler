@@ -124,7 +124,7 @@ export class ArgumentParser {
 			i++;
 		}
 
-		const argsRequiredCount = this.args.filter(a => a.isSimple);
+		const argsRequiredCount = this.args.filter(a => !a.isSkipable);
 		if (argsMap.size < argsRequiredCount.length) {
 			for (let i = argsMap.size; i < argsRequiredCount.length; i++) {
 				const currentArgument = argsRequiredCount[i];

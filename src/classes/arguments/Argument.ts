@@ -64,4 +64,8 @@ export class CommandArgument<T> {
 	public get isSimple() {
 		return !this.optional && !this.coalescing && !this.defaultValue;
 	}
+
+	public get isSkipable(): boolean {
+		return this.optional || !!this.defaultValue;
+	}
 }
