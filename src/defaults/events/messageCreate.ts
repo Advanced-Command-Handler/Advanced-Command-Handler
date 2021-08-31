@@ -46,6 +46,10 @@ export class MessageEvent extends Event {
 						return commandContext.send(`You are on a cooldown! Please wait **${error.data.waitMore / 1000}**s.`);
 					case CommandErrorType.ERROR:
 						return codeError(commandContext, error);
+					case CommandErrorType.ARGUMENT_NOT_FOUND:
+						return argError(commandContext, error.message.replaceAll(/'(\w+?)'/g, '`$1`'));
+					case CommandErrorType.INVALID_ARGUMENT:
+						return argError(commandContext, error.message.replaceAll(/'(\S+?)'/g, '`$1`'));
 				}
 			} else {
 				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
