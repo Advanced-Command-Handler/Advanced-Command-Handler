@@ -1,35 +1,32 @@
 import {MessageAttachment, TextBasedChannels} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command, CommandContext} from '../';
+import {CommandContext} from '../contexts';
+import {Command} from './';
 
 /**
  * The options for setting an image in an embed.
  */
 export interface ImageEmbedOptions {
 	/**
-	 * Link of the image.
-	 */
-	link?: string;
-
-	/**
-	 * Local path of the image.
-	 */
-	path?: string;
-
-	/**
 	 * Channel where to send the image.
 	 */
 	channel: TextBasedChannels;
-
-	/**
-	 * Title of the embed.
-	 */
-	title: string;
-
 	/**
 	 * Description of the embed.
 	 */
 	description: string;
+	/**
+	 * Link of the image.
+	 */
+	link?: string;
+	/**
+	 * Local path of the image.
+	 */
+	path?: string;
+	/**
+	 * Title of the embed.
+	 */
+	title: string;
 }
 
 /**
@@ -77,20 +74,6 @@ export interface ImageLocalContextOptions extends Omit<ImageLocalOptions, 'chann
  */
 export abstract class ImageCommand extends Command {
 	/**
-	 * Send a local image from your files.
-	 *
-	 * @param options - The options.
-	 * @returns - The message with the image sent.
-	 */
-	public async sendLocalImage(options: ImageLocalOptions | ImageLocalContextOptions) {
-		const channel = 'ctx' in options ? options.ctx.channel : options.channel;
-		return await channel.send({
-			content: options.content,
-			files: [options.path],
-		});
-	}
-
-	/**
 	 * Send a local image in an embed from your files.
 	 *
 	 * @param options - The options.
@@ -107,5 +90,19 @@ export abstract class ImageCommand extends Command {
 		const attachment = new MessageAttachment(link);
 		if (options.path) embed.setImageFromFile(attachment);
 		return await channel.send({embeds: [embed]});
+	}
+
+	/**
+	 * Send a local image from your files.
+	 *
+	 * @param options - The options.
+	 * @returns - The message with the image sent.
+	 */
+	public async sendLocalImage(options: ImageLocalOptions | ImageLocalContextOptions) {
+		const channel = 'ctx' in options ? options.ctx.channel : options.channel;
+		return await channel.send({
+			content: options.content,
+			files: [options.path],
+		});
 	}
 }

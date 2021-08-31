@@ -51,13 +51,13 @@ export namespace CommandHandler {
 	 */
 	export interface CommandCooldown {
 		/**
-		 * The date the cooldown has started.
-		 */
-		executedAt: Date;
-		/**
 		 * The actual cooldown of the Command.
 		 */
 		cooldown: number;
+		/**
+		 * The date the cooldown has started.
+		 */
+		executedAt: Date;
 	}
 
 	/**
@@ -70,29 +70,21 @@ export namespace CommandHandler {
 	 */
 	export interface LaunchCommandHandlerOptions {
 		/**
-		 * The token of your bot.
-		 */
-		token: string;
-
-		/**
 		 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
 		 */
 		clientOptions: ClientOptions;
-
 		/**
 		 * If set to true, it will cycle between the {@link presences}.
 		 *
 		 * @defaultValue true
 		 */
 		cycleBetweenPresences?: boolean;
-
 		/**
 		 * The duration in seconds between the cycle of two presences of {@link presences}.
 		 *
 		 * @defaultValue 60
 		 */
 		cycleDuration?: number;
-
 		/**
 		 * The presence of your bot when launched.
 		 *
@@ -100,7 +92,6 @@ export namespace CommandHandler {
 		 * If {@link presences} is also set, it will overcome this property.
 		 */
 		presence?: PresenceData;
-
 		/**
 		 * The presences of your bot, if this field is used it will cycle between all if  {@link cycleBetweenPresences} options is set to true.
 		 *
@@ -108,6 +99,10 @@ export namespace CommandHandler {
 		 * If {@link presence} is also set, it will still cycle between presences.
 		 */
 		presences?: PresenceData[];
+		/**
+		 * The token of your bot.
+		 */
+		token: string;
 	}
 
 	/**
