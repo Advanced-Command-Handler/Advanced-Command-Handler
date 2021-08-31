@@ -221,6 +221,7 @@ export abstract class Command {
 	 */
 	public async execute(ctx: CommandContext): Promise<CommandError | undefined> {
 		const error = await this.validate(ctx);
+		console.trace({error});
 		if (error) return new CommandError(error);
 
 		await this.run(ctx);
@@ -426,7 +427,13 @@ export abstract class Command {
 			const argsMap = await ctx.resolveArguments();
 			const args = [...(argsMap?.values() ?? [])];
 			const argsError: CommandError | undefined = args.find(arg => arg instanceof CommandError);
-			if (argsError) return argsError;
+			if (argsError) {
+				return {
+					message: argsError.message,
+					data: argsError.data,
+					type: argsError.type,
+				};
+			}
 		}
 	}
 
