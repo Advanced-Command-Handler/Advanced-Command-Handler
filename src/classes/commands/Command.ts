@@ -421,6 +421,13 @@ export abstract class Command {
 				type: CommandErrorType.MISSING_TAGS,
 				data: missingTags,
 			};
+
+		if (this.arguments) {
+			const argsMap = await ctx.resolveArguments();
+			const args = [...(argsMap?.values() ?? [])];
+			const argsError: CommandError | undefined = args.find(arg => arg instanceof CommandError);
+			if (argsError) return argsError;
+		}
 	}
 
 	protected subCommand(name: string, callback: RunSubCommandFunction): void;
