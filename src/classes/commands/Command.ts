@@ -1,6 +1,7 @@
 import {GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
 import {isOwner, isPermission, Logger} from '../../utils';
+import {Argument} from '../arguments';
 import {CommandContext, SubCommandContext} from '../contexts';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors';
 import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
@@ -110,6 +111,7 @@ export abstract class Command {
 	 * The aliases of the command.
 	 */
 	public aliases?: string[];
+	public arguments: Record<string, Argument<any>> = {};
 	/**
 	 * The category of the command.
 	 *
@@ -223,9 +225,9 @@ export abstract class Command {
 
 		await this.run(ctx);
 		for (const subCommand of this.subCommands) {
-			if (subCommand.nameAndAliases.includes([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' '))) {
+			if (subCommand.nameAndAliases.includes([...ctx.rawArgs].splice(0, subCommand.name.split(' ').length).join(' '))) {
 				ctx = new SubCommandContext({
-					args: ctx.args.slice(subCommand.name.split(' ').length),
+					rawArgs: ctx.rawArgs.slice(subCommand.name.split(' ').length),
 					command: this,
 					message: ctx.message,
 					handler: ctx.handler,
@@ -272,7 +274,7 @@ export abstract class Command {
 	/**
 	 * Returns the missing permissions from the client & user for a context.
 	 *
-	 * @param ctx - The context to check permissions for.
+	 * @param ctx - The context to validate permissions for.
 	 * @returns - The missing permissions.
 	 */
 	public getMissingPermissions(ctx: CommandContext) {
@@ -490,6 +492,7 @@ export class SubCommand extends Command {
 		this.description = options.description;
 		this.tags = options.tags;
 		this.usage = options.usage;
+		this.arguments = options.arguments ?? {};
 		this.runFunction = runFunction;
 	}
 }
