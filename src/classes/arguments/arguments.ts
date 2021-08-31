@@ -37,7 +37,7 @@ export function choiceArgument(options: ArgumentBuilder<string> & {values: strin
 	);
 }
 
-export function commandArg(options: ArgumentBuilder<Command> = {}) {
+export function commandArgument(options: ArgumentBuilder<Command> = {}) {
 	return new Argument(
 		ArgumentType.COMMAND,
 		options,
