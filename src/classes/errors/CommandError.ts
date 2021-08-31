@@ -2,10 +2,10 @@ import {CommandHandlerError} from './CommandHandlerError';
 
 export enum CommandErrorType {
 	ARGUMENT_NOT_FOUND,
-	BAD_ARGUMENT,
 	CLIENT_MISSING_PERMISSIONS,
 	COOLDOWN,
 	ERROR,
+	INVALID_ARGUMENT,
 	MISSING_TAGS,
 	USER_MISSING_PERMISSIONS,
 	WRONG_CHANNEL,
