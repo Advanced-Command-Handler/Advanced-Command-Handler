@@ -29,13 +29,21 @@ export enum ArgumentType {
 type DefaultValueArgument<T> = {defaultValue: T};
 type CoalescingArgument = {coalescing: boolean};
 type OptionalArgument = {optional: boolean};
-export type ArgumentBuilder<T> = Partial<(DefaultValueArgument<T> | CoalescingArgument | OptionalArgument) & {description: string}>;
+export type ArgumentBuilder<T> = Partial<
+	(DefaultValueArgument<T> | CoalescingArgument | OptionalArgument) & {
+		description: string;
+		showDefaultValueInSignature: boolean;
+		showTypeInSignature: boolean;
+	}
+>;
 
 export interface ArgumentOptions<T> {
 	coalescing?: boolean;
 	defaultValue?: T;
 	description?: string;
 	optional?: boolean;
+	showDefaultValueInSignature?: boolean;
+	showTypeInSignature?: boolean;
 }
 
 export class Argument<T> {
@@ -48,6 +56,8 @@ export class CommandArgument<T> {
 	public description: string;
 	public optional: boolean;
 	public parse: ArgumentParser<T>;
+	public showDefaultValueInSignature: boolean;
+	public showTypeInSignature: boolean;
 	public type: ArgumentType;
 	public validate: ArgumentValidator;
 
@@ -59,6 +69,8 @@ export class CommandArgument<T> {
 		this.optional = argument.options.optional ?? false;
 		this.type = argument.type;
 		this.parse = argument.parser;
+		this.showDefaultValueInSignature = argument.options.showDefaultValueInSignature ?? false;
+		this.showTypeInSignature = argument.options.showTypeInSignature ?? false;
 	}
 
 	public get isSimple() {

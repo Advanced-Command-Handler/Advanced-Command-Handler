@@ -1,7 +1,7 @@
 import {GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
 import {isOwner, isPermission, Logger} from '../../utils';
-import {Argument} from '../arguments';
+import {Argument, ArgumentType, CommandArgument} from '../arguments';
 import {CommandContext, SubCommandContext} from '../contexts';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors';
 import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
@@ -378,6 +378,24 @@ export abstract class Command {
 		};
 
 		setTimeout(() => delete CommandHandler.cooldowns.get(id)![this.name], cooldown * 1000);
+	}
+
+	public signature() {
+		if (!this.arguments) return '';
+		let result = this.name;
+
+		Object.entries(this.arguments).forEach(([name, arg], index) => {
+			const commandArgument = new CommandArgument(name, index, arg);
+			let signature = '';
+			signature += commandArgument.isSkipable ? '[' : '<';
+			signature += commandArgument.name;
+			if (commandArgument.showTypeInSignature) signature += `: ${ArgumentType[commandArgument.type].toLowerCase()}`;
+			if (commandArgument.defaultValue && commandArgument.showDefaultValueInSignature) signature += `= ${commandArgument.defaultValue}`;
+			signature += commandArgument.isSkipable ? ']' : '>';
+			result += ` ${signature}`;
+		});
+
+		return result;
 	}
 
 	/**
