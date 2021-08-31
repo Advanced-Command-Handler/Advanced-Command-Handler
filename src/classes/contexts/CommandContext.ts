@@ -11,8 +11,9 @@ import {
 	TextChannel,
 } from 'discord.js';
 
-import {Command, CommandHandler} from '../../';
+import {Command, CommandError, CommandHandler, MaybePromise} from '../../';
 import {HelpCommand} from '../../defaults/commands';
+import {ArgumentParser, ArgumentResolved, CommandArgument} from '../arguments';
 
 interface ReplyOptions extends ReplyMessageOptions {
 	embed?: MessageEmbed;
@@ -48,6 +49,7 @@ export interface CommandContextBuilder {
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/context}
  */
 export class CommandContext implements CommandContextBuilder {
+	public argumentParser?: ArgumentParser;
 	/**
 	 * The command itself.
 	 */
@@ -91,6 +93,10 @@ export class CommandContext implements CommandContextBuilder {
 		return this.rawArgs.join(' ');
 	}
 
+	get arguments() {
+		return Object.entries(this.command.arguments).map((a, index) => new CommandArgument(a[0], index, a[1]));
+	}
+
 	/**
 	 * Returns the channel where the command was executed.
 	 */
@@ -131,7 +137,7 @@ export class CommandContext implements CommandContextBuilder {
 	 */
 	get isCallingASubCommand() {
 		const aliases = this.command.subCommandsNamesAndAliases;
-		const longestAliasLength = Math.max(...aliases.map(a => a.split('s').length));
+		const longestAliasLength = Math.max(...aliases.map(a => a.split(/\s+/).length));
 		return aliases.includes(this.rawArgs.slice(0, longestAliasLength).join(' '));
 	}
 
@@ -168,6 +174,11 @@ export class CommandContext implements CommandContextBuilder {
 	 */
 	get user() {
 		return this.message.author;
+	}
+
+	public async argument<T>(name: string | (keyof this['command']['arguments'] & string)): Promise<T | null> {
+		const result = await this.resolveArgument<T>(name);
+		return result instanceof CommandError ? null : result ?? null;
 	}
 
 	public bulkDeleteInChannel(number: number, filterOld?: boolean): Promise<Collection<string, Message>>;
@@ -272,6 +283,16 @@ export class CommandContext implements CommandContextBuilder {
 		if (options && options.embed && !options.embeds) options.embeds = [options.embed];
 
 		return this.message.reply(options ?? '');
+	}
+
+	public resolveArgument<T>(name: string | (keyof this['command']['arguments'] & string)): undefined | MaybePromise<ArgumentResolved<T>> {
+		if (this.argumentParser?.parsed) return this.argumentParser.parsed.get(name);
+		return this.argumentParser?.resolveArgument(this, name);
+	}
+
+	public async resolveArguments<A extends any[]>(): Promise<undefined | Map<string, ArgumentResolved<A[number]>>> {
+		if (this.command.arguments) this.argumentParser = new ArgumentParser(this.arguments, this.rawArgs);
+		return this.argumentParser?.resolveArguments(this);
 	}
 
 	public send(options: SendOptions): Promise<Message>;

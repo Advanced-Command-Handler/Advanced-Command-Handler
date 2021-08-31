@@ -1,3 +1,4 @@
+import {ArgumentParser, ArgumentResolved, CommandArgument} from '../arguments';
 import {SubCommand} from '../commands';
 import {CommandContext, CommandContextBuilder} from './CommandContext';
 
@@ -28,6 +29,15 @@ export class SubCommandContext extends CommandContext {
 	public constructor(options: SubCommandContextBuilder) {
 		super(options);
 		this.subCommand = options.subCommand;
+	}
+
+	override get arguments() {
+		return Object.entries(this.subCommand.arguments).map((a, index) => new CommandArgument(a[0], index, a[1]));
+	}
+
+	public override async resolveArguments<A extends any[]>(): Promise<undefined | Map<string, ArgumentResolved<A[number]>>> {
+		if (this.subCommand.arguments) this.argumentParser = new ArgumentParser(this.arguments, this.rawArgs);
+		return this.argumentParser?.resolveArguments(this);
 	}
 
 	/**
