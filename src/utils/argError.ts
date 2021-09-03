@@ -16,6 +16,6 @@ export function argError(ctx: CommandContext, error: string) {
 		description: error,
 	});
 
-	if (ctx.command.usage) embed.addField('Syntax :', ctx.command.usage);
+	embed.addField('Syntax :', ctx.command.usage ?? ctx.command.signatures());
 	return ctx.reply({embed});
 }
