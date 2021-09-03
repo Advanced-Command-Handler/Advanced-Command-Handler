@@ -226,7 +226,6 @@ export abstract class Command {
 	 */
 	public async execute(ctx: CommandContext): Promise<CommandError | undefined> {
 		const error = await this.validate(ctx);
-		console.trace({error});
 		if (error) return new CommandError(error);
 
 		await this.run(ctx);
