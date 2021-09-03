@@ -25,10 +25,10 @@ function groupBy<T, K extends keyof any>(array: T[], predicate: (item: T) => K):
 }
 
 export class HelpCommand extends Command {
-	override name = 'help';
 	override aliases = ['h'];
 	override category = 'utils';
 	override description = 'Get the list of commands or more information for one.';
+	override name = 'help';
 	override usage = 'help\nhelp <command>';
 
 	public override async run(ctx: CommandContext) {
@@ -76,6 +76,14 @@ export class HelpCommand extends Command {
 		});
 
 		if (command.usage) embed.addField('Usage :', command.usage);
+		else
+			embed.addField(
+				'Syntax :',
+				command.signatures({
+					showDefaultValues: true,
+					showTypes: true,
+				})
+			);
 		if (command.aliases) embed.addField('Aliases : ', `\`${command.aliases.sort().join('\n')}\``);
 		if (command.tags)
 			embed.addField(
@@ -91,7 +99,7 @@ export class HelpCommand extends Command {
 		if (command.subCommands) {
 			let subCommandDescription = '';
 			command.subCommands.forEach(s => {
-				if (s.description) subCommandDescription += `\`${command.name} ${s.name}\` : ${s.description}\n`;
+				if (s.description) subCommandDescription += `\`${command.name} ${s.signature()}\` : ${s.description}\n`;
 			});
 			if (subCommandDescription.length > 0) embed.addField('SubCommands :', subCommandDescription);
 		}
