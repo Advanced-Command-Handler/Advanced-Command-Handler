@@ -116,6 +116,11 @@ export abstract class Command {
 	 * The aliases of the command.
 	 */
 	public aliases?: string[];
+
+	/**
+	 * The arguments of the command.
+	 * You can put your own custom arguments but you must add the type to the {@link ArgumentType | argument types}.
+	 */
 	public arguments: Record<string, Argument<any>> = {};
 	/**
 	 * The category of the command.
@@ -172,6 +177,8 @@ export abstract class Command {
 	 * userinfo me
 	 * userinfo <ID/Username/Mention of User>
 	 * ```
+	 *
+	 * @remarks If no value is set, in most places it will use the result of the {@link Command#signatures} method.
 	 */
 	public usage?: string;
 	/**
@@ -384,6 +391,17 @@ export abstract class Command {
 		setTimeout(() => delete CommandHandler.cooldowns.get(id)![this.name], cooldown * 1000);
 	}
 
+	/**
+	 * Get the signature of this command.
+	 *
+	 * @example
+	 * // The `help` command with an optional `command` commandArgument argument.
+	 * ```
+	 * help [command]
+	 * ```
+	 * @param options - The options for the signature, show the type of the arguments or the default values.
+	 * @returns - The signature of this command or subCommand.
+	 */
 	public signature(options?: CommandSignatureOptions) {
 		if (!this.arguments) return '';
 		let result = this.name;
@@ -402,6 +420,18 @@ export abstract class Command {
 		return result;
 	}
 
+	/**
+	 * Returns the signature of the command plus the signature of the subCommands of this command.
+	 *
+	 * @example
+	 * // The `help` command with an optional `command` commandArgument argument and a `all` subCommand with no arguments.
+	 * ```
+	 * help [command]
+	 * help all
+	 * ```
+	 * @param options - The options for the signature, show the type of the arguments or the default values.
+	 * @returns - The signatures of the command.
+	 */
 	public signatures(options?: CommandSignatureOptions) {
 		let result = `${this.signature(options)}\n`;
 		result += this.subCommands.map(subCommand => `${this.name} ${subCommand.signature(options)}`).join(`\n`);

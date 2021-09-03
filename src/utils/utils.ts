@@ -36,6 +36,12 @@ export function isOwner(id: Snowflake) {
 	return CommandHandler.owners?.includes(id) ?? false;
 }
 
+/**
+ * Returns true if the value looks like a Snowflake.
+ *
+ * @remarks There is no way to identify at 100% if the value is veritable snowflake of something.
+ * @returns - Is the value a Snowflake.
+ */
 export function isSnowflake(value: string): value is Snowflake {
 	return /\d{17,19}/.test(value);
 }

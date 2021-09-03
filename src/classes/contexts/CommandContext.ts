@@ -49,6 +49,9 @@ export interface CommandContextBuilder {
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/context}
  */
 export class CommandContext implements CommandContextBuilder {
+	/**
+	 * The argument parser of this context, if the command has no arguments it will be undefined.
+	 */
 	public argumentParser?: ArgumentParser;
 	/**
 	 * The command itself.
@@ -80,7 +83,9 @@ export class CommandContext implements CommandContextBuilder {
 	}
 
 	/**
-	 * @deprecated
+	 * The old list of raw arguments.
+	 *
+	 * @deprecated - Use {@link CommandContext#rawArgs} instead.
 	 */
 	get args() {
 		return this.rawArgs;
@@ -93,6 +98,9 @@ export class CommandContext implements CommandContextBuilder {
 		return this.rawArgs.join(' ');
 	}
 
+	/**
+	 * Returns the list of arguments of the command.
+	 */
 	get arguments() {
 		return Object.entries(this.command.arguments).map((a, index) => new CommandArgument(a[0], index, a[1]));
 	}
@@ -176,6 +184,14 @@ export class CommandContext implements CommandContextBuilder {
 		return this.message.author;
 	}
 
+	/**
+	 * Returns an argument.
+	 * If the argument is errored or not found it will return `null`.
+	 *
+	 * @typeParam T - The type of the argument.
+	 * @param name - The name of the argument.
+	 * @returns - The argument in a promise or null if the argument is not found or errored or the command has no arguments.
+	 */
 	public async argument<T>(name: string | (keyof this['command']['arguments'] & string)): Promise<T | null> {
 		const result = await this.resolveArgument<T>(name);
 		return result instanceof CommandError ? null : result ?? null;
@@ -285,11 +301,27 @@ export class CommandContext implements CommandContextBuilder {
 		return this.message.reply(options ?? '');
 	}
 
+	/**
+	 * Resolves one of the argument.
+	 * If the argument is errored it will return a {@link CommandError}.
+	 *
+	 * @remarks Internally it uses {@link resolveArguments}.
+	 * @typeParam T - The type of the argument.
+	 * @param name - The name of the argument.
+	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the command has no arguments.
+	 */
 	public resolveArgument<T>(name: string | (keyof this['command']['arguments'] & string)): undefined | MaybePromise<ArgumentResolved<T>> {
 		if (this.argumentParser?.parsed) return this.argumentParser.parsed.get(name);
 		return this.argumentParser?.resolveArgument(this, name);
 	}
 
+	/**
+	 * Resolves all of the arguments of the command.
+	 * If an argument has an error it will return a {@link CommandError}.
+	 *
+	 * @typeParam T - The type of the arguments as an union.
+	 * @returns - A map of arguments or undefined if the command has no arguments.
+	 */
 	public async resolveArguments<A extends any[]>(): Promise<undefined | Map<string, ArgumentResolved<A[number]>>> {
 		if (this.command.arguments) this.argumentParser = new ArgumentParser(this.arguments, this.rawArgs);
 		return this.argumentParser?.resolveArguments(this);
