@@ -1,7 +1,7 @@
 import {GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
 import {isOwner, isPermission, Logger} from '../../utils';
-import {Argument, ArgumentType, CommandArgument} from '../arguments';
+import {Argument, CommandArgument} from '../arguments';
 import {CommandContext, SubCommandContext} from '../contexts';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors';
 import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
@@ -389,12 +389,18 @@ export abstract class Command {
 			let signature = '';
 			signature += commandArgument.isSkipable ? '[' : '<';
 			signature += commandArgument.name;
-			if (commandArgument.showTypeInSignature) signature += `: ${ArgumentType[commandArgument.type].toLowerCase()}`;
+			if (commandArgument.showTypeInSignature) signature += `: ${commandArgument.type.toLowerCase()}`;
 			if (commandArgument.defaultValue && commandArgument.showDefaultValueInSignature) signature += `= ${commandArgument.defaultValue}`;
 			signature += commandArgument.isSkipable ? ']' : '>';
 			result += ` ${signature}`;
 		});
 
+		return result;
+	}
+
+	public signatures() {
+		let result = `${this.signature()}\n`;
+		result += this.subCommands.map(subCommand => `${this.name} ${subCommand.signature()}`).join(`\n`);
 		return result;
 	}
 
