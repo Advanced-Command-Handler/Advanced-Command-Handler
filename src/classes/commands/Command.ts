@@ -103,6 +103,11 @@ export interface Command {
 	registerSubCommands?(): any | Promise<any>;
 }
 
+export interface CommandSignatureOptions {
+	showDefaultValues?: boolean;
+	showTypes?: boolean;
+}
+
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands}
  */
@@ -380,7 +385,7 @@ export abstract class Command {
 		setTimeout(() => delete CommandHandler.cooldowns.get(id)![this.name], cooldown * 1000);
 	}
 
-	public signature() {
+	public signature(options?: CommandSignatureOptions) {
 		if (!this.arguments) return '';
 		let result = this.name;
 
@@ -389,8 +394,8 @@ export abstract class Command {
 			let signature = '';
 			signature += commandArgument.isSkipable ? '[' : '<';
 			signature += commandArgument.name;
-			if (commandArgument.showTypeInSignature) signature += `: ${commandArgument.type.toLowerCase()}`;
-			if (commandArgument.defaultValue && commandArgument.showDefaultValueInSignature) signature += `= ${commandArgument.defaultValue}`;
+			if (options?.showTypes) signature += `: ${commandArgument.type.toLowerCase()}`;
+			if (commandArgument.defaultValue && options?.showDefaultValues) signature += `= ${commandArgument.defaultValue}`;
 			signature += commandArgument.isSkipable ? ']' : '>';
 			result += ` ${signature}`;
 		});
@@ -398,9 +403,9 @@ export abstract class Command {
 		return result;
 	}
 
-	public signatures() {
-		let result = `${this.signature()}\n`;
-		result += this.subCommands.map(subCommand => `${this.name} ${subCommand.signature()}`).join(`\n`);
+	public signatures(options?: CommandSignatureOptions) {
+		let result = `${this.signature(options)}\n`;
+		result += this.subCommands.map(subCommand => `${this.name} ${subCommand.signature(options)}`).join(`\n`);
 		return result;
 	}
 
