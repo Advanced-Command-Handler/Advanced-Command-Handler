@@ -1,5 +1,5 @@
-import {Channel, DMChannel, Emoji, Guild, GuildChannel, GuildMember, Message, Role, TextChannel, User} from 'discord.js';
-import {Command, CommandHandler} from '../';
+import {Channel, DMChannel, Emoji, Guild, GuildChannel, GuildMember, Message, Role, TextChannel, User, Util} from 'discord.js';
+import {Command, CommandHandler, isTextChannelLike, TextChannelLike} from '../';
 
 export enum DataType {
 	CHANNEL = 'channel',
@@ -9,6 +9,7 @@ export enum DataType {
 	MEMBER = 'member',
 	MESSAGE = 'message',
 	ROLE = 'role',
+	TEXT_CHANNEL = 'text_channel',
 	USER = 'user',
 }
 
@@ -20,6 +21,7 @@ type ReturnTypes = {[k in Lowercase<DataType>]: any} & {
 	member: GuildMember;
 	message: Message;
 	role: Role;
+	textChannel: TextChannelLike;
 	user: User;
 };
 
@@ -29,7 +31,7 @@ type DataTypeResolver<T extends DataType> = T | Lowercase<T>;
  * Finds a {@link https://discord.js/#/docs/main/stable/class/Channel | Channel} from the text, or the message content and returns null if nothing found.
  * It can find it from ID/name/mention.
  *
- * @param dataType - GuildChannel {@link DataType.CHANNEL}.
+ * @param dataType - Channel {@link DataType.CHANNEL}.
  * @param text - A string or a Message to find dataType from.
  * @returns - The Channel or null if not found.
  */
@@ -88,6 +90,16 @@ export async function getThing(dataType: DataTypeResolver<DataType.MESSAGE>, tex
  * @returns - The Role or null if not found.
  */
 export async function getThing(dataType: DataTypeResolver<DataType.ROLE>, text: string | Message): Promise<Role | null>;
+
+/**
+ * Finds a {@link https://discord.js/#/docs/main/stable/class/TextChannel | TextChannel} or a {@link https://discord.js/#/docs/main/stable/class/NewsChannel | NewsChannel} from the text, or the message content and returns null if nothing found.
+ * It can find it from ID/name/mention.
+ *
+ * @param dataType - TextChannel | NewsChannel {@link DataType.TEXT_CHANNEL}.
+ * @param text - A string or a Message to find dataType from.
+ * @returns - The Channel or null if not found.
+ */
+export async function getThing(dataType: DataTypeResolver<DataType.TEXT_CHANNEL>, text: string | Message): Promise<TextChannelLike | null>;
 /**
  * Finds a {@link https://discord.js.org/#/docs/main/stable/class/User | User} from the text, or the message content and returns null if nothing found.<br>
  * It can find it from the username/ID.
@@ -126,56 +138,47 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 					c =>
 						(c instanceof GuildChannel && c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
 						(c instanceof DMChannel && c.recipient.username.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 2) ||
+						c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') ||
 						false
 				) ??
-				null
-			);
-		case DataType.GUILD:
-			return (
-				client?.guilds.cache.get(text) ??
-				client?.guilds.cache.find(g => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ??
-				null
-			);
-
-		case DataType.MEMBER:
-			return (
-				message?.guild?.members.cache.get(text) ??
-				message?.mentions?.members?.first() ??
-				message?.guild?.members.cache.find(
-					m =>
-						(m.displayName.toLowerCase().includes((text as string).toLowerCase()) ||
-							m.user.username.toLowerCase().includes((text as string).toLowerCase())) &&
-						(text as string).length > 1
-				) ??
-				null
-			);
-		case DataType.USER:
-			return (
-				client?.users.cache.get(text) ??
-				client?.users.cache.find(u => u.username.toLowerCase() === (text as string).toLowerCase()) ??
-				message?.mentions?.users.first() ??
-				null
-			);
-
-		case DataType.ROLE:
-			return (
-				message?.guild?.roles.cache.get(text) ??
-				message?.mentions.roles.first() ??
-				message?.guild?.roles.cache.find(r => r.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ??
+				client?.channels.resolve(text) ??
 				null
 			);
 		case DataType.EMOTE:
 			return (
 				client?.emojis.cache.get(text) ??
 				client?.emojis.cache.find(e => (e.name?.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ?? false) ??
+				Util.resolvePartialEmoji(text) ??
 				null
 			);
 
+		case DataType.GUILD:
+			return (
+				client?.guilds.cache.get(text) ??
+				client?.guilds.cache.find(g => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ??
+				client?.guilds.resolve(text) ??
+				message?.mentions.guild ??
+				null
+			);
+		case DataType.MEMBER:
+			return (
+				message?.guild?.members.cache.get(text) ??
+				message?.mentions?.members?.first() ??
+				message?.guild?.members.cache.find(
+					m =>
+						((m.displayName.toLowerCase().includes((text as string).toLowerCase()) ||
+							m.user.username.toLowerCase().includes((text as string).toLowerCase())) &&
+							(text as string).length > 1) ||
+						m.toString() === text.toString().replace(/<@!?(\d{17,19})>/, '<@$1>')
+				) ??
+				message?.guild?.members.resolve(text) ??
+				null
+			);
 		case DataType.MESSAGE:
 			const m = await message?.channel.messages.fetch(text);
 			if (m) return m;
 
-			const url = text.replace('https://discord.com/channels/', '').split('/');
+			const url = text.replace(/https:\/\/((canary|ptb).)?discord.com\/channels\//, '').split('/');
 			const channels = client?.channels.cache;
 			if (text.startsWith('https') && channels?.has(url[1])) {
 				return (await (channels?.filter(c => c.isText()).get(url[1]) as TextChannel)?.messages.fetch(url[2])) || null;
@@ -189,6 +192,44 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 			}
 
 			return null;
+
+		case DataType.TEXT_CHANNEL:
+			const result =
+				client?.channels.cache.filter(c => isTextChannelLike(c)).get(text) ??
+				message?.mentions.channels.filter(c => isTextChannelLike(c)).first() ??
+				client?.channels.cache.find(
+					c =>
+						(isTextChannelLike(c) && c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
+						c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') ||
+						false
+				) ??
+				client?.channels.resolve(text) ??
+				null;
+
+			return isTextChannelLike(result) ? result : null;
+		case DataType.ROLE:
+			return (
+				message?.guild?.roles.cache.get(text) ??
+				message?.mentions.roles.first() ??
+				message?.guild?.roles.cache.find(
+					r =>
+						(r.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
+						r.toString() === text.toString().replace(/<@&(\d{17,19})>/, '<@$1>')
+				) ??
+				message?.guild?.roles.resolve(text) ??
+				null
+			);
+
+		case DataType.USER:
+			return (
+				client?.users.cache.get(text) ??
+				client?.users.cache.find(
+					u => u.username.toLowerCase() === (text as string).toLowerCase() || u.toString() === text.toString().replace(/<@!?(\d{17,19})>/, '<@$1>')
+				) ??
+				message?.mentions?.users.first() ??
+				client?.users.resolve(text) ??
+				null
+			);
 		default:
 			return null;
 	}

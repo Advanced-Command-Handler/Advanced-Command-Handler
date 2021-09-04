@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import durationPlugin from 'dayjs/plugin/duration';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {CommandHandler} from '../../';
+import {commandArgument, CommandHandler} from '../../';
 import {Command, CommandContext, Tag} from '../../classes';
 
 dayjs.extend(durationPlugin);
@@ -25,14 +25,18 @@ function groupBy<T, K extends keyof any>(array: T[], predicate: (item: T) => K):
 }
 
 export class HelpCommand extends Command {
-	override name = 'help';
 	override aliases = ['h'];
+	override arguments = {
+		command: commandArgument({optional: true}),
+	};
 	override category = 'utils';
 	override description = 'Get the list of commands or more information for one.';
-	override usage = 'help\nhelp <command>';
+	override name = 'help';
 
 	public override async run(ctx: CommandContext) {
-		if (!ctx.isCallingASubCommand) await HelpCommand.sendGlobalHelp(ctx);
+		const command = await ctx.argument<Command>('command');
+		if (command) await HelpCommand.sendCommandHelp(ctx, command);
+		else await HelpCommand.sendGlobalHelp(ctx);
 	}
 
 	public static async sendGlobalHelp(ctx: CommandContext) {
@@ -76,6 +80,7 @@ export class HelpCommand extends Command {
 		});
 
 		if (command.usage) embed.addField('Usage :', command.usage);
+		else embed.addField('Syntax :', command.signatures({showDefaultValues: true}));
 		if (command.aliases) embed.addField('Aliases : ', `\`${command.aliases.sort().join('\n')}\``);
 		if (command.tags)
 			embed.addField(
@@ -91,7 +96,7 @@ export class HelpCommand extends Command {
 		if (command.subCommands) {
 			let subCommandDescription = '';
 			command.subCommands.forEach(s => {
-				if (s.description) subCommandDescription += `\`${command.name} ${s.name}\` : ${s.description}\n`;
+				if (s.description) subCommandDescription += `\`${command.name} ${s.signature()}\` : ${s.description}\n`;
 			});
 			if (subCommandDescription.length > 0) embed.addField('SubCommands :', subCommandDescription);
 		}
@@ -109,11 +114,5 @@ export class HelpCommand extends Command {
 			},
 			HelpCommand.sendGlobalHelp
 		);
-
-		CommandHandler.commands.forEach(c => {
-			this.subCommand(c.name, {aliases: c.aliases}, async ctx => {
-				await HelpCommand.sendCommandHelp(ctx, c);
-			});
-		});
 	}
 }

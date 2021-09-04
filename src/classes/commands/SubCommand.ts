@@ -1,5 +1,6 @@
 // Note : The SubCommand class is in the Command.ts file, see the class to know why.
 
+import {Argument} from '../arguments';
 import {SubCommandContext} from '../contexts';
 import {Tag} from './Command';
 
@@ -13,6 +14,8 @@ export interface SubCommandOptions {
 	 * The aliases of the SubCommand.
 	 */
 	aliases?: string[];
+
+	arguments?: Record<string, Argument<any>>;
 	/**
 	 * The channels where the SubCommand can be executed.
 	 */

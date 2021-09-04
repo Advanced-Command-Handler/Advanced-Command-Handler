@@ -1,6 +1,7 @@
 import {GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
 import {isOwner, isPermission, Logger} from '../../utils';
+import {Argument, CommandArgument} from '../arguments';
 import {CommandContext, SubCommandContext} from '../contexts';
 import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors';
 import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
@@ -102,6 +103,11 @@ export interface Command {
 	registerSubCommands?(): any | Promise<any>;
 }
 
+export interface CommandSignatureOptions {
+	showDefaultValues?: boolean;
+	showTypes?: boolean;
+}
+
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands}
  */
@@ -110,6 +116,12 @@ export abstract class Command {
 	 * The aliases of the command.
 	 */
 	public aliases?: string[];
+
+	/**
+	 * The arguments of the command.
+	 * You can put your own custom arguments but you must add the type to the {@link ArgumentType | argument types}.
+	 */
+	public arguments: Record<string, Argument<any>> = {};
 	/**
 	 * The category of the command.
 	 *
@@ -165,6 +177,8 @@ export abstract class Command {
 	 * userinfo me
 	 * userinfo <ID/Username/Mention of User>
 	 * ```
+	 *
+	 * @remarks If no value is set, in most places it will use the result of the {@link Command#signatures} method.
 	 */
 	public usage?: string;
 	/**
@@ -223,9 +237,9 @@ export abstract class Command {
 
 		await this.run(ctx);
 		for (const subCommand of this.subCommands) {
-			if (subCommand.nameAndAliases.includes([...ctx.args].splice(0, subCommand.name.split(' ').length).join(' '))) {
+			if (subCommand.nameAndAliases.includes([...ctx.rawArgs].splice(0, subCommand.name.split(' ').length).join(' '))) {
 				ctx = new SubCommandContext({
-					args: ctx.args.slice(subCommand.name.split(' ').length),
+					rawArgs: ctx.rawArgs.slice(subCommand.name.split(' ').length),
 					command: this,
 					message: ctx.message,
 					handler: ctx.handler,
@@ -272,7 +286,7 @@ export abstract class Command {
 	/**
 	 * Returns the missing permissions from the client & user for a context.
 	 *
-	 * @param ctx - The context to check permissions for.
+	 * @param ctx - The context to validate permissions for.
 	 * @returns - The missing permissions.
 	 */
 	public getMissingPermissions(ctx: CommandContext) {
@@ -378,6 +392,53 @@ export abstract class Command {
 	}
 
 	/**
+	 * Get the signature of this command.
+	 *
+	 * @example
+	 * // The `help` command with an optional `command` commandArgument argument.
+	 * ```
+	 * help [command]
+	 * ```
+	 * @param options - The options for the signature, show the type of the arguments or the default values.
+	 * @returns - The signature of this command or subCommand.
+	 */
+	public signature(options?: CommandSignatureOptions) {
+		if (!this.arguments) return '';
+		let result = this.name;
+
+		Object.entries(this.arguments).forEach(([name, arg], index) => {
+			const commandArgument = new CommandArgument(name, index, arg);
+			let signature = '';
+			signature += commandArgument.isSkipable ? '[' : '<';
+			signature += commandArgument.name;
+			if (options?.showTypes) signature += `: ${commandArgument.type.toLowerCase()}`;
+			if (commandArgument.defaultValue && options?.showDefaultValues) signature += `= ${commandArgument.defaultValue}`;
+			signature += commandArgument.isSkipable ? ']' : '>';
+			result += ` ${signature}`;
+		});
+
+		return result;
+	}
+
+	/**
+	 * Returns the signature of the command plus the signature of the subCommands of this command.
+	 *
+	 * @example
+	 * // The `help` command with an optional `command` commandArgument argument and a `all` subCommand with no arguments.
+	 * ```
+	 * help [command]
+	 * help all
+	 * ```
+	 * @param options - The options for the signature, show the type of the arguments or the default values.
+	 * @returns - The signatures of the command.
+	 */
+	public signatures(options?: CommandSignatureOptions) {
+		let result = `${this.signature(options)}\n`;
+		result += this.subCommands.map(subCommand => `${this.name} ${subCommand.signature(options)}`).join(`\n`);
+		return result;
+	}
+
+	/**
 	 * Validate a command, returning an error if any of the validation methods are not valid.
 	 *
 	 * @param ctx - The CommandContext.
@@ -419,6 +480,19 @@ export abstract class Command {
 				type: CommandErrorType.MISSING_TAGS,
 				data: missingTags,
 			};
+
+		if (this.arguments) {
+			const argsMap = await ctx.resolveArguments();
+			const args = [...(argsMap?.values() ?? [])];
+			const argsError: CommandError | undefined = args.find(arg => arg instanceof CommandError);
+			if (argsError) {
+				return {
+					message: argsError.message,
+					data: argsError.data,
+					type: argsError.type,
+				};
+			}
+		}
 	}
 
 	protected subCommand(name: string, callback: RunSubCommandFunction): void;
@@ -490,6 +564,7 @@ export class SubCommand extends Command {
 		this.description = options.description;
 		this.tags = options.tags;
 		this.usage = options.usage;
+		this.arguments = options.arguments ?? {};
 		this.runFunction = runFunction;
 	}
 }

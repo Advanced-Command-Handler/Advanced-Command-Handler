@@ -1,5 +1,6 @@
-import {Snowflake} from 'discord.js';
+import {NewsChannel, Snowflake, TextChannel} from 'discord.js';
 import {CommandHandler} from '../CommandHandler';
+import {TextChannelLike} from '../types';
 
 /**
  * Return the text cut if length is above `maxLength` arg and add `endTextIfTooLong` at the end.
@@ -33,6 +34,26 @@ export function getKeyByValue<O extends {[key: string]: any}>(object: O, value: 
  */
 export function isOwner(id: Snowflake) {
 	return CommandHandler.owners?.includes(id) ?? false;
+}
+
+/**
+ * Returns true if the value looks like a Snowflake.
+ *
+ * @remarks There is no way to identify at 100% if the value is veritable snowflake of something.
+ * @returns - Is the value a Snowflake.
+ */
+export function isSnowflake(value: string): value is Snowflake {
+	return /\d{17,19}/.test(value);
+}
+
+/**
+ * Returns true if the value is a TextChannel or a NewsChannel.
+ *
+ * @param value - The value you want to test.
+ * @returns - Is the value a TextChannelLike.
+ */
+export function isTextChannelLike(value: any): value is TextChannelLike {
+	return value instanceof TextChannel || value instanceof NewsChannel;
 }
 
 /**

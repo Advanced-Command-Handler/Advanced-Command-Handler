@@ -18,21 +18,25 @@ CommandHandler.create({
 	.launch({
 		token: process.env.TOKEN,
 		cycleDuration: 15,
-        clientOptions: {
-            intents: ['GUILDS', 'GUILD_MESSAGES'],
-        },
+		clientOptions: {
+			intents: ['GUILDS', 'GUILD_MESSAGES'],
+		},
 		presences: [
 			{
-				activities: [{
-					name: 'Test1',
-				}],
+				activities: [
+					{
+						name: 'Test1',
+					},
+				],
 				status: 'idle',
 			},
 			{
-				activities: [{
-					name: 'Test2',
-				}]
-			}
+				activities: [
+					{
+						name: 'Test2',
+					},
+				],
+			},
 		],
 	});
 

@@ -2,13 +2,13 @@ import {CommandHandler} from '../../';
 
 export class CommandHandlerError extends Error {
 	/**
-	 * Where the error occurred.
-	 */
-	public readonly where: string;
-	/**
 	 * When the error occurred.
 	 */
 	public readonly date: Date;
+	/**
+	 * Where the error occurred.
+	 */
+	public readonly where: string;
 
 	/**
 	 *
@@ -24,6 +24,6 @@ export class CommandHandlerError extends Error {
 		this.where = where;
 		this.date = new Date();
 
-		if (this instanceof CommandHandlerError) CommandHandler.emit('error', this);
+		if (this.constructor.name === 'CommandHandlerError') CommandHandler.emit('error', this);
 	}
 }
