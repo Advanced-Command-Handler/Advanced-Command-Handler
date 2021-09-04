@@ -106,7 +106,7 @@ export class CommandArgument<T> {
 	 *
 	 * @returns - Does the argument can be skipped.
 	 */
-	public get isSkipable(): boolean {
+	public get isSkipable() {
 		return this.optional || !!this.defaultValue;
 	}
 }

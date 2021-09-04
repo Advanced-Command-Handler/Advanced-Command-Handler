@@ -153,7 +153,7 @@ export abstract class Command {
 	/**
 	 * The name of the command.
 	 */
-	public abstract readonly name: string = '';
+	public abstract readonly name: string;
 	/**
 	 * The SubCommands of this command.
 	 *

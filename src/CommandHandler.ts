@@ -336,7 +336,7 @@ export namespace CommandHandler {
 
 			Logger.info(`${client?.eventNames().length ?? 0} events loaded & bind.`, 'Loading');
 		} catch (e) {
-			Logger.error(e.stack, 'Loading');
+			Logger.error((e instanceof Error ? e : new Error(String(e))).stack, 'Loading');
 		}
 
 		await client.login(options.token);

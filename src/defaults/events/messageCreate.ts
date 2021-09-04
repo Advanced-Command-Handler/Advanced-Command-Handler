@@ -55,7 +55,7 @@ export class MessageEvent extends Event {
 				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
 			}
 		} catch (error) {
-			await codeError(commandContext, error);
+			await codeError(commandContext, error instanceof Error ? error : new Error(String(error)));
 		}
 	}
 }
