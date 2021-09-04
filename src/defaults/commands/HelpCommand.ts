@@ -34,6 +34,7 @@ export class HelpCommand extends Command {
 	override name = 'help';
 
 	public override async run(ctx: CommandContext) {
+		if (ctx.isCallingASubCommand) return;
 		const command = await ctx.argument<Command>('command');
 		if (command) await HelpCommand.sendCommandHelp(ctx, command);
 		else await HelpCommand.sendGlobalHelp(ctx);
