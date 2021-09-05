@@ -2,7 +2,7 @@ import {ClientOptions, Collection, Message, PresenceData, Snowflake, Team} from 
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
-import {AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent} from './';
+import {AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent, Tag} from './';
 import * as defaultCommands from './defaults/commands/';
 import * as defaultEvents from './defaults/events';
 
@@ -13,9 +13,20 @@ export namespace CommandHandler {
 		globalMenuUseList?: boolean;
 	}
 
-	interface DefaultCommandOptions {
+	interface DefaultCommandsOptions {
 		exclude?: string[];
 		helpOptions?: HelpOptions;
+	}
+
+	export interface MessageCreateOptions {
+		excludeBots?: boolean;
+		globalTags?: Array<Tag | keyof typeof Tag | string>;
+		sendCodeError?: boolean;
+	}
+
+	interface DefaultEventsOptions {
+		exclude?: string[];
+		messageCreateOptions?: MessageCreateOptions;
 	}
 
 	/**
@@ -267,11 +278,14 @@ export namespace CommandHandler {
 	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults | Default Events}
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
-	export function useDefaultEvents() {
+	export function useDefaultEvents(options?: DefaultEventsOptions) {
 		Logger.info('Loading default events.', 'Loading');
+
 		for (let event of Object.values(defaultEvents)) {
 			const instance = new event();
+			if (options?.exclude?.includes(instance.name)) continue;
 			events.set(instance.name, instance);
+
 			Logger.comment(`Default ${Logger.setColor('green', instance.name)} event loaded.`, 'Loading');
 		}
 		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'Loading');
@@ -287,7 +301,7 @@ export namespace CommandHandler {
 	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults | Default Commands}
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
-	export function useDefaultCommands(options?: DefaultCommandOptions) {
+	export function useDefaultCommands(options?: DefaultCommandsOptions) {
 		Logger.info('Loading default commands.', 'Loading');
 		defaultCommands.HelpCommand.options = options?.helpOptions ?? {};
 
