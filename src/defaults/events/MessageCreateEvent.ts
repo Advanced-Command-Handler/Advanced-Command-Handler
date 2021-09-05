@@ -2,7 +2,7 @@ import {Message} from 'discord.js';
 import {argError, codeError, CommandHandler, getThing, Logger, permissionsError} from '../..';
 import {CommandContext, CommandErrorType, Event, EventContext, Tag} from '../../classes';
 
-export class MessageEvent extends Event {
+export class MessageCreateEvent extends Event {
 	override readonly name = 'messageCreate';
 
 	public override async run(ctx: EventContext<this>, message: Message) {
