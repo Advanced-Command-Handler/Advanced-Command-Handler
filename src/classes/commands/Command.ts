@@ -55,6 +55,23 @@ export enum Tag {
 	threadOnly = 'threadOnly',
 }
 
+export namespace Tag {
+	export function check(ctx: CommandContext, tags: Array<Tag | keyof typeof Tag | string>) {
+		const missingTags: Tag[] = [];
+		for (const tag of tags ?? []) {
+			if (tag === Tag.channelOnly && ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
+			if (tag === Tag.dmOnly && ctx.channel.type !== 'DM') missingTags.push(Tag.dmOnly);
+			if (tag === Tag.guildOnly && !ctx.guild) missingTags.push(Tag.guildOnly);
+			if (tag === Tag.guildOwnerOnly && ctx.guild?.ownerId !== ctx.user.id) missingTags.push(Tag.guildOwnerOnly);
+			if (tag === Tag.nsfw && ctx.channel instanceof GuildChannel && !ctx.channel.nsfw) missingTags.push(Tag.nsfw);
+			if (tag === Tag.ownerOnly && !isOwner(ctx.user.id)) missingTags.push(Tag.ownerOnly);
+			if (tag === Tag.threadOnly && !ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
+		}
+
+		return missingTags;
+	}
+}
+
 /**
  * The cooldown object.
  */
@@ -326,18 +343,7 @@ export abstract class Command {
 	 * @returns - Tags that are not validated by the message.
 	 */
 	public getMissingTags(ctx: CommandContext) {
-		const missingTags: Tag[] = [];
-		for (const tag of this.tags ?? []) {
-			if (tag === Tag.channelOnly && ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
-			if (tag === Tag.dmOnly && ctx.channel.type !== 'DM') missingTags.push(Tag.dmOnly);
-			if (tag === Tag.guildOnly && !ctx.guild) missingTags.push(Tag.guildOnly);
-			if (tag === Tag.guildOwnerOnly && ctx.guild?.ownerId !== ctx.user.id) missingTags.push(Tag.guildOwnerOnly);
-			if (tag === Tag.nsfw && ctx.channel instanceof GuildChannel && !ctx.channel.nsfw) missingTags.push(Tag.nsfw);
-			if (tag === Tag.ownerOnly && !isOwner(ctx.user.id)) missingTags.push(Tag.ownerOnly);
-			if (tag === Tag.threadOnly && !ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
-		}
-
-		return missingTags;
+		return Tag.check(ctx, this.tags ?? []);
 	}
 
 	/**
