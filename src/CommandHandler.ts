@@ -7,6 +7,17 @@ import * as defaultCommands from './defaults/commands/';
 import * as defaultEvents from './defaults/events';
 
 export namespace CommandHandler {
+	export interface HelpOptions {
+		deleteMessageAfterDelay?: number;
+		globalMenuExcludeCommands?: string[];
+		globalMenuUseList?: boolean;
+	}
+
+	interface DefaultCommandOptions {
+		exclude?: string[];
+		helpOptions?: HelpOptions;
+	}
+
 	/**
 	 * The options for creating a new CommandHandler instance.
 	 */
@@ -276,11 +287,15 @@ export namespace CommandHandler {
 	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults | Default Commands}
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
-	export function useDefaultCommands() {
+	export function useDefaultCommands(options?: DefaultCommandOptions) {
 		Logger.info('Loading default commands.', 'Loading');
+		defaultCommands.HelpCommand.options = options?.helpOptions ?? {};
+
 		for (let command of Object.values(defaultCommands)) {
 			const instance = new command();
+			if (options?.exclude?.includes(instance.name)) continue;
 			commands.set(instance.name, instance);
+
 			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
 		}
 		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands).length})`, 'Loading');
