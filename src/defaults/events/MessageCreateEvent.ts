@@ -1,12 +1,15 @@
 import {Message} from 'discord.js';
 import {argError, codeError, CommandHandler, getThing, Logger, permissionsError} from '../..';
 import {CommandContext, CommandErrorType, Event, EventContext, Tag} from '../../classes';
+import MessageCreateOptions = CommandHandler.MessageCreateOptions;
 
 export class MessageCreateEvent extends Event {
+	public static options: MessageCreateOptions = {};
 	override readonly name = 'messageCreate';
 
 	public override async run(ctx: EventContext<this>, message: Message) {
-		if (message.author.bot || message.system) return;
+		if (MessageCreateEvent.options.excludeBots !== false && message.author.bot) return;
+		if (message.system) return;
 
 		const prefix = CommandHandler.getPrefixFromMessage(message);
 		if (!prefix) return;
@@ -21,6 +24,18 @@ export class MessageCreateEvent extends Event {
 			message,
 			handler: ctx.handler,
 		});
+
+		if (MessageCreateEvent.options.globalTags) {
+			const missingTags = Tag.check(commandContext, MessageCreateEvent.options.globalTags);
+			return argError(
+				commandContext,
+				`There are missing global tags for the message: \n\`${missingTags
+					.map(tag => Tag[tag])
+					.sort()
+					.join('\n')
+					.toUpperCase()}\``
+			);
+		}
 
 		try {
 			const error = await command.execute(commandContext);
@@ -55,7 +70,9 @@ export class MessageCreateEvent extends Event {
 				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
 			}
 		} catch (error) {
-			await codeError(commandContext, error instanceof Error ? error : new Error(String(error)));
+			if (MessageCreateEvent.options.sendCodeError) {
+				await codeError(commandContext, error instanceof Error ? error : new Error(String(error)));
+			}
 		}
 	}
 }
