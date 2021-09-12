@@ -56,7 +56,7 @@ export class HelpCommand extends Command {
 			if (HelpCommand.options.globalMenuExcludeCommands) {
 				commands = commands.filter(c => c.nameAndAliases.some(c => HelpCommand.options.globalMenuExcludeCommands!.includes(c)));
 			}
-			commands.sort((a, b) => a.name.localeCompare(b.name)).forEach(c => embed.addField(c.signature(), c.description ?? ''));
+			commands.sort((a, b) => a.name.localeCompare(b.name)).forEach(c => embed.addField(c.signature(), c.description ?? 'No description provided.'));
 		} else {
 			Object.entries(commandList)
 				.sort((a, b) => a[0].localeCompare(b[0]))
