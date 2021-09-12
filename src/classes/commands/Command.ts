@@ -494,7 +494,7 @@ export abstract class Command {
 				data: missingTags,
 			};
 
-		if (this.arguments) {
+		if (Object.values(this.arguments).length) {
 			const argsMap = await ctx.resolveArguments();
 			const args = [...(argsMap?.values() ?? [])];
 			const argsError: CommandError | undefined = args.find(arg => arg instanceof CommandError);
