@@ -21,7 +21,7 @@ module.exports = class CommandCommand extends Command {
 			async ctx => {
 				const commandText = `${await ctx.argument('category')}/${await ctx.argument('command')}`;
 				let command = await ctx.argument('command');
-				if (command) return ctx.reply(`Command \`${commandText}\` already enabled.`);
+				if (command && ctx.handler.findCommand(command)) return ctx.reply(`Command \`${commandText}\` already enabled.`);
 
 				command = await ctx.handler.loadCommand(join(ctx.handler.commandsDir, await ctx.argument('category')), await ctx.argument('command'));
 				if (command) {
