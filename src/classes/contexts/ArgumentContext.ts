@@ -1,11 +1,17 @@
 import {CommandArgument} from '../arguments';
+import {SubCommand} from '../commands';
 import {CommandContext, CommandContextBuilder} from './CommandContext';
+import {SubCommandContext, SubCommandContextBuilder} from './SubCommandContext';
 
 interface ArgumentContextBuilder extends CommandContextBuilder {
 	/**
 	 * The index of the argument in the arguments of the {@link command}.
 	 */
 	index: number;
+	/**
+	 * The potential subCommand the argument come from.
+	 */
+	subCommand?: SubCommand;
 }
 
 export class ArgumentContext extends CommandContext {
@@ -30,6 +36,9 @@ export class ArgumentContext extends CommandContext {
 		options.message.mentions.users.clear();
 		super(options);
 		this.index = options.index;
-		this.currentArgument = this.arguments[options.index];
+		if (options.subCommand) {
+			const subCommandArguments = new SubCommandContext({...(options as SubCommandContextBuilder)});
+			this.currentArgument = subCommandArguments.arguments[options.index];
+		} else this.currentArgument = this.arguments[options.index];
 	}
 }
