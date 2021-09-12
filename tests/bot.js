@@ -13,8 +13,18 @@ CommandHandler.create({
 	prefixes: ['!'],
 	saveLogsInFile: ['a.txt'],
 })
-	.useDefaultEvents()
-	.useDefaultCommands()
+	.useDefaultEvents({
+		messageCreateOptions: {
+			sendWhenError: 'The command has failed.',
+			globalTags: ['guildOnly'],
+		},
+	})
+	.useDefaultCommands({
+		exclude: ['ping'],
+		helpOptions: {
+			globalMenuUseList: true,
+		},
+	})
 	.launch({
 		token: process.env.TOKEN,
 		cycleDuration: 15,
