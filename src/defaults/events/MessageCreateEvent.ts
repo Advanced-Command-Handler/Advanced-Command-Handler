@@ -73,11 +73,16 @@ export class MessageCreateEvent extends Event {
 			}
 		} catch (error) {
 			const sendWhenError = MessageCreateEvent.options.sendWhenError;
-			if (MessageCreateEvent.options.sendCodeError !== false) {
-				if (MessageCreateEvent.options.sendCodeErrorOnlyToOwners !== false && !isOwner(commandContext.user.id)) return;
-				await codeError(commandContext, error instanceof Error ? error : new Error(String(error)));
-			} else if (sendWhenError) {
-				await commandContext.reply(typeof sendWhenError === 'string' ? {content: sendWhenError} : {embed: sendWhenError});
+			const toSend = typeof sendWhenError === 'string' ? {content: sendWhenError} : {embed: sendWhenError};
+			const err = error instanceof Error ? error : new Error(String(error));
+
+			if (MessageCreateEvent.options.sendCodeError === false) {
+				if (sendWhenError) await commandContext.reply(toSend);
+			} else if (MessageCreateEvent.options.sendCodeErrorOnlyToOwners === false) {
+				await codeError(commandContext, err);
+			} else {
+				if (isOwner(commandContext.user.id)) await codeError(commandContext, err);
+				else if (sendWhenError) await commandContext.reply(toSend);
 			}
 		}
 	}
