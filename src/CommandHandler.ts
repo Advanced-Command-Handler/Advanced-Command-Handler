@@ -1,4 +1,4 @@
-import {ClientOptions, Collection, Message, PresenceData, Snowflake, Team} from 'discord.js';
+import {ClientOptions, Collection, Message, MessageEmbed, PresenceData, Snowflake, Team} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
@@ -7,25 +7,82 @@ import * as defaultCommands from './defaults/commands/';
 import * as defaultEvents from './defaults/events';
 
 export namespace CommandHandler {
+	/**
+	 * The options for the default {@link HelpCommand | help} command.
+	 */
 	export interface HelpOptions {
+		/**
+		 * Delete the help message after the delay, in seconds.
+		 */
 		deleteMessageAfterDelay?: number;
+		/**
+		 * Exclude commands to the global help menu, exclude by name or alias.
+		 */
 		globalMenuExcludeCommands?: string[];
+		/**
+		 * Use a list of commands instead of a list categories.
+		 * Will only work for 25 commands max and throw an error if you use it with more commands.
+		 */
 		globalMenuUseList?: boolean;
 	}
 
+	/**
+	 * The options for the default commands.
+	 */
 	interface DefaultCommandsOptions {
+		/**
+		 * The default commands to exclude when loading the bot.
+		 */
 		exclude?: string[];
+		/**
+		 * The options for the default {@link HelpCommand | help} command.
+		 */
 		helpOptions?: HelpOptions;
 	}
 
+	/**
+	 * The options for the default {@link MessageCreateEvent | messageCreate} event.
+	 */
 	export interface MessageCreateOptions {
+		/**
+		 * Exclude bot or not.
+		 *
+		 * @defaultValue true
+		 */
 		excludeBots?: boolean;
+		/**
+		 * A list of global tags to apply before the commands is executed.
+		 */
 		globalTags?: Array<Tag | keyof typeof Tag | string>;
+		/**
+		 * Send the code error when a command execution is failed and an error is thrown.
+		 *
+		 * @defaultValue true
+		 */
 		sendCodeError?: boolean;
+		/**
+		 * Send the code error only to owners when a command execution is failed and an error is thrown.
+		 *
+		 * @defaultValue true
+		 */
+		sendCodeErrorOnlyToOwners?: boolean;
+		/**
+		 * A message to send to anyone (or not-owners if {@link sendCodeErrorOnlyToOwners} is set) when a command execution is failed and an error is thrown.
+		 */
+		sendWhenError?: MessageEmbed | string;
 	}
 
+	/**
+	 * The options for the default events.
+	 */
 	interface DefaultEventsOptions {
+		/**
+		 * The default events to exclude when loading the bot.
+		 */
 		exclude?: string[];
+		/**
+		 * The options for the default {@link MessageCreateEvent | messageCreate} event.
+		 */
 		messageCreateOptions?: MessageCreateOptions;
 	}
 
@@ -276,6 +333,7 @@ export namespace CommandHandler {
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
 	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults | Default Events}
+	 * @param options - The options for the default events.
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
 	export function useDefaultEvents(options?: DefaultEventsOptions) {
@@ -299,6 +357,7 @@ export namespace CommandHandler {
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
 	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults | Default Commands}
+	 * @param options - The options for the default commands.
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
 	export function useDefaultCommands(options?: DefaultCommandsOptions) {
