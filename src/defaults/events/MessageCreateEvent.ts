@@ -27,14 +27,16 @@ export class MessageCreateEvent extends Event {
 
 		if (MessageCreateEvent.options.globalTags) {
 			const missingTags = Tag.check(commandContext, MessageCreateEvent.options.globalTags);
-			return argError(
-				commandContext,
-				`There are missing global tags for the message: \n\`${missingTags
-					.map(tag => Tag[tag])
-					.sort()
-					.join('\n')
-					.toUpperCase()}\``
-			);
+			if (missingTags.length > 0) {
+				return argError(
+					commandContext,
+					`There are missing global tags for the message: \n\`${missingTags
+						.map(tag => Tag[tag])
+						.sort()
+						.join('\n')
+						.toUpperCase()}\``
+				);
+			}
 		}
 
 		try {
