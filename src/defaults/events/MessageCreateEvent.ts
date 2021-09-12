@@ -1,5 +1,5 @@
 import {Message} from 'discord.js';
-import {argError, codeError, CommandHandler, getThing, Logger, permissionsError} from '../..';
+import {argError, codeError, CommandHandler, getThing, isOwner, Logger, permissionsError} from '../..';
 import {CommandContext, CommandErrorType, Event, EventContext, Tag} from '../../classes';
 import MessageCreateOptions = CommandHandler.MessageCreateOptions;
 
@@ -72,8 +72,12 @@ export class MessageCreateEvent extends Event {
 				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
 			}
 		} catch (error) {
+			const sendWhenError = MessageCreateEvent.options.sendWhenError;
 			if (MessageCreateEvent.options.sendCodeError) {
+				if (MessageCreateEvent.options.sendCodeErrorOnlyToOwners && !isOwner(commandContext.user.id)) return;
 				await codeError(commandContext, error instanceof Error ? error : new Error(String(error)));
+			} else if (sendWhenError) {
+				await commandContext.reply(typeof sendWhenError === 'string' ? {content: sendWhenError} : {embed: sendWhenError});
 			}
 		}
 	}
