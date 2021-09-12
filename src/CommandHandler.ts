@@ -149,6 +149,12 @@ export namespace CommandHandler {
 	 */
 	export interface LaunchCommandHandlerOptions {
 		/**
+		 * Whether to add the bot owner or the team members (if bot is from a team) to the {@link owners}.
+		 *
+		 * @defaultValue true
+		 */
+		addBotAndTeamOwnersToOwners?: boolean;
+		/**
 		 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
 		 */
 		clientOptions: ClientOptions;
@@ -338,6 +344,7 @@ export namespace CommandHandler {
 	 */
 	export function useDefaultEvents(options?: DefaultEventsOptions) {
 		Logger.info('Loading default events.', 'Loading');
+		defaultEvents.MessageCreateEvent.options = options?.messageCreateOptions ?? {};
 
 		for (let event of Object.values(defaultEvents)) {
 			const instance = new event();
@@ -450,10 +457,12 @@ export namespace CommandHandler {
 			prefixes.push(`<@!${client?.user?.id}> `);
 		}
 
-		const appOwner = (await client.application?.fetch())?.owner;
-		if (appOwner) {
-			if (appOwner instanceof Team) owners.push(...appOwner.members.filter(m => m.membershipState === 'ACCEPTED').map(m => m.id));
-			else owners.push(appOwner.id);
+		if (options.addBotAndTeamOwnersToOwners !== false) {
+			const appOwner = (await client.application?.fetch())?.owner;
+			if (appOwner) {
+				if (appOwner instanceof Team) owners.push(...appOwner.members.filter(m => m.membershipState === 'ACCEPTED').map(m => m.id));
+				else owners.push(appOwner.id);
+			}
 		}
 
 		emit('launched');
