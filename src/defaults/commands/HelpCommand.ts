@@ -3,6 +3,7 @@ import durationPlugin from 'dayjs/plugin/duration';
 import {BetterEmbed} from 'discord.js-better-embed';
 import {commandArgument, CommandHandler} from '../../';
 import {Command, CommandContext, Tag} from '../../classes';
+import HelpOptions = CommandHandler.HelpOptions;
 
 dayjs.extend(durationPlugin);
 
@@ -25,6 +26,7 @@ function groupBy<T, K extends keyof any>(array: T[], predicate: (item: T) => K):
 }
 
 export class HelpCommand extends Command {
+	public static options: HelpOptions = {};
 	override aliases = ['h'];
 	override arguments = {
 		command: commandArgument({optional: true}),
@@ -49,22 +51,35 @@ export class HelpCommand extends Command {
 			description: `\`${ctx.handler.prefixes[0]}${ctx.commandName} <command>\` to get more information on a command.`,
 		});
 
-		Object.entries(commandList)
-			.sort((a, b) => a[0].localeCompare(b[0]))
-			.forEach(([category, commands]) => {
-				if (!commands.length) return;
+		if (HelpCommand.options.globalMenuUseList) {
+			let commands = Object.values(commandList).flat();
+			if (HelpCommand.options.globalMenuExcludeCommands) {
+				commands = commands.filter(c => c.nameAndAliases.some(c => HelpCommand.options.globalMenuExcludeCommands!.includes(c)));
+			}
+			commands.sort((a, b) => a.name.localeCompare(b.name)).forEach(c => embed.addField(c.signature(), c.description ?? ''));
+		} else {
+			Object.entries(commandList)
+				.sort((a, b) => a[0].localeCompare(b[0]))
+				.forEach(([category, commands]) => {
+					if (HelpCommand.options.globalMenuExcludeCommands) {
+						commands = commands.filter(c => c.nameAndAliases.some(c => HelpCommand.options.globalMenuExcludeCommands!.includes(c)));
+					}
+					if (!commands.length) return;
 
-				embed.addField(
-					category,
-					`\`${commands
-						.filter(m => m.category === category)
-						.map(c => c.name)
-						.sort()
-						.join('`, `')}\``
-				);
-			});
+					embed.addField(
+						category,
+						`\`${commands
+							.filter(m => m.category === category)
+							.map(c => c.name)
+							.sort()
+							.join('`, `')}\``
+					);
+				});
+		}
 
-		return ctx.reply({embed});
+		const message = await ctx.reply({embed});
+		if (HelpCommand.options.deleteMessageAfterDelay) setInterval(message.delete, HelpCommand.options.deleteMessageAfterDelay * 1000);
+		return message;
 	}
 
 	public static async sendCommandHelp(ctx: CommandContext, command: Command) {

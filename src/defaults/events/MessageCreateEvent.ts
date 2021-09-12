@@ -1,12 +1,15 @@
 import {Message} from 'discord.js';
-import {argError, codeError, CommandHandler, getThing, Logger, permissionsError} from '../..';
+import {argError, codeError, CommandHandler, getThing, isOwner, Logger, permissionsError} from '../..';
 import {CommandContext, CommandErrorType, Event, EventContext, Tag} from '../../classes';
+import MessageCreateOptions = CommandHandler.MessageCreateOptions;
 
-export class MessageEvent extends Event {
+export class MessageCreateEvent extends Event {
+	public static options: MessageCreateOptions = {};
 	override readonly name = 'messageCreate';
 
 	public override async run(ctx: EventContext<this>, message: Message) {
-		if (message.author.bot || message.system) return;
+		if (MessageCreateEvent.options.excludeBots !== false && message.author.bot) return;
+		if (message.system) return;
 
 		const prefix = CommandHandler.getPrefixFromMessage(message);
 		if (!prefix) return;
@@ -21,6 +24,20 @@ export class MessageEvent extends Event {
 			message,
 			handler: ctx.handler,
 		});
+
+		if (MessageCreateEvent.options.globalTags) {
+			const missingTags = Tag.check(commandContext, MessageCreateEvent.options.globalTags);
+			if (missingTags.length > 0) {
+				return argError(
+					commandContext,
+					`There are missing global tags for the message: \n\`${missingTags
+						.map(tag => Tag[tag])
+						.sort()
+						.join('\n')
+						.toUpperCase()}\``
+				);
+			}
+		}
 
 		try {
 			const error = await command.execute(commandContext);
@@ -55,7 +72,13 @@ export class MessageEvent extends Event {
 				Logger.log(`${message.author.tag} has executed the command ${Logger.setColor('red', command.name)}.`);
 			}
 		} catch (error) {
-			await codeError(commandContext, error instanceof Error ? error : new Error(String(error)));
+			const sendWhenError = MessageCreateEvent.options.sendWhenError;
+			if (MessageCreateEvent.options.sendCodeError !== false) {
+				if (MessageCreateEvent.options.sendCodeErrorOnlyToOwners !== false && !isOwner(commandContext.user.id)) return;
+				await codeError(commandContext, error instanceof Error ? error : new Error(String(error)));
+			} else if (sendWhenError) {
+				await commandContext.reply(typeof sendWhenError === 'string' ? {content: sendWhenError} : {embed: sendWhenError});
+			}
 		}
 	}
 }
