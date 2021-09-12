@@ -56,6 +56,13 @@ export enum Tag {
 }
 
 export namespace Tag {
+	/**
+	 * Check if some tags are validated in the command context.
+	 *
+	 * @param ctx - The command context.
+	 * @param tags - The tags to test.
+	 * @returns - The tags not validated.
+	 */
 	export function check(ctx: CommandContext, tags: Array<Tag | keyof typeof Tag | string>) {
 		const missingTags: Tag[] = [];
 		for (const tag of tags ?? []) {
