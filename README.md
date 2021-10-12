@@ -16,17 +16,17 @@ This library is here to simplify a lot developing Discord Bots and is far from b
 So feel free to watch this repo for futures releases!
 For now, it offers :
 
-- Command Handling
-- SubCommand Handling
-- Event Handling
-- Default message event & help command
-- A complete Logger
-- Some utilities function for errors, jsons and other
+-   Command Handling
+-   SubCommand Handling
+-   Event Handling
+-   Default message event & help command
+-   A complete Logger
+-   Some utilities function for errors, jsons and other
 
 **For more information on how to use it, see the Guide and the Documentation :**
 
-- [Documentation](https://advanced-command-handler.github.io/docs/) <br>
-- [Guide](https://ayfri.gitbook.io/advanced-command-handler/)
+-   [Documentation](https://advanced-command-handler.github.io/docs/) <br>
+-   [Guide](https://ayfri.gitbook.io/advanced-command-handler/)
 
 You can also see some examples that I've made [here](https://github.com/Ayfri/advanced-command-handler-examples).<br>
 Feel free to PR to these to update these and add features that this handler can offer!
