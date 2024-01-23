@@ -1,4 +1,4 @@
-import {MessageAttachment, TextBasedChannels} from 'discord.js';
+import {MessageAttachment, TextBasedChannel} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
 import {CommandContext} from '../contexts';
 import {Command} from './';
@@ -10,7 +10,7 @@ export interface ImageEmbedOptions {
 	/**
 	 * Channel where to send the image.
 	 */
-	channel: TextBasedChannels;
+	channel: TextBasedChannel;
 	/**
 	 * Description of the embed.
 	 */
@@ -46,7 +46,7 @@ export interface ImageLocalOptions {
 	/**
 	 * Channel where to send the image.
 	 */
-	channel: TextBasedChannels;
+	channel: TextBasedChannel;
 
 	/**
 	 * Content of the message.

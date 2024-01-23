@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import chalk, {ChalkInstance} from 'chalk';
 import dayjs from 'dayjs';
 import * as fs from 'fs';
 import * as paths from 'path';
@@ -175,7 +175,7 @@ export class Logger {
 	 * @returns - The text colored, adapted for consoles using escape sequences.
 	 */
 	public static setColor(color: ColorResolvable = colors.default, text: string = '') {
-		let finalColor: chalk.Chalk;
+		let finalColor: ChalkInstance;
 		if ((color = Logger.getColorFromColorResolvable(color))) finalColor = chalk.hex(color);
 		else throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 

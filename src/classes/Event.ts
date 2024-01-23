@@ -1,4 +1,4 @@
-import type {ClientEvents} from 'discord.js';
+import type {Awaitable, ClientEvents} from 'discord.js';
 import {CommandHandler} from '../CommandHandler';
 import {AdvancedClient} from './AdvancedClient';
 import {EventContext} from './contexts';
@@ -10,7 +10,7 @@ export abstract class Event {
 	/**
 	 * The name of the event.
 	 */
-	public abstract readonly name: keyof ClientEvents & string;
+	public abstract readonly name: keyof ClientEvents;
 	/**
 	 * If the event should be fired only once.
 	 */
@@ -19,7 +19,7 @@ export abstract class Event {
 	/**
 	 * The run function, executed when the event is fired.
 	 */
-	public abstract run(ctx: EventContext<this>, ...args: ClientEvents[this['name']] | undefined[]): any | Promise<any>;
+	public abstract run(ctx: EventContext<this>, ...args: ClientEvents[this['name']]): Awaitable<any>;
 
 	/**
 	 * Bind the event to the client, when the `something` event from {@link AdvancedClient} will be fire, this event will be also fired.
@@ -32,8 +32,8 @@ export abstract class Event {
 			handler: CommandHandler,
 		});
 
-		if (this.once) client?.once(this.name, this.run.bind(null, context));
-		else client?.on(this.name, this.run.bind(null, context));
+		if (this.once) client.once(this.name, (...args: ClientEvents[this['name']]) => this.run(context, ...args));
+		else client.on(this.name, (...args: ClientEvents[this['name']]) => this.run(context, ...args));
 	}
 
 	/**
@@ -42,15 +42,13 @@ export abstract class Event {
 	 * @param client - The client to unbind the event from.
 	 */
 	public unbind(client: AdvancedClient) {
+		const context = new EventContext({
+			event: this,
+			handler: CommandHandler,
+		});
 		client.removeListener(
 			this.name,
-			this.run.bind(
-				null,
-				new EventContext({
-					event: this,
-					handler: CommandHandler,
-				})
-			) as (...args: any[]) => void
+			(...args) => this.run(context, ...args as ClientEvents[this['name']])
 		);
 	}
 }
