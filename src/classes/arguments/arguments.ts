@@ -1,9 +1,8 @@
-import {Channel, Emoji, Guild, GuildMember, Message, Snowflake, User} from 'discord.js';
-import {TextChannelLike} from '../../types';
+import {Channel, Emoji, Guild, GuildMember, type GuildTextBasedChannel, Message, Snowflake, User} from 'discord.js';
 import {getThing, isSnowflake, isTextChannelLike} from '../../utils';
 import {Command} from '../commands';
 import {Event} from '../Event';
-import {Argument, ArgumentBuilder, ArgumentType} from './Argument';
+import {Argument, type ArgumentBuilder, ArgumentType} from './Argument';
 
 function inRange(number: number | string, min: number, max: number = Infinity) {
 	if (typeof number === 'string') number = number.length;
@@ -282,7 +281,7 @@ export function regexArgument(options: ArgumentBuilder<RegExp> = {}) {
  * @param options - The options of the argument.
  * @returns - A textChannel argument.
  */
-export function textChannelArgument(options: ArgumentBuilder<TextChannelLike> = {}) {
+export function textChannelArgument(options: ArgumentBuilder<GuildTextBasedChannel> = {}) {
 	return new Argument(
 		ArgumentType.TEXT_CHANNEL,
 		options,

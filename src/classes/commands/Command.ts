@@ -1,10 +1,10 @@
-import {GuildChannel, GuildMember, Message, Permissions, PermissionString, Snowflake, TextChannel, User} from 'discord.js';
+import {GuildChannel, GuildMember, Message, Permissions, type PermissionString, Snowflake, TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler';
 import {isOwner, isPermission, Logger} from '../../utils';
 import {Argument, CommandArgument} from '../arguments';
 import {CommandContext, SubCommandContext} from '../contexts';
-import {CommandError, CommandErrorBuilder, CommandErrorType} from '../errors';
-import {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
+import {CommandError, type CommandErrorBuilder, CommandErrorType} from '../errors';
+import type {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**
@@ -323,7 +323,7 @@ export abstract class Command {
 		if (this.clientPermissions) {
 			missingPermissions.client.push(
 				...(this.clientPermissions.filter(permission => {
-					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.guild?.me!!)?.has(permission, false);
+					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.guild?.members?.me!!)?.has(permission, false);
 				}) as PermissionString[])
 			);
 		}
@@ -336,7 +336,7 @@ export abstract class Command {
 			);
 		}
 
-		if (ctx.guild.me?.permissions.has('ADMINISTRATOR')) missingPermissions.client = [];
+		if (ctx.guild.members.me?.permissions.has('ADMINISTRATOR')) missingPermissions.client = [];
 		if (ctx.member?.permissions.has('ADMINISTRATOR')) missingPermissions.user = [];
 
 		return missingPermissions;

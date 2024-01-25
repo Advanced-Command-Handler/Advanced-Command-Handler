@@ -1,4 +1,4 @@
-import {Client, ClientOptions} from 'discord.js';
+import {Client, type ClientOptions} from 'discord.js';
 import {Logger} from '../utils';
 
 export class AdvancedClient extends Client {

@@ -1,6 +1,5 @@
-import {NewsChannel, Snowflake, TextChannel} from 'discord.js';
+import {type GuildTextBasedChannel, NewsChannel, Snowflake, TextChannel} from 'discord.js';
 import {CommandHandler} from '../CommandHandler';
-import {TextChannelLike} from '../types';
 
 /**
  * Return the text cut if length is above `maxLength` arg and add `endTextIfTooLong` at the end.
@@ -50,9 +49,9 @@ export function isSnowflake(value: string): value is Snowflake {
  * Returns true if the value is a TextChannel or a NewsChannel.
  *
  * @param value - The value you want to test.
- * @returns - Is the value a TextChannelLike.
+ * @returns - Is the value a GuildTextBasedChannel.
  */
-export function isTextChannelLike(value: any): value is TextChannelLike {
+export function isTextChannelLike(value: any): value is GuildTextBasedChannel {
 	return value instanceof TextChannel || value instanceof NewsChannel;
 }
 

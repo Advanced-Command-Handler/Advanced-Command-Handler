@@ -1,6 +1,6 @@
-import {ArgumentParser, ArgumentResolved, CommandArgument} from '../arguments';
+import {ArgumentParser, type ArgumentResolved, CommandArgument} from '../arguments';
 import {SubCommand} from '../commands';
-import {CommandContext, CommandContextBuilder} from './CommandContext';
+import {CommandContext, type CommandContextBuilder} from './CommandContext';
 
 /**
  * The object to create a new SubCommandContext.

@@ -19,7 +19,12 @@ export function permissionsError(ctx: CommandContext, missingPermissions: Permis
 		description: `${fromClient ? 'The bot is' : 'You are'} missing permissions :\n\`${missingPermissions.sort().join('`\n`')}\``,
 	});
 
-	if (ctx.command.usage) embed.addField('Syntax :', ctx.command.usage);
+	if (ctx.command.usage) {
+		embed.addFields({
+			name: 'Syntax :',
+			value: ctx.command.usage,
+		});
+	}
 	return ctx.reply({embed});
 }
 

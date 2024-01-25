@@ -1,4 +1,4 @@
-import {CommandHandler} from '../../CommandHandler';
+import {type CommandHandler} from '../../CommandHandler';
 import {Event} from '../Event';
 
 /**

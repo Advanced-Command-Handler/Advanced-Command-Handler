@@ -1,19 +1,19 @@
 import {
+	type Awaitable,
+	BaseGuildTextChannel,
 	Collection,
-	EmojiIdentifierResolvable,
+	type EmojiIdentifierResolvable,
 	Message,
 	MessageEmbed,
-	MessageOptions,
-	MessageResolvable,
-	NewsChannel,
-	ReplyMessageOptions,
-	StartThreadOptions,
-	TextChannel,
+	type MessageOptions,
+	type MessageResolvable,
+	type ReplyMessageOptions,
+	type StartThreadOptions,
 } from 'discord.js';
 
-import {Command, CommandError, CommandHandler, MaybePromise} from '../../';
+import {Command, CommandError, type CommandHandler} from '../../';
 import {HelpCommand} from '../../defaults/commands';
-import {ArgumentParser, ArgumentResolved, CommandArgument} from '../arguments';
+import {ArgumentParser, type ArgumentResolved, CommandArgument} from '../arguments';
 
 interface ReplyOptions extends ReplyMessageOptions {
 	embed?: MessageEmbed;
@@ -167,7 +167,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * Returns the channel where the command was executed as a TextChannel or undefined if it isn't.
 	 */
 	get textChannel() {
-		return this.message.channel instanceof TextChannel || this.message.channel instanceof NewsChannel ? this.message.channel : undefined;
+		return this.message.channel instanceof BaseGuildTextChannel ? this.message.channel : undefined;
 	}
 
 	/**
@@ -208,9 +208,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @returns - The collection of the deleted messages.
 	 */
 	public async bulkDeleteInChannel(number: number | Collection<string, Message> | readonly MessageResolvable[], filterOld?: boolean) {
-		if (this.textChannel) {
-			return this.textChannel.bulkDelete(number, filterOld);
-		}
+		return this.textChannel?.bulkDelete(number, filterOld);
 	}
 
 	/**
@@ -293,8 +291,9 @@ export class CommandContext implements CommandContextBuilder {
 	 */
 	public reply(content: string | ReplyMessageOptions, options?: ReplyOptions) {
 		if (typeof content !== 'string') options = content;
-		else if (content && options) options.content === content;
-		else if (content && !options) options = {content};
+		else if (content && options) {
+			options.content = content;
+		} else if (content && !options) options = {content};
 
 		if (options && options.embed && !options.embeds) options.embeds = [options.embed];
 
@@ -310,7 +309,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param name - The name of the argument.
 	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the command has no arguments.
 	 */
-	public resolveArgument<T>(name: string | (keyof this['command']['arguments'] & string)): undefined | MaybePromise<ArgumentResolved<T>> {
+	public resolveArgument<T>(name: string | (keyof this['command']['arguments'] & string)): undefined | Awaitable<ArgumentResolved<T>> {
 		if (this.argumentParser?.parsed) return this.argumentParser.parsed.get(name);
 		return this.argumentParser?.resolveArgument(this, name);
 	}
@@ -339,8 +338,9 @@ export class CommandContext implements CommandContextBuilder {
 	 */
 	public send(content: string | SendOptions, options?: SendOptions) {
 		if (typeof content !== 'string') options = content;
-		else if (content && options) options.content === content;
-		else if (content && !options) options = {content};
+		else if (content && options) {
+			options.content = content;
+		} else if (content && !options) options = {content};
 
 		if (options && options.embed && !options.embeds) options.embeds = [options.embed];
 

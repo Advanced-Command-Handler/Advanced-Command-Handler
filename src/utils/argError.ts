@@ -16,6 +16,10 @@ export function argError(ctx: CommandContext, error: string) {
 		description: error,
 	});
 
-	embed.addField('Syntax :', ctx.command.usage ?? ctx.command.signatures());
+
+	embed.addFields({
+		name: 'Syntax :',
+		value: ctx.command.usage ?? ctx.command.signatures(),
+	});
 	return ctx.reply({embed});
 }

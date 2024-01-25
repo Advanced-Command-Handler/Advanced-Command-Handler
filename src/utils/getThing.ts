@@ -1,5 +1,5 @@
-import {Channel, DMChannel, Emoji, Guild, GuildChannel, GuildMember, Message, Role, TextChannel, User, Util} from 'discord.js';
-import {Command, CommandHandler, isTextChannelLike, TextChannelLike} from '../';
+import {Channel, DMChannel, Emoji, Guild, GuildChannel, GuildMember, type GuildTextBasedChannel, Message, Role, TextChannel, User, Util} from 'discord.js';
+import {Command, CommandHandler, isTextChannelLike} from '../';
 
 export enum DataType {
 	CHANNEL = 'channel',
@@ -21,7 +21,7 @@ type ReturnTypes = {[k in Lowercase<DataType>]: any} & {
 	member: GuildMember;
 	message: Message;
 	role: Role;
-	textChannel: TextChannelLike;
+	textChannel: GuildTextBasedChannel;
 	user: User;
 };
 
@@ -99,7 +99,7 @@ export async function getThing(dataType: DataTypeResolver<DataType.ROLE>, text: 
  * @param text - A string or a Message to find dataType from.
  * @returns - The Channel or null if not found.
  */
-export async function getThing(dataType: DataTypeResolver<DataType.TEXT_CHANNEL>, text: string | Message): Promise<TextChannelLike | null>;
+export async function getThing(dataType: DataTypeResolver<DataType.TEXT_CHANNEL>, text: string | Message): Promise<GuildTextBasedChannel | null>;
 /**
  * Finds a {@link https://discord.js.org/#/docs/main/stable/class/User | User} from the text, or the message content and returns null if nothing found.<br>
  * It can find it from the username/ID.

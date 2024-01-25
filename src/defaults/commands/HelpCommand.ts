@@ -56,7 +56,10 @@ export class HelpCommand extends Command {
 			if (HelpCommand.options.globalMenuExcludeCommands) {
 				commands = commands.filter(c => c.nameAndAliases.some(c => HelpCommand.options.globalMenuExcludeCommands!.includes(c)));
 			}
-			commands.sort((a, b) => a.name.localeCompare(b.name)).forEach(c => embed.addField(c.signature(), c.description ?? 'No description provided.'));
+			commands.sort((a, b) => a.name.localeCompare(b.name)).forEach(c => embed.addFields({
+				name: c.signature(),
+				value: c.description ?? 'No description provided.',
+			}));
 		} else {
 			Object.entries(commandList)
 				.sort((a, b) => a[0].localeCompare(b[0]))
@@ -66,14 +69,14 @@ export class HelpCommand extends Command {
 					}
 					if (!commands.length) return;
 
-					embed.addField(
-						category,
-						`\`${commands
+					embed.addFields({
+						name: category,
+						value: `\`${commands
 							.filter(m => m.category === category)
 							.map(c => c.name)
 							.sort()
-							.join('`, `')}\``
-					);
+							.join('`, `')}\``,
+					});
 				});
 		}
 
@@ -95,26 +98,50 @@ export class HelpCommand extends Command {
 			description,
 		});
 
-		if (command.usage) embed.addField('Usage :', command.usage);
-		else embed.addField('Syntax :', command.signatures({showDefaultValues: true}));
-		if (command.aliases) embed.addField('Aliases : ', `\`${command.aliases.sort().join('\n')}\``);
+		if (command.usage) {
+			embed.addFields({
+				name: 'Usage :',
+				value: command.usage,
+			});
+		} else {
+			embed.addFields({
+				name: 'Syntax :',
+				value: command.signatures({showDefaultValues: true}),
+			});
+		}
+		if (command.aliases) {
+			embed.addFields({
+				name: 'Aliases : ',
+				value: `\`${command.aliases.sort().join('\n')}\``
+			});
+		}
 		if (command.tags)
-			embed.addField(
-				'Tags :',
-				`\`${command.tags
+			embed.addFields({
+				name: 'Tags :',
+				value: `\`${command.tags
 					.map(t => (typeof t === 'string' ? t : Tag[t]))
 					.sort()
 					.join('\n')
 					.toUpperCase()}\``
-			);
-		if (command.cooldown) embed.addField('Cooldown :', `${dayjs.duration(command.cooldown, 'seconds').asSeconds()} seconds`);
+			});
+		if (command.cooldown) {
+			embed.addFields({
+				name: 'Cooldown :',
+				value: `${dayjs.duration(command.cooldown, 'seconds').asSeconds()} seconds`,
+			});
+		}
 
 		if (command.subCommands) {
 			let subCommandDescription = '';
 			command.subCommands.forEach(s => {
 				if (s.description) subCommandDescription += `\`${command.name} ${s.signature()}\` : ${s.description}\n`;
 			});
-			if (subCommandDescription.length > 0) embed.addField('SubCommands :', subCommandDescription);
+			if (subCommandDescription.length > 0) {
+				embed.addFields({
+					name: 'SubCommands :',
+					value: subCommandDescription,
+				});
+			}
 		}
 
 		embed.cutIfTooLong();

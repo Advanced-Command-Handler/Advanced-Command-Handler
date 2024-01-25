@@ -1,5 +1,5 @@
 import {Parser} from 'argumentorum';
-import {MaybePromise} from '../../types';
+import type {Awaitable} from 'discord.js';
 import {ArgumentContext, CommandContext} from '../contexts';
 import {CommandError, CommandErrorType} from '../errors';
 import {CommandArgument} from './Argument';
@@ -16,7 +16,7 @@ export class ArgumentParser {
 		argumentRequiresOneValue: (argumentName: string) => `Argument '${argumentName}' requires exactly one value bot none or multiple were provided.`,
 		errorInArgument: (argumentName: string) => `Cannot resolve argument '${argumentName}', bad input from user.`,
 	};
-	public parsed?: Map<string, MaybePromise<CommandError | null | any>>;
+	public parsed?: Map<string, Awaitable<CommandError | null | any>>;
 	public parser: Parser;
 
 	public constructor(public args: CommandArgument<any>[], public rawArgs: string[]) {
@@ -56,7 +56,7 @@ export class ArgumentParser {
 	}
 
 	public async parseArguments<A extends any[]>(context: CommandContext) {
-		let argsMap = new Map<string, MaybePromise<ArgumentResolved<A>>>();
+		let argsMap = new Map<string, Awaitable<ArgumentResolved<A>>>();
 		const keywordArgs = new Map<string, string[]>();
 		const argsToParse = this.args.slice();
 
