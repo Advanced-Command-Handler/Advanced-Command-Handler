@@ -1,3 +1,3 @@
-export * from './Argument';
-export * from './ArgumentParser';
-export * from './arguments';
+export * from './Argument.js';
+export * from './ArgumentParser.js';
+export * from './arguments.js';

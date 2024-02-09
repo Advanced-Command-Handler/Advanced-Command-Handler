@@ -1,5 +1,6 @@
-import {type CommandHandler} from '../../CommandHandler';
-import {Event} from '../Event';
+import {type CommandHandler} from '../../CommandHandler.js';
+import type {InteractionHandler} from '../../InteractionHandler.js';
+import {Event} from '../Event.js';
 
 /**
  * Creates a new EventContext.
@@ -13,6 +14,10 @@ interface EventContextBuilder<E extends Event> {
 	 * The CommandHandler.
 	 */
 	handler: typeof CommandHandler;
+	/**
+	 * The InteractionHandler.
+	 */
+	interactionHandler: typeof InteractionHandler;
 }
 
 export class EventContext<E extends Event> implements EventContextBuilder<E> {
@@ -24,6 +29,10 @@ export class EventContext<E extends Event> implements EventContextBuilder<E> {
 	 * The CommandHandler.
 	 */
 	public handler: typeof CommandHandler;
+	/**
+	 * The InteractionHandler.
+	 */
+	public interactionHandler: typeof InteractionHandler;
 
 	/**
 	 * Creates a new EventContext associated to an Event.
@@ -33,6 +42,7 @@ export class EventContext<E extends Event> implements EventContextBuilder<E> {
 	public constructor(options: EventContextBuilder<E>) {
 		this.event = options.event;
 		this.handler = options.handler;
+		this.interactionHandler = options.interactionHandler;
 	}
 
 	/**

@@ -1,5 +1,5 @@
 import {BetterEmbed} from 'discord.js-better-embed';
-import {CommandContext} from '../';
+import {CommandContext} from '../index.js';
 
 /**
  * A function to use when a user fail on an argument of a command.

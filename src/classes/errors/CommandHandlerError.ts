@@ -1,4 +1,4 @@
-import {CommandHandler} from '../../';
+import {CommandHandler} from '../../index.js';
 
 export class CommandHandlerError extends Error {
 	/**

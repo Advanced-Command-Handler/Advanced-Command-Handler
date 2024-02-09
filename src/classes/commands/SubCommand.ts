@@ -1,8 +1,8 @@
 // Note : The SubCommand class is in the Command.ts file, see the class to know why.
 
-import {Argument} from '../arguments';
-import {SubCommandContext} from '../contexts';
-import {Tag} from './Command';
+import {Argument} from '../arguments/index.js';
+import {SubCommandContext} from '../contexts/index.js';
+import {Tag} from './Command.js';
 
 export type RunSubCommandFunction = (ctx: SubCommandContext) => any | Promise<any>;
 

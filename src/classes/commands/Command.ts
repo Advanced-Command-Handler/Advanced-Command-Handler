@@ -1,10 +1,10 @@
 import {GuildChannel, GuildMember, Message, Permissions, type PermissionString, Snowflake, TextChannel, User} from 'discord.js';
-import {CommandHandler} from '../../CommandHandler';
-import {isOwner, isPermission, Logger} from '../../utils';
-import {Argument, CommandArgument} from '../arguments';
-import {CommandContext, SubCommandContext} from '../contexts';
-import {CommandError, type CommandErrorBuilder, CommandErrorType} from '../errors';
-import type {RunSubCommandFunction, SubCommandOptions} from './SubCommand';
+import {CommandHandler} from '../../CommandHandler.js';
+import {isOwner, isPermission, Logger} from '../../utils/index.js';
+import {Argument, CommandArgument} from '../arguments/index.js';
+import {CommandContext, SubCommandContext} from '../contexts/index.js';
+import {CommandError, type CommandErrorBuilder, CommandErrorType} from '../errors/index.js';
+import type {RunSubCommandFunction, SubCommandOptions} from './SubCommand.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
 /**
@@ -374,7 +374,7 @@ export abstract class Command {
 	 */
 	public isInRightChannel(ctx: CommandContext) {
 		if (this.channels?.length === 0) return true;
-		return !this.channels?.find(ch => (typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id)) ?? true;
+		return !this.channels?.find(ch => typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id) ?? true;
 	}
 
 	/**

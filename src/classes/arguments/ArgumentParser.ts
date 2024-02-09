@@ -1,8 +1,8 @@
 import {Parser} from 'argumentorum';
 import type {Awaitable} from 'discord.js';
-import {ArgumentContext, CommandContext} from '../contexts';
-import {CommandError, CommandErrorType} from '../errors';
-import {CommandArgument} from './Argument';
+import {ArgumentContext, CommandContext} from '../contexts/index.js';
+import {CommandError, CommandErrorType} from '../errors/index.js';
+import {CommandArgument} from './Argument.js';
 
 export type MapArguments<A extends any[]> = Map<string, null | CommandError | A[number]>;
 export type ArgumentResolved<A> = null | CommandError | A;

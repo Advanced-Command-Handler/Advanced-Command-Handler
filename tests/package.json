@@ -6,6 +6,7 @@
 		"dotenv": "^8.2.0"
 	},
 	"main": "bot.js",
+	"type": "module",
 	"scripts": {
 		"start": "node .",
 		"build:run": "cd .. && npm run build && cd tests && npm start"

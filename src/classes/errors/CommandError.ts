@@ -1,4 +1,4 @@
-import {CommandHandlerError} from './CommandHandlerError';
+import {CommandHandlerError} from './CommandHandlerError.js';
 
 export enum CommandErrorType {
 	ARGUMENT_NOT_FOUND,

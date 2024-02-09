@@ -1,4 +1,4 @@
-import {ArgumentContext} from '../contexts';
+import {ArgumentContext} from '../contexts/index.js';
 
 /**
  * The validator of arguments, must return `true` if the argument is valid.

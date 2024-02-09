@@ -1,2 +1,2 @@
-export * from './CommandError';
-export * from './CommandHandlerError';
+export * from './CommandError.js';
+export * from './CommandHandlerError.js';

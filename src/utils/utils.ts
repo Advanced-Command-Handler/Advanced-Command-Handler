@@ -1,5 +1,5 @@
 import {type GuildTextBasedChannel, NewsChannel, Snowflake, TextChannel} from 'discord.js';
-import {CommandHandler} from '../CommandHandler';
+import {CommandHandler} from '../CommandHandler.js';
 
 /**
  * Return the text cut if length is above `maxLength` arg and add `endTextIfTooLong` at the end.

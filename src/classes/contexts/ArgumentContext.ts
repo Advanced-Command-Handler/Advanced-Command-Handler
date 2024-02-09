@@ -1,7 +1,7 @@
-import {CommandArgument} from '../arguments';
-import {SubCommand} from '../commands';
-import {CommandContext, type CommandContextBuilder} from './CommandContext';
-import {SubCommandContext, type SubCommandContextBuilder} from './SubCommandContext';
+import {CommandArgument} from '../arguments/index.js';
+import {SubCommand} from '../commands/index.js';
+import {CommandContext, type CommandContextBuilder} from './CommandContext.js';
+import {SubCommandContext, type SubCommandContextBuilder} from './SubCommandContext.js';
 
 interface ArgumentContextBuilder extends CommandContextBuilder {
 	/**

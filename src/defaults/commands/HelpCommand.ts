@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import durationPlugin from 'dayjs/plugin/duration';
+import durationPlugin from 'dayjs/plugin/duration.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {commandArgument, CommandHandler} from '../../';
-import {Command, CommandContext, Tag} from '../../classes';
+import {Command, CommandContext, Tag} from '../../classes/index.js';
+import {commandArgument, CommandHandler} from '../../index.js';
 import HelpOptions = CommandHandler.HelpOptions;
 
 dayjs.extend(durationPlugin);
@@ -90,7 +90,7 @@ export class HelpCommand extends Command {
 
 		let description = `**Description** : ${command.description ?? 'No description provided.'}\n`;
 		description += `**Category** : \`${command.category}\`\n`;
-		description += `Can you use it here : **${(await command.validate(ctx)) ? 'No' : 'Yes'}**`;
+		description += `Can you use it here : **${await command.validate(ctx) ? 'No' : 'Yes'}**`;
 
 		const embed = BetterEmbed.fromTemplate('complete', {
 			client: ctx.client,
@@ -119,7 +119,7 @@ export class HelpCommand extends Command {
 			embed.addFields({
 				name: 'Tags :',
 				value: `\`${command.tags
-					.map(t => (typeof t === 'string' ? t : Tag[t]))
+				                   .map(t => typeof t === 'string' ? t : Tag[t])
 					.sort()
 					.join('\n')
 					.toUpperCase()}\``

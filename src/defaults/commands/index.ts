@@ -1,2 +1,2 @@
-export * from './PingCommand';
-export * from './HelpCommand';
+export * from './PingCommand.js';
+export * from './HelpCommand.js';

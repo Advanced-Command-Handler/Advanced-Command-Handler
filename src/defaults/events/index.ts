@@ -1,1 +1,2 @@
-export * from './MessageCreateEvent';
+export * from './MessageCreateEvent.js';
+export * from './InteractionCreateEvent.js';

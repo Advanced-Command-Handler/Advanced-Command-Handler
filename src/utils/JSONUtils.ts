@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import {Logger} from './';
+import {Logger} from './index.js';
 
 export type JSONLike = {[k: string]: number | string | boolean | JSONLike | JSONLike[]} | JSONLike[];
 

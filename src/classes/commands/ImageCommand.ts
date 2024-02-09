@@ -1,7 +1,7 @@
 import {GuildTextBasedChannel, MessageAttachment} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {CommandContext} from '../contexts';
-import {Command} from './';
+import {CommandContext} from '../contexts/index.js';
+import {Command} from './index.js';
 
 /**
  * The options for setting an image in an embed.

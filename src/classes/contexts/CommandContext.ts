@@ -10,10 +10,10 @@ import {
 	type ReplyMessageOptions,
 	type StartThreadOptions,
 } from 'discord.js';
+import {HelpCommand} from '../../defaults/commands/index.js';
 
-import {Command, CommandError, type CommandHandler} from '../../';
-import {HelpCommand} from '../../defaults/commands';
-import {ArgumentParser, type ArgumentResolved, CommandArgument} from '../arguments';
+import {Command, CommandError, type CommandHandler} from '../../index.js';
+import {ArgumentParser, type ArgumentResolved, CommandArgument} from '../arguments/index.js';
 
 interface ReplyOptions extends ReplyMessageOptions {
 	embed?: MessageEmbed;
@@ -192,7 +192,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param name - The name of the argument.
 	 * @returns - The argument in a promise or null if the argument is not found or errored or the command has no arguments.
 	 */
-	public async argument<T>(name: string | (keyof this['command']['arguments'] & string)): Promise<T | null> {
+	public async argument<T>(name: string | keyof this['command']['arguments'] & string): Promise<T | null> {
 		const result = await this.resolveArgument<T>(name);
 		return result instanceof CommandError ? null : result ?? null;
 	}
@@ -230,11 +230,7 @@ export class CommandContext implements CommandContextBuilder {
 	 */
 	public async deleteMessage(timeout: number = 0) {
 		if (timeout) {
-			return await new Promise<Message>(resolve => {
-				setTimeout(() => {
-					resolve(this.message.delete());
-				}, timeout);
-			});
+			return await new Promise<Message>(resolve => setTimeout(() => resolve(this.message.delete()), timeout));
 		} else return await this.message.delete();
 	}
 
@@ -309,7 +305,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param name - The name of the argument.
 	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the command has no arguments.
 	 */
-	public resolveArgument<T>(name: string | (keyof this['command']['arguments'] & string)): undefined | Awaitable<ArgumentResolved<T>> {
+	public resolveArgument<T>(name: string | keyof this['command']['arguments'] & string): undefined | Awaitable<ArgumentResolved<T>> {
 		if (this.argumentParser?.parsed) return this.argumentParser.parsed.get(name);
 		return this.argumentParser?.resolveArgument(this, name);
 	}

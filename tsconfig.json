@@ -4,17 +4,16 @@
 		"declaration": true,
 		"declarationDir": "types",
 		"esModuleInterop": true,
-		"lib": ["ESNext"],
-		"module": "commonjs",
+		"lib": [
+			"ES2023"
+		],
+		"module": "NodeNext",
 		"noImplicitOverride": true,
 		"noUnusedParameters": true,
 		"outDir": "dist",
 		"rootDir": "src",
 		"skipLibCheck": true,
 		"strict": true,
-		"target": "ES2020"
-	},
-	"ts-node": {
-		"require": ["chalk", "dayjs", "discord.js", "discord.js-better-embed"]
+		"target": "ESNext"
 	}
 }

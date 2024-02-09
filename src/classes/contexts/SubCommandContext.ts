@@ -1,6 +1,6 @@
-import {ArgumentParser, type ArgumentResolved, CommandArgument} from '../arguments';
-import {SubCommand} from '../commands';
-import {CommandContext, type CommandContextBuilder} from './CommandContext';
+import {ArgumentParser, type ArgumentResolved, CommandArgument} from '../arguments/index.js';
+import {SubCommand} from '../commands/index.js';
+import {CommandContext, type CommandContextBuilder} from './CommandContext.js';
 
 /**
  * The object to create a new SubCommandContext.

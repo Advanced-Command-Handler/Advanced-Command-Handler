@@ -1,5 +1,12 @@
-import {Command, Event} from './classes';
+import type {Command, Event, SlashCommand} from './classes/index.js';
 
 export type Constructor<T extends {} = {}> = new (...args: any[]) => T;
-export type MaybeCommand = Constructor<Command> | {default: Constructor<Command>} | {[k: string]: Constructor<Command>};
-export type MaybeEvent = Constructor<Event> | {default: Constructor<Event>} | {[k: string]: Constructor<Event>};
+
+export type MaybeClass<T extends {}> = Constructor<T> | {
+	default: Constructor<T>
+} | {
+	[k: string]: Constructor<T>
+};
+export type MaybeCommand = MaybeClass<Command>;
+export type MaybeEvent = MaybeClass<Event>;
+export type MaybeSlashCommand = MaybeClass<SlashCommand>;

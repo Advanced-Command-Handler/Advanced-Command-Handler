@@ -2,9 +2,11 @@ import {ClientOptions, Collection, Message, MessageEmbed, PresenceData, Snowflak
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
-import {AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent, Tag} from './';
-import * as defaultCommands from './defaults/commands/';
-import * as defaultEvents from './defaults/events';
+import * as defaultCommands from './defaults/commands/index.js';
+import * as defaultEvents from './defaults/events/index.js';
+import {
+	AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent, SlashCommand, Tag,
+} from './index.js';
 
 export namespace CommandHandler {
 	/**
@@ -212,6 +214,10 @@ export namespace CommandHandler {
 		 */
 		launch: [LaunchCommandHandlerOptions];
 		/**
+		 * The event executed when the CommandHandler has finished launching..
+		 */
+		launched: [];
+		/**
 		 * The event executed when loading a Command.
 		 */
 		loadCommand: [Command];
@@ -220,9 +226,9 @@ export namespace CommandHandler {
 		 */
 		loadEvent: [Event];
 		/**
-		 * The event executed when the CommandHandler has finished launching..
+		 * The event executed when loading a SlashCommand.
 		 */
-		launched: [];
+		loadSlashCommand: [SlashCommand];
 	};
 
 	/**

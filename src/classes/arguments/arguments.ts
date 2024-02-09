@@ -1,8 +1,8 @@
 import {Channel, Emoji, Guild, GuildMember, type GuildTextBasedChannel, Message, Snowflake, User} from 'discord.js';
-import {getThing, isSnowflake, isTextChannelLike} from '../../utils';
-import {Command} from '../commands';
-import {Event} from '../Event';
-import {Argument, type ArgumentBuilder, ArgumentType} from './Argument';
+import {getThing, isSnowflake, isTextChannelLike} from '../../utils/index.js';
+import {Command} from '../commands/index.js';
+import {Event} from '../Event.js';
+import {Argument, type ArgumentBuilder, ArgumentType} from './Argument.js';
 
 function inRange(number: number | string, min: number, max: number = Infinity) {
 	if (typeof number === 'string') number = number.length;

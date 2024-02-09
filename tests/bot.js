@@ -1,8 +1,10 @@
-const {CommandHandler, Logger, LogLevel} = require('advanced-command-handler');
-require('dotenv').config();
+import {CommandHandler, Logger, LogLevel} from 'advanced-command-handler';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 // Logger.LEVEL = LogLevel.LOG;
-Logger.ignores.push(['subCommandLoading', 'COMMENT']);
+Logger.ignores.push(['subCommandLoading', LogLevel.COMMENT]);
 
 CommandHandler.on('create', Logger.log);
 CommandHandler.on('error', Logger.error);

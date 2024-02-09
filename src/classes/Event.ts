@@ -1,7 +1,8 @@
 import type {Awaitable, ClientEvents} from 'discord.js';
-import {CommandHandler} from '../CommandHandler';
-import {AdvancedClient} from './AdvancedClient';
-import {EventContext} from './contexts';
+import {CommandHandler} from '../CommandHandler.js';
+import {InteractionHandler} from '../InteractionHandler.js';
+import {AdvancedClient} from './AdvancedClient.js';
+import {EventContext} from './contexts/index.js';
 
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/events}
@@ -30,6 +31,7 @@ export abstract class Event {
 		const context = new EventContext<this>({
 			event: this,
 			handler: CommandHandler,
+			interactionHandler: InteractionHandler,
 		});
 
 		if (this.once) client.once(this.name, (...args: ClientEvents[this['name']]) => this.run(context, ...args));
@@ -45,6 +47,7 @@ export abstract class Event {
 		const context = new EventContext({
 			event: this,
 			handler: CommandHandler,
+			interactionHandler: InteractionHandler,
 		});
 		client.removeListener(
 			this.name,
