@@ -88,6 +88,11 @@
 			"tsdoc/syntax": "warn"
 		}
 	},
+	"exports": {
+		".": "./dist/index.js",
+		"./src/*": "./dist/src/*",
+		"./types/*": "./dist/types/*"
+	},
 	"homepage": "https://github.com/Ayfri/Advanced-Command-Handler",
 	"keywords": [
 		"discord",

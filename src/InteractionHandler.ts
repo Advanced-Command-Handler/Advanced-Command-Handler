@@ -61,6 +61,11 @@ export namespace InteractionHandler {
 	 */
 	export let client: AdvancedClient | null = null;
 	export let commandsDir = '';
+
+	export let usesDefaultEvents = true;
+	export let defaultEventsOptions: DefaultEventsOptions | undefined = undefined;
+	export let usesDefaultCommands = true;
+	export let defaultCommandsOptions: DefaultCommandsOptions | undefined = undefined;
 	/**
 	 * The commands registered by the CommandHandler.
 	 */
@@ -124,7 +129,10 @@ export namespace InteractionHandler {
 	 * @returns - The command itself.
 	 */
 	export async function loadCommand(path: string, name: string) {
-		let command: MaybeSlashCommand = await import(join(process.cwd(), path, name));
+		const finalPath = join(process.cwd(), path, name);
+		const onWindows = process.platform === 'win32';
+
+		let command: MaybeSlashCommand = await import(onWindows ? `file:///${finalPath}` : finalPath);
 		if ('default' in command) command = command.default;
 		if (command.constructor.name === 'Object') command = Object.values(command)[0];
 
@@ -133,7 +141,7 @@ export namespace InteractionHandler {
 
 		commands.set(instance.name, instance);
 		emit('loadSlashCommand', instance);
-		Logger.comment(`Loading the command : ${Logger.setColor('gold', name)}`, 'Loading');
+		Logger.comment(`Loading the slash command : ${Logger.setColor('gold', name)}`, 'Loading');
 
 		return instance;
 	}
@@ -148,21 +156,36 @@ export namespace InteractionHandler {
 	export async function loadCommands(path: string) {
 		if (!path) return;
 		const dirs = await fsPromises.readdir(path);
-		Logger.info('Loading commands.', 'Loading');
+		Logger.info('Loading slash commands.', 'Loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'Loading');
 		if (dirs.length) {
 			for (const dir of dirs) {
 				const commandsPath = join(path, dir);
 				const files = await fsPromises.readdir(commandsPath);
 				if (!files.length) continue;
-				Logger.comment(`Commands in the category '${dir}' : (${files.length})`, 'Loading');
+				Logger.comment(`Slash Commands in the category '${dir}' : (${files.length})`, 'Loading');
 
 				for (const file of files) {
 					await loadCommand(commandsPath, file);
 				}
 			}
 		}
-		Logger.info(`${commands.size} commands loaded.`, 'Loading');
+		Logger.info(`${commands.size} slash commands loaded.`, 'Loading');
+
+		if (!usesDefaultCommands) return;
+		const options = defaultCommandsOptions;
+		const defaultSlashCommands = await import('./defaults/slashCommands/index.js');
+
+		Logger.info('Loading default slash commands.', 'Loading');
+
+		for (const slashCommand of Object.values(defaultSlashCommands)) {
+			const instance = new slashCommand();
+			if (options?.exclude?.includes(instance.name)) continue;
+			commands.set(instance.name, instance);
+
+			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
+		}
+		Logger.info(`Default commands loaded. (${Object.keys(defaultSlashCommands).length})`, 'Loading');
 	}
 
 	/**
@@ -174,20 +197,10 @@ export namespace InteractionHandler {
 	 * @param options - The options for the default events.
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
-	export async function useDefaultEvents(options?: DefaultEventsOptions) {
-		const defaultEvents = await import('./defaults/events/index.js');
-
-		Logger.info('Loading default events.', 'Loading');
-		for (const event of Object.values(defaultEvents)) {
-			const instance = new event();
-			if (options?.exclude?.includes(instance.name)) continue;
-			events.set(instance.name, instance);
-
-			Logger.comment(`Default ${Logger.setColor('green', instance.name)} event loaded.`, 'Loading');
-		}
-		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'Loading');
-
-		return CommandHandler;
+	export function useDefaultEvents(options?: DefaultEventsOptions) {
+		usesDefaultEvents = true;
+		defaultEventsOptions = options;
+		return InteractionHandler;
 	}
 
 	/**
@@ -199,20 +212,9 @@ export namespace InteractionHandler {
 	 * @param options - The options for the default commands.
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
-	export async function useDefaultCommands(options?: DefaultCommandsOptions) {
-		const defaultSlashCommands = await import('./defaults/slashCommands/index.js');
-
-		Logger.info('Loading default commands.', 'Loading');
-
-		for (const slashCommand of Object.values(defaultSlashCommands)) {
-			const instance = new slashCommand();
-			if (options?.exclude?.includes(instance.name)) continue;
-			commands.set(instance.name, instance);
-
-			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
-		}
-		Logger.info(`Default commands loaded. (${Object.keys(defaultSlashCommands).length})`, 'Loading');
-
-		return CommandHandler;
+	export function useDefaultCommands(options?: DefaultCommandsOptions) {
+		usesDefaultCommands = true;
+		defaultCommandsOptions = options;
+		return InteractionHandler;
 	}
 }

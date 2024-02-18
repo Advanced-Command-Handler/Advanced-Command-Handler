@@ -1,4 +1,4 @@
-import {CommandHandler, Logger, LogLevel} from 'advanced-command-handler';
+import {CommandHandler, InteractionHandler, Logger, LogLevel} from 'advanced-command-handler';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -51,6 +51,8 @@ CommandHandler.create({
 			},
 		],
 	});
+
+InteractionHandler.useDefaultCommands().loadCommands('slashCommands');
 
 CommandHandler.on('launched', () => {
 	Logger.log('CommandHandler launched successfully !');

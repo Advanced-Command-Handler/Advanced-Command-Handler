@@ -1,7 +1,7 @@
 import {Command, commandArgument, stringArgument} from 'advanced-command-handler';
 import {join} from 'path';
 
-module.exports = class CommandCommand extends Command {
+export default class CommandCommand extends Command {
 	name = 'command';
 	aliases = ['manageCommand', 'cmd'];
 	description = 'Let you manage command, enable or disable some.';
@@ -54,11 +54,12 @@ module.exports = class CommandCommand extends Command {
 				aliases: ['l', 'ls'],
 				description: 'List the commands enabled.',
 			},
-			ctx => ctx.sendHelpMessage(this.name)
+			ctx => ctx.sendGlobalHelpMessag,
+			e()
 		);
 	}
 
 	run(ctx) {
 		if (!ctx.isCallingASubCommand) ctx.sendHelpMessage(this.name);
 	}
-};
+}

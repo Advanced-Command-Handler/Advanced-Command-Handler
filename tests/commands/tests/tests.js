@@ -1,6 +1,6 @@
 import {Command} from 'advanced-command-handler';
 
-module.exports = class TestCommand extends Command {
+export default class TestCommand extends Command {
 	name = 'tests';
 	aliases = ['test', 't'];
 	tags = ['nsfw'];
@@ -9,4 +9,4 @@ module.exports = class TestCommand extends Command {
 	async run(ctx) {
 		await ctx.reply('testing');
 	}
-};
+}

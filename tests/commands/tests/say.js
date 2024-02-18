@@ -1,6 +1,6 @@
 import {Command, stringArgument} from 'advanced-command-handler';
 
-module.exports = class SayCommand extends Command {
+export default class SayCommand extends Command {
 	name = 'say';
 	tags = ['guildOnly'];
 	userPermissions = ['MANAGE_MESSAGES'];
@@ -12,4 +12,4 @@ module.exports = class SayCommand extends Command {
 	async run(ctx) {
 		await ctx.reply(await ctx.argument('text'));
 	}
-};
+}

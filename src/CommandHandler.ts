@@ -486,7 +486,10 @@ export namespace CommandHandler {
 	 * @returns - The command itself.
 	 */
 	export async function loadCommand(path: string, name: string) {
-		let command: MaybeCommand = await import(join(process.cwd(), path, name));
+		const finalPath = join(process.cwd(), path, name);
+		const onWindows = process.platform === 'win32';
+
+		let command: MaybeCommand = await import(onWindows ? `file:///${finalPath}` : finalPath);
 		if ('default' in command) command = command.default;
 		if (command.constructor.name === 'Object') command = Object.values(command)[0];
 
@@ -564,7 +567,10 @@ export namespace CommandHandler {
 	 * @returns - The event itself.
 	 */
 	export async function loadEvent(path: string, name: string) {
-		let event: MaybeEvent = await import(join(process.cwd(), path, name));
+		const finalPath = join(process.cwd(), path, name);
+		const onWindows = process.platform === 'win32';
+
+		let event: MaybeEvent = await import(onWindows ? `file:///${finalPath}` : finalPath);
 		if ('default' in event) event = event.default;
 		if (event.constructor.name === 'Object') event = Object.values(event)[0];
 		const instance = new (event as unknown as Constructor<Event>)();

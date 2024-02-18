@@ -104,14 +104,14 @@ export class CommandArgument<T> {
 		public name: string,
 		public index: number,
 		argument: Argument<T>
-	), {
-		this;.validate = argument.validator;
-		this;.coalescing = argument.options.coalescing ?? false;
-		this;.defaultValue = argument.options.defaultValue ?? undefined;
-		this;.description = argument.options.description ?? '';
-		this;.optional = argument.options.optional ?? false;
-		this;.type = argument.type;
-		this;.parse = argument.parser;
+	) {
+		this.validate = argument.validator;
+		this.coalescing = argument.options.coalescing ?? false;
+		this.defaultValue = argument.options.defaultValue ?? undefined;
+		this.description = argument.options.description ?? '';
+		this.optional = argument.options.optional ?? false;
+		this.type = argument.type;
+		this.parse = argument.parser;
 	}
 
 	/**
@@ -119,7 +119,7 @@ export class CommandArgument<T> {
 	 *
 	 * @returns - Is the argument simple.
 	 */
-	public get isSimple(); {
+	public get isSimple() {
 		return !this.optional && !this.coalescing && !this.defaultValue;
 	}
 
@@ -128,7 +128,7 @@ export class CommandArgument<T> {
 	 *
 	 * @returns - Does the argument can be skipped.
 	 */
-	public get isSkipable(); {
+	public get isSkipable() {
 		return this.optional || !!this.defaultValue;
 	}
 }
