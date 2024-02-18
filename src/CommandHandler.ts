@@ -360,20 +360,6 @@ export namespace CommandHandler {
 	export function useDefaultEvents(options?: DefaultEventsOptions) {
 		usesDefaultEvents = true;
 		defaultEventsOptions = options;
-
-		/*		const defaultEvents = await import('./defaults/events/index.js');
-
-		Logger.info('Loading default events.', 'Loading');
-		defaultEvents.MessageCreateEvent.options = options?.messageCreateOptions ?? {};
-
-		for (let event of Object.values(defaultEvents)) {
-			const instance = new event();
-			if (options?.exclude?.includes(instance.name)) continue;
-			events.set(instance.name, instance);
-
-			Logger.comment(`Default ${Logger.setColor('green', instance.name)} event loaded.`, 'Loading');
-		}
-		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'Loading');*/
 		return CommandHandler;
 	}
 
@@ -389,21 +375,6 @@ export namespace CommandHandler {
 	export function useDefaultCommands(options?: DefaultCommandsOptions) {
 		usesDefaultCommands = true;
 		defaultCommandsOptions = options;
-
-		/*const defaultCommands = await import('./defaults/commands/index.js');
-
-		Logger.info('Loading default commands.', 'Loading');
-		defaultCommands.HelpCommand.options = options?.helpOptions ?? {};
-
-		for (let command of Object.values(defaultCommands)) {
-			const instance = new command();
-			if (options?.exclude?.includes(instance.name)) continue;
-			commands.set(instance.name, instance);
-
-			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
-		}
-		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands).length})`, 'Loading');*/
-
 		return CommandHandler;
 	}
 
