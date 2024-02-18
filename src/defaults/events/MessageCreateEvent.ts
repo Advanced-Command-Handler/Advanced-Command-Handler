@@ -1,6 +1,16 @@
-import {Message} from 'discord.js';
-import {CommandContext, CommandErrorType, Event, EventContext, Tag} from '../../classes/index.js';
-import {argError, codeError, CommandHandler, getThing, isOwner, Logger, permissionsError} from '../../index.js';
+import {type Message} from 'discord.js';
+import {Tag} from '../../classes/commands/Command.js';
+import {CommandContext} from '../../classes/contexts/CommandContext.js';
+import {type EventContext} from '../../classes/contexts/EventContext.js';
+import {CommandErrorType} from '../../classes/errors/CommandError.js';
+import {Event} from '../../classes/Event.js';
+import {CommandHandler} from '../../CommandHandler.js';
+import {argError} from '../../utils/argError.js';
+import {codeError} from '../../utils/codeError.js';
+import {getThing} from '../../utils/getThing.js';
+import {Logger} from '../../utils/Logger.js';
+import {permissionsError} from '../../utils/permissionUtils.js';
+import {isOwner} from '../../utils/utils.js';
 import MessageCreateOptions = CommandHandler.MessageCreateOptions;
 
 export class MessageCreateEvent extends Event {

@@ -1,7 +1,7 @@
-import {Message, Permissions, PermissionString} from 'discord.js';
+import {type Message, Permissions, type PermissionString} from 'discord.js';
 
 import {BetterEmbed} from 'discord.js-better-embed';
-import {CommandContext} from '../index.js';
+import type {CommandContext} from '../classes/contexts/CommandContext.js';
 
 /**
  * A function to use when a user, or the client hasn't all the permissions needed.

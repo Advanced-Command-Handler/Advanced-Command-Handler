@@ -10,10 +10,12 @@ import {
 	type ReplyMessageOptions,
 	type StartThreadOptions,
 } from 'discord.js';
+import type {CommandHandler} from '../../CommandHandler.js';
 import {HelpCommand} from '../../defaults/commands/index.js';
-
-import {Command, CommandError, type CommandHandler} from '../../index.js';
-import {ArgumentParser, type ArgumentResolved, CommandArgument} from '../arguments/index.js';
+import {CommandArgument} from '../arguments/Argument.js';
+import {ArgumentParser, type ArgumentResolved} from '../arguments/ArgumentParser.js';
+import type {Command} from '../commands/Command.js';
+import {CommandError} from '../errors/CommandError.js';
 
 interface ReplyOptions extends ReplyMessageOptions {
 	embed?: MessageEmbed;
@@ -192,13 +194,22 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param name - The name of the argument.
 	 * @returns - The argument in a promise or null if the argument is not found or errored or the command has no arguments.
 	 */
-	public async argument<T>(name: string | keyof this['command']['arguments'] & string): Promise<T | null> {
+	public async argument<T>(name: string | (keyof this['command']['arguments'] & string)): Promise<T | null> {
 		const result = await this.resolveArgument<T>(name);
 		return result instanceof CommandError ? null : result ?? null;
 	}
 
+	/**
+	 *
+	 */
 	public bulkDeleteInChannel(number: number, filterOld?: boolean): Promise<Collection<string, Message>>;
+	/**
+	 *
+	 */
 	public bulkDeleteInChannel(number: Collection<string, Message>, filterOld?: boolean): Promise<Collection<string, Message>>;
+	/**
+	 *
+	 */
 	public bulkDeleteInChannel(number: readonly MessageResolvable[], filterOld?: boolean): Promise<Collection<string, Message>>;
 	/**
 	 * Delete multiple messages from a channel.
@@ -275,8 +286,17 @@ export class CommandContext implements CommandContextBuilder {
 		}
 	}
 
+	/**
+	 *
+	 */
 	public reply(options: ReplyOptions): Promise<Message>;
+	/**
+	 *
+	 */
 	public reply(content: string): Promise<Message>;
+	/**
+	 *
+	 */
 	public reply(content: string, options: ReplyOptions): Promise<Message>;
 	/**
 	 * Reply to the message in the channel.
@@ -305,7 +325,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param name - The name of the argument.
 	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the command has no arguments.
 	 */
-	public resolveArgument<T>(name: string | keyof this['command']['arguments'] & string): undefined | Awaitable<ArgumentResolved<T>> {
+	public resolveArgument<T>(name: string | (keyof this['command']['arguments'] & string)): undefined | Awaitable<ArgumentResolved<T>> {
 		if (this.argumentParser?.parsed) return this.argumentParser.parsed.get(name);
 		return this.argumentParser?.resolveArgument(this, name);
 	}
@@ -322,8 +342,17 @@ export class CommandContext implements CommandContextBuilder {
 		return this.argumentParser?.resolveArguments(this);
 	}
 
+	/**
+	 *
+	 */
 	public send(options: SendOptions): Promise<Message>;
+	/**
+	 *
+	 */
 	public send(content: string): Promise<Message>;
+	/**
+	 *
+	 */
 	public send(content: string, options: SendOptions): Promise<Message>;
 	/**
 	 * Send a message in the channel.
@@ -348,7 +377,8 @@ export class CommandContext implements CommandContextBuilder {
 	 *
 	 * @returns - The message of the help menu.
 	 */
-	public sendGlobalHelpMessage() {
+	public async sendGlobalHelpMessage() {
+		const {HelpCommand} = await import('../../defaults/commands/HelpCommand.js');
 		return HelpCommand.sendGlobalHelp(this);
 	}
 
@@ -358,7 +388,8 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param commandName - The name of the command to send the help menu.
 	 * @returns - The message of the help menu of the command.
 	 */
-	public sendHelpMessage(commandName = this.commandName) {
+	public async sendHelpMessage(commandName = this.commandName) {
+		const {HelpCommand} = await import('../../defaults/commands/HelpCommand.js');
 		return HelpCommand.sendCommandHelp(this, this.handler.commands.get(commandName)!!);
 	}
 }

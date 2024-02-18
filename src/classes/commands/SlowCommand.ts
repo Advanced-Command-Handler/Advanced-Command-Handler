@@ -1,5 +1,5 @@
-import {CommandContext} from '../../index.js';
-import {Command} from './index.js';
+import type {CommandContext} from '../contexts/CommandContext.js';
+import {Command} from './Command.js';
 
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/templates}

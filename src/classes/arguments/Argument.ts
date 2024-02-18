@@ -1,4 +1,4 @@
-import {ArgumentContext} from '../contexts/index.js';
+import type {ArgumentContext} from '../contexts/ArgumentContext.js';
 
 /**
  * The validator of arguments, must return `true` if the argument is valid.
@@ -49,7 +49,19 @@ export interface ArgumentOptions<T> {
 }
 
 export class Argument<T> {
-	public constructor(public type: ArgumentType, public options: ArgumentOptions<T>, public validator: ArgumentValidator, public parser: ArgumentParser<T>) {}
+	/**
+	 *
+	 * @param type
+	 * @param options
+	 * @param validator
+	 * @param parser
+	 */
+	public constructor(
+		public type: ArgumentType,
+		public options: ArgumentOptions<T>,
+		public validator: ArgumentValidator,
+		public parser: ArgumentParser<T>
+	) {}
 }
 
 export class CommandArgument<T> {
@@ -82,14 +94,24 @@ export class CommandArgument<T> {
 	 */
 	public validate: ArgumentValidator;
 
-	public constructor(public name: string, public index: number, argument: Argument<T>) {
-		this.validate = argument.validator;
-		this.coalescing = argument.options.coalescing ?? false;
-		this.defaultValue = argument.options.defaultValue ?? undefined;
-		this.description = argument.options.description ?? '';
-		this.optional = argument.options.optional ?? false;
-		this.type = argument.type;
-		this.parse = argument.parser;
+	/**
+	 *
+	 * @param name
+	 * @param index
+	 * @param argument
+	 */
+	public constructor(
+		public name: string,
+		public index: number,
+		argument: Argument<T>
+	), {
+		this;.validate = argument.validator;
+		this;.coalescing = argument.options.coalescing ?? false;
+		this;.defaultValue = argument.options.defaultValue ?? undefined;
+		this;.description = argument.options.description ?? '';
+		this;.optional = argument.options.optional ?? false;
+		this;.type = argument.type;
+		this;.parse = argument.parser;
 	}
 
 	/**
@@ -97,7 +119,7 @@ export class CommandArgument<T> {
 	 *
 	 * @returns - Is the argument simple.
 	 */
-	public get isSimple() {
+	public get isSimple(); {
 		return !this.optional && !this.coalescing && !this.defaultValue;
 	}
 
@@ -106,7 +128,7 @@ export class CommandArgument<T> {
 	 *
 	 * @returns - Does the argument can be skipped.
 	 */
-	public get isSkipable() {
+	public get isSkipable(); {
 		return this.optional || !!this.defaultValue;
 	}
 }

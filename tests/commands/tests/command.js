@@ -1,5 +1,5 @@
-const {argError, Command, commandArgument, stringArgument} = require('advanced-command-handler');
-const {join} = require('path');
+import {Command, commandArgument, stringArgument} from 'advanced-command-handler';
+import {join} from 'path';
 
 module.exports = class CommandCommand extends Command {
 	name = 'command';
@@ -20,6 +20,7 @@ module.exports = class CommandCommand extends Command {
 			},
 			async ctx => {
 				const commandText = `${await ctx.argument('category')}/${await ctx.argument('command')}`;
+				/** @type {Command} */
 				let command = await ctx.argument('command');
 				if (command && ctx.handler.findCommand(command)) return ctx.reply(`Command \`${commandText}\` already enabled.`);
 

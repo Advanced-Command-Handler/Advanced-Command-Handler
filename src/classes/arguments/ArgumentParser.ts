@@ -1,7 +1,8 @@
 import {Parser} from 'argumentorum';
 import type {Awaitable} from 'discord.js';
-import {ArgumentContext, CommandContext} from '../contexts/index.js';
-import {CommandError, CommandErrorType} from '../errors/index.js';
+import {ArgumentContext} from '../contexts/ArgumentContext.js';
+import type {CommandContext} from '../contexts/CommandContext.js';
+import {CommandError, CommandErrorType} from '../errors/CommandError.js';
 import {CommandArgument} from './Argument.js';
 
 export type MapArguments<A extends any[]> = Map<string, null | CommandError | A[number]>;
@@ -19,10 +20,22 @@ export class ArgumentParser {
 	public parsed?: Map<string, Awaitable<CommandError | null | any>>;
 	public parser: Parser;
 
-	public constructor(public args: CommandArgument<any>[], public rawArgs: string[]) {
+	/**
+	 *
+	 * @param args
+	 * @param rawArgs
+	 */
+	public constructor(
+		public args: CommandArgument<any>[],
+		public rawArgs: string[]
+	) {
 		this.parser = new Parser(rawArgs.join(' '));
 	}
 
+	/**
+	 *
+	 * @param argumentContext
+	 */
 	private static invalidArgumentError(argumentContext: ArgumentContext) {
 		return new CommandError({
 			type: CommandErrorType.INVALID_ARGUMENT,
@@ -31,6 +44,10 @@ export class ArgumentParser {
 		});
 	}
 
+	/**
+	 *
+	 * @param argumentContext
+	 */
 	private static argumentNotFoundError(argumentContext: ArgumentContext) {
 		return new CommandError({
 			type: CommandErrorType.ARGUMENT_NOT_FOUND,
@@ -39,6 +56,10 @@ export class ArgumentParser {
 		});
 	}
 
+	/**
+	 *
+	 * @param argumentContext
+	 */
 	private static argumentRequiresOneValueError(argumentContext: ArgumentContext) {
 		return new CommandError({
 			type: CommandErrorType.INVALID_ARGUMENT,
@@ -47,6 +68,10 @@ export class ArgumentParser {
 		});
 	}
 
+	/**
+	 *
+	 * @param argumentContext
+	 */
 	private static errorInArgumentError(argumentContext: ArgumentContext) {
 		return new CommandError({
 			type: CommandErrorType.INVALID_ARGUMENT,
@@ -55,6 +80,10 @@ export class ArgumentParser {
 		});
 	}
 
+	/**
+	 *
+	 * @param context
+	 */
 	public async parseArguments<A extends any[]>(context: CommandContext) {
 		let argsMap = new Map<string, Awaitable<ArgumentResolved<A>>>();
 		const keywordArgs = new Map<string, string[]>();
@@ -140,12 +169,21 @@ export class ArgumentParser {
 		this.parsed = argsMap;
 	}
 
+	/**
+	 *
+	 * @param commandContext
+	 * @param name
+	 */
 	public async resolveArgument<A>(commandContext: CommandContext, name: string): Promise<ArgumentResolved<A>> {
 		if (this.parsed?.has(name)) return this.parsed.get(name) as A;
 		await this.parseArguments(commandContext);
 		return this.parsed!.get(name);
 	}
 
+	/**
+	 *
+	 * @param context
+	 */
 	public async resolveArguments<A extends any[]>(context: CommandContext): Promise<MapArguments<A>> {
 		if (this.parsed?.size === this.args.length) return this.parsed;
 		await this.parseArguments<A>(context);

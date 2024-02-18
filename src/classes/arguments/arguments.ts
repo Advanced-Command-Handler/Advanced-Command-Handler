@@ -1,9 +1,16 @@
 import {Channel, Emoji, Guild, GuildMember, type GuildTextBasedChannel, Message, Snowflake, User} from 'discord.js';
-import {getThing, isSnowflake, isTextChannelLike} from '../../utils/index.js';
-import {Command} from '../commands/index.js';
+import {getThing} from '../../utils/getThing.js';
+import {isSnowflake, isTextChannelLike} from '../../utils/utils.js';
+import type {Command} from '../commands/Command.js';
 import {Event} from '../Event.js';
 import {Argument, type ArgumentBuilder, ArgumentType} from './Argument.js';
 
+/**
+ *
+ * @param number
+ * @param min
+ * @param max
+ */
 function inRange(number: number | string, min: number, max: number = Infinity) {
 	if (typeof number === 'string') number = number.length;
 	return number >= min && number <= max;
@@ -210,6 +217,7 @@ export function messageArgument(options: ArgumentBuilder<Message> = {}) {
 /**
  * Creates a snowflake argument.
  * The value can be any value that ressemble a snowflake.
+ *
  * @see {@link https://discord.com/developers/docs/reference#snowflakes}
  *
  * @param options - The options of the argument.

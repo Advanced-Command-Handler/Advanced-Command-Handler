@@ -1,8 +1,10 @@
 import dayjs from 'dayjs';
 import durationPlugin from 'dayjs/plugin/duration.js';
 import {BetterEmbed} from 'discord.js-better-embed';
-import {Command, CommandContext, Tag} from '../../classes/index.js';
-import {commandArgument, CommandHandler} from '../../index.js';
+import {commandArgument} from '../../classes/arguments/arguments.js';
+import {Command, Tag} from '../../classes/commands/Command.js';
+import type {CommandContext} from '../../classes/contexts/CommandContext.js';
+import {CommandHandler} from '../../CommandHandler.js';
 import HelpOptions = CommandHandler.HelpOptions;
 
 dayjs.extend(durationPlugin);
@@ -17,12 +19,15 @@ dayjs.extend(durationPlugin);
  * @returns - The array grouped by {@link K}.
  */
 function groupBy<T, K extends keyof any>(array: T[], predicate: (item: T) => K): Record<K, T[]> {
-	return array.reduce((previous, currentItem) => {
-		const group = predicate(currentItem);
-		if (!previous[group]) previous[group] = [];
-		previous[group].push(currentItem);
-		return previous;
-	}, {} as Record<K, T[]>);
+	return array.reduce(
+		(previous, currentItem) => {
+			const group = predicate(currentItem);
+			if (!previous[group]) previous[group] = [];
+			previous[group].push(currentItem);
+			return previous;
+		},
+		{} as Record<K, T[]>
+	);
 }
 
 export class HelpCommand extends Command {
@@ -54,18 +59,22 @@ export class HelpCommand extends Command {
 		if (HelpCommand.options.globalMenuUseList) {
 			let commands = Object.values(commandList).flat();
 			if (HelpCommand.options.globalMenuExcludeCommands) {
-				commands = commands.filter(c => c.nameAndAliases.some(c => HelpCommand.options.globalMenuExcludeCommands!.includes(c)));
+				commands = commands.filter(c => c.nameAndAliases.some((c: string) => HelpCommand.options.globalMenuExcludeCommands!.includes(c)));
 			}
-			commands.sort((a, b) => a.name.localeCompare(b.name)).forEach(c => embed.addFields({
-				name: c.signature(),
-				value: c.description ?? 'No description provided.',
-			}));
+			commands
+				.sort((a, b) => a.name.localeCompare(b.name))
+				.forEach(c =>
+					embed.addFields({
+						name: c.signature(),
+						value: c.description ?? 'No description provided.',
+					})
+				);
 		} else {
 			Object.entries(commandList)
 				.sort((a, b) => a[0].localeCompare(b[0]))
 				.forEach(([category, commands]) => {
 					if (HelpCommand.options.globalMenuExcludeCommands) {
-						commands = commands.filter(c => c.nameAndAliases.some(c => HelpCommand.options.globalMenuExcludeCommands!.includes(c)));
+						commands = commands.filter(c => c.nameAndAliases.some((c: string) => HelpCommand.options.globalMenuExcludeCommands!.includes(c)));
 					}
 					if (!commands.length) return;
 
@@ -90,7 +99,7 @@ export class HelpCommand extends Command {
 
 		let description = `**Description** : ${command.description ?? 'No description provided.'}\n`;
 		description += `**Category** : \`${command.category}\`\n`;
-		description += `Can you use it here : **${await command.validate(ctx) ? 'No' : 'Yes'}**`;
+		description += `Can you use it here : **${(await command.validate(ctx)) ? 'No' : 'Yes'}**`;
 
 		const embed = BetterEmbed.fromTemplate('complete', {
 			client: ctx.client,
@@ -112,17 +121,17 @@ export class HelpCommand extends Command {
 		if (command.aliases) {
 			embed.addFields({
 				name: 'Aliases : ',
-				value: `\`${command.aliases.sort().join('\n')}\``
+				value: `\`${command.aliases.sort().join('\n')}\``,
 			});
 		}
 		if (command.tags)
 			embed.addFields({
 				name: 'Tags :',
 				value: `\`${command.tags
-				                   .map(t => typeof t === 'string' ? t : Tag[t])
+					.map(t => (typeof t === 'string' ? t : Tag[t]))
 					.sort()
 					.join('\n')
-					.toUpperCase()}\``
+					.toUpperCase()}\``,
 			});
 		if (command.cooldown) {
 			embed.addFields({

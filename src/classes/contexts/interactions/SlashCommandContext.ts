@@ -9,12 +9,11 @@ import {
 	MessageEmbed,
 } from 'discord.js';
 import type {InteractionHandler} from '../../../InteractionHandler.js';
-import {SlashCommand} from '../../interactions/index.js';
+import type {SlashCommand} from '../../interactions/SlashCommand.js';
 
 interface ReplyOptions extends InteractionReplyOptions {
 	embed?: MessageEmbed;
 }
-
 
 /**
  * The options of the SlashCommandContext.
@@ -65,17 +64,17 @@ export class SlashCommandContext {
 	}
 
 	/**
+	 * The channel where the slash command was executed.
+	 */
+	get channel() {
+		return this.interaction.channel;
+	}
+
+	/**
 	 * The client that handled the slash command.
 	 */
 	get client() {
 		return this.interactionHandler.client!!;
-	}
-
-	/**
-	 * The name of the command that was executed.
-	 */
-	get commandName() {
-		return this.command.name;
 	}
 
 	/**
@@ -86,6 +85,13 @@ export class SlashCommandContext {
 	}
 
 	/**
+	 * The name of the command that was executed.
+	 */
+	get commandName() {
+		return this.command.name;
+	}
+
+	/**
 	 * The guild where the slash command was executed.
 	 */
 	get guild() {
@@ -93,10 +99,10 @@ export class SlashCommandContext {
 	}
 
 	/**
-	 * The channel where the slash command was executed.
+	 * The id of the command that was executed.
 	 */
-	get channel() {
-		return this.interaction.channel;
+	get id() {
+		return this.interaction.id;
 	}
 
 	/**
@@ -108,17 +114,10 @@ export class SlashCommandContext {
 	}
 
 	/**
-	 * The user who executed the slash command.
+	 * The options of the command that was executed.
 	 */
-	get user() {
-		return this.interaction.user;
-	}
-
-	/**
-	 * The id of the command that was executed.
-	 */
-	get id() {
-		return this.interaction.id;
+	get options() {
+		return this.interaction.options;
 	}
 
 	/**
@@ -129,10 +128,10 @@ export class SlashCommandContext {
 	}
 
 	/**
-	 * The options of the command that was executed.
+	 * The user who executed the slash command.
 	 */
-	get options() {
-		return this.interaction.options;
+	get user() {
+		return this.interaction.user;
 	}
 
 	/**
@@ -142,22 +141,28 @@ export class SlashCommandContext {
 		await this.interaction.deferReply();
 	}
 
-	public reply(options: ReplyOptions): Promise<typeof options['fetchReply'] extends true ? GuildCacheMessage<CacheType> : void>;
+	/**
+	 *
+	 */
+	public reply(options: ReplyOptions): Promise<(typeof options)['fetchReply'] extends true ? GuildCacheMessage<CacheType> : void>;
+	/**
+	 *
+	 */
 	public reply(content: string): Promise<void>;
-	public reply(content: string, options: ReplyOptions): Promise<typeof options['fetchReply'] extends true
-	                                                              ? GuildCacheMessage<CacheType>
-	                                                              : void>;
+	/**
+	 *
+	 */
+	public reply(content: string, options: ReplyOptions): Promise<(typeof options)['fetchReply'] extends true ? GuildCacheMessage<CacheType> : void>;
 	/**
 	 * Reply to the slash command.
 	 *
 	 * @param content - The options of the reply.
 	 * @param options - The options of the reply message.
 	 */
-	public async reply(content: string | ReplyOptions, options?: ReplyOptions): Promise<typeof options extends ReplyOptions
-	                                                                                    ? typeof options['fetchReply'] extends true
-	                                                                                      ? GuildCacheMessage<CacheType>
-	                                                                                      : void
-	                                                                                    : void> {
+	public async reply(
+		content: string | ReplyOptions,
+		options?: ReplyOptions
+	): Promise<typeof options extends ReplyOptions ? ((typeof options)['fetchReply'] extends true ? GuildCacheMessage<CacheType> : void) : void> {
 		const finalOptions: ReplyOptions = typeof content === 'string' ? {content} : content;
 		if (options) {
 			if (options.embed && !options.embeds) options.embeds = [options.embed];

@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"dependencies": {
 		"advanced-command-handler": "file:..",
-		"dotenv": "^8.2.0"
+		"dotenv": "^16.4.4"
 	},
 	"main": "bot.js",
 	"type": "module",

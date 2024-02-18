@@ -1,4 +1,4 @@
-const {Command, stringArgument} = require('advanced-command-handler');
+import {Command, stringArgument} from 'advanced-command-handler';
 
 module.exports = class SayCommand extends Command {
 	name = 'say';
@@ -10,6 +10,6 @@ module.exports = class SayCommand extends Command {
 	};
 
 	async run(ctx) {
-		await ctx.reply(ctx.argument('text'));
+		await ctx.reply(await ctx.argument('text'));
 	}
 };

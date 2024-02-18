@@ -1,4 +1,5 @@
-import {SlashCommand, SlashCommandContext} from '../../classes/index.js';
+import type {SlashCommandContext} from '../../classes/contexts/interactions/SlashCommandContext.js';
+import {SlashCommand} from '../../classes/interactions/SlashCommand.js';
 
 export class TestSlashCommand extends SlashCommand {
 	public override readonly name = 'test';

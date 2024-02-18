@@ -1,10 +1,11 @@
 // Note : The SubCommand class is in the Command.ts file, see the class to know why.
 
-import {Argument} from '../arguments/index.js';
-import {SubCommandContext} from '../contexts/index.js';
+import {Awaitable} from 'discord.js';
+import type {Argument} from '../arguments/Argument.js';
+import type {SubCommandContext} from '../contexts/SubCommandContext.js';
 import {Tag} from './Command.js';
 
-export type RunSubCommandFunction = (ctx: SubCommandContext) => any | Promise<any>;
+export type RunSubCommandFunction = (ctx: SubCommandContext) => Awaitable<unknown>;
 
 /**
  * The options for a SubCommand.

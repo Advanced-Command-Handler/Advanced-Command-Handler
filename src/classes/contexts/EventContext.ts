@@ -1,6 +1,6 @@
-import {type CommandHandler} from '../../CommandHandler.js';
+import type {CommandHandler} from '../../CommandHandler.js';
 import type {InteractionHandler} from '../../InteractionHandler.js';
-import {Event} from '../Event.js';
+import type {Event} from '../Event.js';
 
 /**
  * Creates a new EventContext.

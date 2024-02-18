@@ -1,9 +1,12 @@
-import {GuildChannel, GuildMember, Message, Permissions, type PermissionString, Snowflake, TextChannel, User} from 'discord.js';
+import {GuildChannel, GuildMember, Message, Permissions, type PermissionString, type Snowflake, type TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler.js';
-import {isOwner, isPermission, Logger} from '../../utils/index.js';
-import {Argument, CommandArgument} from '../arguments/index.js';
-import {CommandContext, SubCommandContext} from '../contexts/index.js';
-import {CommandError, type CommandErrorBuilder, CommandErrorType} from '../errors/index.js';
+import {Logger} from '../../utils/Logger.js';
+import {isPermission} from '../../utils/permissionUtils.js';
+import {isOwner} from '../../utils/utils.js';
+import {type Argument, CommandArgument} from '../arguments/Argument.js';
+import type {CommandContext} from '../contexts/CommandContext.js';
+import {SubCommandContext} from '../contexts/SubCommandContext.js';
+import {CommandError, type CommandErrorBuilder, CommandErrorType} from '../errors/CommandError.js';
 import type {RunSubCommandFunction, SubCommandOptions} from './SubCommand.js';
 import CommandCooldown = CommandHandler.CommandCooldown;
 
@@ -374,7 +377,7 @@ export abstract class Command {
 	 */
 	public isInRightChannel(ctx: CommandContext) {
 		if (this.channels?.length === 0) return true;
-		return !this.channels?.find(ch => typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id) ?? true;
+		return !this.channels?.find(ch => (typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id)) ?? true;
 	}
 
 	/**
@@ -508,7 +511,13 @@ export abstract class Command {
 		}
 	}
 
+	/**
+	 *
+	 */
 	protected subCommand(name: string, callback: RunSubCommandFunction): void;
+	/**
+	 *
+	 */
 	protected subCommand(name: string, options: SubCommandOptions, callback: RunSubCommandFunction): void;
 	/**
 	 * Creates a new SubCommand for the command.

@@ -2,12 +2,14 @@ import {Collection} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
-import {AdvancedClient, CommandHandlerError, Event, type SlashCommand} from './classes/index.js';
+import packageJson from '../package.json' with {type: 'json'};
+import type {AdvancedClient} from './classes/AdvancedClient.js';
+import type {CommandHandlerError} from './classes/errors/CommandHandlerError.js';
+import type {Event} from './classes/Event.js';
+import type {SlashCommand} from './classes/interactions/SlashCommand.js';
 import {CommandHandler} from './CommandHandler.js';
-import * as defaultEvents from './defaults/events/index.js';
-import * as defaultSlashCommands from './defaults/slashCommands/index.js';
-import {Constructor, type MaybeSlashCommand} from './types.js';
-import {Logger} from './utils/index.js';
+import type {Constructor, MaybeSlashCommand} from './types.js';
+import {Logger} from './utils/Logger.js';
 
 export namespace InteractionHandler {
 	/**
@@ -46,7 +48,7 @@ export namespace InteractionHandler {
 	/**
 	 * The version of the handler.
 	 */
-	export const version = require('../package.json').version;
+	export const version = packageJson.version;
 	/**
 	 * The event emitter for the CommandHandler.
 	 *
@@ -114,7 +116,6 @@ export namespace InteractionHandler {
 		emitter.once(eventName, fn as (...args: any[]) => void);
 	}
 
-
 	/**
 	 * Load a command from the directory & filename.
 	 *
@@ -164,7 +165,6 @@ export namespace InteractionHandler {
 		Logger.info(`${commands.size} commands loaded.`, 'Loading');
 	}
 
-
 	/**
 	 * Add the defaults events to your CommandHandler.
 	 *
@@ -174,7 +174,9 @@ export namespace InteractionHandler {
 	 * @param options - The options for the default events.
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
-	export function useDefaultEvents(options?: DefaultEventsOptions) {
+	export async function useDefaultEvents(options?: DefaultEventsOptions) {
+		const defaultEvents = await import('./defaults/events/index.js');
+
 		Logger.info('Loading default events.', 'Loading');
 		for (const event of Object.values(defaultEvents)) {
 			const instance = new event();
@@ -197,7 +199,9 @@ export namespace InteractionHandler {
 	 * @param options - The options for the default commands.
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
-	export function useDefaultCommands(options?: DefaultCommandsOptions) {
+	export async function useDefaultCommands(options?: DefaultCommandsOptions) {
+		const defaultSlashCommands = await import('./defaults/slashCommands/index.js');
+
 		Logger.info('Loading default commands.', 'Loading');
 
 		for (const slashCommand of Object.values(defaultSlashCommands)) {

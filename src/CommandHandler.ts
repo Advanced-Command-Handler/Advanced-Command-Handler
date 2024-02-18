@@ -1,12 +1,15 @@
-import {ClientOptions, Collection, Message, MessageEmbed, PresenceData, Snowflake, Team} from 'discord.js';
+import {type ClientOptions, Collection, type Message, type MessageEmbed, type PresenceData, type Snowflake, Team} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
-import * as defaultCommands from './defaults/commands/index.js';
-import * as defaultEvents from './defaults/events/index.js';
-import {
-	AdvancedClient, Command, CommandHandlerError, Constructor, Event, Logger, MaybeCommand, MaybeEvent, SlashCommand, Tag,
-} from './index.js';
+import packageJson from '../package.json' with {type: 'json'};
+import {AdvancedClient} from './classes/AdvancedClient.js';
+import {type Command, Tag} from './classes/commands/Command.js';
+import {CommandHandlerError} from './classes/errors/CommandHandlerError.js';
+import type {Event} from './classes/Event.js';
+import type {SlashCommand} from './classes/interactions/SlashCommand.js';
+import type {Constructor, MaybeCommand, MaybeEvent} from './types.js';
+import {Logger} from './utils/Logger.js';
 
 export namespace CommandHandler {
 	/**
@@ -234,7 +237,7 @@ export namespace CommandHandler {
 	/**
 	 * The version of the handler.
 	 */
-	export const version = require('../package.json').version;
+	export const version = packageJson.version;
 	/**
 	 * The event emitter for the CommandHandler.
 	 *
@@ -272,6 +275,12 @@ export namespace CommandHandler {
 	export let eventsDir = '';
 	export let owners: string[] = [];
 	export let prefixes: string[] = [];
+
+	export let usesDefaultEvents: boolean = false;
+	export let defaultEventsOptions: DefaultEventsOptions | undefined = undefined;
+	export let usesDefaultCommands: boolean = false;
+	export let defaultCommandsOptions: DefaultCommandsOptions | undefined = undefined;
+
 	/**
 	 * The client of the handler, null before {@link launch} function executed.
 	 */
@@ -349,6 +358,11 @@ export namespace CommandHandler {
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
 	export function useDefaultEvents(options?: DefaultEventsOptions) {
+		usesDefaultEvents = true;
+		defaultEventsOptions = options;
+
+		/*		const defaultEvents = await import('./defaults/events/index.js');
+
 		Logger.info('Loading default events.', 'Loading');
 		defaultEvents.MessageCreateEvent.options = options?.messageCreateOptions ?? {};
 
@@ -359,8 +373,7 @@ export namespace CommandHandler {
 
 			Logger.comment(`Default ${Logger.setColor('green', instance.name)} event loaded.`, 'Loading');
 		}
-		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'Loading');
-
+		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'Loading');*/
 		return CommandHandler;
 	}
 
@@ -374,6 +387,11 @@ export namespace CommandHandler {
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
 	export function useDefaultCommands(options?: DefaultCommandsOptions) {
+		usesDefaultCommands = true;
+		defaultCommandsOptions = options;
+
+		/*const defaultCommands = await import('./defaults/commands/index.js');
+
 		Logger.info('Loading default commands.', 'Loading');
 		defaultCommands.HelpCommand.options = options?.helpOptions ?? {};
 
@@ -384,7 +402,7 @@ export namespace CommandHandler {
 
 			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
 		}
-		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands).length})`, 'Loading');
+		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands).length})`, 'Loading');*/
 
 		return CommandHandler;
 	}
@@ -448,11 +466,14 @@ export namespace CommandHandler {
 			if (cycle && options.presences.length > 1) {
 				let index = 0;
 
-				presencesInterval = setInterval(() => {
-					client!.user!.setPresence(options.presences![index]);
-					index++;
-					if (index > options.presences!.length - 1) index = 0;
-				}, (options.cycleDuration ?? 60) * 1000);
+				presencesInterval = setInterval(
+					() => {
+						client!.user!.setPresence(options.presences![index]);
+						index++;
+						if (index > options.presences!.length - 1) index = 0;
+					},
+					(options.cycleDuration ?? 60) * 1000
+				);
 			} else {
 				client.user!.setPresence(options.presences[0]);
 			}
@@ -546,6 +567,22 @@ export namespace CommandHandler {
 			}
 		}
 		Logger.info(`${commands.size} commands loaded.`, 'Loading');
+
+		if (!usesDefaultCommands) return;
+		const options = defaultCommandsOptions;
+		const defaultCommands = await import('./defaults/commands/index.js');
+
+		Logger.info('Loading default commands.', 'Loading');
+		defaultCommands.HelpCommand.options = options?.helpOptions ?? {};
+
+		for (let command of Object.values(defaultCommands)) {
+			const instance = new command();
+			if (options?.exclude?.includes(instance.name)) continue;
+			commands.set(instance.name, instance);
+
+			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
+		}
+		Logger.info(`Default commands loaded. (${Object.keys(defaultCommands).length})`, 'Loading');
 	}
 
 	/**
@@ -559,7 +596,7 @@ export namespace CommandHandler {
 		let event: MaybeEvent = await import(join(process.cwd(), path, name));
 		if ('default' in event) event = event.default;
 		if (event.constructor.name === 'Object') event = Object.values(event)[0];
-		const instance = new (event as Constructor<Event>)();
+		const instance = new (event as unknown as Constructor<Event>)();
 		if (!event) throw new Error(`Event given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		events.set(instance.name, instance);
 
@@ -580,6 +617,22 @@ export namespace CommandHandler {
 		Logger.comment(`Events : (${files.length})`, 'Loading');
 
 		if (files.length) for (const file of files) await loadEvent(path, file);
+
+		if (!usesDefaultEvents) return;
+		const options = defaultEventsOptions;
+		const defaultEvents = await import('./defaults/events/index.js');
+
+		Logger.info('Loading default events.', 'Loading');
+		defaultEvents.MessageCreateEvent.options = options?.messageCreateOptions ?? {};
+
+		for (let event of Object.values(defaultEvents)) {
+			const instance = new event();
+			if (options?.exclude?.includes(instance.name)) continue;
+			events.set(instance.name, instance);
+
+			Logger.comment(`Default ${Logger.setColor('green', instance.name)} event loaded.`, 'Loading');
+		}
+		Logger.info(`Default events loaded. (${Object.values(defaultEvents).length})`, 'Loading');
 	}
 
 	/**

@@ -1,4 +1,4 @@
-const {Command} = require('advanced-command-handler');
+import {Command} from 'advanced-command-handler';
 
 module.exports = class TestCommand extends Command {
 	name = 'tests';

@@ -1,5 +1,6 @@
-import {ArgumentParser, type ArgumentResolved, CommandArgument} from '../arguments/index.js';
-import {SubCommand} from '../commands/index.js';
+import {CommandArgument} from '../arguments/Argument.js';
+import {ArgumentParser, type ArgumentResolved} from '../arguments/ArgumentParser.js';
+import type {SubCommand} from '../commands/Command.js';
 import {CommandContext, type CommandContextBuilder} from './CommandContext.js';
 
 /**

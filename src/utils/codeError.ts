@@ -1,5 +1,7 @@
 import {BetterEmbed} from 'discord.js-better-embed';
-import {CommandContext, cutIfTooLong, isOwner, Logger} from '../index.js';
+import type {CommandContext} from '../classes/contexts/CommandContext.js';
+import {Logger} from './Logger.js';
+import {cutIfTooLong, isOwner} from './utils.js';
 
 /**
  * A function to use when a code error occurs in a command for example.

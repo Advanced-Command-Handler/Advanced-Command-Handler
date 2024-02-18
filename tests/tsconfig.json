@@ -1,9 +1,11 @@
 {
 	"compilerOptions": {
 		"allowJs": true,
-		"checkJs": true,
-		"module": "commonjs",
-		"target": "ES2021"
+		"checkJs": false,
+		"strict": true,
+		"moduleResolution": "NodeNext",
+		"module": "ESNext",
+		"target": "ESNext"
 	},
 	"include": ["commands/**/*", "events/*", "bot.js"]
 }

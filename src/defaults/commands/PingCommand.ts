@@ -1,4 +1,5 @@
-import {Command, CommandContext} from '../../classes/index.js';
+import {Command} from '../../classes/commands/Command.js';
+import type {CommandContext} from '../../classes/contexts/CommandContext.js';
 
 export class PingCommand extends Command {
 	override category = 'utils';

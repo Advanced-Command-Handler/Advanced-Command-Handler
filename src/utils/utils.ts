@@ -1,4 +1,4 @@
-import {type GuildTextBasedChannel, NewsChannel, Snowflake, TextChannel} from 'discord.js';
+import {type GuildTextBasedChannel, NewsChannel, type Snowflake, TextChannel} from 'discord.js';
 import {CommandHandler} from '../CommandHandler.js';
 
 /**
@@ -38,6 +38,7 @@ export function isOwner(id: Snowflake) {
 /**
  * Returns true if the value looks like a Snowflake.
  *
+ * @param value
  * @remarks There is no way to identify at 100% if the value is veritable snowflake of something.
  * @returns - Is the value a Snowflake.
  */
