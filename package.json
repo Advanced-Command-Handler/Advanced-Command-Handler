@@ -13,14 +13,14 @@
 	"description": "A package to help you create a bot with only 1 main file, directories for your events/commands, with some helpers classes and functions.",
 	"devDependencies": {
 		"@discordjs/rest": "^2.2.0",
-		"discord-api-types": "^0.37.69",
-		"@types/node": "^20.11.5",
-		"@typescript-eslint/eslint-plugin": "^6.19.1",
-		"@typescript-eslint/parser": "^6.19.1",
-		"eslint": "^8.56.0",
-		"eslint-plugin-jsdoc": "^48.0.2",
+		"discord-api-types": "^0.37.71",
+		"@types/node": "^20.11.24",
+		"@typescript-eslint/eslint-plugin": "^6.21.0",
+		"@typescript-eslint/parser": "^6.21.0",
+		"eslint": "^8.57.0",
+		"eslint-plugin-jsdoc": "^48.2.0",
 		"eslint-plugin-tsdoc": "^0.2.17",
-		"prettier": "^3.2.4",
+		"prettier": "^3.2.5",
 		"typescript": "^5.3.3"
 	},
 	"engineStrict": true,
@@ -89,10 +89,23 @@
 		}
 	},
 	"exports": {
-		".": "./dist/index.js",
-		"./src/*": "./dist/src/*",
-		"./types/*": "./dist/types/*"
+		".": {
+			"import": {
+				"types": "./types/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./types/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
 	},
+	"files": [
+		"dist",
+		"types",
+		"README.md",
+		"LICENSE"
+	],
 	"homepage": "https://github.com/Ayfri/Advanced-Command-Handler",
 	"keywords": [
 		"discord",
