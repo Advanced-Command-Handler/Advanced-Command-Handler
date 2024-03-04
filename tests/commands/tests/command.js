@@ -1,4 +1,4 @@
-import {Command, commandArgument, stringArgument} from 'advanced-command-handler';
+import {Command, commandArgument, Logger, stringArgument} from 'advanced-command-handler';
 import {join} from 'path';
 
 export default class CommandCommand extends Command {
@@ -24,11 +24,17 @@ export default class CommandCommand extends Command {
 				let command = await ctx.argument('command');
 				if (command && ctx.handler.findCommand(command)) return ctx.reply(`Command \`${commandText}\` already enabled.`);
 
-				command = await ctx.handler.loadCommand(join(ctx.handler.commandsDir, await ctx.argument('category')), await ctx.argument('command'));
-				if (command) {
+				try {
+					const command = await ctx.handler.loadCommand(
+						join(ctx.handler.commandsDir, await ctx.argument('category')),
+						`${await ctx.argument('command')}.js`
+					);
 					command.registerSubCommands?.();
 					return ctx.reply(`Command \`${commandText}\` loaded !`);
-				} else await ctx.reply(`Command \`${commandText}\` not found or failed to load, see logs.`);
+				} catch (error) {
+					Logger.warn(error, 'command-cmd');
+					return ctx.reply(`Command \`${commandText}\` failed to load, see logs.`);
+				}
 			}
 		);
 
@@ -54,12 +60,11 @@ export default class CommandCommand extends Command {
 				aliases: ['l', 'ls'],
 				description: 'List the commands enabled.',
 			},
-			ctx => ctx.sendGlobalHelpMessag,
-			e()
+			ctx => ctx.sendGlobalHelpMessage()
 		);
 	}
 
-	run(ctx) {
-		if (!ctx.isCallingASubCommand) ctx.sendHelpMessage(this.name);
+	async run(ctx) {
+		if (!ctx.isCallingASubCommand) await ctx.sendHelpMessage(this.name);
 	}
 }
