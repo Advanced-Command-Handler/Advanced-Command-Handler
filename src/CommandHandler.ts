@@ -2,7 +2,6 @@ import {type ClientOptions, Collection, type Message, type MessageEmbed, type Pr
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
-import {inspect} from 'util';
 import packageJson from '../package.json' with {type: 'json'};
 import {AdvancedClient} from './classes/AdvancedClient.js';
 import {type Command, Tag} from './classes/commands/Command.js';
@@ -10,7 +9,8 @@ import {CommandHandlerError} from './classes/errors/CommandHandlerError.js';
 import type {Event} from './classes/Event.js';
 import type {SlashCommand} from './classes/interactions/SlashCommand.js';
 import {Logger} from './helpers/Logger.js';
-import type {Constructor, MaybeCommand, MaybeEvent} from './types.js';
+import type {Constructor} from './types.js';
+import {loadClass} from './utils/load.js';
 
 export namespace CommandHandler {
 	/**
@@ -487,13 +487,7 @@ export namespace CommandHandler {
 	 * @returns - The command itself.
 	 */
 	export async function loadCommand(path: string, name: string) {
-		const finalPath = join(process.cwd(), path, name);
-		const onWindows = process.platform === 'win32';
-
-		let command: MaybeCommand = await import(onWindows ? `file:///${finalPath}` : finalPath);
-		if ('default' in command) command = command.default;
-		if (command.constructor.name === 'Object') command = Object.values(command)[0];
-
+		const command = await loadClass<Command>(path, name);
 		const instance = new (command as Constructor<Command>)();
 		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		if (!instance.category) instance.category = path.split(/[\\/]/).pop()!;
@@ -568,13 +562,8 @@ export namespace CommandHandler {
 	 * @returns - The event itself.
 	 */
 	export async function loadEvent(path: string, name: string) {
-		const finalPath = join(process.cwd(), path, name);
-		const onWindows = process.platform === 'win32';
-
-		let event: MaybeEvent = await import(onWindows ? `file:///${finalPath}` : finalPath);
-		if ('default' in event) event = event.default;
-		if (event.constructor.name === 'Object') event = Object.values(event)[0];
-		const instance = new (event as unknown as Constructor<Event>)();
+		const event = await loadClass<Event>(path, name);
+		const instance = new (event as Constructor<Event>)();
 		if (!event) throw new Error(`Event given name or path is not valid.\nPath : ${path}\nName:${name}`);
 		events.set(instance.name, instance);
 

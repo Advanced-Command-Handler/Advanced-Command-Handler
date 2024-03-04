@@ -9,7 +9,8 @@ import type {Event} from './classes/Event.js';
 import type {SlashCommand} from './classes/interactions/SlashCommand.js';
 import {CommandHandler} from './CommandHandler.js';
 import {Logger} from './helpers/Logger.js';
-import type {Constructor, MaybeSlashCommand} from './types.js';
+import type {Constructor} from './types.js';
+import {loadClass} from './utils/load.js';
 
 export namespace InteractionHandler {
 	/**
@@ -129,13 +130,7 @@ export namespace InteractionHandler {
 	 * @returns - The command itself.
 	 */
 	export async function loadCommand(path: string, name: string) {
-		const finalPath = join(process.cwd(), path, name);
-		const onWindows = process.platform === 'win32';
-
-		let command: MaybeSlashCommand = await import(onWindows ? `file:///${finalPath}` : finalPath);
-		if ('default' in command) command = command.default;
-		if (command.constructor.name === 'Object') command = Object.values(command)[0];
-
+		const command = await loadClass<SlashCommand>(path, name);
 		const instance = new (command as Constructor<SlashCommand>)();
 		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 
