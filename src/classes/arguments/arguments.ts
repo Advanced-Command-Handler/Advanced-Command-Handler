@@ -1,6 +1,6 @@
 import {Channel, Emoji, Guild, GuildMember, type GuildTextBasedChannel, Message, Snowflake, User} from 'discord.js';
-import {getThing} from '../../utils/getThing.js';
-import {isSnowflake, isTextChannelLike} from '../../utils/utils.js';
+import {getThing} from '../../helpers/getThing.js';
+import {isSnowflake, isTextChannelLike} from '../../helpers/utils.js';
 import type {Command} from '../commands/Command.js';
 import {Event} from '../Event.js';
 import {Argument, type ArgumentBuilder, ArgumentType} from './Argument.js';

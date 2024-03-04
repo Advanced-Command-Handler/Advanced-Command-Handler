@@ -4,6 +4,8 @@ import {InteractionHandler} from '../InteractionHandler.js';
 import {AdvancedClient} from './AdvancedClient.js';
 import {EventContext} from './contexts/EventContext.js';
 
+type EventArguments<T extends {name: keyof ClientEvents}> = ClientEvents[T['name']];
+
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/events}
  */
@@ -11,7 +13,7 @@ export abstract class Event {
 	/**
 	 * The name of the event.
 	 */
-	public abstract readonly name: keyof ClientEvents & string;
+	public abstract readonly name: keyof ClientEvents;
 	/**
 	 * If the event should be fired only once.
 	 */
@@ -29,14 +31,14 @@ export abstract class Event {
 			interactionHandler: InteractionHandler,
 		});
 
-		if (this.once) client.once(this.name, (...args: ClientEvents[this['name']]) => this.run(context, ...args));
-		else client.on(this.name, (...args: ClientEvents[this['name']]) => this.run(context, ...args));
+		if (this.once) client.once(this.name, (...args: EventArguments<this>) => this.run(context, ...args));
+		else client.on(this.name, (...args: EventArguments<this>) => this.run(context, ...args));
 	}
 
 	/**
 	 * The run function, executed when the event is fired.
 	 */
-	public abstract run(ctx: EventContext<this>, ...args: ClientEvents[this['name']]): Awaitable<any>;
+	public abstract run(ctx: EventContext<this>, ...args: EventArguments<this>): Awaitable<any>;
 
 	/**
 	 * Unbinds the event to the client.
@@ -49,6 +51,6 @@ export abstract class Event {
 			handler: CommandHandler,
 			interactionHandler: InteractionHandler,
 		});
-		client.removeListener(this.name, (...args) => this.run(context, ...(args as ClientEvents[this['name']])));
+		client.removeListener(this.name, (...args) => this.run(context, ...(args as EventArguments<this>)));
 	}
 }

@@ -2,14 +2,15 @@ import {type ClientOptions, Collection, type Message, type MessageEmbed, type Pr
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
+import {inspect} from 'util';
 import packageJson from '../package.json' with {type: 'json'};
 import {AdvancedClient} from './classes/AdvancedClient.js';
 import {type Command, Tag} from './classes/commands/Command.js';
 import {CommandHandlerError} from './classes/errors/CommandHandlerError.js';
 import type {Event} from './classes/Event.js';
 import type {SlashCommand} from './classes/interactions/SlashCommand.js';
+import {Logger} from './helpers/Logger.js';
 import type {Constructor, MaybeCommand, MaybeEvent} from './types.js';
-import {Logger} from './utils/Logger.js';
 
 export namespace CommandHandler {
 	/**

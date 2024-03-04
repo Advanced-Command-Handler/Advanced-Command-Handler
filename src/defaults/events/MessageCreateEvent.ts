@@ -5,12 +5,12 @@ import {type EventContext} from '../../classes/contexts/EventContext.js';
 import {CommandErrorType} from '../../classes/errors/CommandError.js';
 import {Event} from '../../classes/Event.js';
 import {CommandHandler} from '../../CommandHandler.js';
-import {argError} from '../../utils/argError.js';
-import {codeError} from '../../utils/codeError.js';
-import {getThing} from '../../utils/getThing.js';
-import {Logger} from '../../utils/Logger.js';
-import {permissionsError} from '../../utils/permissionUtils.js';
-import {isOwner} from '../../utils/utils.js';
+import {argError} from '../../helpers/argError.js';
+import {codeError} from '../../helpers/codeError.js';
+import {getThing} from '../../helpers/getThing.js';
+import {Logger} from '../../helpers/Logger.js';
+import {permissionsError} from '../../helpers/permissionUtils.js';
+import {isOwner} from '../../helpers/utils.js';
 import MessageCreateOptions = CommandHandler.MessageCreateOptions;
 
 export class MessageCreateEvent extends Event {

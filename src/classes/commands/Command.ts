@@ -1,8 +1,8 @@
 import {GuildChannel, GuildMember, Message, Permissions, type PermissionString, type Snowflake, type TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler.js';
-import {Logger} from '../../utils/Logger.js';
-import {isPermission} from '../../utils/permissionUtils.js';
-import {isOwner} from '../../utils/utils.js';
+import {Logger} from '../../helpers/Logger.js';
+import {isPermission} from '../../helpers/permissionUtils.js';
+import {isOwner} from '../../helpers/utils.js';
 import {type Argument, CommandArgument} from '../arguments/Argument.js';
 import type {CommandContext} from '../contexts/CommandContext.js';
 import {SubCommandContext} from '../contexts/SubCommandContext.js';
