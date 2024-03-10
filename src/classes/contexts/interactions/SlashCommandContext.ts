@@ -74,7 +74,7 @@ export class SlashCommandContext {
 	 * The client that handled the slash command.
 	 */
 	get client() {
-		return this.interactionHandler.client!;
+		return this.interactionHandler.client!!;
 	}
 
 	/**

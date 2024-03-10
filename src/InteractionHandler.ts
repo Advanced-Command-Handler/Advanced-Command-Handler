@@ -1,14 +1,12 @@
-import {DiscordAPIError, REST} from '@discordjs/rest';
-import {Routes} from 'discord-api-types/v9';
 import {Collection} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
 import packageJson from '../package.json' with {type: 'json'};
-import type {AdvancedClient} from './classes/AdvancedClient.js';
 import type {CommandHandlerError} from './classes/errors/CommandHandlerError.js';
 import type {Event} from './classes/Event.js';
-import type {SlashCommand} from './classes/interactions/SlashCommand.js';
+import type {ApplicationCommand} from './classes/interactions/ApplicationCommand.js';
+import {SlashCommand} from './classes/interactions/SlashCommand.js';
 import {CommandHandler} from './CommandHandler.js';
 import {Logger} from './helpers/Logger.js';
 import type {Constructor} from './types.js';
@@ -37,6 +35,24 @@ export namespace InteractionHandler {
 	 */
 	interface DefaultCommandsOptions {
 		exclude?: string[];
+	}
+
+	/**
+	 * The options for launching the interaction handler.
+	 */
+	interface LaunchInteractionHandlerOptions {
+		/**
+		 * The directory where the commands are located.
+		 */
+		commandsDir: string;
+		/**
+		 * The guild ID to launch the interaction handler.
+		 */
+		guildId?: string;
+		/**
+		 * The token of your bot.
+		 */
+		token: string;
 	}
 
 	/**
@@ -81,8 +97,6 @@ export namespace InteractionHandler {
 	 */
 	export const emitter = new EventEmitter();
 
-	export const rest = new REST({version: '9'});
-
 	/**
 	 * The client of the handler, null before {@link launch} function executed.
 	 */
@@ -96,7 +110,7 @@ export namespace InteractionHandler {
 	/**
 	 * The commands registered by the CommandHandler.
 	 */
-	export const commands = new Collection<string, SlashCommand>();
+	export const commands = new Collection<string, ApplicationCommand>();
 	/**
 	 * The events registered by the EventHandler.
 	 *
@@ -302,5 +316,55 @@ export namespace InteractionHandler {
 		usesDefaultCommands = true;
 		defaultCommandsOptions = options;
 		return InteractionHandler;
+	}
+
+	/**
+	 *
+	 * @param launchOptions
+	 */
+	export async function createInteractions(launchOptions: LaunchInteractionHandlerOptions) {
+		const commandsDir = launchOptions.commandsDir;
+		if (!commandsDir) throw new Error('Commands directory is not defined.');
+
+		await loadCommands(commandsDir);
+
+		const buildedCommands = commands
+			.map(command => {
+				if (command instanceof SlashCommand) return command.toJSON();
+				else return null;
+			})
+			.filter(c => c !== null) as RESTPostAPIChatInputApplicationCommandsJSONBody[];
+
+		Logger.log('Builded commands :', 'Loading');
+		Logger.log(
+			buildedCommands.map(c => c.name),
+			'Loading'
+		);
+
+		const rest = new REST({version: '10'}).setToken(launchOptions.token);
+
+		let canRegister = false;
+		CommandHandler.once('launched', async () => {
+			canRegister = true;
+		});
+
+		while (!canRegister) {
+			await new Promise(resolve => setTimeout(resolve, 100));
+		}
+
+		try {
+			const guildId = launchOptions.guildId;
+			if (guildId) {
+				Logger.info(`Started refreshing application (/) commands for guild ${guildId}.`, 'Loading');
+				await rest.put(Routes.applicationGuildCommands(CommandHandler.client?.user?.id ?? '', guildId), {body: buildedCommands});
+				Logger.info(`Successfully reloaded application (/) commands for guild ${guildId}.`, 'Loading');
+			} else {
+				Logger.info('Started refreshing application global (/) commands.', 'Loading');
+				await rest.put(Routes.applicationCommands(CommandHandler.client?.user?.id ?? ''), {body: buildedCommands});
+				Logger.info('Successfully reloaded global application (/) commands.', 'Loading');
+			}
+		} catch (error) {
+			Logger.error(`Failed to reload application (/) commands. ${error}`, 'Loading');
+		}
 	}
 }

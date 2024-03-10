@@ -7,6 +7,7 @@ export * from './classes/commands/ImageCommand.js';
 export * from './classes/commands/SlowCommand.js';
 export * from './classes/commands/SubCommand.js';
 export * from './classes/contexts/ArgumentContext.js';
+export * from './classes/interactions/ApplicationCommand.js';
 export * from './classes/contexts/CommandContext.js';
 export * from './classes/contexts/EventContext.js';
 export * from './classes/contexts/interactions/SlashCommandContext.js';
