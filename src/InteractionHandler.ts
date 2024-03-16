@@ -48,6 +48,11 @@ export namespace InteractionHandler {
 		 * The guild ID to launch the interaction handler.
 		 */
 		guildId?: string;
+
+		/**
+		 * The directory where the message commands are located.
+		 */
+		messageCommandsDir?: string;
 		/**
 		 * The directory where the slash commands are located.
 		 */
@@ -359,12 +364,15 @@ export namespace InteractionHandler {
 	}
 
 	/**
+	 * Creates and registers the interactions.
 	 *
-	 * @param launchOptions
+	 * @param launchOptions - The options to launch the interactions.
 	 */
 	export async function createInteractions(launchOptions: LaunchInteractionHandlerOptions) {
+		const messageCommandsDir = launchOptions.messageCommandsDir;
 		const slashCommandsDir = launchOptions.slashCommandsDir;
 		const userCommandsDir = launchOptions.userCommandsDir;
+		if (messageCommandsDir) await loadCommands(messageCommandsDir, ApplicationCommandTypes.MESSAGE);
 		if (slashCommandsDir) await loadCommands(slashCommandsDir, ApplicationCommandTypes.SLASH);
 		if (userCommandsDir) await loadCommands(userCommandsDir, ApplicationCommandTypes.USER);
 
@@ -379,9 +387,7 @@ export namespace InteractionHandler {
 		const rest = new REST({version: '10'}).setToken(launchOptions.token);
 
 		let canRegister = false;
-		CommandHandler.once('launched', async () => {
-			canRegister = true;
-		});
+		CommandHandler.once('launched', async () => (canRegister = true));
 
 		while (!canRegister) {
 			await new Promise(resolve => setTimeout(resolve, 100));

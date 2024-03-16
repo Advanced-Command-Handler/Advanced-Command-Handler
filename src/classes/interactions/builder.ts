@@ -1,7 +1,21 @@
 import {ContextMenuCommandBuilder, SlashCommandBuilder} from '@discordjs/builders';
 import {ApplicationCommandType, type RESTPostAPIChatInputApplicationCommandsJSONBody} from 'discord-api-types/v10';
+import type {MessageCommand} from './MessageCommand.js';
 import type {SlashCommand} from './SlashCommand.js';
 import type {UserCommand} from './UserCommand.js';
+
+/**
+ * Builds a message command.
+ *
+ * @param command - The command to build.
+ * @returns The built command.
+ */
+export function buildMessageCommand(command: MessageCommand): RESTPostAPIChatInputApplicationCommandsJSONBody {
+	return new ContextMenuCommandBuilder()
+		.setName(command.name)
+		.setType(ApplicationCommandType.Message)
+		.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody;
+}
 
 /**
  * Builds a slash command.

@@ -1,8 +1,10 @@
 import {type Interaction} from 'discord.js';
 import {EventContext} from '../../classes/contexts/EventContext.js';
+import {MessageCommandContext} from '../../classes/contexts/interactions/MessageCommandContext.js';
 import {SlashCommandContext} from '../../classes/contexts/interactions/SlashCommandContext.js';
 import {UserCommandContext} from '../../classes/contexts/interactions/UserCommandContext.js';
 import {Event} from '../../classes/Event.js';
+import {MessageCommand} from '../../classes/interactions/MessageCommand.js';
 import {SlashCommand} from '../../classes/interactions/SlashCommand.js';
 import {UserCommand} from '../../classes/interactions/UserCommand.js';
 
@@ -21,7 +23,16 @@ export class InteractionCreateEvent extends Event {
 		const command = ctx.interactionHandler.commands.get(interaction.commandName);
 		if (!command) return;
 
-		if (command instanceof SlashCommand && interaction.isCommand()) {
+		if (command instanceof MessageCommand && interaction.isMessageContextMenu()) {
+			const message = await interaction.channel!.messages.fetch(interaction.targetId);
+			const commandContext = new MessageCommandContext({
+				interaction,
+				interactionHandler: ctx.interactionHandler,
+				command,
+				targetMessage: message,
+			});
+			await command.run(commandContext);
+		} else if (command instanceof SlashCommand && interaction.isCommand()) {
 			const commandContext = new SlashCommandContext({
 				interaction,
 				interactionHandler: ctx.interactionHandler,
