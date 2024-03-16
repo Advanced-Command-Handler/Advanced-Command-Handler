@@ -1,3 +1,4 @@
+import {promises as fsPromises} from 'fs';
 import {join} from 'path';
 import {inspect} from 'util';
 import {CommandHandlerError} from '../classes/errors/CommandHandlerError.js';
@@ -27,4 +28,26 @@ export async function loadClass<T extends object, C extends MaybeClass<T> = Mayb
 		throw new CommandHandlerError(`Command given name or path is not valid.\nPath: '${finalPath}'\nReceived object: ${inspect(object)}`, 'ClassLoading');
 
 	return object;
+}
+
+/**
+ * Loads a complete folder from a path, searches in subfolders, then returns the map of files with the path as the key.
+ *
+ * @param path - The path to the folder.
+ * @returns The map of the files with the path as the key.
+ */
+export async function loadCategoriesFiles(path: string): Promise<Map<string, string>> {
+	const finalPath = join(process.cwd(), path);
+	const classes = new Map<string, string>();
+
+	const dirs = await fsPromises.readdir(finalPath);
+	for (const dir of dirs) {
+		const dirPath = join(finalPath, dir);
+		const files = await fsPromises.readdir(dirPath);
+		for (const file of files) {
+			classes.set(dir, file);
+		}
+	}
+
+	return classes;
 }

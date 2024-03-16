@@ -1,8 +1,10 @@
 import {type Interaction} from 'discord.js';
 import {EventContext} from '../../classes/contexts/EventContext.js';
 import {SlashCommandContext} from '../../classes/contexts/interactions/SlashCommandContext.js';
+import {UserCommandContext} from '../../classes/contexts/interactions/UserCommandContext.js';
 import {Event} from '../../classes/Event.js';
 import {SlashCommand} from '../../classes/interactions/SlashCommand.js';
+import {UserCommand} from '../../classes/interactions/UserCommand.js';
 
 export class InteractionCreateEvent extends Event {
 	override readonly name = 'interactionCreate';
@@ -15,15 +17,28 @@ export class InteractionCreateEvent extends Event {
 	 * @returns The result of the command execution.
 	 */
 	public override async run(ctx: EventContext<this>, interaction: Interaction) {
-		if (!interaction.isCommand()) return;
+		if (!interaction.isApplicationCommand()) return;
 		const command = ctx.interactionHandler.commands.get(interaction.commandName);
-		if (!command || !(command instanceof SlashCommand)) return;
+		if (!command) return;
 
-		const commandContext = new SlashCommandContext({
-			interaction,
-			interactionHandler: ctx.interactionHandler,
-			command,
-		});
-		await command.run(commandContext);
+		if (command instanceof SlashCommand && interaction.isCommand()) {
+			const commandContext = new SlashCommandContext({
+				interaction,
+				interactionHandler: ctx.interactionHandler,
+				command,
+			});
+			await command.run(commandContext);
+		} else if (command instanceof UserCommand && interaction.isUserContextMenu()) {
+			const member = interaction.inGuild() ? await interaction.guild!.members.fetch(interaction.targetId) : null;
+
+			const commandContext = new UserCommandContext({
+				interaction,
+				interactionHandler: ctx.interactionHandler,
+				command,
+				targetMember: member,
+				targetUser: interaction.targetUser,
+			});
+			await command.run(commandContext);
+		}
 	}
 }

@@ -3,14 +3,17 @@ import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
 import packageJson from '../package.json' with {type: 'json'};
+import type {AdvancedClient} from './classes/AdvancedClient.js';
 import type {CommandHandlerError} from './classes/errors/CommandHandlerError.js';
 import type {Event} from './classes/Event.js';
 import type {ApplicationCommand} from './classes/interactions/ApplicationCommand.js';
+import {type ApplicationCommandType, ApplicationCommandTypes} from './classes/interactions/ApplicationCommandTypes.js';
 import {SlashCommand} from './classes/interactions/SlashCommand.js';
+import {UserCommand} from './classes/interactions/UserCommand.js';
 import {CommandHandler} from './CommandHandler.js';
 import {Logger} from './helpers/Logger.js';
 import type {Constructor} from './types.js';
-import {loadClass} from './utils/load.js';
+import {loadCategoriesFiles, loadClass} from './utils/load.js';
 
 export namespace InteractionHandler {
 	/**
@@ -42,17 +45,21 @@ export namespace InteractionHandler {
 	 */
 	interface LaunchInteractionHandlerOptions {
 		/**
-		 * The directory where the commands are located.
-		 */
-		commandsDir: string;
-		/**
 		 * The guild ID to launch the interaction handler.
 		 */
 		guildId?: string;
 		/**
+		 * The directory where the slash commands are located.
+		 */
+		slashCommandsDir?: string;
+		/**
 		 * The token of your bot.
 		 */
 		token: string;
+		/**
+		 * The directory where the user commands are located.
+		 */
+		userCommandsDir?: string;
 	}
 
 	/**
@@ -69,21 +76,17 @@ export namespace InteractionHandler {
 		 */
 		error: [CommandHandlerError];
 		/**
-		 * The event executed when the InteractionHandler starts its launch.
+		 * The event executed when loading an ApplicationCommand.
 		 */
-		launch: [];
-		/**
-		 * The event executed when the InteractionHandler is launched.
-		 */
-		launched: [];
+		loadApplicationCommand: [ApplicationCommand];
 		/**
 		 * The event executed when loading a SlashCommand.
 		 */
 		loadSlashCommand: [SlashCommand];
 		/**
-		 * The event executed when registering a SlashCommand to Discord.
+		 * The event executed when loading a UserCommand.
 		 */
-		registerSlashCommand: [SlashCommand];
+		loadUserCommand: [UserCommand];
 	};
 
 	/**
@@ -181,56 +184,93 @@ export namespace InteractionHandler {
 	 * @returns - The command itself.
 	 */
 	export async function loadSlashCommand(path: string, name: string) {
-		const command = await loadClass<SlashCommand>(path, name);
-		const instance = new (command as Constructor<SlashCommand>)();
+		const command = await loadClass<ApplicationCommand>(path, name);
+		const instance = new (command as Constructor<ApplicationCommand>)();
 		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 
 		commands.set(instance.name, instance);
-		emit('loadSlashCommand', instance);
-		Logger.comment(`Loading the slash command : ${Logger.setColor('gold', name)}`, 'Loading');
+
+		emit('loadApplicationCommand', instance);
+		if (instance instanceof SlashCommand) emit('loadSlashCommand', instance);
+		else if (instance instanceof UserCommand) emit('loadUserCommand', instance);
 
 		return instance;
 	}
 
 	/**
-	 * Load all the commands from a directory.
+	 * Load all the commands of all the categories of a specific type from a directory.
 	 *
-	 * @remarks
-	 * The path must be a directory containing sub-directories.
-	 * @param path - The path of the directory to load the commands from.
+	 * @param userPath - The path of the directory to load the commands from defined by the user.
+	 * @param type - The type of the commands.
 	 */
-	export async function loadSlashCommands(path: string) {
+	export async function loadCommands(path: string) {
 		if (!path) return;
 		const dirs = await fsPromises.readdir(path);
 		Logger.info('Loading slash commands.', 'Loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'Loading');
+		if (dirs.length) {
+			for (const dir of dirs) {
+				const commandsPath = join(path, dir);
+				const files = await fsPromises.readdir(commandsPath);
+				if (!files.length) continue;
+				Logger.comment(`Slash Commands in the category '${dir}' : (${files.length})`, 'Loading');
 
-		for (const dir of dirs) {
-			const commandsPath = join(path, dir);
-			const files = await fsPromises.readdir(commandsPath);
-			if (!files.length) continue;
-			Logger.comment(`Slash Commands in the category '${dir}' : (${files.length})`, 'Loading');
-
-			for (const file of files) {
-				await loadSlashCommand(commandsPath, file);
+				for (const file of files) {
+					await loadCommand(commandsPath, file);
+				}
 			}
 		}
 		Logger.info(`${commands.size} slash commands loaded.`, 'Loading');
 
-		if (!usesDefaultCommands) return;
+	/**
+	 * Load all the default commands of a specific type.
+	 *
+	 * @param type - The type of the commands.
+	 * @param typeLogName - The name of the type of the commands.
+	 */
+	export async function loadDefaultCommandsOfType(type: ApplicationCommandType) {
 		const options = defaultCommandsOptions;
-		const defaultSlashCommands = await import('./defaults/slashCommands/index.js');
+		let defaultCommands: Record<string, Constructor<ApplicationCommand>>;
+		try {
+			defaultCommands = await import(`./defaults/${type.path}/index.js`);
+		} catch (error) {
+			if (!(error instanceof Error)) throw new Error('An error occurred while loading the default commands.');
+			if (!('code' in error)) throw error;
+			if (error.code === 'ERR_MODULE_NOT_FOUND') {
+				Logger.comment(`No default ${type.logName} found.`, 'Loading');
+				return;
+			}
+			throw error;
+		}
 
-		Logger.info('Loading default slash commands.', 'Loading');
+		Logger.info(`Loading default ${type.logNamePlural}.`, 'Loading');
+		Logger.comment(`Default ${type.logName} : (${Object.keys(defaultCommands).length})`, 'Loading');
 
-		for (const slashCommand of Object.values(defaultSlashCommands)) {
-			const instance = new slashCommand();
+		for (const command of Object.values(defaultCommands)) {
+			const instance = new command();
 			if (options?.exclude?.includes(instance.name)) continue;
 			commands.set(instance.name, instance);
 
-			Logger.comment(`Default ${Logger.setColor('green', instance.name)} slash command loaded.`, 'Loading');
+			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
 		}
-		Logger.info(`Default commands loaded. (${Object.keys(defaultSlashCommands).length})`, 'Loading');
+		Logger.info(`Default ${type.logNamePlural} loaded. (${Object.keys(defaultCommands).length})`, 'Loading');
+	}
+
+	/**
+	 * Load all the commands types of a directory.
+	 *
+	 * @remarks
+	 * The path must be a directory containing sub-directories.
+	 * @param userPath - The path of the directory to load the commands from defined by the user.
+	 * @param type - The type of the commands.
+	 */
+	export async function loadCommands(userPath: string, type: ApplicationCommandType) {
+		await loadCommandsType(userPath, type);
+
+		Logger.info(`${commands.size} commands loaded.`, 'Loading');
+
+		if (!usesDefaultCommands) return;
+		await loadDefaultCommandsOfType(type);
 	}
 
 	/**
@@ -323,17 +363,12 @@ export namespace InteractionHandler {
 	 * @param launchOptions
 	 */
 	export async function createInteractions(launchOptions: LaunchInteractionHandlerOptions) {
-		const commandsDir = launchOptions.commandsDir;
-		if (!commandsDir) throw new Error('Commands directory is not defined.');
+		const slashCommandsDir = launchOptions.slashCommandsDir;
+		const userCommandsDir = launchOptions.userCommandsDir;
+		if (slashCommandsDir) await loadCommands(slashCommandsDir, ApplicationCommandTypes.SLASH);
+		if (userCommandsDir) await loadCommands(userCommandsDir, ApplicationCommandTypes.USER);
 
-		await loadCommands(commandsDir);
-
-		const buildedCommands = commands
-			.map(command => {
-				if (command instanceof SlashCommand) return command.toJSON();
-				else return null;
-			})
-			.filter(c => c !== null) as RESTPostAPIChatInputApplicationCommandsJSONBody[];
+		const buildedCommands = commands.map(command => command.toJSON()).filter(c => c !== null) as RESTPostAPIChatInputApplicationCommandsJSONBody[];
 
 		Logger.log('Builded commands :', 'Loading');
 		Logger.log(
