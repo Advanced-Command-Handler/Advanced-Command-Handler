@@ -4,7 +4,7 @@ import type {Awaitable} from 'discord.js';
 import {ArgumentContext} from '../contexts/ArgumentContext.js';
 import type {CommandContext} from '../contexts/CommandContext.js';
 import {CommandError, CommandErrorType} from '../errors/CommandError.js';
-import {CommandArgument} from './Argument.js';
+import {CommandArgument} from './CommandArgument.js';
 
 export type MapArguments<A extends any[]> = Map<string, null | CommandError | A[number]>;
 export type ArgumentResolved<A> = null | CommandError | A;

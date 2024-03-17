@@ -11,8 +11,8 @@ import {
 	type StartThreadOptions,
 } from 'discord.js';
 import type {CommandHandler} from '../../CommandHandler.js';
-import {CommandArgument} from '../arguments/Argument.js';
 import {ArgumentParser, type ArgumentResolved} from '../arguments/ArgumentParser.js';
+import {CommandArgument} from '../arguments/CommandArgument.js';
 import type {Command} from '../commands/Command.js';
 import {CommandError} from '../errors/CommandError.js';
 

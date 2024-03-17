@@ -1,4 +1,6 @@
 import type {CommandInteraction} from 'discord.js';
+
+import {CommandArgument} from '../../arguments/CommandArgument.js';
 import type {SlashCommand} from '../../interactions/SlashCommand.js';
 import {ApplicationCommandContext, type ApplicationCommandContextBuilder} from './ApplicationCommandContext.js';
 
@@ -30,9 +32,56 @@ export class SlashCommandContext extends ApplicationCommandContext {
 	}
 
 	/**
+	 * The arguments of the command.
+	 */
+	get arguments() {
+		return Object.entries(this.command.arguments).map((a, index) => new CommandArgument(a[0], index, a[1]));
+	}
+
+	/**
 	 * The description of the command that was executed.
 	 */
 	get commandDescription() {
 		return this.command.description;
+	}
+
+	/**
+	 * Returns an argument.
+	 * If the argument is errored or not found it will return `null`.
+	 *
+	 * @typeParam T - The type of the argument.
+	 * @param name - The name of the argument.
+	 * @returns - The argument in a promise or null if the argument is not found or errored or the command has no arguments.
+	 */
+	public argument<T>(name: string | (keyof this['command']['arguments'] & string)): T | null {
+		return this.resolveArgument<T>(name) ?? null;
+	}
+
+	/**
+	 * Resolves one of the argument.
+	 *
+	 * @typeParam T - The type of the argument.
+	 * @param name - The name of the argument.
+	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the command has no arguments.
+	 */
+	public resolveArgument<T>(name: string | (keyof this['command']['arguments'] & string)): undefined | T {
+		return this.interaction.options.data.find(o => o.name === name)?.value as T;
+	}
+
+	/**
+	 * Resolves all of the arguments of the command.
+	 *
+	 * @typeParam T - The type of the arguments as an union.
+	 * @returns - A map of arguments or undefined if the command has no arguments.
+	 */
+	public resolveArguments<T>() {
+		const result = new Map<string, T>();
+		for (const [name, argument] of Object.entries(this.command.arguments)) {
+			const value = this.resolveArgument<T>(name);
+			if (value === undefined) continue;
+			result.set(name, value);
+		}
+
+		return result;
 	}
 }

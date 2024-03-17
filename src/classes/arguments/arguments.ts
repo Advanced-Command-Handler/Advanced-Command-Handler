@@ -1,3 +1,13 @@
+import {
+	type APIApplicationCommandBooleanOption,
+	type APIApplicationCommandChannelOption,
+	APIApplicationCommandIntegerOption,
+	APIApplicationCommandNumberOption,
+	APIApplicationCommandStringOption,
+	APIApplicationCommandUserOption,
+	ApplicationCommandOptionType,
+	ChannelType,
+} from 'discord-api-types/v10';
 import {Channel, Emoji, Guild, GuildMember, type GuildTextBasedChannel, Message, Snowflake, User} from 'discord.js';
 import {getThing} from '../../helpers/getThing.js';
 import {isSnowflake, isTextChannelLike} from '../../helpers/utils.js';
@@ -26,11 +36,17 @@ function inRange(number: number | string, min: number, max: number = Infinity) {
  * @returns - A boolean Argument.
  */
 export function booleanArgument(options: ArgumentBuilder<boolean> = {}) {
-	return new Argument<boolean>(
+	return Argument.create(
 		ArgumentType.BOOLEAN,
 		options,
 		argument => ['true', 'false'].includes(argument),
-		argument => argument === 'true'
+		argument => argument === 'true',
+		(name): APIApplicationCommandBooleanOption => ({
+			type: ApplicationCommandOptionType.Boolean,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+		})
 	);
 }
 
@@ -42,11 +58,17 @@ export function booleanArgument(options: ArgumentBuilder<boolean> = {}) {
  * @returns - A channel Argument.
  */
 export function channelArgument(options: ArgumentBuilder<Channel> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.CHANNEL,
 		options,
 		(argument, ctx) => isSnowflake(argument) || ctx.message.mentions.channels.size > 0 || (argument as string).length > 2,
-		(_, ctx) => getThing('channel', ctx.message)
+		(_, ctx) => getThing('channel', ctx.message),
+		(name): APIApplicationCommandChannelOption => ({
+			type: ApplicationCommandOptionType.Channel,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+		})
 	);
 }
 
@@ -59,12 +81,22 @@ export function channelArgument(options: ArgumentBuilder<Channel> = {}) {
  * @returns - A choice argument.
  */
 export function choiceArgument(options: ArgumentBuilder<string> & {values: string[]}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.CHOICE,
 		options,
 		argument => options.values.includes(argument),
-		argument => options.values.find(e => e === argument) ?? null
-	);
+		argument => options.values.find(e => e === argument) ?? null,
+		(name): APIApplicationCommandStringOption => ({
+			type: ApplicationCommandOptionType.String,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+			choices: options.values.map(value => ({
+				name: value,
+				value,,
+			})),
+		},)
+	)
 }
 
 /**
@@ -75,7 +107,7 @@ export function choiceArgument(options: ArgumentBuilder<string> & {values: strin
  * @returns - A command argument.
  */
 export function commandArgument(options: ArgumentBuilder<Command> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.COMMAND,
 		options,
 		(argument, ctx) => ctx.handler.getCommandAliasesAndNames().includes(argument),
@@ -94,7 +126,7 @@ export function emojiArgument(options: ArgumentBuilder<Emoji> = {}) {
 	const nativeEmojiRegex =
 		/[\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u2388\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2605\u2607-\u2612\u2614-\u2685\u2690-\u2705\u2708-\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763-\u2767\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC00-\uDCFF\uDD0D-\uDD0F\uDD2F\uDD6C-\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDAD-\uDDE5\uDE01-\uDE0F\uDE1A\uDE2F\uDE32-\uDE3A\uDE3C-\uDE3F\uDE49-\uDFFA]|\uD83D[\uDC00-\uDD3D\uDD46-\uDE4F\uDE80-\uDEFF\uDF74-\uDF7F\uDFD5-\uDFFF]|\uD83E[\uDC0C-\uDC0F\uDC48-\uDC4F\uDC5A-\uDC5F\uDC88-\uDC8F\uDCAE-\uDCFF\uDD0C-\uDD3A\uDD3C-\uDD45\uDD47-\uDEFF]|\uD83F[\uDC00-\uDFFD]/;
 
-	return new Argument(
+	return Argument.create(
 		ArgumentType.EMOJI,
 		options,
 		argument => isSnowflake(argument) || /<?(?:(a):)?(\w{2,32}):(\d{17,19})?>?/.test(argument) || nativeEmojiRegex.test(argument),
@@ -111,11 +143,21 @@ export function emojiArgument(options: ArgumentBuilder<Emoji> = {}) {
  * @returns - A enum argument.
  */
 export function enumArgument<E extends Record<string, V>, V>(options: ArgumentBuilder<V> & {values: E}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.ENUM,
 		options,
 		argument => Object.keys(options.values).includes(argument),
-		argument => Object.entries(options.values).find(e => e[0] === argument)?.[1] ?? null
+		argument => Object.entries(options.values).find(e => e[0] === argument)?.[1] ?? null,
+		(name): APIApplicationCommandStringOption => ({
+			type: ApplicationCommandOptionType.String,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+			choices: Object.entries(options.values).map(([name, value]) => ({
+				name,
+				value: String(value),
+			})),
+		}),
 	);
 }
 
@@ -127,7 +169,7 @@ export function enumArgument<E extends Record<string, V>, V>(options: ArgumentBu
  * @returns - A event argument.
  */
 export function eventArgument(options: ArgumentBuilder<Event> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.EVENT,
 		options,
 		(argument, ctx) => ctx.handler.events.has(argument),
@@ -143,11 +185,17 @@ export function eventArgument(options: ArgumentBuilder<Event> = {}) {
  * @returns - A float argument.
  */
 export function floatArgument(options: ArgumentBuilder<number> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.FLOAT,
 		options,
 		argument => !Number.isNaN(Number.parseFloat(argument)),
-		argument => Number.parseFloat(argument)
+		argument => Number.parseFloat(argument),
+		(name): APIApplicationCommandNumberOption => ({
+			type: ApplicationCommandOptionType.Number,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+		}),
 	);
 }
 
@@ -159,7 +207,7 @@ export function floatArgument(options: ArgumentBuilder<number> = {}) {
  * @returns - A guild argument.
  */
 export function guildArgument(options: ArgumentBuilder<Guild> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.GUILD,
 		options,
 		(argument, ctx) => isSnowflake(argument) || ctx.client.guilds.cache.has(argument) || inRange(argument as string, 2, 100),
@@ -176,11 +224,17 @@ export function guildArgument(options: ArgumentBuilder<Guild> = {}) {
  * @returns - A guildMember argument.
  */
 export function guildMemberArgument(options: ArgumentBuilder<GuildMember> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.GUILD_MEMBER,
 		options,
 		(argument, ctx) => isSnowflake(argument) || (ctx.message.mentions.members?.size ?? 0) > 0 || inRange(argument as string, 1, 100),
-		(_, ctx) => getThing('member', ctx.message)
+		(_, ctx) => getThing('member', ctx.message),
+		(name): APIApplicationCommandUserOption => ({
+			type: ApplicationCommandOptionType.User,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+		}),
 	);
 }
 
@@ -192,11 +246,17 @@ export function guildMemberArgument(options: ArgumentBuilder<GuildMember> = {}) 
  * @returns - A int argument.
  */
 export function intArgument(options: ArgumentBuilder<number> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.INTEGER,
 		options,
 		argument => !Number.isNaN(Number.parseInt(argument)),
-		argument => Number.parseInt(argument)
+		argument => Number.parseInt(argument),
+		(name): APIApplicationCommandIntegerOption => ({
+			type: ApplicationCommandOptionType.Integer,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+		}),
 	);
 }
 
@@ -208,7 +268,7 @@ export function intArgument(options: ArgumentBuilder<number> = {}) {
  * @returns - A message argument.
  */
 export function messageArgument(options: ArgumentBuilder<Message> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.MESSAGE,
 		options,
 		argument => isSnowflake(argument) || /https:\/\/((canary|ptb).)?discord.com\/channels\/\d{17,19}\/\d{17,19}\/\d{17,19}/.test(argument),
@@ -226,7 +286,20 @@ export function messageArgument(options: ArgumentBuilder<Message> = {}) {
  * @returns - A snowflake argument.
  */
 export function snowflakeArgument(options: ArgumentBuilder<Snowflake> = {}) {
-	return new Argument(ArgumentType.SNOWFLAKE, options, isSnowflake, argument => argument);
+	return Argument.create(
+		ArgumentType.SNOWFLAKE,
+		options,
+		isSnowflake,
+		argument => argument,
+		name => ({
+			type: ApplicationCommandOptionType.String,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+			min_length: 17,
+			max_length: 20,
+		}),
+	);
 }
 
 /**
@@ -238,14 +311,20 @@ export function snowflakeArgument(options: ArgumentBuilder<Snowflake> = {}) {
  * @returns - A string argument.
  */
 export function stringArgument(options: ArgumentBuilder<string> & {regex?: RegExp} = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.STRING,
 		options,
 		argument => {
 			if (options.regex) return options.regex.test(argument);
 			return true;
 		},
-		argument => argument
+		argument => argument,
+		name => ({
+			type: ApplicationCommandOptionType.String,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+		}),
 	);
 }
 
@@ -259,7 +338,7 @@ export function stringArgument(options: ArgumentBuilder<string> & {regex?: RegEx
 export function regexArgument(options: ArgumentBuilder<RegExp> = {}) {
 	const regexRegex = /^\/(.+?)\/([gimsuy]{1,6})?$/imu;
 
-	return new Argument(
+	return Argument.create(
 		ArgumentType.REGEX,
 		options,
 		argument => {
@@ -292,7 +371,7 @@ export function regexArgument(options: ArgumentBuilder<RegExp> = {}) {
  * @returns - A textChannel argument.
  */
 export function textChannelArgument(options: ArgumentBuilder<GuildTextBasedChannel> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.TEXT_CHANNEL,
 		options,
 		(argument, ctx) => isSnowflake(argument) || ctx.message.mentions.channels.size > 0 || inRange(argument as string, 1, 100),
@@ -303,7 +382,14 @@ export function textChannelArgument(options: ArgumentBuilder<GuildTextBasedChann
 			}
 
 			return getThing('text_channel', ctx.message);
-		}
+		},
+		(name): APIApplicationCommandChannelOption => ({
+			type: ApplicationCommandOptionType.Channel,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+			channel_types: [ChannelType.GuildText, ChannelType.GuildAnnouncement],
+		}),
 	);
 }
 
@@ -315,10 +401,16 @@ export function textChannelArgument(options: ArgumentBuilder<GuildTextBasedChann
  * @returns - A user argument.
  */
 export function userArgument(options: ArgumentBuilder<User> = {}) {
-	return new Argument(
+	return Argument.create(
 		ArgumentType.USER,
 		options,
 		(argument, ctx) => isSnowflake(argument) || ctx.message.mentions.users.size > 0 || inRange(argument as string, 2, 100),
-		(_, ctx) => getThing('user', ctx.message)
+		(_, ctx) => getThing('user', ctx.message),
+		(name): APIApplicationCommandUserOption => ({
+			type: ApplicationCommandOptionType.User,
+			name,
+			description: options.description ?? '',
+			required: 'optional' in options ? !options.optional : true,
+		}),
 	);
 }

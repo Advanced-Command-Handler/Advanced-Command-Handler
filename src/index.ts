@@ -4,6 +4,8 @@ export * from './classes/AdvancedClient.js';
 export * from './classes/Event.js';
 export * from './classes/arguments/Argument.js';
 export * from './classes/arguments/ArgumentParser.js';
+export * from './classes/arguments/CommandArgument.js';
+export * from './classes/arguments/SlashCommandArgument.js';
 export * from './classes/arguments/arguments.js';
 export * from './classes/commands/Command.js';
 export * from './classes/commands/ImageCommand.js';

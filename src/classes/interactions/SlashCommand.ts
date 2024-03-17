@@ -1,11 +1,20 @@
 import {SlashCommandBuilder} from '@discordjs/builders';
 import type {RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v9';
-import {Permissions, type PermissionString} from 'discord.js';
+import {type PermissionString, Permissions} from 'discord.js';
 import {Logger} from '../../helpers/Logger.js';
+import type {SlashCommandArgument} from '../arguments/SlashCommandArgument.js';
 import type {SlashCommandContext} from '../contexts/interactions/SlashCommandContext.js';
 import {ApplicationCommand} from './ApplicationCommand.js';
 
 export abstract class SlashCommand extends ApplicationCommand {
+	/**
+	 * The arguments of the command.
+	 * You can put your own custom arguments, but you must add the type to the {@link ArgumentType | argument types}.
+	 */
+	public arguments: Record<string, SlashCommandArgument<any>> = {};
+	/**
+	 * The description of the slash command.
+	 */
 	public abstract readonly description: string;
 	public readonly guilds: string[] = [];
 	public readonly nsfw: boolean = false;

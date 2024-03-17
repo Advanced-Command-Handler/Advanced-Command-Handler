@@ -1,14 +1,19 @@
+import type {APIApplicationCommandOption} from 'discord-api-types/v10';
 import type {ArgumentContext} from '../contexts/ArgumentContext.js';
+import type {SlashCommandArgument} from './SlashCommandArgument.js';
 
 /**
  * The validator of arguments, must return `true` if the argument is valid.
  */
-type ArgumentValidator = (argument: string, ctx: ArgumentContext) => boolean;
+export type ArgumentValidatorFunction = (argument: string, ctx: ArgumentContext) => boolean;
 /**
  * The parser of the arguments, must return a value or `null`, can be in a promise or not.
  */
-type ArgumentParser<T> = (argument: string, ctx: ArgumentContext) => T | null | Promise<T | null>;
+export type ArgumentParserFunction<T> = (argument: string, ctx: ArgumentContext) => T | null | Promise<T | null>;
 
+/**
+ * The slash command argument type.
+ */
 export type ArgumentFunction<T> = (options: ArgumentBuilder<T>) => Argument<T>;
 
 /**
@@ -40,6 +45,7 @@ type DefaultValueArgument<T> = {defaultValue: T};
 type CoalescingArgument = {coalescing: boolean};
 type OptionalArgument = {optional: boolean};
 export type ArgumentBuilder<T> = Partial<(DefaultValueArgument<T> | CoalescingArgument | OptionalArgument) & {description: string}>;
+export type SlashCommandArgumentBuilder<T> = Partial<DefaultValueArgument<T> | OptionalArgument> & {description: string};
 
 export interface ArgumentOptions<T> {
 	coalescing?: boolean;
@@ -50,85 +56,51 @@ export interface ArgumentOptions<T> {
 
 export class Argument<T> {
 	/**
+	 * Creates a new argument.
 	 *
-	 * @param type
-	 * @param options
-	 * @param validator
-	 * @param parser
+	 * @param type - The type of the argument.
+	 * @param options - The options of the argument.
+	 * @param validator - The validator of the argument.
+	 * @param parser - The parser of the argument.
+	 * @param toSlashCommandArgument - The function to convert the argument to a JSON representation.
+	 * Optional but if provided, the argument will be available as a slash command argument.
 	 */
-	public constructor(
+	private constructor(
 		public type: ArgumentType,
 		public options: ArgumentOptions<T>,
-		public validator: ArgumentValidator,
-		public parser: ArgumentParser<T>
+		public validator: ArgumentValidatorFunction,
+		public parser: ArgumentParserFunction<T>,
+		public toSlashCommandArgument?: (name: string) => APIApplicationCommandOption
 	) {}
-}
-
-export class CommandArgument<T> {
-	/**
-	 * Does the argument can take multiple words.
-	 */
-	public coalescing: boolean;
-	/**
-	 * The default value of the argument.
-	 */
-	public defaultValue: T | undefined;
-	/**
-	 * The description of the argument, currently not used anywhere.
-	 */
-	public description: string;
-	/**
-	 * Is the argument optional or not.
-	 */
-	public optional: boolean;
-	/**
-	 * The parse function of the argument.
-	 */
-	public parse: ArgumentParser<T>;
-	/**
-	 * The type of the argument.
-	 */
-	public type: ArgumentType;
-	/**
-	 * The validate function of the argument.
-	 */
-	public validate: ArgumentValidator;
 
 	/**
+	 * Creates a new argument.
 	 *
-	 * @param name
-	 * @param index
-	 * @param argument
+	 * @param type - The type of the argument.
+	 * @param options - The options of the argument.
+	 * @param validator - The validator of the argument.
+	 * @param parser - The parser of the argument.
+	 * @param toSlashCommandArgument - The function to convert the argument to a JSON representation.
+	 * Optional but if provided, the argument will be available as a slash command argument.
+	 *
+	 * @returns - The created argument.
 	 */
-	public constructor(
-		public name: string,
-		public index: number,
-		argument: Argument<T>
-	) {
-		this.validate = argument.validator;
-		this.coalescing = argument.options.coalescing ?? false;
-		this.defaultValue = argument.options.defaultValue ?? undefined;
-		this.description = argument.options.description ?? '';
-		this.optional = argument.options.optional ?? false;
-		this.type = argument.type;
-		this.parse = argument.parser;
+	public static create<T, F extends ((name: string) => APIApplicationCommandOption) | undefined = (name: string) => APIApplicationCommandOption>(
+		type: ArgumentType,
+		options: ArgumentOptions<T>,
+		validator: ArgumentValidatorFunction,
+		parser: ArgumentParserFunction<T>,
+		toSlashCommandArgument?: F
+	): F extends (name: string) => APIApplicationCommandOption ? SlashCommandArgument<T> : Argument<T> {
+		return new Argument(type, options, validator, parser, toSlashCommandArgument) as any;
 	}
 
 	/**
-	 * Is the argument not optional, doesn't have any default value and only takes one word.
+	 * Is the argument can be used as a slash command argument.
 	 *
-	 * @returns - Is the argument simple.
+	 * @returns - Can the argument be used as a slash command argument.
 	 */
-	public get isSimple() {
-		return !this.optional && !this.coalescing && !this.defaultValue;
-	}
-
-	/**
-	 * Is the argument optional or has a default value.
-	 *
-	 * @returns - Does the argument can be skipped.
-	 */
-	public get isSkipable() {
-		return this.optional || !!this.defaultValue;
+	public canBeSlashCommandArgument(): this is SlashCommandArgument<T> {
+		return !!this.toSlashCommandArgument;
 	}
 }

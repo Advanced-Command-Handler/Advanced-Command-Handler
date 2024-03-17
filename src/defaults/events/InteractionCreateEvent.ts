@@ -20,7 +20,12 @@ export class InteractionCreateEvent extends Event {
 	 */
 	public override async run(ctx: EventContext<this>, interaction: Interaction) {
 		if (!interaction.isApplicationCommand()) return;
-		const command = ctx.interactionHandler.commands.get(interaction.commandName);
+		const command = ctx.interactionHandler.commands.find(cmd => {
+			if (interaction.isMessageContextMenu()) return cmd instanceof MessageCommand && cmd.name === interaction.commandName;
+			if (interaction.isCommand()) return cmd instanceof SlashCommand && cmd.name === interaction.commandName;
+			if (interaction.isUserContextMenu()) return cmd instanceof UserCommand && cmd.name === interaction.commandName;
+			return false;
+		});
 		if (!command) return;
 
 		if (command instanceof MessageCommand && interaction.isMessageContextMenu()) {

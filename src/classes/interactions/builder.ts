@@ -1,5 +1,6 @@
 import {ContextMenuCommandBuilder, SlashCommandBuilder} from '@discordjs/builders';
 import {ApplicationCommandType, type RESTPostAPIChatInputApplicationCommandsJSONBody} from 'discord-api-types/v10';
+import {Logger} from '../../helpers/Logger.js';
 import type {MessageCommand} from './MessageCommand.js';
 import type {SlashCommand} from './SlashCommand.js';
 import type {UserCommand} from './UserCommand.js';
@@ -24,7 +25,33 @@ export function buildMessageCommand(command: MessageCommand): RESTPostAPIChatInp
  * @returns The built command.
  */
 export function buildSlashCommand(command: SlashCommand): RESTPostAPIChatInputApplicationCommandsJSONBody {
-	return new SlashCommandBuilder().setName(command.name).setDescription(command.description).toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody;
+	const argumentsAsJSONs = Object.entries(command.arguments)
+		.filter(([name, arg]) => {
+			if (!arg.canBeSlashCommandArgument()) {
+				Logger.warn(
+					`Argument ${Logger.setColor('blue', name)} of command ${Logger.setColor('green', command.name)} can't be used as a slash command argument.`
+				);
+				return false;
+			}
+
+			return true;
+		})
+		.map(([name, argument]) => argument.toSlashCommandArgument!(name));
+
+	const commandBuilder = new SlashCommandBuilder()
+		.setName(command.name)
+		.setDescription(command.description)
+		.toJSON() as RESTPostAPIChatInputApplicationCommandsJSONBody;
+
+	console.log('commandBuilder', {
+		...commandBuilder,
+		options: argumentsAsJSONs,
+	});
+
+	return {
+		...commandBuilder,
+		options: argumentsAsJSONs,
+	};
 }
 
 /**

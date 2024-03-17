@@ -118,7 +118,7 @@ export namespace InteractionHandler {
 	/**
 	 * The commands registered by the CommandHandler.
 	 */
-	export const commands = new Collection<string, ApplicationCommand>();
+	export const commands = new Array<ApplicationCommand>();
 	/**
 	 * The events registered by the EventHandler.
 	 *
@@ -193,7 +193,7 @@ export namespace InteractionHandler {
 		const instance = new (command as Constructor<ApplicationCommand>)();
 		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
 
-		commands.set(instance.name, instance);
+		commands.push(instance);
 
 		emit('loadApplicationCommand', instance);
 		if (instance instanceof SlashCommand) emit('loadSlashCommand', instance);
@@ -208,24 +208,24 @@ export namespace InteractionHandler {
 	 * @param userPath - The path of the directory to load the commands from defined by the user.
 	 * @param type - The type of the commands.
 	 */
-	export async function loadCommands(path: string) {
-		if (!path) return;
-		const dirs = await fsPromises.readdir(path);
-		Logger.info('Loading slash commands.', 'Loading');
-		Logger.comment(`Categories : (${dirs.length})`, 'Loading');
-		if (dirs.length) {
-			for (const dir of dirs) {
-				const commandsPath = join(path, dir);
-				const files = await fsPromises.readdir(commandsPath);
-				if (!files.length) continue;
-				Logger.comment(`Slash Commands in the category '${dir}' : (${files.length})`, 'Loading');
+	export async function loadCommandsType(userPath: string, type: ApplicationCommandType) {
+		const categories = await fsPromises.readdir(userPath);
+		if (!categories.length) return;
+		Logger.info(`Loading ${type.logNamePlural}.`, 'Loading');
+		Logger.comment(`Categories : (${categories.length})`, 'Loading');
 
-				for (const file of files) {
-					await loadCommand(commandsPath, file);
-				}
+		const categoriesFiles = await loadCategoriesFiles(userPath);
+		for (const [category, command] of categoriesFiles) {
+			Logger.comment(`Loading the ${type.logName} : ${category}/${command}`, 'Loading');
+			const files = await fsPromises.readdir(join(userPath, category));
+			if (!files.length) continue;
+
+			for (const file of files) {
+				await loadCommand(join(userPath, category), file);
 			}
 		}
-		Logger.info(`${commands.size} slash commands loaded.`, 'Loading');
+		Logger.info(`${commands.length} ${type.logNamePlural} loaded.`, 'Loading');
+	}
 
 	/**
 	 * Load all the default commands of a specific type.
@@ -254,7 +254,7 @@ export namespace InteractionHandler {
 		for (const command of Object.values(defaultCommands)) {
 			const instance = new command();
 			if (options?.exclude?.includes(instance.name)) continue;
-			commands.set(instance.name, instance);
+			commands.push(instance);
 
 			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
 		}
@@ -272,7 +272,7 @@ export namespace InteractionHandler {
 	export async function loadCommands(userPath: string, type: ApplicationCommandType) {
 		await loadCommandsType(userPath, type);
 
-		Logger.info(`${commands.size} commands loaded.`, 'Loading');
+		Logger.info(`${commands.length} commands loaded.`, 'Loading');
 
 		if (!usesDefaultCommands) return;
 		await loadDefaultCommandsOfType(type);

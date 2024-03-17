@@ -3,7 +3,8 @@ import {CommandHandler} from '../../CommandHandler.js';
 import {Logger} from '../../helpers/Logger.js';
 import {isPermission} from '../../helpers/permissionUtils.js';
 import {isOwner} from '../../helpers/utils.js';
-import {type Argument, CommandArgument} from '../arguments/Argument.js';
+import {type Argument} from '../arguments/Argument.js';
+import {CommandArgument} from '../arguments/CommandArgument.js';
 import type {CommandContext} from '../contexts/CommandContext.js';
 import {SubCommandContext} from '../contexts/SubCommandContext.js';
 import {CommandError, type CommandErrorBuilder, CommandErrorType} from '../errors/CommandError.js';
@@ -148,7 +149,7 @@ export abstract class Command {
 
 	/**
 	 * The arguments of the command.
-	 * You can put your own custom arguments but you must add the type to the {@link ArgumentType | argument types}.
+	 * You can put your own custom arguments, but you must add the type to the {@link ArgumentType | argument types}.
 	 */
 	public arguments: Record<string, Argument<any>> = {};
 	/**
