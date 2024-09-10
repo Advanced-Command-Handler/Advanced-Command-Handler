@@ -59,7 +59,7 @@ export namespace CommandHandler {
 		/**
 		 * A list of global tags to apply before the commands is executed.
 		 */
-		globalTags?: Array<Tag | keyof typeof Tag | string>;
+		globalTags?: Array<Tag | keyof typeof Tag>;
 		/**
 		 * Send the code error when a command execution is failed and an error is thrown.
 		 *
@@ -389,8 +389,8 @@ export namespace CommandHandler {
 	export function create(options: CreateCommandHandlerOptions) {
 		options.saveLogsInFile?.forEach(Logger.saveInFile);
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');
-		commandsDir = options.commandsDir ?? '';
-		eventsDir = options.eventsDir ?? '';
+		commandsDir = options.commandsDir;
+		eventsDir = options.eventsDir;
 		owners = options.owners ?? [];
 		prefixes = options.prefixes ?? [];
 		useMentionAsPrefix = options.useMentionAsPrefix ?? true;
@@ -423,7 +423,7 @@ export namespace CommandHandler {
 			Logger.comment('Loading subcommands.', 'SubCommandLoading');
 			commands.forEach(c => c.registerSubCommands?.());
 			Logger.comment('Binding events to client.', 'Binding');
-			events.forEach(event => event.bind(client!!));
+			events.forEach(event => event.bind(client!));
 
 			Logger.info(`${client?.eventNames().length ?? 0} events loaded & bind.`, 'Loading');
 		} catch (e) {
@@ -544,7 +544,7 @@ export namespace CommandHandler {
 		Logger.info('Loading default commands.', 'Loading');
 		defaultCommands.HelpCommand.options = options?.helpOptions ?? {};
 
-		for (let command of Object.values(defaultCommands)) {
+		for (const command of Object.values(defaultCommands)) {
 			const instance = new command();
 			if (options?.exclude?.includes(instance.name)) continue;
 			commands.set(instance.name, instance);
@@ -592,7 +592,7 @@ export namespace CommandHandler {
 		Logger.info('Loading default events.', 'Loading');
 		defaultEvents.MessageCreateEvent.options = options?.messageCreateOptions ?? {};
 
-		for (let event of Object.values(defaultEvents)) {
+		for (const event of Object.values(defaultEvents)) {
 			const instance = new event();
 			if (options?.exclude?.includes(instance.name)) continue;
 			events.set(instance.name, instance);

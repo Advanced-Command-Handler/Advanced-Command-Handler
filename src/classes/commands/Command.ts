@@ -66,9 +66,10 @@ export namespace Tag {
 	 * @param tags - The tags to test.
 	 * @returns - The tags not validated.
 	 */
-	export function check(ctx: CommandContext, tags: Array<Tag | keyof typeof Tag | string>) {
+	export function check(ctx: CommandContext, tags: Array<Tag | string>) {
 		const missingTags: Tag[] = [];
 		for (const tag of tags ?? []) {
+			/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 			if (tag === Tag.channelOnly && ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
 			if (tag === Tag.dmOnly && ctx.channel.type !== 'DM') missingTags.push(Tag.dmOnly);
 			if (tag === Tag.guildOnly && !ctx.guild) missingTags.push(Tag.guildOnly);
@@ -76,6 +77,7 @@ export namespace Tag {
 			if (tag === Tag.nsfw && ctx.channel instanceof GuildChannel && !ctx.channel.nsfw) missingTags.push(Tag.nsfw);
 			if (tag === Tag.ownerOnly && !isOwner(ctx.user.id)) missingTags.push(Tag.ownerOnly);
 			if (tag === Tag.threadOnly && !ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
+			/* eslint-enable @typescript-eslint/no-unsafe-enum-comparison */
 		}
 
 		return missingTags;
@@ -127,7 +129,7 @@ export interface Command {
 	/**
 	 * Override this method to register your subCommands.
 	 */
-	registerSubCommands?(): any | Promise<any>;
+	registerSubCommands?(): any;
 }
 
 export interface CommandSignatureOptions {
@@ -164,7 +166,7 @@ export abstract class Command {
 	 *
 	 * @defaultValue `['SEND_MESSAGES']`
 	 */
-	public clientPermissions?: Array<PermissionString | string>;
+	public clientPermissions?: Array<PermissionString>;
 	/**
 	 * The cooldown of the command in seconds.
 	 *
@@ -194,7 +196,7 @@ export abstract class Command {
 	 * How tags works ?
 	 * @see {@link Tag}
 	 */
-	public tags?: Array<Tag | keyof typeof Tag | string>;
+	public tags?: Array<Tag | keyof typeof Tag>;
 	/**
 	 * The usage of the command.
 	 *
@@ -213,7 +215,7 @@ export abstract class Command {
 	 *
 	 * @defaultValue `['SEND_MESSAGES']`
 	 */
-	public userPermissions?: Array<PermissionString | string>;
+	public userPermissions?: Array<PermissionString>;
 
 	/**
 	 * Returns the names and aliases of this command in an array.
@@ -326,16 +328,16 @@ export abstract class Command {
 		if (this.clientPermissions) {
 			missingPermissions.client.push(
 				...(this.clientPermissions.filter(permission => {
-					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.guild?.members?.me!!)?.has(permission, false);
-				}) as PermissionString[])
+					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.guild!.members.me!)?.has(permission, false);
+				}))
 			);
 		}
 
 		if (this.userPermissions) {
 			missingPermissions.user.push(
 				...(this.userPermissions.filter(permission => {
-					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.member!!)?.has(permission, false);
-				}) as PermissionString[])
+					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.member!)?.has(permission, false);
+				}))
 			);
 		}
 
@@ -386,7 +388,7 @@ export abstract class Command {
 	 * @remarks Use the {@link Command#execute} method if you want to have a validation before executing the run method.
 	 * @param ctx - The command context.
 	 */
-	public abstract run(ctx: CommandContext): any | Promise<any>;
+	public abstract run(ctx: CommandContext): any;
 
 	/**
 	 * Put all the required properties in {@link CommandHandler.cooldowns} plus the `setTimeout` to remove the user from the cooldowns.

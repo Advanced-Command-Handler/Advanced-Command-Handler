@@ -24,6 +24,8 @@ export const LogType = {
 	log: 'default',
 	debug: 'white',
 	comment: 'gray',
+} satisfies {
+	[k: string]: keyof typeof colors
 };
 
 export const colors = {
@@ -40,12 +42,13 @@ export const colors = {
 	pink: '#d070a0',
 	brown: '#502f1e',
 	black: '#000000',
-	grey: '#6e6f77',
+	gray: '#6e6f77',
 	white: '#ffffff',
 	default: '#cccccc',
-};
+} as const;
 
-export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | string>;
+type HexColor = `#${string}`;
+export type ColorResolvable = NonNullable<keyof typeof colors | keyof typeof LogType | HexColor>;
 
 export type LoggerIgnore = [title: string, level: LogLevel | keyof typeof LogLevel];
 
@@ -176,8 +179,10 @@ export class Logger {
 	 */
 	public static setColor(color: ColorResolvable = colors.default, text: string = '') {
 		let finalColor: ChalkInstance;
-		if ((color = Logger.getColorFromColorResolvable(color))) finalColor = chalk.hex(color);
-		else throw new Error('Waiting for a log type, color or HexColor but receive something else.');
+		color = Logger.getColorFromColorResolvable(color);
+		if (color) {
+			finalColor = chalk.hex(color);
+		}else throw new Error('Waiting for a log type, color or HexColor but receive something else.');
 
 		return text ? finalColor(text) : finalColor();
 	}
@@ -217,8 +222,10 @@ export class Logger {
 	 * @internal
 	 */
 	public static isIgnored(title: string, level: LogLevel) {
-		const ignores: LoggerIgnore[] = Logger.ignores.map(s => (typeof s === 'string' ? [s, LogLevel.ALL] : [s[0], s[1]]));
-		return ignores.filter(i => i[0].toUpperCase() === title.toUpperCase()).some(i => (typeof i[1] === 'string' ? LogLevel[i[1]] >= level : i[1] >= level));
+		const ignores: LoggerIgnore[] = Logger.ignores.map(s => typeof s === 'string' ? [s, LogLevel.ALL] : [s[0], s[1]]);
+		return ignores.filter(i => i[0].toUpperCase() === title.toUpperCase()).some(i => typeof i[1] === 'string'
+		                                                                                 ? LogLevel[i[1]] >= level
+		                                                                                 : i[1] >= level);
 	}
 
 	/**
@@ -233,10 +240,10 @@ export class Logger {
 		if (Logger.LEVEL === LogLevel.OFF) return;
 		const datePart = `[${dayjs().format('YYYY/MM/DD HH:mm:ss.SSS')}]`;
 		const titlePart = `[${title.toUpperCase()}]`;
-		text = typeof text === 'object' ? inspect(text) : text.toString();
+		let stringifiedText = typeof text === 'object' ? inspect(text) : String(text);
 		let textPart = text as string;
 
-		text = text
+		stringifiedText = stringifiedText
 			.split(' ')
 			.map((word: string) =>
 				/\d/.test(word) && !/\x1b\[\d+((;\d+){1,4})?m/.test(word) ? word.replace(/\d+/, (match: string) => chalk.yellow(match)) : word
@@ -244,15 +251,16 @@ export class Logger {
 			.join(' ');
 
 		color = propertyInEnum(LogType, color) ?? color;
-		text = `${Logger.setColor('#847270', datePart)}${Logger.setColor(color, `${titlePart} ${text + chalk.reset()}`)}`;
-		console.log(text);
+		stringifiedText =
+			`${Logger.setColor('#847270', datePart)}${Logger.setColor(color, `${titlePart} ${stringifiedText + chalk.reset()}`)}`;
+		console.log(stringifiedText);
 		Logger.savingFiles.forEach((s, index) => {
-			if (!fs.existsSync(s)) {
-				Logger.savingFiles.splice(index, 1);
-				Logger.warn(`File ${Logger.setColor('violet', s)} not found, removed from files to save logs.`, 'LoggingWriter');
-			} else {
+			if (fs.existsSync(s)) {
 				textPart = textPart.replace(/\[(\d{1,3};){0,6}\d{1,3}m/gm, '');
 				fs.appendFileSync(s, `${datePart}${titlePart} ${textPart}\n`);
+			} else {
+				Logger.savingFiles.splice(index, 1);
+				Logger.warn(`File ${Logger.setColor('violet', s)} not found, removed from files to save logs.`, 'LoggingWriter');
 			}
 		});
 	}
@@ -266,14 +274,10 @@ export class Logger {
 	 * @returns - The color.
 	 * @internal
 	 */
-	private static getColorFromColorResolvable(color: ColorResolvable) {
-		return (
-			propertyInEnum(LogType, propertyInEnum(colors, color) ?? '') ??
-			propertyInEnum(colors, color) ??
-			propertyInEnum(LogType, color)?.match(/#[0-9|a-f]{6}/i)?.[0] ??
-			color.match(/#[0-9|a-f]{6}/i)?.[0] ??
-			colors.default.substring(1, 7)
-		);
+	private static getColorFromColorResolvable(color: string): ColorResolvable {
+		return propertyInEnum(LogType, propertyInEnum(colors, color) ?? '') ?? propertyInEnum(colors, color) ??
+			propertyInEnum(LogType, color)?.match(/#[0-9|a-f]{6}/i)?.[0] as HexColor ?? color.match(/#[0-9|a-f]{6}/i)?.[0] as HexColor ??
+			colors.default.substring(1, 7) as HexColor;
 	}
 }
 

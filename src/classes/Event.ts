@@ -31,9 +31,9 @@ export abstract class Event {
 			interactionHandler: InteractionHandler,
 		});
 
-		// @ts-ignore
+		// @ts-expect-error Type resolution is too complex.
 		if (this.once) client.once(this.name, (...args: EventArguments<this>) => this.run(context, ...args));
-		// @ts-ignore
+		// @ts-expect-error Type resolution is too complex.
 		else client.on(this.name, (...args: EventArguments<this>) => this.run(context, ...args));
 	}
 

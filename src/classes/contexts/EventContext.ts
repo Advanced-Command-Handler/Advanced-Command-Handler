@@ -49,7 +49,7 @@ export class EventContext<E extends Event> implements EventContextBuilder<E> {
 	 * Returns the Client.
 	 */
 	get client() {
-		return this.handler.client!!;
+		return this.handler.client!;
 	}
 
 	/**

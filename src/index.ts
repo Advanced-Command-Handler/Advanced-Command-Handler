@@ -18,6 +18,7 @@ export * from './classes/interactions/Interaction.js';
 export * from './classes/interactions/SlashCommand.js';
 export * from './CommandHandler.js';
 export * from './InteractionHandler.js';
+export * from './constants.js';
 export * from './types.js';
 export * from './helpers/argError.js';
 export * from './helpers/codeError.js';

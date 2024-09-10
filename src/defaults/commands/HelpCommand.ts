@@ -99,7 +99,7 @@ export class HelpCommand extends Command {
 
 		let description = `**Description** : ${command.description ?? 'No description provided.'}\n`;
 		description += `**Category** : \`${command.category}\`\n`;
-		description += `Can you use it here : **${(await command.validate(ctx)) ? 'No' : 'Yes'}**`;
+		description += `Can you use it here : **${await command.validate(ctx) ? 'No' : 'Yes'}**`;
 
 		const embed = BetterEmbed.fromTemplate('complete', {
 			client: ctx.client,
@@ -128,7 +128,7 @@ export class HelpCommand extends Command {
 			embed.addFields({
 				name: 'Tags :',
 				value: `\`${command.tags
-					.map(t => (typeof t === 'string' ? t : Tag[t]))
+				                   .map(t => typeof t === 'string' ? t : Tag[t])
 					.sort()
 					.join('\n')
 					.toUpperCase()}\``,
@@ -157,7 +157,7 @@ export class HelpCommand extends Command {
 		return ctx.reply({embed});
 	}
 
-	public override async registerSubCommands() {
+	public override registerSubCommands() {
 		this.subCommand(
 			'all',
 			{

@@ -17,7 +17,7 @@ export class ArgumentParser {
 		argumentRequiresOneValue: (argumentName: string) => `Argument '${argumentName}' requires exactly one value bot none or multiple were provided.`,
 		errorInArgument: (argumentName: string) => `Cannot resolve argument '${argumentName}', bad input from user.`,
 	};
-	public parsed?: Map<string, Awaitable<CommandError | null | any>>;
+	public parsed?: Map<string, any>;
 	public parser: Parser;
 
 	/**
@@ -85,7 +85,7 @@ export class ArgumentParser {
 	 * @param context
 	 */
 	public async parseArguments<A extends any[]>(context: CommandContext) {
-		let argsMap = new Map<string, Awaitable<ArgumentResolved<A>>>();
+		const argsMap = new Map<string, Awaitable<ArgumentResolved<A>>>();
 		const keywordArgs = new Map<string, string[]>();
 		const argsToParse = this.args.slice();
 
@@ -112,7 +112,7 @@ export class ArgumentParser {
 				index: i,
 			});
 
-			let toParse = hasKeywordArgs ? keywordValue![0] : this.parser.parseNext()?.data ?? '';
+			let toParse = hasKeywordArgs ? keywordValue[0] : this.parser.parseNext()?.data ?? '';
 			let parsed = await currentArgument.parse(toParse, argumentContext);
 			let error: CommandError | undefined;
 			if (!currentArgument.validate(toParse, argumentContext)) error = ArgumentParser.invalidArgumentError(argumentContext);
@@ -137,7 +137,7 @@ export class ArgumentParser {
 				const toParseCount = toParse.split(' ').length;
 				if (hasKeywordArgs || toParseCount <= 0) error = ArgumentParser.invalidArgumentError(argumentContext);
 				if (hasKeywordArgs) {
-					if (toParseCount < keywordValue!.length) error = ArgumentParser.invalidArgumentError(argumentContext);
+					if (toParseCount < keywordValue.length) error = ArgumentParser.invalidArgumentError(argumentContext);
 					error = toParseCount <= 0 ? ArgumentParser.invalidArgumentError(argumentContext) : undefined;
 				}
 				parsed = currentArgument.parse(toParse, argumentContext);

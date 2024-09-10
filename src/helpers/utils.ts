@@ -63,6 +63,6 @@ export function isTextChannelLike(value: any): value is GuildTextBasedChannel {
  * @param array - The array to get a random value from.
  * @returns - A random value from the array.
  */
-export function random<T extends any>(array: T[]): T {
+export function random<T>(array: T[]): T {
 	return array[Math.floor(Math.random() * array.length)];
 }

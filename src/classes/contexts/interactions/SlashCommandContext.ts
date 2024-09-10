@@ -74,7 +74,7 @@ export class SlashCommandContext {
 	 * The client that handled the slash command.
 	 */
 	get client() {
-		return this.interactionHandler.client!!;
+		return this.interactionHandler.client!;
 	}
 
 	/**
@@ -109,7 +109,7 @@ export class SlashCommandContext {
 	 * The member who executed the slash command.
 	 */
 	get member(): CacheTypeReducer<CacheType, GuildMember, APIInteractionGuildMember> {
-		// @ts-ignore
+		// @ts-expect-error Version mismatch.
 		return this.interaction.member;
 	}
 

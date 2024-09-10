@@ -1,4 +1,6 @@
-import {Channel, DMChannel, Emoji, Guild, GuildChannel, GuildMember, type GuildTextBasedChannel, Message, Role, TextChannel, User, Util} from 'discord.js';
+import {
+	Channel, DMChannel, Emoji, Guild, GuildChannel, GuildMember, type GuildTextBasedChannel, Message, Role, TextChannel, User, Util,
+} from 'discord.js';
 import type {Command} from '../classes/commands/Command.js';
 import {CommandHandler} from '../CommandHandler.js';
 import {isTextChannelLike} from './utils.js';
@@ -130,61 +132,36 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 	const client = CommandHandler.client;
 	switch (dataType) {
 		case DataType.COMMAND:
-			return CommandHandler.findCommand(text as string) ?? null;
+			return CommandHandler.findCommand(text) ?? null;
 
 		case DataType.CHANNEL:
-			return (
-				client?.channels.cache.get(text) ??
-				message?.mentions.channels.first() ??
-				client?.channels.cache.find(
-					c =>
-						(c instanceof GuildChannel && c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
-						(c instanceof DMChannel && c.recipient.username.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 2) ||
-						c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') ||
-						false
-				) ??
-				client?.channels.resolve(text) ??
-				null
-			);
+			return client?.channels.cache.get(text) ?? message?.mentions.channels.first() ??
+				client?.channels.cache.find(c => c instanceof GuildChannel && c.name.toLowerCase().includes(text.toLowerCase()) &&
+					text.toString().length > 1 || c instanceof DMChannel &&
+					c.recipient.username.toLowerCase().includes(text.toLowerCase()) && text.toString().length > 2 || c.toString() ===
+					text.toString().replace(/<#(\d{17,19})>/, '<@$1>') || false) ?? client?.channels.resolve(text) ?? null;
 		case DataType.EMOTE:
-			// noinspection JSRemoveUnnecessaryParentheses
-			return (
-				client?.emojis.cache.get(text) ??
-				client?.emojis.cache.find(e => (e.name?.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ?? false) ??
-				Util.resolvePartialEmoji(text) ??
-				null
-			);
+			return client?.emojis.cache.get(text) ??
+				client?.emojis.cache.find(e => e.name?.toLowerCase().includes(text.toLowerCase()) && text.length > 1 || false) ??
+				Util.resolvePartialEmoji(text) ?? null;
 
 		case DataType.GUILD:
-			return (
-				client?.guilds.cache.get(text) ??
-				client?.guilds.cache.find(g => g.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ??
-				client?.guilds.resolve(text) ??
-				message?.mentions.guild ??
-				null
-			);
+			return client?.guilds.cache.get(text) ??
+				client?.guilds.cache.find(g => g.name.toLowerCase().includes(text.toLowerCase()) && text.length > 1) ??
+				client?.guilds.resolve(text) ?? message?.mentions.guild ?? null;
 		case DataType.MEMBER:
-			return (
-				message?.guild?.members.cache.get(text) ??
-				message?.mentions?.members?.first() ??
-				message?.guild?.members.cache.find(
-					m =>
-						((m.displayName.toLowerCase().includes((text as string).toLowerCase()) ||
-							m.user.username.toLowerCase().includes((text as string).toLowerCase())) &&
-							(text as string).length > 1) ||
-						m.toString() === text.toString().replace(/<@!?(\d{17,19})>/, '<@$1>')
-				) ??
-				message?.guild?.members.resolve(text) ??
-				null
-			);
-		case DataType.MESSAGE:
+			return message?.guild?.members.cache.get(text) ?? message?.mentions?.members?.first() ??
+				message?.guild?.members.cache.find(m => (m.displayName.toLowerCase().includes(text.toLowerCase()) ||
+						m.user.username.toLowerCase().includes(text.toLowerCase())) && text.length > 1 || m.toString() ===
+					text.toString().replace(/<@!?(\d{17,19})>/, '<@$1>')) ?? message?.guild?.members.resolve(text) ?? null;
+		case DataType.MESSAGE: {
 			const m = await message?.channel.messages.fetch(text);
 			if (m) return m;
 
 			const url = text.replace(/https:\/\/((canary|ptb).)?discord.com\/channels\//, '').split('/');
 			const channels = client?.channels.cache;
 			if (text.startsWith('https') && channels?.has(url[1])) {
-				return (await (channels?.filter(c => c.isText()).get(url[1]) as TextChannel)?.messages.fetch(url[2])) || null;
+				return await (channels?.filter(c => c.isText()).get(url[1]) as TextChannel)?.messages.fetch(url[2]) || null;
 			}
 
 			if (channels) {
@@ -195,14 +172,13 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 			}
 
 			return null;
+		}
 
-		case DataType.TEXT_CHANNEL:
-			const result =
-				client?.channels.cache.filter(c => isTextChannelLike(c)).get(text) ??
+		case DataType.TEXT_CHANNEL: {
+			const result = client?.channels.cache.filter(c => isTextChannelLike(c)).get(text) ??
 				message?.mentions.channels.filter(c => isTextChannelLike(c)).first() ??
 				client?.channels.cache.find(
-					c =>
-						(isTextChannelLike(c) && c.name.toLowerCase().includes((text as string).toLowerCase()) && text.toString().length > 1) ||
+					c => isTextChannelLike(c) && c.name.toLowerCase().includes(text.toLowerCase()) && text.toString().length > 1 ||
 						c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') ||
 						false
 				) ??
@@ -210,29 +186,17 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 				null;
 
 			return isTextChannelLike(result) ? result : null;
+		}
 		case DataType.ROLE:
-			return (
-				message?.guild?.roles.cache.get(text) ??
-				message?.mentions.roles.first() ??
-				message?.guild?.roles.cache.find(
-					r =>
-						(r.name.toLowerCase().includes((text as string).toLowerCase()) && (text as string).length > 1) ||
-						r.toString() === text.toString().replace(/<@&(\d{17,19})>/, '<@$1>')
-				) ??
-				message?.guild?.roles.resolve(text) ??
-				null
-			);
+			return message?.guild?.roles.cache.get(text) ?? message?.mentions.roles.first() ??
+				message?.guild?.roles.cache.find(r => r.name.toLowerCase().includes(text.toLowerCase()) && text.length > 1 ||
+					r.toString() === text.toString().replace(/<@&(\d{17,19})>/, '<@$1>')) ?? message?.guild?.roles.resolve(text) ?? null;
 
 		case DataType.USER:
-			return (
-				client?.users.cache.get(text) ??
-				client?.users.cache.find(
-					u => u.username.toLowerCase() === (text as string).toLowerCase() || u.toString() === text.toString().replace(/<@!?(\d{17,19})>/, '<@$1>')
-				) ??
-				message?.mentions?.users.first() ??
-				client?.users.resolve(text) ??
-				null
-			);
+			return client?.users.cache.get(text) ??
+				client?.users.cache.find(u => u.username.toLowerCase() === text.toLowerCase() || u.toString() ===
+					text.toString().replace(/<@!?(\d{17,19})>/, '<@$1>')) ?? message?.mentions?.users.first() ??
+				client?.users.resolve(text) ?? null;
 		default:
 			return null;
 	}

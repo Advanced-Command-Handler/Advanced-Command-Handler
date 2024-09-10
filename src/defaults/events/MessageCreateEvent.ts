@@ -14,7 +14,9 @@ import {isOwner} from '../../helpers/utils.js';
 import MessageCreateOptions = CommandHandler.MessageCreateOptions;
 
 export class MessageCreateEvent extends Event {
-	public static options: MessageCreateOptions = {};
+	public static options: MessageCreateOptions = {
+		globalTags: [],
+	};
 	override readonly name = 'messageCreate';
 
 	public override async run(ctx: EventContext<this>, message: Message) {

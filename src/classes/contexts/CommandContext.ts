@@ -118,7 +118,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * Returns the client.
 	 */
 	get client() {
-		return this.handler.client!!;
+		return this.handler.client!;
 	}
 
 	/**
@@ -162,7 +162,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * Returns the prefix used in the message.
 	 */
 	get prefix() {
-		return this.handler.getPrefixFromMessage(this.message)!!;
+		return this.handler.getPrefixFromMessage(this.message)!;
 	}
 
 	/**
@@ -194,7 +194,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param name - The name of the argument.
 	 * @returns - The argument in a promise or null if the argument is not found or errored or the command has no arguments.
 	 */
-	public async argument<T>(name: string | (keyof this['command']['arguments'] & string)): Promise<T | null> {
+	public async argument<T>(name: string | keyof this['command']['arguments'] & string): Promise<T | null> {
 		const result = await this.resolveArgument<T>(name);
 		return result instanceof CommandError ? null : result ?? null;
 	}
@@ -325,7 +325,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param name - The name of the argument.
 	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the command has no arguments.
 	 */
-	public resolveArgument<T>(name: string | (keyof this['command']['arguments'] & string)): undefined | Awaitable<ArgumentResolved<T>> {
+	public resolveArgument<T>(name: string | keyof this['command']['arguments'] & string): undefined | Awaitable<ArgumentResolved<T>> {
 		if (this.argumentParser?.parsed) return this.argumentParser.parsed.get(name);
 		return this.argumentParser?.resolveArgument(this, name);
 	}
