@@ -1,4 +1,4 @@
-import {type Message} from 'discord.js';
+import {type Message, type PermissionString} from 'discord.js';
 import {Tag} from '../../classes/commands/Command.js';
 import {CommandContext} from '../../classes/contexts/CommandContext.js';
 import {type EventContext} from '../../classes/contexts/EventContext.js';
@@ -19,6 +19,13 @@ export class MessageCreateEvent extends Event {
 	};
 	override readonly name = 'messageCreate';
 
+	/**
+	 * Configures chat commands to be executed when a message is sent.
+	 *
+	 * @param ctx - The event context.
+	 * @param message - The message that was sent.
+	 * @returns The result of the command execution.
+	 */
 	public override async run(ctx: EventContext<this>, message: Message) {
 		if (MessageCreateEvent.options.excludeBots !== false && message.author.bot) return;
 		if (message.system) return;
@@ -57,9 +64,9 @@ export class MessageCreateEvent extends Event {
 			if (error) {
 				switch (error.type) {
 					case CommandErrorType.CLIENT_MISSING_PERMISSIONS:
-						return permissionsError(commandContext, error.data, true);
+						return permissionsError(commandContext, error.data as PermissionString[], true);
 					case CommandErrorType.USER_MISSING_PERMISSIONS:
-						return permissionsError(commandContext, error.data);
+						return permissionsError(commandContext, error.data as PermissionString[]);
 					case CommandErrorType.MISSING_TAGS:
 						return argError(
 							commandContext,
@@ -72,6 +79,7 @@ export class MessageCreateEvent extends Event {
 					case CommandErrorType.WRONG_CHANNEL:
 						return commandContext.send('This command is not in the correct channel.');
 					case CommandErrorType.COOLDOWN:
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 						return commandContext.send(`You are on a cooldown! Please wait **${error.data.waitMore / 1000}**s.`);
 					case CommandErrorType.ERROR:
 						return codeError(commandContext, error);

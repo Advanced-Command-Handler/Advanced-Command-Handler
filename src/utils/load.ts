@@ -13,7 +13,7 @@ import type {MaybeClass} from '../types.js';
  * @returns The object.
  * @throws CommandHandlerError - If the object can't be resolved.
  */
-export async function loadClass<T extends {}, C extends MaybeClass<T> = MaybeClass<T>>(path: string, name: string): Promise<C> {
+export async function loadClass<T extends object, C extends MaybeClass<T> = MaybeClass<T>>(path: string, name: string): Promise<C> {
 	const finalPath = join(process.cwd(), path, name);
 	const onWindows = process.platform === 'win32';
 

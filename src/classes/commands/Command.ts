@@ -563,7 +563,7 @@ export class SubCommand extends Command {
 	 * @param ctx - The SubCommandContext.
 	 * @returns - Any.
 	 */
-	public override async run(ctx: SubCommandContext) {
+	public override run(ctx: SubCommandContext) {
 		return this.runFunction(ctx);
 	}
 

@@ -11,7 +11,6 @@ import {
 	type StartThreadOptions,
 } from 'discord.js';
 import type {CommandHandler} from '../../CommandHandler.js';
-import {HelpCommand} from '../../defaults/commands/index.js';
 import {CommandArgument} from '../arguments/Argument.js';
 import {ArgumentParser, type ArgumentResolved} from '../arguments/ArgumentParser.js';
 import type {Command} from '../commands/Command.js';
@@ -390,6 +389,6 @@ export class CommandContext implements CommandContextBuilder {
 	 */
 	public async sendHelpMessage(commandName = this.commandName) {
 		const {HelpCommand} = await import('../../defaults/commands/HelpCommand.js');
-		return HelpCommand.sendCommandHelp(this, this.handler.commands.get(commandName)!!);
+		return HelpCommand.sendCommandHelp(this, this.handler.commands.get(commandName)!);
 	}
 }

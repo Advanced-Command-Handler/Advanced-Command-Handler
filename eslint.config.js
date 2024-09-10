@@ -4,7 +4,6 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(eslint.configs.recommended,
 	...tseslint.configs.recommendedTypeChecked,
-	jsdoc.configs['flat/recommended-typescript'],
 	{
 		ignores: [
 			'**/node_modules',
@@ -25,9 +24,6 @@ export default tseslint.config(eslint.configs.recommended,
 			'src/**/*.ts',
 			'tests/**/*.js',
 		],
-		plugins: {
-			jsdoc,
-		},
 		rules: {
 			'no-control-regex': 'off',
 			'@typescript-eslint/no-unused-vars': [
@@ -50,6 +46,25 @@ export default tseslint.config(eslint.configs.recommended,
 					checksVoidReturn: false,
 				},
 			],
+		}
+	}, {
+		files: ['**/*.js'], ...tseslint.configs.disableTypeChecked,
+		languageOptions: {
+			globals: {
+				'process': 'readonly',
+			},
+		},
+	}, {
+		...jsdoc.configs['flat/recommended-typescript'],
+		files: ['**/*.ts'],
+		ignores: [
+			'**/*.js',
+			'src/defaults/**/*.ts',
+		],
+		plugins: {
+			jsdoc,
+		},
+		rules: {
 			'jsdoc/check-tag-names': 'off',
 			'jsdoc/require-description': [
 				'warn',
@@ -88,8 +103,5 @@ export default tseslint.config(eslint.configs.recommended,
 				},
 			],
 		},
-	},
-	{
-		files: ['**/*.js'], ...tseslint.configs.disableTypeChecked,
-	},
+	}
 );

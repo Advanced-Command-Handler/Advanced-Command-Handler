@@ -14,7 +14,6 @@ export * from './classes/contexts/SubCommandContext.js';
 export * from './classes/errors/CommandError.js';
 export * from './classes/errors/CommandHandlerError.js';
 export * from './classes/Event.js';
-export * from './classes/interactions/Interaction.js';
 export * from './classes/interactions/SlashCommand.js';
 export * from './CommandHandler.js';
 export * from './InteractionHandler.js';

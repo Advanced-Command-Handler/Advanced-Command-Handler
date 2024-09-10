@@ -6,10 +6,12 @@ import {Event} from '../Event.js';
 import {Argument, type ArgumentBuilder, ArgumentType} from './Argument.js';
 
 /**
+ * Check if a number is in a range.
  *
- * @param number
- * @param min
- * @param max
+ * @param number - The number to check.
+ * @param min - The minimum value.
+ * @param max - The maximum value.
+ * @returns - Whether the number is in the range.
  */
 function inRange(number: number | string, min: number, max: number = Infinity) {
 	if (typeof number === 'string') number = number.length;

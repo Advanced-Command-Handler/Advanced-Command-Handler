@@ -20,8 +20,8 @@ export default class CommandCommand extends Command {
 			},
 			async ctx => {
 				const commandText = `${await ctx.argument('category')}/${await ctx.argument('command')}`;
-				/** @type {Command} */
-				let command = await ctx.argument('command');
+				/** @type {string} */
+				const command = await ctx.argument('command');
 				if (command && ctx.handler.findCommand(command)) return ctx.reply(`Command \`${commandText}\` already enabled.`);
 
 				try {

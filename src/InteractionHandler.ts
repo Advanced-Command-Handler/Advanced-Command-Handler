@@ -7,7 +7,6 @@ import type {AdvancedClient} from './classes/AdvancedClient.js';
 import type {CommandHandlerError} from './classes/errors/CommandHandlerError.js';
 import type {Event} from './classes/Event.js';
 import type {SlashCommand} from './classes/interactions/SlashCommand.js';
-import {CommandHandler} from './CommandHandler.js';
 import {Logger} from './helpers/Logger.js';
 import type {Constructor} from './types.js';
 import {loadClass} from './utils/load.js';

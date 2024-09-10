@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-description,jsdoc/require-returns */
 import {Parser} from 'argumentorum';
 import type {Awaitable} from 'discord.js';
 import {ArgumentContext} from '../contexts/ArgumentContext.js';
@@ -102,6 +103,7 @@ export class ArgumentParser {
 			let argumentResult: MapToValuesType<typeof argsMap> = null;
 			currentArgument = argsToParse.shift();
 			if (!currentArgument) break;
+
 			const keywordValue = keywordArgs.get(currentArgument.name.toLowerCase());
 			const hasKeywordArgs = keywordValue !== undefined;
 			const actualCursorIndex = this.parser.cursor.index;

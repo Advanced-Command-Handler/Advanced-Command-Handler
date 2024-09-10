@@ -6,6 +6,13 @@ import {Event} from '../../classes/Event.js';
 export class InteractionCreateEvent extends Event {
 	override readonly name = 'interactionCreate';
 
+	/**
+	 * Configures slash commands to be executed when an interaction is created.
+
+	 * @param ctx - The event context.
+	 * @param interaction - The interaction that was created.
+	 * @returns The result of the command execution.
+	 */
 	public override async run(ctx: EventContext<this>, interaction: Interaction) {
 		if (!interaction.isCommand()) return;
 		const command = ctx.interactionHandler.commands.get(interaction.commandName);

@@ -158,6 +158,7 @@ export class SlashCommandContext {
 	 *
 	 * @param content - The options of the reply.
 	 * @param options - The options of the reply message.
+	 * @returns The message that was sent.
 	 */
 	public async reply(
 		content: string | ReplyOptions,

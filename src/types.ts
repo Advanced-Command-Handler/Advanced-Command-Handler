@@ -1,6 +1,6 @@
-export type Constructor<T extends {} = {}> = new (...args: any[]) => T;
+export type Constructor<T extends object = object> = new (...args: any[]) => T;
 
-export type MaybeClass<T extends {}> =
+export type MaybeClass<T extends object> =
 	| Constructor<T>
 	| {
 			default: Constructor<T>;
