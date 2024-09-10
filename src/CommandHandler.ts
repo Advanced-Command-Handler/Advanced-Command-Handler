@@ -121,7 +121,7 @@ export namespace CommandHandler {
 		 *
 		 * @remarks If one of the files is not found, it will create it.
 		 */
-		saveLogsInFile?: string[];
+		saveLogsInFiles?: string[];
 
 		/**
 		 * Add mention of the bot as prefixes.
@@ -387,7 +387,7 @@ export namespace CommandHandler {
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
 	export function create(options: CreateCommandHandlerOptions) {
-		options.saveLogsInFile?.forEach(Logger.saveInFile);
+		options.saveLogsInFiles?.forEach(Logger.saveInFile);
 		Logger.log(`Advanced Command Handler ${version} by Ayfri.`, 'Loading', 'red');
 		commandsDir = options.commandsDir;
 		eventsDir = options.eventsDir;

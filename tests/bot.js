@@ -13,7 +13,7 @@ CommandHandler.create({
 	eventsDir: 'events',
 	commandsDir: 'commands',
 	prefixes: ['!'],
-	saveLogsInFile: ['a.txt'],
+	saveLogsInFiles: ['a.txt'],
 })
 	.useDefaultEvents({
 		messageCreateOptions: {
