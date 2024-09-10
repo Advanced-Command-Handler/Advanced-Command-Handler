@@ -52,9 +52,13 @@ CommandHandler.create({
 		],
 	});
 
-InteractionHandler.useDefaultCommands().loadCommands('slashCommands');
+InteractionHandler.create({
+	slashCommandsDir: 'slashCommands',
+}).useDefaultCommands().launch();
 
 CommandHandler.on('launched', () => {
 	Logger.log('CommandHandler launched successfully !');
 	CommandHandler.unloadCommand('tests');
 });
+
+InteractionHandler.on('launched', () => Logger.log('InteractionHandler launched successfully !'));

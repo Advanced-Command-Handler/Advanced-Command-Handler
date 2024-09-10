@@ -583,7 +583,7 @@ export namespace CommandHandler {
 		Logger.info('Loading events.', 'Loading');
 		Logger.comment(`Events : (${files.length})`, 'Loading');
 
-		if (files.length) for (const file of files) await loadEvent(path, file);
+		for (const file of files) await loadEvent(path, file);
 
 		if (!usesDefaultEvents) return;
 		const options = defaultEventsOptions;

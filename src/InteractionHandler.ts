@@ -7,11 +7,22 @@ import type {AdvancedClient} from './classes/AdvancedClient.js';
 import type {CommandHandlerError} from './classes/errors/CommandHandlerError.js';
 import type {Event} from './classes/Event.js';
 import type {SlashCommand} from './classes/interactions/SlashCommand.js';
+import {CommandHandler} from './CommandHandler.js';
 import {Logger} from './helpers/Logger.js';
 import type {Constructor} from './types.js';
 import {loadClass} from './utils/load.js';
 
 export namespace InteractionHandler {
+	/**
+	 * The options for the InteractionHandler.
+	 */
+	interface InteractionHandlerOptions {
+		/**
+		 * The directory where the slash commands are located.
+		 */
+		slashCommandsDir: string;
+	}
+
 	/**
 	 * The options for the default events.
 	 */
@@ -40,6 +51,14 @@ export namespace InteractionHandler {
 		 */
 		error: [CommandHandlerError];
 		/**
+		 * The event executed when the InteractionHandler starts its launch.
+		 */
+		launch: [];
+		/**
+		 * The event executed when the InteractionHandler is launched.
+		 */
+		launched: [];
+		/**
 		 * The event executed when loading a SlashCommand.
 		 */
 		loadSlashCommand: [SlashCommand];
@@ -60,7 +79,7 @@ export namespace InteractionHandler {
 	 * The client of the handler, null before {@link launch} function executed.
 	 */
 	export let client: AdvancedClient | null = null;
-	export let commandsDir = '';
+	export let slashCommandsDir = '';
 
 	export let usesDefaultEvents = true;
 	export let defaultEventsOptions: DefaultEventsOptions | undefined = undefined;
@@ -122,6 +141,17 @@ export namespace InteractionHandler {
 	}
 
 	/**
+	 * Creates the InteractionHandler and sets its options.
+	 *
+	 * @param options - The options for the InteractionHandler.
+	 * @returns - The InteractionHandler itself.
+	 */
+	export function create(options: InteractionHandlerOptions) {
+		slashCommandsDir = options.slashCommandsDir;
+		return InteractionHandler;
+	}
+
+	/**
 	 * Load a command from the directory & filename.
 	 *
 	 * @param path - The path of the command folder.
@@ -152,16 +182,15 @@ export namespace InteractionHandler {
 		const dirs = await fsPromises.readdir(path);
 		Logger.info('Loading slash commands.', 'Loading');
 		Logger.comment(`Categories : (${dirs.length})`, 'Loading');
-		if (dirs.length) {
-			for (const dir of dirs) {
-				const commandsPath = join(path, dir);
-				const files = await fsPromises.readdir(commandsPath);
-				if (!files.length) continue;
-				Logger.comment(`Slash Commands in the category '${dir}' : (${files.length})`, 'Loading');
 
-				for (const file of files) {
-					await loadCommand(commandsPath, file);
-				}
+		for (const dir of dirs) {
+			const commandsPath = join(path, dir);
+			const files = await fsPromises.readdir(commandsPath);
+			if (!files.length) continue;
+			Logger.comment(`Slash Commands in the category '${dir}' : (${files.length})`, 'Loading');
+
+			for (const file of files) {
+				await loadCommand(commandsPath, file);
 			}
 		}
 		Logger.info(`${commands.size} slash commands loaded.`, 'Loading');
@@ -180,6 +209,18 @@ export namespace InteractionHandler {
 			Logger.comment(`Default ${Logger.setColor('green', instance.name)} slash command loaded.`, 'Loading');
 		}
 		Logger.info(`Default commands loaded. (${Object.keys(defaultSlashCommands).length})`, 'Loading');
+	}
+
+	/**
+	 * Launches the InteractionHandler.
+	 */
+	export function launch() {
+		emit('launch');
+		CommandHandler.once('launched', async () => {
+			client = CommandHandler.client;
+			await loadCommands(slashCommandsDir);
+			emit('launched');
+		});
 	}
 
 	/**
