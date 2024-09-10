@@ -240,8 +240,9 @@ export class Logger {
 		if (Logger.LEVEL === LogLevel.OFF) return;
 		const datePart = `[${dayjs().format('YYYY/MM/DD HH:mm:ss.SSS')}]`;
 		const titlePart = `[${title.toUpperCase()}]`;
-		let stringifiedText = typeof text === 'object' ? inspect(text) : String(text);
-		let textPart = text as string;
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+		let stringifiedText = typeof text === 'object' ? inspect(text) : text.toString() as string;
+		let cleanText = stringifiedText;
 
 		stringifiedText = stringifiedText
 			.split(' ')
@@ -256,8 +257,8 @@ export class Logger {
 		console.log(stringifiedText);
 		Logger.savingFiles.forEach((s, index) => {
 			if (fs.existsSync(s)) {
-				textPart = textPart.replace(/\[(\d{1,3};){0,6}\d{1,3}m/gm, '');
-				fs.appendFileSync(s, `${datePart}${titlePart} ${textPart}\n`);
+				cleanText = cleanText.replace(/\[(\d{1,3};){0,6}\d{1,3}m/gm, '');
+				fs.appendFileSync(s, `${datePart}${titlePart} ${cleanText}\n`);
 			} else {
 				Logger.savingFiles.splice(index, 1);
 				Logger.warn(`File ${Logger.setColor('violet', s)} not found, removed from files to save logs.`, 'LoggingWriter');

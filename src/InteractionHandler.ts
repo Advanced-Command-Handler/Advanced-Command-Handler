@@ -177,7 +177,7 @@ export namespace InteractionHandler {
 			if (options?.exclude?.includes(instance.name)) continue;
 			commands.set(instance.name, instance);
 
-			Logger.comment(`Default ${Logger.setColor('green', instance.name)} command loaded.`, 'Loading');
+			Logger.comment(`Default ${Logger.setColor('green', instance.name)} slash command loaded.`, 'Loading');
 		}
 		Logger.info(`Default commands loaded. (${Object.keys(defaultSlashCommands).length})`, 'Loading');
 	}
