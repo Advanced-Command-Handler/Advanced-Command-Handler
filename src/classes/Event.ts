@@ -31,7 +31,9 @@ export abstract class Event {
 			interactionHandler: InteractionHandler,
 		});
 
+		// @ts-ignore
 		if (this.once) client.once(this.name, (...args: EventArguments<this>) => this.run(context, ...args));
+		// @ts-ignore
 		else client.on(this.name, (...args: EventArguments<this>) => this.run(context, ...args));
 	}
 
