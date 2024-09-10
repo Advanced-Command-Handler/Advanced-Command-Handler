@@ -376,8 +376,8 @@ export abstract class Command {
 	 * @returns - If it is on a channel required if used.
 	 */
 	public isInRightChannel(ctx: CommandContext) {
-		if (this.channels?.length === 0) return true;
-		return !this.channels?.find(ch => (typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id)) ?? true;
+		if (!this.channels || this.channels.length === 0) return true;
+		return !this.channels.find(ch => typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id);
 	}
 
 	/**
@@ -397,7 +397,7 @@ export abstract class Command {
 		const cooldown: number = this.cooldown ?? 0;
 		const id = Command.getSnowflake(from);
 		if (!CommandHandler.cooldowns.has(id)) CommandHandler.cooldowns.set(id, {});
-		if (this.cooldown === 0 ?? !!CommandHandler.cooldowns.get(id)![this.name]) return;
+		if (this.cooldown === 0 || !!CommandHandler.cooldowns.get(id)![this.name]) return;
 
 		CommandHandler.cooldowns.get(id)![this.name] = {
 			executedAt: from instanceof Message ? from.createdAt : new Date(),
@@ -547,7 +547,7 @@ export abstract class Command {
 /**
  * @see {@link https://ayfri.gitbook.io/advanced-command-handler/concepts/commands/subcommands}
  * @remarks
- * This class is not in the SubCommand file because otherwise it won't compile because of circular because of the {@link Command.subCommands} property.
+ * This class is not in the SubCommand file because otherwise it won't compile because of circular because of the {@link Command#subCommands} property.
  */
 export class SubCommand extends Command {
 	/**
