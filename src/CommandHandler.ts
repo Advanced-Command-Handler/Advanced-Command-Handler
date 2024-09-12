@@ -272,6 +272,8 @@ export namespace CommandHandler {
 	 * These events may not be bound to the {@link client}.
 	 */
 	export const events = new Collection<string, Event>();
+	export let launched = false;
+
 	export let commandsDir = '';
 	export let eventsDir = '';
 	export let owners: string[] = [];
@@ -464,6 +466,7 @@ export namespace CommandHandler {
 			}
 		}
 
+		launched = true;
 		emit('launched');
 
 		return CommandHandler;

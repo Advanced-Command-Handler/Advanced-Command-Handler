@@ -1,4 +1,4 @@
-import {REST} from '@discordjs/rest';
+import {DiscordAPIError, REST} from '@discordjs/rest';
 import {Routes} from 'discord-api-types/v9';
 import {Collection} from 'discord.js';
 import {EventEmitter} from 'events';
@@ -64,6 +64,10 @@ export namespace InteractionHandler {
 		 * The event executed when loading a SlashCommand.
 		 */
 		loadSlashCommand: [SlashCommand];
+		/**
+		 * The event executed when registering a SlashCommand to Discord.
+		 */
+		registerSlashCommand: [SlashCommand];
 	};
 
 	/**
@@ -218,28 +222,56 @@ export namespace InteractionHandler {
 	/**
 	 * Launches the InteractionHandler.
 	 */
-	export function launch() {
+	export async function launch() {
 		emit('launch');
-		CommandHandler.once('launched', async () => {
-			client = CommandHandler.client;
-			rest.setToken(client!.token!);
 
-			const guildIds = InteractionHandler.commands.map(command => command.guilds).flat();
-			const guildCommands: SlashCommand[] = [];
-			for (const guildId of guildIds) {
-				const commands = InteractionHandler.commands.filter(command => command.guilds.includes(guildId));
-				const commandsJson = commands.map(command => command.toJSON());
+		await loadSlashCommands(slashCommandsDir);
+
+		while (!CommandHandler.launched) {
+			await new Promise(resolve => setTimeout(resolve, 200));
+		}
+
+		client = CommandHandler.client;
+		rest.setToken(client!.token!);
+
+		const guildIds = InteractionHandler.commands.map(command => command.guilds).flat().filter(value => value.trim());
+		const guildCommands: SlashCommand[] = [];
+		for (const guildId of guildIds) {
+			const commands = InteractionHandler.commands.filter(command => command.guilds.includes(guildId));
+			const commandsJson = commands.map(command => command.toJSON());
+			const commandsLogString = Logger.setColor('green', commands.map(command => command.name).join(', '));
+
+			try {
 				await rest.put(Routes.applicationGuildCommands(client!.user!.id, guildId), {body: commandsJson});
 				guildCommands.push(...commands.values());
+
+				commands.forEach(command => emit('registerSlashCommand', command));
+				Logger.info(`Guild commands ${commandsLogString} registered for guild ${guildId}.`, 'Loading');
+			} catch (error) {
+				if (error instanceof DiscordAPIError) {
+					if (error.code === 50001) {
+						Logger.error(`Error while registering commands ${commandsLogString} for guild ${guildId} : Missing access.`,
+							'Loading',
+						);
+						continue;
+					}
+					Logger.error(`Error while registering commands ${commandsLogString} for guild ${guildId} : ${error.message}`,
+						'Loading',
+					);
+				}
 			}
+		}
 
-			const globalCommands = InteractionHandler.commands.filter(command => !guildCommands.includes(command));
-			const commandsJson = globalCommands.map(command => command.toJSON());
-			await rest.put(Routes.applicationCommands(client!.user!.id), {body: commandsJson});
+		const globalCommands = InteractionHandler.commands.filter(command => !guildCommands.includes(command));
+		const commandsJson = globalCommands.map(command => command.toJSON());
+		await rest.put(Routes.applicationCommands(client!.user!.id), {body: commandsJson});
 
-			await loadSlashCommands(slashCommandsDir);
-			emit('launched');
-		});
+		globalCommands.forEach(command => emit('registerSlashCommand', command));
+		Logger.info(`Global commands ${Logger.setColor('green', globalCommands.map(command => command.name).join(', '))} registered.`,
+			'Loading',
+		);
+
+		emit('launched');
 	}
 
 	/**
