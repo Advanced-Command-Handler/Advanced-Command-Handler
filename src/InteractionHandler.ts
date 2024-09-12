@@ -223,8 +223,19 @@ export namespace InteractionHandler {
 		CommandHandler.once('launched', async () => {
 			client = CommandHandler.client;
 			rest.setToken(client!.token!);
-			const commands = InteractionHandler.commands.map(command => command.toJSON());
-			await rest.put(Routes.applicationCommands(client!.user!.id), {body: commands});
+
+			const guildIds = InteractionHandler.commands.map(command => command.guilds).flat();
+			const guildCommands: SlashCommand[] = [];
+			for (const guildId of guildIds) {
+				const commands = InteractionHandler.commands.filter(command => command.guilds.includes(guildId));
+				const commandsJson = commands.map(command => command.toJSON());
+				await rest.put(Routes.applicationGuildCommands(client!.user!.id, guildId), {body: commandsJson});
+				guildCommands.push(...commands.values());
+			}
+
+			const globalCommands = InteractionHandler.commands.filter(command => !guildCommands.includes(command));
+			const commandsJson = globalCommands.map(command => command.toJSON());
+			await rest.put(Routes.applicationCommands(client!.user!.id), {body: commandsJson});
 
 			await loadSlashCommands(slashCommandsDir);
 			emit('launched');
