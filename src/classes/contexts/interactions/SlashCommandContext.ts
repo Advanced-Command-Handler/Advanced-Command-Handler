@@ -142,6 +142,34 @@ export class SlashCommandContext {
 	}
 
 	/**
+	 * Deletes the initial reply of the slash command.
+	 *
+	 * @returns The message that was deleted.
+	 */
+	public async deleteReply() {
+		return await this.interaction.deleteReply();
+	}
+
+	/**
+	 * Edits the initial reply of the slash command.
+	 *
+	 * @param options - The options of the reply message.
+	 * @returns The message that was edited.
+	 */
+	public async editReply(options: string | ReplyOptions): Promise<GuildCacheMessage<CacheType>> {
+		return await this.interaction.editReply(options);
+	}
+
+	/**
+	 * Fetches the message that was sent so you can interact with it.
+	 *
+	 * @returns The message that was sent.
+	 */
+	public async fetchReply(): Promise<GuildCacheMessage<CacheType>> {
+		return await this.interaction.fetchReply();
+	}
+
+	/**
 	 * Sends a follow-up message to the slash command.
 	 *
 	 * @param content - The content of the reply or the options of the reply.
