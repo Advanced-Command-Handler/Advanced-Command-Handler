@@ -142,6 +142,23 @@ export class SlashCommandContext {
 	}
 
 	/**
+	 * Sends a follow-up message to the slash command.
+	 *
+	 * @param content - The content of the reply or the options of the reply.
+	 * @param options - The options of the reply message.
+	 * @returns The message that was sent.
+	 */
+	public async followUp(content: string | ReplyOptions, options?: ReplyOptions): Promise<GuildCacheMessage<CacheType>> {
+		const finalOptions: ReplyOptions = typeof content === 'string' ? {content} : content;
+		if (options) {
+			if (options.embed && !options.embeds) options.embeds = [options.embed];
+			Object.assign(finalOptions, options);
+		}
+
+		return this.interaction.followUp(finalOptions);
+	}
+
+	/**
 	 *
 	 */
 	public reply(options: ReplyOptions): Promise<(typeof options)['fetchReply'] extends true ? GuildCacheMessage<CacheType> : void>;
