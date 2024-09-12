@@ -66,3 +66,13 @@ export function isTextChannelLike(value: any): value is GuildTextBasedChannel {
 export function random<T>(array: T[]): T {
 	return array[Math.floor(Math.random() * array.length)];
 }
+
+/**
+ * Wait for a certain amount of time.
+ *
+ * @param ms - The time to wait in milliseconds.
+ * @returns - A promise that resolves after the time has passed.
+ */
+export async function sleep(ms: number) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
