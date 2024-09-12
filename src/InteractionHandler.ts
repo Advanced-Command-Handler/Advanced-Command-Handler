@@ -1,3 +1,5 @@
+import {REST} from '@discordjs/rest';
+import {Routes} from 'discord-api-types/v9';
 import {Collection} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
@@ -74,6 +76,8 @@ export namespace InteractionHandler {
 	 * @eventProperty
 	 */
 	export const emitter = new EventEmitter();
+
+	export const rest = new REST({version: '9'});
 
 	/**
 	 * The client of the handler, null before {@link launch} function executed.
@@ -158,7 +162,7 @@ export namespace InteractionHandler {
 	 * @param name - The name of the command including the extension.
 	 * @returns - The command itself.
 	 */
-	export async function loadCommand(path: string, name: string) {
+	export async function loadSlashCommand(path: string, name: string) {
 		const command = await loadClass<SlashCommand>(path, name);
 		const instance = new (command as Constructor<SlashCommand>)();
 		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
@@ -177,7 +181,7 @@ export namespace InteractionHandler {
 	 * The path must be a directory containing sub-directories.
 	 * @param path - The path of the directory to load the commands from.
 	 */
-	export async function loadCommands(path: string) {
+	export async function loadSlashCommands(path: string) {
 		if (!path) return;
 		const dirs = await fsPromises.readdir(path);
 		Logger.info('Loading slash commands.', 'Loading');
@@ -190,7 +194,7 @@ export namespace InteractionHandler {
 			Logger.comment(`Slash Commands in the category '${dir}' : (${files.length})`, 'Loading');
 
 			for (const file of files) {
-				await loadCommand(commandsPath, file);
+				await loadSlashCommand(commandsPath, file);
 			}
 		}
 		Logger.info(`${commands.size} slash commands loaded.`, 'Loading');
@@ -218,13 +222,17 @@ export namespace InteractionHandler {
 		emit('launch');
 		CommandHandler.once('launched', async () => {
 			client = CommandHandler.client;
-			await loadCommands(slashCommandsDir);
+			rest.setToken(client!.token!);
+			const commands = InteractionHandler.commands.map(command => command.toJSON());
+			await rest.put(Routes.applicationCommands(client!.user!.id), {body: commands});
+
+			await loadSlashCommands(slashCommandsDir);
 			emit('launched');
 		});
 	}
 
 	/**
-	 * Add the defaults events to your CommandHandler.
+	 * Add the defaults events to your InteractionHandler.
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
@@ -239,15 +247,15 @@ export namespace InteractionHandler {
 	}
 
 	/**
-	 * Add the defaults commands to your CommandHandler.
+	 * Add the defaults commands to your InteractionHandler.
 	 *
 	 * @remarks
 	 * Must use after {@link CommandHandler.create}.
-	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults | Default Commands}
+	 * @see {@link https://ayfri.gitbook.io/advanced-command-handler/defaults | Default Slash Commands}
 	 * @param options - The options for the default commands.
 	 * @returns - Itself so that afterward you can chain with other functions.
 	 */
-	export function useDefaultCommands(options?: DefaultCommandsOptions) {
+	export function useDefaultSlashCommands(options?: DefaultCommandsOptions) {
 		usesDefaultCommands = true;
 		defaultCommandsOptions = options;
 		return InteractionHandler;
