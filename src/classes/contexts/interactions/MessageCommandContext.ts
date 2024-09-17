@@ -5,8 +5,7 @@ import {ApplicationCommandContext, type ApplicationCommandContextBuilder} from '
 /**
  * The options of the UserCommandContext.
  */
-export interface MessageCommandContextBuilder extends ApplicationCommandContextBuilder {
-	command: MessageCommand;
+export interface MessageCommandContextBuilder extends ApplicationCommandContextBuilder<MessageCommand> {
 	interaction: MessageContextMenuInteraction;
 	targetMessage: Message;
 }
@@ -14,8 +13,7 @@ export interface MessageCommandContextBuilder extends ApplicationCommandContextB
 /**
  * The context of a message command.
  */
-export class MessageCommandContext extends ApplicationCommandContext {
-	override command: MessageCommand;
+export class MessageCommandContext extends ApplicationCommandContext<MessageCommand> {
 	override interaction: MessageContextMenuInteraction;
 	/**
 	 * The author of the message that was targeted by the command.

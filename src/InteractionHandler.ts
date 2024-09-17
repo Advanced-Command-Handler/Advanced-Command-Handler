@@ -1,13 +1,16 @@
-import {Collection} from 'discord.js';
+import {REST} from '@discordjs/rest';
+import {Routes} from 'discord-api-types/v9';
+import {type ClientOptions, Collection, DiscordAPIError} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
 import packageJson from '../package.json' with {type: 'json'};
-import type {AdvancedClient} from './classes/AdvancedClient.js';
+import {AdvancedClient} from './classes/AdvancedClient.js';
 import type {CommandHandlerError} from './classes/errors/CommandHandlerError.js';
 import type {Event} from './classes/Event.js';
 import type {ApplicationCommand} from './classes/interactions/ApplicationCommand.js';
 import {type ApplicationCommandType, ApplicationCommandTypes} from './classes/interactions/ApplicationCommandTypes.js';
+import {MessageCommand} from './classes/interactions/MessageCommand.js';
 import {SlashCommand} from './classes/interactions/SlashCommand.js';
 import {UserCommand} from './classes/interactions/UserCommand.js';
 import {CommandHandler} from './CommandHandler.js';
@@ -21,9 +24,17 @@ export namespace InteractionHandler {
 	 */
 	interface InteractionHandlerOptions {
 		/**
+		 * The directory where the message commands are located.
+		 */
+		messageCommandsDir?: string;
+		/**
 		 * The directory where the slash commands are located.
 		 */
-		slashCommandsDir: string;
+		slashCommandsDir?: string;
+		/**
+		 * The directory where the user commands are located.
+		 */
+		userCommandsDir?: string;
 	}
 
 	/**
@@ -45,26 +56,17 @@ export namespace InteractionHandler {
 	 */
 	interface LaunchInteractionHandlerOptions {
 		/**
-		 * The guild ID to launch the interaction handler.
+		 * The client options, see {@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions | ClientOptions}.
+		 */
+		clientOptions?: ClientOptions;
+		/**
+		 * The global guild ID to launch the InteractionHandler.
 		 */
 		guildId?: string;
-
 		/**
-		 * The directory where the message commands are located.
+		 * The token of your bot, will use {@link CommandHandler.client} if you launch it before launching the interaction handler.
 		 */
-		messageCommandsDir?: string;
-		/**
-		 * The directory where the slash commands are located.
-		 */
-		slashCommandsDir?: string;
-		/**
-		 * The token of your bot.
-		 */
-		token: string;
-		/**
-		 * The directory where the user commands are located.
-		 */
-		userCommandsDir?: string;
+		token?: string;
 	}
 
 	/**
@@ -81,9 +83,21 @@ export namespace InteractionHandler {
 		 */
 		error: [CommandHandlerError];
 		/**
+		 * The event executed when the Interaction Handler is starting its launch.
+		 */
+		launching: [LaunchInteractionHandlerOptions];
+		/**
+		 * The event executed when the Interaction Handler is launched.
+		 */
+		launched: [];
+		/**
 		 * The event executed when loading an ApplicationCommand.
 		 */
 		loadApplicationCommand: [ApplicationCommand];
+		/**
+		 * The event executed when loading a MessageCommand.
+		 */
+		loadMessageCommand: [MessageCommand];
 		/**
 		 * The event executed when loading a SlashCommand.
 		 */
@@ -109,7 +123,10 @@ export namespace InteractionHandler {
 	 * The client of the handler, null before {@link launch} function executed.
 	 */
 	export let client: AdvancedClient | null = null;
-	export let slashCommandsDir = '';
+	export let messageCommandsDir: string | undefined = undefined;
+	export let slashCommandsDir: string | undefined = undefined;
+	export let userCommandsDir: string | undefined = undefined;
+	export const rest = new REST({version: '9'});
 
 	export let usesDefaultEvents = true;
 	export let defaultEventsOptions: DefaultEventsOptions | undefined = undefined;
@@ -177,7 +194,9 @@ export namespace InteractionHandler {
 	 * @returns - The InteractionHandler itself.
 	 */
 	export function create(options: InteractionHandlerOptions) {
+		messageCommandsDir = options.messageCommandsDir;
 		slashCommandsDir = options.slashCommandsDir;
+		userCommandsDir = options.userCommandsDir;
 		return InteractionHandler;
 	}
 
@@ -188,7 +207,7 @@ export namespace InteractionHandler {
 	 * @param name - The name of the command including the extension.
 	 * @returns - The command itself.
 	 */
-	export async function loadSlashCommand(path: string, name: string) {
+	export async function loadApplicationCommand(path: string, name: string) {
 		const command = await loadClass<ApplicationCommand>(path, name);
 		const instance = new (command as Constructor<ApplicationCommand>)();
 		if (!instance) throw new Error(`Command given name or path is not valid.\nPath : ${path}\nName:${name}`);
@@ -197,6 +216,7 @@ export namespace InteractionHandler {
 
 		emit('loadApplicationCommand', instance);
 		if (instance instanceof SlashCommand) emit('loadSlashCommand', instance);
+		else if (instance instanceof MessageCommand) emit('loadMessageCommand', instance);
 		else if (instance instanceof UserCommand) emit('loadUserCommand', instance);
 
 		return instance;
@@ -221,7 +241,7 @@ export namespace InteractionHandler {
 			if (!files.length) continue;
 
 			for (const file of files) {
-				await loadCommand(join(userPath, category), file);
+				await loadApplicationCommand(join(userPath, category), file);
 			}
 		}
 		Logger.info(`${commands.length} ${type.logNamePlural} loaded.`, 'Loading');
@@ -269,68 +289,13 @@ export namespace InteractionHandler {
 	 * @param userPath - The path of the directory to load the commands from defined by the user.
 	 * @param type - The type of the commands.
 	 */
-	export async function loadCommands(userPath: string, type: ApplicationCommandType) {
+	export async function loadApplicationCommands(userPath: string, type: ApplicationCommandType) {
 		await loadCommandsType(userPath, type);
 
 		Logger.info(`${commands.length} commands loaded.`, 'Loading');
 
 		if (!usesDefaultCommands) return;
 		await loadDefaultCommandsOfType(type);
-	}
-
-	/**
-	 * Launches the InteractionHandler.
-	 */
-	export async function launch() {
-		emit('launch');
-
-		await loadSlashCommands(slashCommandsDir);
-
-		while (!CommandHandler.launched) {
-			await new Promise(resolve => setTimeout(resolve, 200));
-		}
-
-		client = CommandHandler.client;
-		rest.setToken(client!.token!);
-
-		const guildIds = InteractionHandler.commands.map(command => command.guilds).flat().filter(value => value.trim());
-		const guildCommands: SlashCommand[] = [];
-		for (const guildId of guildIds) {
-			const commands = InteractionHandler.commands.filter(command => command.guilds.includes(guildId));
-			const commandsJson = commands.map(command => command.toJSON());
-			const commandsLogString = Logger.setColor('green', commands.map(command => command.name).join(', '));
-
-			try {
-				await rest.put(Routes.applicationGuildCommands(client!.user!.id, guildId), {body: commandsJson});
-				guildCommands.push(...commands.values());
-
-				commands.forEach(command => emit('registerSlashCommand', command));
-				Logger.info(`Guild commands ${commandsLogString} registered for guild ${guildId}.`, 'Loading');
-			} catch (error) {
-				if (error instanceof DiscordAPIError) {
-					if (error.code === 50001) {
-						Logger.error(`Error while registering commands ${commandsLogString} for guild ${guildId} : Missing access.`,
-							'Loading',
-						);
-						continue;
-					}
-					Logger.error(`Error while registering commands ${commandsLogString} for guild ${guildId} : ${error.message}`,
-						'Loading',
-					);
-				}
-			}
-		}
-
-		const globalCommands = InteractionHandler.commands.filter(command => !guildCommands.includes(command));
-		const commandsJson = globalCommands.map(command => command.toJSON());
-		await rest.put(Routes.applicationCommands(client!.user!.id), {body: commandsJson});
-
-		globalCommands.forEach(command => emit('registerSlashCommand', command));
-		Logger.info(`Global commands ${Logger.setColor('green', globalCommands.map(command => command.name).join(', '))} registered.`,
-			'Loading',
-		);
-
-		emit('launched');
 	}
 
 	/**
@@ -368,44 +333,81 @@ export namespace InteractionHandler {
 	 *
 	 * @param launchOptions - The options to launch the interactions.
 	 */
-	export async function createInteractions(launchOptions: LaunchInteractionHandlerOptions) {
-		const messageCommandsDir = launchOptions.messageCommandsDir;
-		const slashCommandsDir = launchOptions.slashCommandsDir;
-		const userCommandsDir = launchOptions.userCommandsDir;
-		if (messageCommandsDir) await loadCommands(messageCommandsDir, ApplicationCommandTypes.MESSAGE);
-		if (slashCommandsDir) await loadCommands(slashCommandsDir, ApplicationCommandTypes.SLASH);
-		if (userCommandsDir) await loadCommands(userCommandsDir, ApplicationCommandTypes.USER);
+	export async function createInteractions(launchOptions: LaunchInteractionHandlerOptions = {}) {
+		emit('launching', launchOptions);
 
-		const buildedCommands = commands.map(command => command.toJSON()).filter(c => c !== null) as RESTPostAPIChatInputApplicationCommandsJSONBody[];
+		if (messageCommandsDir) await loadApplicationCommands(messageCommandsDir, ApplicationCommandTypes.MESSAGE);
+		if (slashCommandsDir) await loadApplicationCommands(slashCommandsDir, ApplicationCommandTypes.SLASH);
+		if (userCommandsDir) await loadApplicationCommands(userCommandsDir, ApplicationCommandTypes.USER);
 
-		Logger.log('Builded commands :', 'Loading');
-		Logger.log(
-			buildedCommands.map(c => c.name),
-			'Loading'
-		);
+		Logger.log('Loading sub slash commands.', 'SubSlashCommandLoading');
+		commands.filter(c => c instanceof SlashCommand).forEach(c => c.registerSubCommands?.());
 
-		const rest = new REST({version: '10'}).setToken(launchOptions.token);
+		if (CommandHandler.commands.size) {
+			CommandHandler.once('launched', () => (client = CommandHandler.client));
 
-		let canRegister = false;
-		CommandHandler.once('launched', async () => (canRegister = true));
-
-		while (!canRegister) {
-			await new Promise(resolve => setTimeout(resolve, 100));
+			while (!client) {
+				await new Promise(resolve => setTimeout(resolve, 100));
+			}
+		} else {
+			if (!launchOptions.token) throw new Error('You need to provide a token to launch the interaction handler.');
+			client = new AdvancedClient(launchOptions.token, launchOptions.clientOptions!);
 		}
 
+		rest.setToken(client.token!);
 		try {
+			const guildIds = InteractionHandler.commands
+				.map(command => command.guilds)
+				.flat()
+				.filter(value => value.trim());
+			const guildCommands: ApplicationCommand[] = [];
+			for (const guildId of guildIds) {
+				const commands = InteractionHandler.commands.filter(command => command.guilds.includes(guildId));
+				const commandsJson = commands.map(command => command.toJSON());
+				const commandsLogString = Logger.setColor('green', commands.map(command => command.name).join(', '));
+
+				try {
+					await rest.put(Routes.applicationGuildCommands(client.user!.id, guildId), {body: commandsJson});
+					guildCommands.push(...commands.values());
+
+					commands.forEach(command => emit('loadApplicationCommand', command));
+					Logger.info(`Guild commands ${commandsLogString} registered for guild ${guildId}.`, 'Loading');
+				} catch (error) {
+					if (error instanceof DiscordAPIError) {
+						if (error.code === 50001) {
+							Logger.error(
+								`Error while registering application (/) commands ${commandsLogString} for guild ${guildId} : Missing access.`,
+								'Loading'
+							);
+							continue;
+						}
+						Logger.error(
+							`Error while registering application (/) commands ${commandsLogString} for guild ${guildId} : ${error.message}`,
+							'Loading'
+						);
+					}
+				}
+			}
+
+			const globalCommands = InteractionHandler.commands.filter(command => !guildCommands.includes(command));
+			const commandsJson = globalCommands.map(command => command.toJSON());
 			const guildId = launchOptions.guildId;
+			const commandsLogString = Logger.setColor('green', globalCommands.map(command => command.name).join(', '));
+
 			if (guildId) {
 				Logger.info(`Started refreshing application (/) commands for guild ${guildId}.`, 'Loading');
-				await rest.put(Routes.applicationGuildCommands(CommandHandler.client?.user?.id ?? '', guildId), {body: buildedCommands});
-				Logger.info(`Successfully reloaded application (/) commands for guild ${guildId}.`, 'Loading');
+				await rest.put(Routes.applicationGuildCommands(client.user!.id, guildId), {body: commandsJson});
+				Logger.info(`Successfully reloaded application (/) commands ${commandsLogString} for guild ${guildId}.`, 'Loading');
 			} else {
 				Logger.info('Started refreshing application global (/) commands.', 'Loading');
-				await rest.put(Routes.applicationCommands(CommandHandler.client?.user?.id ?? ''), {body: buildedCommands});
-				Logger.info('Successfully reloaded global application (/) commands.', 'Loading');
+				await rest.put(Routes.applicationCommands(client.user!.id), {body: commandsJson});
+				Logger.info(`Successfully reloaded global application (/) ${commandsLogString} commands.`, 'Loading');
 			}
 		} catch (error) {
-			Logger.error(`Failed to reload application (/) commands. ${error}`, 'Loading');
+			if (error instanceof Error) Logger.error(`Failed to reload application (/) commands. ${error.message}`, 'Loading');
+			else Logger.error(`Failed to reload application (/) commands. ${String(error)}`, 'Loading');
 		}
+
+		emit('launched');
 	}
 }

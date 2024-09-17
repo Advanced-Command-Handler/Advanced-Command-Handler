@@ -54,7 +54,9 @@ CommandHandler.create({
 
 InteractionHandler.create({
 	slashCommandsDir: 'slashCommands',
-}).useDefaultSlashCommands().launch();
+})
+	.useDefaultSlashCommands()
+	.createInteractions();
 
 CommandHandler.on('launched', () => {
 	Logger.log('CommandHandler launched successfully !');

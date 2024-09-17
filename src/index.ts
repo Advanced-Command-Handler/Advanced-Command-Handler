@@ -23,7 +23,6 @@ export * from './classes/errors/CommandError.js';
 export * from './classes/errors/CommandHandlerError.js';
 export * from './classes/interactions/ApplicationCommand.js';
 export * from './classes/interactions/ApplicationCommandTypes.js';
-export * from './classes/interactions/Interaction.js';
 export * from './classes/interactions/MessageCommand.js';
 export * from './classes/interactions/SlashCommand.js';
 export * from './classes/interactions/UserCommand.js';

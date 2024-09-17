@@ -1,4 +1,4 @@
-import type {APIApplicationCommandOption} from 'discord-api-types/v10';
+import type {APIApplicationCommandBasicOption} from 'discord-api-types/v10';
 import type {ArgumentContext} from '../contexts/ArgumentContext.js';
 import type {SlashCommandArgument} from './SlashCommandArgument.js';
 
@@ -70,7 +70,7 @@ export class Argument<T> {
 		public options: ArgumentOptions<T>,
 		public validator: ArgumentValidatorFunction,
 		public parser: ArgumentParserFunction<T>,
-		public toSlashCommandArgument?: (name: string) => APIApplicationCommandOption
+		public toSlashCommandArgument?: (name: string) => APIApplicationCommandBasicOption
 	) {}
 
 	/**
@@ -85,13 +85,13 @@ export class Argument<T> {
 	 *
 	 * @returns - The created argument.
 	 */
-	public static create<T, F extends ((name: string) => APIApplicationCommandOption) | undefined = (name: string) => APIApplicationCommandOption>(
+	public static create<T, F extends ((name: string) => APIApplicationCommandBasicOption) | undefined = (name: string) => APIApplicationCommandBasicOption>(
 		type: ArgumentType,
 		options: ArgumentOptions<T>,
 		validator: ArgumentValidatorFunction,
 		parser: ArgumentParserFunction<T>,
 		toSlashCommandArgument?: F
-	): F extends (name: string) => APIApplicationCommandOption ? SlashCommandArgument<T> : Argument<T> {
+	): F extends (name: string) => APIApplicationCommandBasicOption ? SlashCommandArgument<T> : Argument<T> {
 		return new Argument(type, options, validator, parser, toSlashCommandArgument) as any;
 	}
 

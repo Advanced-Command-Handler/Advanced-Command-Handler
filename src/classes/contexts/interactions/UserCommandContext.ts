@@ -6,8 +6,7 @@ import {ApplicationCommandContext, type ApplicationCommandContextBuilder} from '
 /**
  * The options of the UserCommandContext.
  */
-export interface UserCommandContextBuilder extends ApplicationCommandContextBuilder {
-	command: UserCommand;
+export interface UserCommandContextBuilder extends ApplicationCommandContextBuilder<UserCommand> {
 	interaction: UserContextMenuInteraction;
 	targetMember: GuildMember | null;
 	targetUser: User;
@@ -16,8 +15,7 @@ export interface UserCommandContextBuilder extends ApplicationCommandContextBuil
 /**
  * The context of a user command.
  */
-export class UserCommandContext extends ApplicationCommandContext {
-	override command: UserCommand;
+export class UserCommandContext extends ApplicationCommandContext<UserCommand> {
 	override interaction: UserContextMenuInteraction;
 
 	/**

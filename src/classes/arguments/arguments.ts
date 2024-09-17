@@ -93,10 +93,10 @@ export function choiceArgument(options: ArgumentBuilder<string> & {values: strin
 			required: 'optional' in options ? !options.optional : true,
 			choices: options.values.map(value => ({
 				name: value,
-				value,,
+				value,
 			})),
-		},)
-	)
+		})
+	);
 }
 
 /**
@@ -157,7 +157,7 @@ export function enumArgument<E extends Record<string, V>, V>(options: ArgumentBu
 				name,
 				value: String(value),
 			})),
-		}),
+		})
 	);
 }
 
@@ -195,7 +195,7 @@ export function floatArgument(options: ArgumentBuilder<number> = {}) {
 			name,
 			description: options.description ?? '',
 			required: 'optional' in options ? !options.optional : true,
-		}),
+		})
 	);
 }
 
@@ -234,7 +234,7 @@ export function guildMemberArgument(options: ArgumentBuilder<GuildMember> = {}) 
 			name,
 			description: options.description ?? '',
 			required: 'optional' in options ? !options.optional : true,
-		}),
+		})
 	);
 }
 
@@ -256,7 +256,7 @@ export function intArgument(options: ArgumentBuilder<number> = {}) {
 			name,
 			description: options.description ?? '',
 			required: 'optional' in options ? !options.optional : true,
-		}),
+		})
 	);
 }
 
@@ -298,7 +298,7 @@ export function snowflakeArgument(options: ArgumentBuilder<Snowflake> = {}) {
 			required: 'optional' in options ? !options.optional : true,
 			min_length: 17,
 			max_length: 20,
-		}),
+		})
 	);
 }
 
@@ -324,7 +324,7 @@ export function stringArgument(options: ArgumentBuilder<string> & {regex?: RegEx
 			name,
 			description: options.description ?? '',
 			required: 'optional' in options ? !options.optional : true,
-		}),
+		})
 	);
 }
 
@@ -389,7 +389,7 @@ export function textChannelArgument(options: ArgumentBuilder<GuildTextBasedChann
 			description: options.description ?? '',
 			required: 'optional' in options ? !options.optional : true,
 			channel_types: [ChannelType.GuildText, ChannelType.GuildAnnouncement],
-		}),
+		})
 	);
 }
 
@@ -411,6 +411,6 @@ export function userArgument(options: ArgumentBuilder<User> = {}) {
 			name,
 			description: options.description ?? '',
 			required: 'optional' in options ? !options.optional : true,
-		}),
+		})
 	);
 }

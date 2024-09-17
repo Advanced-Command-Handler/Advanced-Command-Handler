@@ -2,6 +2,7 @@ import {type Interaction} from 'discord.js';
 import {EventContext} from '../../classes/contexts/EventContext.js';
 import {MessageCommandContext} from '../../classes/contexts/interactions/MessageCommandContext.js';
 import {SlashCommandContext} from '../../classes/contexts/interactions/SlashCommandContext.js';
+import {SubSlashCommandContext} from '../../classes/contexts/interactions/SubSlashCommandContext.js';
 import {UserCommandContext} from '../../classes/contexts/interactions/UserCommandContext.js';
 import {Event} from '../../classes/Event.js';
 import {MessageCommand} from '../../classes/interactions/MessageCommand.js';
@@ -38,6 +39,20 @@ export class InteractionCreateEvent extends Event {
 			});
 			await command.run(commandContext);
 		} else if (command instanceof SlashCommand && interaction.isCommand()) {
+			const subCommandName = interaction.options.getSubcommand(false);
+			if (subCommandName) {
+				const subCommand = command.subCommands.find(subCmd => subCmd.name === subCommandName);
+				if (!subCommand) return;
+				const commandContext = new SubSlashCommandContext({
+					interaction,
+					interactionHandler: ctx.interactionHandler,
+					command,
+					subCommand,
+				});
+				await subCommand.run(commandContext);
+				return;
+			}
+
 			const commandContext = new SlashCommandContext({
 				interaction,
 				interactionHandler: ctx.interactionHandler,

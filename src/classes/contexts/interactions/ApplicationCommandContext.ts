@@ -18,11 +18,11 @@ export interface ReplyOptions extends InteractionReplyOptions {
 /**
  * The options of the ApplicationCommandContext.
  */
-export interface ApplicationCommandContextBuilder {
+export interface ApplicationCommandContextBuilder<T extends ApplicationCommand = ApplicationCommand> {
 	/**
 	 * The application command that was executed.
 	 */
-	command: ApplicationCommand;
+	command: T;
 	/**
 	 * The interaction that represents the command.
 	 */
@@ -36,11 +36,11 @@ export interface ApplicationCommandContextBuilder {
 /**
  * The context of an application command.
  */
-export class ApplicationCommandContext {
+export class ApplicationCommandContext<T extends ApplicationCommand = ApplicationCommand> {
 	/**
 	 * The application command that was executed.
 	 */
-	public command: ApplicationCommand;
+	public command: T;
 
 	/**
 	 * The interaction that represents the command.
@@ -57,7 +57,7 @@ export class ApplicationCommandContext {
 	 *
 	 * @param options - The options of the SlashCommandContext.
 	 */
-	public constructor(options: ApplicationCommandContextBuilder) {
+	public constructor(options: ApplicationCommandContextBuilder<T>) {
 		this.command = options.command;
 		this.interaction = options.interaction;
 		this.interactionHandler = options.interactionHandler;
@@ -74,7 +74,7 @@ export class ApplicationCommandContext {
 	 * The client that handled the command.
 	 */
 	get client() {
-		return this.interaction.client!!;
+		return this.interactionHandler.client!;
 	}
 
 	/**
@@ -102,7 +102,7 @@ export class ApplicationCommandContext {
 	 * The member who executed the command.
 	 */
 	get member(): CacheTypeReducer<CacheType, GuildMember, APIInteractionGuildMember> {
-		// @ts-ignore
+		// @ts-expect-error Version mismatch.
 		return this.interaction.member;
 	}
 

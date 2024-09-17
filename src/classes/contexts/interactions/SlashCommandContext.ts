@@ -7,16 +7,14 @@ import {ApplicationCommandContext, type ApplicationCommandContextBuilder} from '
 /**
  * The options of the SlashCommandContext.
  */
-export interface SlashCommandContextBuilder extends ApplicationCommandContextBuilder {
-	command: SlashCommand;
+export interface SlashCommandContextBuilder extends ApplicationCommandContextBuilder<SlashCommand> {
 	interaction: CommandInteraction;
 }
 
 /**
  * The context of a slash command.
  */
-export class SlashCommandContext extends ApplicationCommandContext {
-	override command: SlashCommand;
+export class SlashCommandContext extends ApplicationCommandContext<SlashCommand> {
 	override interaction: CommandInteraction;
 
 	/**
@@ -58,6 +56,15 @@ export class SlashCommandContext extends ApplicationCommandContext {
 	}
 
 	/**
+	 * Is the command calling a sub command.
+	 *
+	 * @returns - Is the command calling a sub command.
+	 */
+	public isCallingSubCommand() {
+		return this.interaction.options.getSubcommandGroup(false) !== null || this.interaction.options.getSubcommand(false) !== null;
+	}
+
+	/**
 	 * Resolves one of the argument.
 	 *
 	 * @typeParam T - The type of the argument.
@@ -76,7 +83,7 @@ export class SlashCommandContext extends ApplicationCommandContext {
 	 */
 	public resolveArguments<T>() {
 		const result = new Map<string, T>();
-		for (const [name, argument] of Object.entries(this.command.arguments)) {
+		for (const [name] of Object.entries(this.command.arguments)) {
 			const value = this.resolveArgument<T>(name);
 			if (value === undefined) continue;
 			result.set(name, value);

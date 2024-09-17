@@ -1,4 +1,4 @@
-// Note : The SubCommand class is in the Command.ts file, see the class to know why.
+// Note: The SubCommand class is in the Command.ts file, check the class documentation to know why.
 
 import {Awaitable} from 'discord.js';
 import type {Argument} from '../arguments/Argument.js';
