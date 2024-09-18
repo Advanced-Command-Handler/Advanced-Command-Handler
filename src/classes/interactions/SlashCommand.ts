@@ -2,7 +2,8 @@ import {SlashCommandBuilder, SlashCommandSubcommandBuilder} from '@discordjs/bui
 import type {APIApplicationCommandSubcommandOption, RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v9';
 import {Permissions, type PermissionString} from 'discord.js';
 import {Logger} from '../../helpers/Logger.js';
-import type {SlashCommandArgument} from '../arguments/SlashCommandArgument.js';
+import type {SlashCommandArguments} from '../arguments/CommandArgument.js';
+
 import type {SlashCommandContext} from '../contexts/interactions/SlashCommandContext.js';
 import type {SubSlashCommandContext} from '../contexts/interactions/SubSlashCommandContext.js';
 import {CommandHandlerError} from '../errors/CommandHandlerError.js';
@@ -12,19 +13,20 @@ import type {RunSubSlashCommandFunction, SubSlashCommandOptions} from './SubSlas
 /**
  * An interface to put optional methods for the {@link SlashCommand} class.
  */
-export interface SlashCommand {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface SlashCommand<T extends SlashCommandArguments = SlashCommandArguments> {
 	/**
 	 * Override this method to register your {@link subCommands}.
 	 */
 	registerSubCommands?(): void;
 }
 
-export abstract class SlashCommand extends ApplicationCommand {
+export abstract class SlashCommand<T extends SlashCommandArguments = SlashCommandArguments> extends ApplicationCommand {
 	/**
 	 * The arguments of the command.
 	 * You can put your own custom arguments, but you must add the type to the {@link ArgumentType | argument types}.
 	 */
-	public arguments: Record<string, SlashCommandArgument<any>> = {};
+	public arguments: T = {} as T;
 	/**
 	 * The description of the slash command.
 	 */
@@ -35,10 +37,10 @@ export abstract class SlashCommand extends ApplicationCommand {
 	 *
 	 * @remarks Register SubCommands using the {@link Command#registerSubCommands} method.
 	 */
-	public subCommands: SubSlashCommand[] = [];
+	public subCommands: SubSlashCommand<any>[] = [];
 	public readonly userPermissions: PermissionString[] = [];
 
-	public abstract override run(ctx: SlashCommandContext): Promise<void>;
+	public abstract override run(ctx: SlashCommandContext<this>): Promise<unknown>;
 
 	/**
 	 * Returns the JSON of the SlashCommand.
@@ -85,7 +87,7 @@ export abstract class SlashCommand extends ApplicationCommand {
 	/**
 	 * Creates a new SubCommand for the command.
 	 *
-	 * @remarks Make sure to creates the Subcommands in the {@link Command#registerSubCommands} method.
+	 * @remarks Make sure to create the Subcommands in the {@link Command#registerSubCommands} method.
 	 * @param name - The name of the SubCommand.
 	 * @param options - The options of the Subcommand.
 	 * @param callback - The callback executed when the SubCommand is executed.
@@ -93,7 +95,11 @@ export abstract class SlashCommand extends ApplicationCommand {
 	 *
 	 * @throws CommandHandlerError If the command has arguments.
 	 */
-	protected subCommand(name: string, options: SubSlashCommandOptions, callback: RunSubSlashCommandFunction) {
+	protected subCommand<T extends SubSlashCommand<A>, A extends SlashCommandArguments = T['arguments']>(
+		name: string,
+		options: SubSlashCommandOptions<A>,
+		callback: RunSubSlashCommandFunction<T>
+	) {
 		if (Object.keys(this.arguments).length > 0) {
 			throw new CommandHandlerError(`You can't create a subcommand if the command has arguments, slash command ${this.name}.`, 'SubCommandCreation');
 		}
@@ -113,15 +119,11 @@ export abstract class SlashCommand extends ApplicationCommand {
  * @remarks
  * This class is not in the SubSlashCommand file because otherwise it won't compile because of circular because of the {@link SlashCommand.subCommands} property.
  */
-export class SubSlashCommand extends SlashCommand {
+export class SubSlashCommand<T extends SlashCommandArguments> extends SlashCommand<T> {
 	/**
 	 * The description of the slash command.
 	 */
 	public readonly description: string;
-	/**
-	 * The function executed when the SubCommand is executed.
-	 */
-	public readonly runFunction: RunSubSlashCommandFunction;
 	/**
 	 * The name of the SubCommand.
 	 */
@@ -133,23 +135,29 @@ export class SubSlashCommand extends SlashCommand {
 	 * @param ctx - The context of the command.
 	 * @returns - The result of the command.
 	 */
-	public override run(ctx: SubSlashCommandContext) {
+	//@ts-expect-error `ctx` is not meant to be the same type as in SlashCommand.
+	public override run(ctx: SubSlashCommandContext<this>) {
 		return this.runFunction(ctx);
 	}
 
 	/**
+	 * The function executed when the SubCommand is executed.
+	 */
+	public readonly runFunction: RunSubSlashCommandFunction<this>;
+
+	/**
 	 * Creates a new SubCommand.
 	 *
-	 * @remarks Make sure to creates the Subcommands in the {@link Command#registerSubCommands} method.
+	 * @remarks Make sure to create the Subcommands in the {@link Command#registerSubCommands} method.
 	 * @param name - The name of the SubCommand.
 	 * @param options - The options of the Subcommand.
 	 * @param runFunction - The callback executed when the SubCommand is executed.
 	 */
-	public constructor(name: string, options: SubSlashCommandOptions, runFunction: RunSubSlashCommandFunction) {
+	public constructor(name: string, options: SubSlashCommandOptions<T>, runFunction: RunSubSlashCommandFunction<any>) {
 		super();
 		this.name = name;
 		this.description = options.description;
-		this.arguments = options.arguments ?? {};
+		this.arguments = options.arguments ?? ({} as T);
 		this.runFunction = runFunction;
 	}
 

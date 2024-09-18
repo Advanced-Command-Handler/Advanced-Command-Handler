@@ -328,17 +328,17 @@ export abstract class Command {
 
 		if (this.clientPermissions) {
 			missingPermissions.client.push(
-				...(this.clientPermissions.filter(permission => {
+				...this.clientPermissions.filter(permission => {
 					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.guild!.members.me!)?.has(permission, false);
-				}))
+				})
 			);
 		}
 
 		if (this.userPermissions) {
 			missingPermissions.user.push(
-				...(this.userPermissions.filter(permission => {
+				...this.userPermissions.filter(permission => {
 					if (isPermission(permission)) return !ctx.textChannel?.permissionsFor(ctx.member!)?.has(permission, false);
-				}))
+				})
 			);
 		}
 
@@ -380,7 +380,7 @@ export abstract class Command {
 	 */
 	public isInRightChannel(ctx: CommandContext) {
 		if (!this.channels || this.channels.length === 0) return true;
-		return !this.channels.find(ch => typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id);
+		return !this.channels.find(ch => (typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id));
 	}
 
 	/**

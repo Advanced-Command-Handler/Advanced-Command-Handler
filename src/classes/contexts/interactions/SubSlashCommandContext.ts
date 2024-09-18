@@ -1,26 +1,28 @@
-import {CommandArgument} from '../../arguments/CommandArgument.js';
-import type {SubSlashCommand} from '../../interactions/SlashCommand.js';
+import {CommandArgument, type SlashCommandArguments} from '../../arguments/CommandArgument.js';
+import type {SlashCommandArgument} from '../../arguments/SlashCommandArgument.js';
+import type {SlashCommand, SubSlashCommand} from '../../interactions/SlashCommand.js';
 import {SlashCommandContext, type SlashCommandContextBuilder} from './SlashCommandContext.js';
 
 /**
  * The options of the SubSlashCommandContext.
  */
-export interface SubSlashCommandContextBuilder extends SlashCommandContextBuilder {
-	subCommand: SubSlashCommand;
+export interface SubSlashCommandContextBuilder<T extends SubSlashCommand<A>, A extends SlashCommandArguments = T['arguments']>
+	extends SlashCommandContextBuilder<SlashCommand> {
+	subCommand: T;
 }
 
 /**
  * The context of a sub slash command.
  */
-export class SubSlashCommandContext extends SlashCommandContext {
-	public subCommand: SubSlashCommand;
+export class SubSlashCommandContext<T extends SubSlashCommand<A>, A extends SlashCommandArguments = T['arguments']> extends SlashCommandContext<SlashCommand> {
+	public subCommand: T;
 
 	/**
 	 * Creates a new SubSlashCommandContext.
 	 *
 	 * @param options - The options of the SubSlashCommandContext.
 	 */
-	public constructor(options: SubSlashCommandContextBuilder) {
+	public constructor(options: SubSlashCommandContextBuilder<T>) {
 		super(options);
 		this.subCommand = options.subCommand;
 	}
@@ -40,8 +42,8 @@ export class SubSlashCommandContext extends SlashCommandContext {
 	 * @param name - The name of the argument.
 	 * @returns - The argument in a promise or null if the argument is not found or errored or the command has no arguments.
 	 */
-	public override argument<T>(name: string | (keyof this['subCommand']['arguments'] & string)): T | null {
-		return this.resolveArgument<T>(name) ?? null;
+	public override argument<K extends keyof A>(name: K) {
+		return this.resolveArgument(name) ?? null;
 	}
 
 	/**
@@ -51,8 +53,9 @@ export class SubSlashCommandContext extends SlashCommandContext {
 	 * @param name - The name of the argument.
 	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the subCommand has no arguments.
 	 */
-	public override resolveArgument<T>(name: string | (keyof this['subCommand']['arguments'] & string)): undefined | T {
-		return this.interaction.options.data.find(o => o.name === name)?.value as T;
+	public override resolveArgument<K extends keyof A, S = A[K]>(name: K) {
+		const subCommand = this.interaction.options.data.find(s => s.type === 'SUB_COMMAND' && s.name === this.subCommand.name);
+		return subCommand?.options?.find(o => o.name === name)?.value as S extends SlashCommandArgument<infer T> ? T : undefined;
 	}
 
 	/**
@@ -64,7 +67,7 @@ export class SubSlashCommandContext extends SlashCommandContext {
 	public override resolveArguments<T>() {
 		const result = new Map<string, T>();
 		for (const [name] of Object.entries(this.subCommand.arguments)) {
-			const value = this.resolveArgument<T>(name);
+			const value = this.resolveArgument(name);
 			if (value === undefined) continue;
 			result.set(name, value);
 		}

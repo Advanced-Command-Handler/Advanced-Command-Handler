@@ -11,8 +11,8 @@ export class TestSlashCommand extends SlashCommand {
 	public override readonly description = 'A test command.';
 	public override readonly name = 'test';
 
-	public override async run(ctx: SlashCommandContext) {
-		const argument = ctx.argument<string>('test');
+	public override async run(ctx: SlashCommandContext<TestSlashCommand>) {
+		const argument = ctx.argument('test');
 		await ctx.reply(`Test command! Argument: ${argument}`);
 	}
 }

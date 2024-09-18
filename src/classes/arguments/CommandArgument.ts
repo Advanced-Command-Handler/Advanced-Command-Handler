@@ -1,4 +1,5 @@
 import {Argument, type ArgumentParserFunction, ArgumentType, type ArgumentValidatorFunction} from './Argument.js';
+import type {SlashCommandArgument} from './SlashCommandArgument.js';
 
 export class CommandArgument<T> {
 	/**
@@ -69,3 +70,5 @@ export class CommandArgument<T> {
 		return this.optional || !!this.defaultValue;
 	}
 }
+
+export type SlashCommandArguments = Record<string, SlashCommandArgument<any>>;

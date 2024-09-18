@@ -1,20 +1,22 @@
 import type {CommandInteraction} from 'discord.js';
 
-import {CommandArgument} from '../../arguments/CommandArgument.js';
+import {CommandArgument, type SlashCommandArguments} from '../../arguments/CommandArgument.js';
+import type {SlashCommandArgument} from '../../arguments/SlashCommandArgument.js';
 import type {SlashCommand} from '../../interactions/SlashCommand.js';
 import {ApplicationCommandContext, type ApplicationCommandContextBuilder} from './ApplicationCommandContext.js';
 
 /**
  * The options of the SlashCommandContext.
  */
-export interface SlashCommandContextBuilder extends ApplicationCommandContextBuilder<SlashCommand> {
+export interface SlashCommandContextBuilder<T extends SlashCommand<A>, A extends SlashCommandArguments = T['arguments']>
+	extends ApplicationCommandContextBuilder<T> {
 	interaction: CommandInteraction;
 }
 
 /**
  * The context of a slash command.
  */
-export class SlashCommandContext extends ApplicationCommandContext<SlashCommand> {
+export class SlashCommandContext<T extends SlashCommand<A>, A extends SlashCommandArguments = T['arguments']> extends ApplicationCommandContext<T> {
 	override interaction: CommandInteraction;
 
 	/**
@@ -22,7 +24,7 @@ export class SlashCommandContext extends ApplicationCommandContext<SlashCommand>
 	 *
 	 * @param options - The options of the SlashCommandContext.
 	 */
-	public constructor(options: SlashCommandContextBuilder) {
+	public constructor(options: SlashCommandContextBuilder<T>) {
 		super(options);
 		this.command = options.command;
 		this.interaction = options.interaction;
@@ -51,8 +53,8 @@ export class SlashCommandContext extends ApplicationCommandContext<SlashCommand>
 	 * @param name - The name of the argument.
 	 * @returns - The argument in a promise or null if the argument is not found or errored or the command has no arguments.
 	 */
-	public argument<T>(name: string | (keyof this['command']['arguments'] & string)): T | null {
-		return this.resolveArgument<T>(name) ?? null;
+	public argument<K extends keyof A>(name: K) {
+		return this.resolveArgument(name) ?? null;
 	}
 
 	/**
@@ -71,8 +73,8 @@ export class SlashCommandContext extends ApplicationCommandContext<SlashCommand>
 	 * @param name - The name of the argument.
 	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the command has no arguments.
 	 */
-	public resolveArgument<T>(name: string | (keyof this['command']['arguments'] & string)): undefined | T {
-		return this.interaction.options.data.find(o => o.name === name)?.value as T;
+	public resolveArgument<K extends keyof A, S extends SlashCommandArgument<any> = A[K]>(name: K) {
+		return this.interaction.options.data.find(o => o.name === name)?.value as S extends SlashCommandArgument<infer T> ? T : undefined;
 	}
 
 	/**
@@ -81,10 +83,10 @@ export class SlashCommandContext extends ApplicationCommandContext<SlashCommand>
 	 * @typeParam T - The type of the arguments as an union.
 	 * @returns - A map of arguments or undefined if the command has no arguments.
 	 */
-	public resolveArguments<T>() {
-		const result = new Map<string, T>();
+	public resolveArguments() {
+		const result = new Map<keyof A, A[keyof A]>();
 		for (const [name] of Object.entries(this.command.arguments)) {
-			const value = this.resolveArgument<T>(name);
+			const value = this.resolveArgument(name);
 			if (value === undefined) continue;
 			result.set(name, value);
 		}
