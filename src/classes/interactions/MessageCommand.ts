@@ -1,5 +1,5 @@
 import {ContextMenuCommandBuilder} from '@discordjs/builders';
-import {ApplicationCommandType} from 'discord-api-types/v9';
+import {type RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v9';
 import type {MessageCommandContext} from '../contexts/interactions/MessageCommandContext.js';
 import {ApplicationCommand} from './ApplicationCommand.js';
 
@@ -9,7 +9,7 @@ export abstract class MessageCommand extends ApplicationCommand {
 	/**
 	 * Converts the message command to a JSON representation.
 	 */
-	public override toJSON() {
-		return new ContextMenuCommandBuilder().setName(this.name).setType(ApplicationCommandType.Message).toJSON();
+	public override toJSON(): RESTPostAPIApplicationCommandsJSONBody {
+		return new ContextMenuCommandBuilder().setName(this.name).setType(3).toJSON();
 	}
 }

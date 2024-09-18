@@ -1,5 +1,5 @@
 import {ContextMenuCommandBuilder} from '@discordjs/builders';
-import {ApplicationCommandType} from 'discord-api-types/v10';
+import {type RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v9';
 import type {UserCommandContext} from '../contexts/interactions/UserCommandContext.js';
 import {ApplicationCommand} from './ApplicationCommand.js';
 
@@ -9,7 +9,7 @@ export abstract class UserCommand extends ApplicationCommand {
 	/**
 	 * Converts the user command to a JSON representation.
 	 */
-	public override toJSON() {
-		return new ContextMenuCommandBuilder().setName(this.name).setType(ApplicationCommandType.User).toJSON();
+	public override toJSON(): RESTPostAPIApplicationCommandsJSONBody {
+		return new ContextMenuCommandBuilder().setName(this.name).setType(2).toJSON();
 	}
 }

@@ -41,7 +41,9 @@ export abstract class SlashCommand extends ApplicationCommand {
 	public abstract override run(ctx: SlashCommandContext): Promise<void>;
 
 	/**
+	 * Returns the JSON of the SlashCommand.
 	 *
+	 * @returns - The JSON of the SlashCommand.
 	 */
 	public toJSON(): RESTPostAPIApplicationCommandsJSONBody {
 		const commandsJSONBody = new SlashCommandBuilder().setName(this.name).setDescription(this.description).setNSFW(this.nsfw);
@@ -111,29 +113,15 @@ export abstract class SlashCommand extends ApplicationCommand {
  * @remarks
  * This class is not in the SubSlashCommand file because otherwise it won't compile because of circular because of the {@link SlashCommand.subCommands} property.
  */
-// TODO : Investigate how to prevent using `nsfw`, `guilds`, and `userPermissions` in SubSlashCommand.
-//@ts-expect-error Unresolved yet.
 export class SubSlashCommand extends SlashCommand {
 	/**
 	 * The description of the slash command.
 	 */
 	public readonly description: string;
 	/**
-	 * The NSFW option is not available for SubCommands.
-	 */
-	private override readonly nsfw: boolean = false;
-	/**
-	 * The userPermissions option is not available for SubCommands.
-	 */
-	private override readonly userPermissions: PermissionString[] = [];
-	/**
 	 * The function executed when the SubCommand is executed.
 	 */
 	public readonly runFunction: RunSubSlashCommandFunction;
-	/**
-	 * The guilds option is not available for SubCommands.
-	 */
-	private override readonly guilds: string[] = [];
 	/**
 	 * The name of the SubCommand.
 	 */
@@ -167,6 +155,8 @@ export class SubSlashCommand extends SlashCommand {
 
 	/**
 	 * Returns the JSON of the SubCommand.
+	 *
+	 * @returns - The JSON of the SubCommand.
 	 */
 	public toJSONOption(): APIApplicationCommandSubcommandOption {
 		const subCommandJSONBody = new SlashCommandSubcommandBuilder().setName(this.name).setDescription(this.description);

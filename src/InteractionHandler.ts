@@ -344,7 +344,7 @@ export namespace InteractionHandler {
 		commands.filter(c => c instanceof SlashCommand).forEach(c => c.registerSubCommands?.());
 
 		if (CommandHandler.commands.size) {
-			CommandHandler.once('launched', () => (client = CommandHandler.client));
+			CommandHandler.once('launched', () => client = CommandHandler.client);
 
 			while (!client) {
 				await new Promise(resolve => setTimeout(resolve, 100));

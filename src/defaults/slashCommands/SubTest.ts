@@ -22,6 +22,7 @@ export class SubTestSlashCommand extends SlashCommand {
 				},
 			},
 			async ctx => {
+				console.log(ctx.arguments, ctx.interaction.options.data);
 				const argument = ctx.argument<string>('test');
 				await ctx.reply(`Test sub command! ${argument}`);
 			}
