@@ -55,7 +55,7 @@ export class SubSlashCommandContext<T extends SubSlashCommand<A>, A extends Slas
 	 */
 	public override resolveArgument<K extends keyof A, S = A[K]>(name: K) {
 		const subCommand = this.interaction.options.data.find(s => s.type === 'SUB_COMMAND' && s.name === this.subCommand.name);
-		return subCommand?.options?.find(o => o.name === name)?.value as S extends SlashCommandArgument<infer T> ? T : undefined;
+		return subCommand?.options?.find(o => o.name === name)?.value as S extends SlashCommandArgument<infer T, any> ? T : undefined;
 	}
 
 	/**
@@ -64,11 +64,11 @@ export class SubSlashCommandContext<T extends SubSlashCommand<A>, A extends Slas
 	 * @typeParam T - The type of the arguments as an union.
 	 * @returns - A map of arguments or undefined if the subCommand has no arguments.
 	 */
-	public override resolveArguments<T>() {
-		const result = new Map<string, T>();
+	public override resolveArguments() {
+		const result = new Map<keyof A & string, A[keyof A]>();
 		for (const [name] of Object.entries(this.subCommand.arguments)) {
 			const value = this.resolveArgument(name);
-			if (value === undefined) continue;
+			if (!value) continue;
 			result.set(name, value);
 		}
 

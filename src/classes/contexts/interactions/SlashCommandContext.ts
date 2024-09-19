@@ -73,8 +73,10 @@ export class SlashCommandContext<T extends SlashCommand<A>, A extends SlashComma
 	 * @param name - The name of the argument.
 	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the command has no arguments.
 	 */
-	public resolveArgument<K extends keyof A, S extends SlashCommandArgument<any> = A[K]>(name: K) {
-		return this.interaction.options.data.find(o => o.name === name)?.value as S extends SlashCommandArgument<infer T> ? T : undefined;
+	public resolveArgument<K extends keyof A, S extends SlashCommandArgument<any, any> = A[K]>(name: K) {
+		return this.interaction.options.data.find(o => o.name === name)?.value as S extends SlashCommandArgument<infer T, any>
+		                                                                          ? T
+		                                                                          : undefined;
 	}
 
 	/**
@@ -87,7 +89,7 @@ export class SlashCommandContext<T extends SlashCommand<A>, A extends SlashComma
 		const result = new Map<keyof A, A[keyof A]>();
 		for (const [name] of Object.entries(this.command.arguments)) {
 			const value = this.resolveArgument(name);
-			if (value === undefined) continue;
+			if (!value) continue;
 			result.set(name, value);
 		}
 

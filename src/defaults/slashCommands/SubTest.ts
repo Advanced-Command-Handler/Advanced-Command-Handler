@@ -1,4 +1,4 @@
-import {intArgument, stringArgument} from '../../classes/arguments/arguments.js';
+import {enumArgument, intArgument, stringArgument} from '../../classes/arguments/arguments.js';
 import type {SlashCommandContext} from '../../classes/contexts/interactions/SlashCommandContext.js';
 import {SlashCommand} from '../../classes/interactions/SlashCommand.js';
 
@@ -22,6 +22,16 @@ export class SubTestSlashCommand extends SlashCommand {
 					number: intArgument({
 						description: 'A test number argument.',
 						optional: true,
+					}),
+					enum: enumArgument({
+						description: 'A test enum argument.',
+						optional: true,
+						values: {
+							'a': 'A',
+							'b': false,
+							'c': 5,
+							'd': ['a'],
+						},
 					}),
 				},
 			},

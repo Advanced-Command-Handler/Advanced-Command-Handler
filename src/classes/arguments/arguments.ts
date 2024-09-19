@@ -134,6 +134,18 @@ export function emojiArgument(options: ArgumentBuilder<Emoji> = {}) {
 	);
 }
 
+// noinspection JSRemoveUnnecessaryParentheses
+type DeepReadonly<T> = {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+	readonly [K in keyof T]: T[K] extends (infer R)[] ? ReadonlyArray<DeepReadonly<R>> : T[K] extends Function ? T[K] : T[K] extends object
+	                                                                                                                    ? DeepReadonly<T[K]>
+	                                                                                                                    : T[K];
+};
+
+interface ToString {
+	toString(): string;
+}
+
 /**
  * Creates a enum argument.
  * You must put an enum (or a record) of the possible values.
@@ -142,12 +154,14 @@ export function emojiArgument(options: ArgumentBuilder<Emoji> = {}) {
  * @param options - The options of the argument.
  * @returns - A enum argument.
  */
-export function enumArgument<E extends Record<string, V>, V>(options: ArgumentBuilder<V> & {values: E}) {
-	return Argument.create(
+export function enumArgument<E extends Record<string, V>, V extends string | number | boolean | bigint | symbol | ToString>(options: ArgumentBuilder<E[keyof E]> & {
+	values: DeepReadonly<E>
+}) {
+	return Argument.create<E[keyof E]>(
 		ArgumentType.ENUM,
 		options,
 		argument => Object.keys(options.values).includes(argument),
-		argument => Object.entries(options.values).find(e => e[0] === argument)?.[1] ?? null,
+		argument => Object.entries(options.values).find(e => e[0] === argument)?.[1] as E[keyof E] ?? null,
 		(name): APIApplicationCommandStringOption => ({
 			type: ApplicationCommandOptionType.String,
 			name,

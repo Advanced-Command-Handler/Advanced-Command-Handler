@@ -54,7 +54,7 @@ export interface ArgumentOptions<T> {
 	optional?: boolean;
 }
 
-export class Argument<T> {
+export class Argument<T, O extends ArgumentOptions<T> = ArgumentOptions<T>> {
 	/**
 	 * Creates a new argument.
 	 *
@@ -66,8 +66,7 @@ export class Argument<T> {
 	 * Optional but if provided, the argument will be available as a slash command argument.
 	 */
 	private constructor(
-		public type: ArgumentType,
-		public options: ArgumentOptions<T>,
+		public type: ArgumentType, public options: O,
 		public validator: ArgumentValidatorFunction,
 		public parser: ArgumentParserFunction<T>,
 		public toSlashCommandArgument?: (name: string) => APIApplicationCommandBasicOption
@@ -85,13 +84,12 @@ export class Argument<T> {
 	 *
 	 * @returns - The created argument.
 	 */
-	public static create<T, F extends ((name: string) => APIApplicationCommandBasicOption) | undefined = (name: string) => APIApplicationCommandBasicOption>(
-		type: ArgumentType,
-		options: ArgumentOptions<T>,
+	public static create<T, O extends ArgumentOptions<T> = ArgumentOptions<T>, F extends ((name: string) => APIApplicationCommandBasicOption) | undefined = (name: string) => APIApplicationCommandBasicOption>(
+		type: ArgumentType, options: O,
 		validator: ArgumentValidatorFunction,
 		parser: ArgumentParserFunction<T>,
 		toSlashCommandArgument?: F
-	): F extends (name: string) => APIApplicationCommandBasicOption ? SlashCommandArgument<T> : Argument<T> {
+	): F extends (name: string) => APIApplicationCommandBasicOption ? SlashCommandArgument<T, O> : Argument<T, O> {
 		return new Argument(type, options, validator, parser, toSlashCommandArgument) as any;
 	}
 
@@ -100,7 +98,7 @@ export class Argument<T> {
 	 *
 	 * @returns - Can the argument be used as a slash command argument.
 	 */
-	public canBeSlashCommandArgument(): this is SlashCommandArgument<T> {
+	public canBeSlashCommandArgument(): this is SlashCommandArgument<T, O> {
 		return !!this.toSlashCommandArgument;
 	}
 }

@@ -71,4 +71,4 @@ export class CommandArgument<T> {
 	}
 }
 
-export type SlashCommandArguments = Record<string, SlashCommandArgument<any>>;
+export type SlashCommandArguments = Record<string, SlashCommandArgument<any, any>>;
