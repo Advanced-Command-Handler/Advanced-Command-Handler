@@ -57,15 +57,6 @@
 		"ayfri"
 	],
 	"name": "advanced-command-handler",
-	"prettier": {
-		"arrowParens": "avoid",
-		"bracketSpacing": false,
-		"printWidth": 160,
-		"singleQuote": true,
-		"tabWidth": 4,
-		"trailingComma": "es5",
-		"useTabs": true
-	},
 	"readme": "https://github.com/Ayfri/Advanced-Command-Handler#readme",
 	"repository": {
 		"type": "github",
@@ -75,7 +66,7 @@
 		"build": "tsc",
 		"lint": "npx eslint",
 		"prepare": "npm run build",
-		"prettier": "prettier **.json **.md src tests --write"
+		"prettier": "prettier **.json **.md src tests --write -c .prettierrc"
 	},
 	"type": "module",
 	"types": "types/index.d.ts",
