@@ -50,7 +50,7 @@ export abstract class SlashCommand<T extends SlashCommandArguments = SlashComman
 	 */
 	public override async run(ctx: SlashCommandContext<this>): Promise<unknown> {
 		return await ctx.defer();
-	};
+	}
 
 	/**
 	 * Returns the JSON of the SlashCommand.

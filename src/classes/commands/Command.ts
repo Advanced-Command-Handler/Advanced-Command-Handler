@@ -380,7 +380,7 @@ export abstract class Command {
 	 */
 	public isInRightChannel(ctx: CommandContext) {
 		if (!this.channels || this.channels.length === 0) return true;
-		return !this.channels.find(ch => (typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id));
+		return !this.channels.find(ch => typeof ch === 'string' ? ch === ctx.channel.id : ch.id === ctx.channel.id);
 	}
 
 	/**

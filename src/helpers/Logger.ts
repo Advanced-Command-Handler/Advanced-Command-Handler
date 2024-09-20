@@ -25,7 +25,7 @@ export const LogType = {
 	debug: 'white',
 	comment: 'gray',
 } satisfies {
-	[k: string]: keyof typeof colors
+	[k: string]: keyof typeof colors;
 };
 
 export const colors = {
@@ -182,7 +182,9 @@ export class Logger {
 		color = Logger.getColorFromColorResolvable(color);
 		if (color) {
 			finalColor = chalk.hex(color);
-		}else throw new Error('Waiting for a log type, color or HexColor but receive something else.');
+		} else {
+			throw new Error('Waiting for a log type, color or HexColor but receive something else.');
+		}
 
 		return text ? finalColor(text) : finalColor();
 	}
@@ -224,8 +226,8 @@ export class Logger {
 	public static isIgnored(title: string, level: LogLevel) {
 		const ignores: LoggerIgnore[] = Logger.ignores.map(s => typeof s === 'string' ? [s, LogLevel.ALL] : [s[0], s[1]]);
 		return ignores.filter(i => i[0].toUpperCase() === title.toUpperCase()).some(i => typeof i[1] === 'string'
-		                                                                                 ? LogLevel[i[1]] >= level
-		                                                                                 : i[1] >= level);
+		                                                                                  ? LogLevel[i[1]] >= level
+		                                                                                  : i[1] >= level);
 	}
 
 	/**
@@ -277,8 +279,8 @@ export class Logger {
 	 */
 	private static getColorFromColorResolvable(color: string): ColorResolvable {
 		return propertyInEnum(LogType, propertyInEnum(colors, color) ?? '') ?? propertyInEnum(colors, color) ??
-			propertyInEnum(LogType, color)?.match(/#[0-9|a-f]{6}/i)?.[0] as HexColor ?? color.match(/#[0-9|a-f]{6}/i)?.[0] as HexColor ??
-			colors.default.substring(1, 7) as HexColor;
+			propertyInEnum(LogType, color)?.match(/#[0-9|a-f]{6}/i)?.[0] as HexColor ??
+			color.match(/#[0-9|a-f]{6}/i)?.[0] as HexColor ?? colors.default.substring(1, 7) as HexColor;
 	}
 }
 

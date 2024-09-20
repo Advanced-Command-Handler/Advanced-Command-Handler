@@ -137,9 +137,10 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 		case DataType.CHANNEL:
 			return client?.channels.cache.get(text) ?? message?.mentions.channels.first() ??
 				client?.channels.cache.find(c => c instanceof GuildChannel && c.name.toLowerCase().includes(text.toLowerCase()) &&
-					text.toString().length > 1 || c instanceof DMChannel &&
-					c.recipient.username.toLowerCase().includes(text.toLowerCase()) && text.toString().length > 2 || c.toString() ===
-					text.toString().replace(/<#(\d{17,19})>/, '<@$1>') || false) ?? client?.channels.resolve(text) ?? null;
+						text.toString().length > 1 ||
+					c instanceof DMChannel && c.recipient.username.toLowerCase().includes(text.toLowerCase()) && text.toString().length >
+						2 || c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') || false) ??
+				client?.channels.resolve(text) ?? null;
 		case DataType.EMOTE:
 			return client?.emojis.cache.get(text) ??
 				client?.emojis.cache.find(e => e.name?.toLowerCase().includes(text.toLowerCase()) && text.length > 1 || false) ??
@@ -177,8 +178,8 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 		case DataType.TEXT_CHANNEL: {
 			const result = client?.channels.cache.filter(c => isTextChannelLike(c)).get(text) ??
 				message?.mentions.channels.filter(c => isTextChannelLike(c)).first() ??
-				client?.channels.cache.find(
-					c => isTextChannelLike(c) && c.name.toLowerCase().includes(text.toLowerCase()) && text.toString().length > 1 ||
+				client?.channels.cache.find(c => isTextChannelLike(c) && c.name.toLowerCase().includes(text.toLowerCase()) &&
+						text.toString().length > 1 ||
 						c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') ||
 						false
 				) ??

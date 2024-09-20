@@ -155,7 +155,7 @@ interface ToString {
  * @returns - A enum argument.
  */
 export function enumArgument<E extends Record<string, V>, V extends string | number | boolean | bigint | symbol | ToString>(options: ArgumentBuilder<E[keyof E]> & {
-	values: DeepReadonly<E>
+	values: DeepReadonly<E>;
 }) {
 	return Argument.create<E[keyof E]>(
 		ArgumentType.ENUM,

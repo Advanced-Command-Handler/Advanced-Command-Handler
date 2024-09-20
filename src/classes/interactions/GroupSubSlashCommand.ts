@@ -16,8 +16,7 @@ export class GroupSubSlashCommand {
 	}
 
 	public subCommand<T extends SubSlashCommand<A>, A extends SlashCommandArguments = T['arguments']>(name: string,
-		options: SubSlashCommandOptions<A>,
-		callback: RunSubSlashCommandFunction<T>,
+		options: SubSlashCommandOptions<A>, callback: RunSubSlashCommandFunction<T>,
 	) {
 		if (this.subCommands.map(c => c.name).includes(name)) return;
 

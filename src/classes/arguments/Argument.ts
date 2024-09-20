@@ -65,8 +65,7 @@ export class Argument<T, O extends ArgumentOptions<T> = ArgumentOptions<T>> {
 	 * @param toSlashCommandArgument - The function to convert the argument to a JSON representation.
 	 * Optional but if provided, the argument will be available as a slash command argument.
 	 */
-	private constructor(
-		public type: ArgumentType, public options: O,
+	private constructor(public type: ArgumentType, public options: O,
 		public validator: ArgumentValidatorFunction,
 		public parser: ArgumentParserFunction<T>,
 		public toSlashCommandArgument?: (name: string) => APIApplicationCommandBasicOption
@@ -84,8 +83,8 @@ export class Argument<T, O extends ArgumentOptions<T> = ArgumentOptions<T>> {
 	 *
 	 * @returns - The created argument.
 	 */
-	public static create<T, O extends ArgumentOptions<T> = ArgumentOptions<T>, F extends ((name: string) => APIApplicationCommandBasicOption) | undefined = (name: string) => APIApplicationCommandBasicOption>(
-		type: ArgumentType, options: O,
+	public static create<T, O extends ArgumentOptions<T> = ArgumentOptions<T>, F extends ((name: string) => APIApplicationCommandBasicOption) | undefined = (name: string) => APIApplicationCommandBasicOption, >(type: ArgumentType,
+		options: O,
 		validator: ArgumentValidatorFunction,
 		parser: ArgumentParserFunction<T>,
 		toSlashCommandArgument?: F
