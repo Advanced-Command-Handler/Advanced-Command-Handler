@@ -9,7 +9,7 @@ export type RunSubSlashCommandFunction<T extends SubSlashCommand<A>, A extends S
 	ctx: SubSlashCommandContext<T>
 ) => Promise<unknown>;
 
-export interface SubSlashCommandOptions<T extends Record<string, SlashCommandArgument<any>>> {
+export interface SubSlashCommandOptions<T extends Record<string, SlashCommandArgument<any, any>>> {
 	arguments?: T;
 	description: string;
 }
