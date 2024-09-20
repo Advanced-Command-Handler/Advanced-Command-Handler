@@ -8,6 +8,7 @@ import type {SlashCommandContext} from '../contexts/interactions/SlashCommandCon
 import type {SubSlashCommandContext} from '../contexts/interactions/SubSlashCommandContext.js';
 import {CommandHandlerError} from '../errors/CommandHandlerError.js';
 import {ApplicationCommand} from './ApplicationCommand.js';
+import {GroupSubSlashCommand} from './GroupSubSlashCommand.js';
 import type {RunSubSlashCommandFunction, SubSlashCommandOptions} from './SubSlashCommand.js';
 
 /**
@@ -39,8 +40,17 @@ export abstract class SlashCommand<T extends SlashCommandArguments = SlashComman
 	 */
 	public subCommands: SubSlashCommand<any>[] = [];
 	public readonly userPermissions: PermissionString[] = [];
+	public subCommandGroups: GroupSubSlashCommand[] = [];
 
-	public abstract override run(ctx: SlashCommandContext<this>): Promise<unknown>;
+	/**
+	 * The function executed when the command is executed.
+	 * Must be overridden if you want to create a simple slash command.
+	 *
+	 * @returns - Anything you want, it will not be used.
+	 */
+	public override async run(ctx: SlashCommandContext<this>): Promise<unknown> {
+		return await ctx.defer();
+	};
 
 	/**
 	 * Returns the JSON of the SlashCommand.
@@ -48,6 +58,12 @@ export abstract class SlashCommand<T extends SlashCommandArguments = SlashComman
 	 * @returns - The JSON of the SlashCommand.
 	 */
 	public toJSON(): RESTPostAPIApplicationCommandsJSONBody {
+		if (this.run !== SlashCommand.prototype.run && (this.subCommands.length > 0 || this.subCommandGroups.length > 0)) {
+			throw new CommandHandlerError(`You can't have a run method if the command has subcommands or subcommand groups, slash command ${this.name}.`,
+				'CommandValidation',
+			);
+		}
+
 		const commandsJSONBody = new SlashCommandBuilder().setName(this.name).setDescription(this.description).setNSFW(this.nsfw);
 
 		if (this.userPermissions.length > 0) {
@@ -77,10 +93,11 @@ export abstract class SlashCommand<T extends SlashCommandArguments = SlashComman
 			.map(([name, argument]) => argument.toSlashCommandArgument(name));
 
 		const subCommands = this.subCommands.map(subCommand => subCommand.toJSONOption());
+		const subCommandGroups = this.subCommandGroups.map(group => group.toJSONOption());
 
 		return {
 			...commandsJSONBody.toJSON(),
-			options: [...argumentsAsJSONs, ...subCommands],
+			options: [...argumentsAsJSONs, ...subCommands, ...subCommandGroups],
 		};
 	}
 
@@ -93,7 +110,7 @@ export abstract class SlashCommand<T extends SlashCommandArguments = SlashComman
 	 * @param callback - The callback executed when the SubCommand is executed.
 	 * @returns - The SubCommand itself.
 	 *
-	 * @throws CommandHandlerError If the command has arguments.
+	 * @throws CommandHandlerError If the command has arguments or if it has a run method.
 	 */
 	protected subCommand<T extends SubSlashCommand<A>, A extends SlashCommandArguments = T['arguments']>(
 		name: string,
@@ -101,15 +118,48 @@ export abstract class SlashCommand<T extends SlashCommandArguments = SlashComman
 		callback: RunSubSlashCommandFunction<T>
 	) {
 		if (Object.keys(this.arguments).length > 0) {
-			throw new CommandHandlerError(`You can't create a subcommand if the command has arguments, slash command ${this.name}.`, 'SubCommandCreation');
+			throw new CommandHandlerError(`You can't create a subcommand if the command has arguments, slash command '${this.name}'.`,
+				'SubCommandCreation',
+			);
 		}
 		if (this.subCommands.map(c => c.name).includes(name)) return;
+		if (this.run !== SlashCommand.prototype.run) {
+			throw new CommandHandlerError(`You can't create a subcommand if the command has a run method, slash command '${this.name}'.`,
+				'SubCommandCreation',
+			);
+		}
 
 		const subCommand = new SubSlashCommand(name, options, callback);
 		this.subCommands.push(subCommand);
 
-		Logger.comment(`Loaded subcommand '${this.name} ${name}'.`, 'SubCommandLoading');
+		Logger.comment(`Loaded subcommand '${Logger.setColor('green', `${this.name} ${name}'`)}.`, 'SubCommandLoading');
 		return subCommand;
+	}
+
+	/**
+	 * Creates a new SubCommand Group for the command.
+	 *
+	 * @param name - The name of the SubCommand Group.
+	 * @param description - The description of the SubCommand Group.
+	 * @returns - The SubCommand Group itself.
+	 *
+	 * @throws CommandHandlerError If the command has arguments or if it has a run method.
+	 */
+	protected subGroup(name: string, description: string) {
+		const alreadyExisting = this.subCommandGroups.find(g => g.name === name);
+		if (alreadyExisting) return alreadyExisting;
+
+		if (this.run !== SlashCommand.prototype.run) {
+			throw new CommandHandlerError(`You can't create a subcommand group if the command has a run method, slash command ${this.name}.`,
+				'SubCommandGroupCreation',
+			);
+		}
+
+		const group = new GroupSubSlashCommand(name, description);
+		this.subCommandGroups.push(group);
+
+		Logger.comment(`Loaded subcommand group '${Logger.setColor('green', `${this.name} ${name}'`)}.`, 'SubCommandLoading');
+		return group;
 	}
 }
 
@@ -157,7 +207,7 @@ export class SubSlashCommand<T extends SlashCommandArguments> extends SlashComma
 		super();
 		this.name = name;
 		this.description = options.description;
-		this.arguments = options.arguments ?? ({} as T);
+		this.arguments = options.arguments ?? {} as T;
 		this.runFunction = runFunction;
 	}
 

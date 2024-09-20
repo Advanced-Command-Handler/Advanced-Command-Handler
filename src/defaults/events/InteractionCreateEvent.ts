@@ -39,8 +39,23 @@ export class InteractionCreateEvent extends Event {
 			});
 			await command.run(commandContext);
 		} else if (command instanceof SlashCommand && interaction.isCommand()) {
+			const subCommandGroupName = interaction.options.getSubcommandGroup(false);
 			const subCommandName = interaction.options.getSubcommand(false);
-			if (subCommandName) {
+
+			if (subCommandGroupName && subCommandName) {
+				const subCommandGroup = command.subCommandGroups.find(group => group.name === subCommandGroupName);
+				if (!subCommandGroup) return;
+				const subCommand = subCommandGroup.subCommands.find(subCmd => subCmd.name === subCommandName);
+				if (!subCommand) return;
+				const commandContext = new SubSlashCommandContext({
+					interaction,
+					interactionHandler: ctx.interactionHandler,
+					command,
+					subCommand,
+				});
+				await subCommand.run(commandContext);
+				return;
+			} else if (subCommandName) {
 				const subCommand = command.subCommands.find(subCmd => subCmd.name === subCommandName);
 				if (!subCommand) return;
 				const commandContext = new SubSlashCommandContext({
