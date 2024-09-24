@@ -1,40 +1,40 @@
-/* import {ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle} from '@discordjs/builders';
+import {MessageActionRow, Modal, type ModalActionRowComponent, TextInputComponent, type TextInputStyleResolvable} from 'discord.js';
+
+interface TextInputOptions {
+	customId: string;
+	label: string;
+	style?: TextInputStyleResolvable;
+	placeholder?: string;
+	required?: boolean;
+	minLength?: number;
+	maxLength?: number;
+}
 
 export class ModalComponent {
-	private components: TextInputBuilder[] = [];
+	private components: TextInputComponent[] = [];
 
 	constructor(
 		private customId: string,
 		private title: string
 	) {}
 
-	addTextInput(
-		customId: string,
-		label: string,
-		style: TextInputStyle,
-		placeholder?: string,
-		required: boolean = false,
-		minLength?: number,
-		maxLength?: number
-	): this {
-		const textInput = new TextInputBuilder().setCustomId(customId).setLabel(label).setStyle(style).setRequired(required);
+	addTextInput(options: TextInputOptions): this {
+		const style = options.style ?? 'SHORT';
+		const required = options.required ?? false;
+		const textInput = new TextInputComponent().setCustomId(options.customId).setLabel(options.label).setStyle(style).setRequired(
+			required);
 
-		if (placeholder) textInput.setPlaceholder(placeholder);
-		if (minLength) textInput.setMinLength(minLength);
-		if (maxLength) textInput.setMaxLength(maxLength);
+		if (options.placeholder) textInput.setPlaceholder(options.placeholder);
+		if (options.minLength) textInput.setMinLength(options.minLength);
+		if (options.maxLength) textInput.setMaxLength(options.maxLength);
 
 		this.components.push(textInput);
 		return this;
 	}
 
-	toJSON(): ModalBuilder {
-		const modal = new ModalBuilder().setCustomId(this.customId).setTitle(this.title);
-
-		this.components.forEach(component => {
-			modal.addComponents(new ActionRowBuilder().addComponents(component));
-		});
-
+	toBuilder(): Modal {
+		const modal = new Modal().setCustomId(this.customId).setTitle(this.title);
+		modal.addComponents(...this.components.map(component => new MessageActionRow<ModalActionRowComponent>().addComponents(component)));
 		return modal;
 	}
 }
- */

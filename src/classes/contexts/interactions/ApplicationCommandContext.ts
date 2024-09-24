@@ -8,14 +8,14 @@ import {
 	type InteractionReplyOptions,
 	MessageEmbed,
 } from 'discord.js';
-import {inspect} from 'util';
 import type {InteractionHandler} from '../../../InteractionHandler.js';
 import {ComponentsBuilder} from '../../components/ComponentsBuilder.js';
+import type {ModalComponent} from '../../components/Modal.js';
 import type {ApplicationCommand} from '../../interactions/ApplicationCommand.js';
 
 export interface ReplyOptions extends Omit<InteractionReplyOptions, 'components'> {
-	embed?: MessageEmbed;
 	components?: ComponentsBuilder | InteractionReplyOptions['components'];
+	embed?: MessageEmbed;
 }
 
 /**
@@ -172,14 +172,10 @@ export class ApplicationCommandContext<T extends ApplicationCommand = Applicatio
 			finalOptions.components = components.toJSON() as any;
 		}
 
-		console.log(inspect(finalOptions,
-			{
-				depth: 10,
-				colors: true,
-				sorted: true,
-			},
-		));
-
 		return this.interaction.reply(finalOptions as InteractionReplyOptions);
+	}
+
+	public showModal(modal: ModalComponent) {
+		return this.interaction.showModal(modal.toBuilder());
 	}
 }

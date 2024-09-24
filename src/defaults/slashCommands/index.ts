@@ -1,3 +1,3 @@
-export * from './Test.js';
-export * from './SubTest.js';
 export * from './ComplexSubSlashCommandTest.js';
+export * from './ComponentsTest.js';
+export * from './SubTest.js';
