@@ -101,7 +101,7 @@ export namespace InteractionHandler {
 		/**
 		 * The event executed when loading a SlashCommand.
 		 */
-		loadSlashCommand: [SlashCommand];
+		loadSlashCommand: [SlashCommand<any>];
 		/**
 		 * The event executed when loading a UserCommand.
 		 */
@@ -236,7 +236,7 @@ export namespace InteractionHandler {
 
 		const categoriesFiles = await loadCategoriesFiles(userPath);
 		for (const [category, command] of categoriesFiles) {
-			Logger.comment(`Loading the ${type.logName} : ${category}/${command}`, 'Loading');
+			Logger.comment(`Loading the ${type.logName} : ${Logger.setColor('gold', `${category}/${command}`)}`, 'Loading');
 			const files = await fsPromises.readdir(join(userPath, category));
 			if (!files.length) continue;
 
@@ -251,13 +251,13 @@ export namespace InteractionHandler {
 	 * Load all the default commands of a specific type.
 	 *
 	 * @param type - The type of the commands.
-	 * @param typeLogName - The name of the type of the commands.
 	 */
 	export async function loadDefaultCommandsOfType(type: ApplicationCommandType) {
 		const options = defaultCommandsOptions;
 		let defaultCommands: Record<string, Constructor<ApplicationCommand>>;
 		try {
 			defaultCommands = await import(`./defaults/${type.path}/index.js`);
+			console.log('defaultCommands', defaultCommands);
 		} catch (error) {
 			if (!(error instanceof Error)) throw new Error('An error occurred while loading the default commands.');
 			if (!('code' in error)) throw error;
@@ -336,6 +336,9 @@ export namespace InteractionHandler {
 	export async function createInteractions(launchOptions: LaunchInteractionHandlerOptions = {}) {
 		emit('launching', launchOptions);
 
+		console.log('slashCommandsDir', slashCommandsDir);
+		console.log('usesDefaultCommands', usesDefaultCommands);
+
 		if (messageCommandsDir) await loadApplicationCommands(messageCommandsDir, ApplicationCommandTypes.MESSAGE);
 		if (slashCommandsDir) await loadApplicationCommands(slashCommandsDir, ApplicationCommandTypes.SLASH);
 		if (userCommandsDir) await loadApplicationCommands(userCommandsDir, ApplicationCommandTypes.USER);
@@ -363,6 +366,8 @@ export namespace InteractionHandler {
 			const guildCommands: ApplicationCommand[] = [];
 			for (const guildId of guildIds) {
 				const commands = InteractionHandler.commands.filter(command => command.guilds.includes(guildId));
+				console.log('commands', commands);
+
 				const commandsJson = commands.map(command => command.toJSON());
 				const commandsLogString = Logger.setColor('green', commands.map(command => command.name).join(', '));
 
@@ -389,7 +394,9 @@ export namespace InteractionHandler {
 				}
 			}
 
+
 			const globalCommands = InteractionHandler.commands.filter(command => !guildCommands.includes(command));
+			console.log('globalCommands', globalCommands);
 			const commandsJson = globalCommands.map(command => command.toJSON());
 			const guildId = launchOptions.guildId;
 			const commandsLogString = Logger.setColor('green', globalCommands.map(command => command.name).join(', '));
