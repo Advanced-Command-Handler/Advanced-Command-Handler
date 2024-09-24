@@ -1,4 +1,4 @@
-import {ActionRow} from './MessageComponent.js';
+import {ActionRow} from './ActionRow.js';
 
 export class ComponentsBuilder {
 	private rows: ActionRow[] = [];

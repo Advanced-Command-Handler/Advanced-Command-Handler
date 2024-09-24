@@ -1,7 +1,6 @@
 import {
 	ActionRowBuilder,
 	BaseSelectMenuBuilder,
-	ButtonBuilder,
 	ChannelSelectMenuBuilder,
 	MentionableSelectMenuBuilder,
 	RoleSelectMenuBuilder,
@@ -9,43 +8,10 @@ import {
 	UserSelectMenuBuilder,
 } from '@discordjs/builders';
 import {type APIActionRowComponent, ButtonStyle, ChannelType, ComponentType} from 'discord-api-types/v9';
-import {type AnyChannel, Channel, Role, Snowflake, User} from 'discord.js';
+import {Channel, Role, User} from 'discord.js';
 import {CommandHandlerError} from '../errors/CommandHandlerError.js';
-
-export type SelectMenuValueMap = {
-	[ComponentType.ChannelSelect]: AnyChannel | Snowflake;
-	[ComponentType.MentionableSelect]: Role | User | Snowflake;
-	[ComponentType.RoleSelect]: Role | Snowflake;
-	[ComponentType.StringSelect]: string;
-	[ComponentType.UserSelect]: User | Snowflake;
-};
-
-export interface ButtonOptions {
-	customId?: string;
-	disabled?: boolean;
-	label: string;
-	style: ButtonStyle;
-	url?: string;
-}
-
-export interface SelectMenuOption<T extends keyof SelectMenuValueMap> {
-	description?: string;
-	label: string;
-	value: SelectMenuValueMap[T];
-}
-
-export interface SelectMenuOptions<T extends keyof SelectMenuValueMap> {
-	customId: string;
-	disabled?: boolean;
-	maxValues?: number;
-	minValues?: number;
-	options: SelectMenuOption<T>[];
-	placeholder?: string;
-}
-
-export interface SelectMenuChannelOptions {
-	channelTypes?: (keyof typeof ChannelType | ChannelType)[];
-}
+import {Button, type ButtonOptions} from './Button.js';
+import type {SelectMenuChannelOptions, SelectMenuOptions, SelectMenuValueMap} from './SelectMenuOption.js';
 
 export class ActionRow {
 	private buttons: (Button | undefined)[] = [];
@@ -55,7 +21,9 @@ export class ActionRow {
 		if (this.buttons.length >= 5) {
 			throw new CommandHandlerError('A row can have a maximum of 5 components', 'ActionRow.addButton');
 		}
-		const button = new Button(options.style, options.label, options.customId, options.url, options.disabled ?? false);
+		const button = new Button(options.style in ButtonStyle
+		                          ? ButtonStyle[options.style as keyof typeof ButtonStyle]
+		                          : options.style as ButtonStyle, options.label, options.customId, options.url, options.disabled ?? false);
 		this.buttons.push(button);
 		return this;
 	}
@@ -131,33 +99,5 @@ export class ActionRow {
 		if (options.maxValues) builder.setMaxValues(options.maxValues);
 
 		return builder;
-	}
-}
-
-export class Button {
-	constructor(private style: ButtonStyle,
-		private label: string,
-		private customId?: string,
-		private url?: string,
-		private disabled: boolean = false,
-	) {
-		if (style === ButtonStyle.Link && !url) {
-			throw new Error('URL is required for LINK buttons');
-		}
-		if (style !== ButtonStyle.Link && !customId) {
-			throw new Error('Custom ID is required for non-LINK buttons');
-		}
-	}
-
-	toBuilder(): ButtonBuilder {
-		const button = new ButtonBuilder().setStyle(this.style).setLabel(this.label).setDisabled(this.disabled);
-
-		if (this.style === ButtonStyle.Link) {
-			button.setURL(this.url!);
-		} else {
-			button.setCustomId(this.customId!);
-		}
-
-		return button;
 	}
 }
