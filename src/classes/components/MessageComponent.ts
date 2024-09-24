@@ -1,6 +1,6 @@
 import {
 	ActionRowBuilder,
-	type AnyComponentBuilder,
+	BaseSelectMenuBuilder,
 	ButtonBuilder,
 	ChannelSelectMenuBuilder,
 	MentionableSelectMenuBuilder,
@@ -8,45 +8,43 @@ import {
 	StringSelectMenuBuilder,
 	UserSelectMenuBuilder,
 } from '@discordjs/builders';
-import {type APIActionRowComponent, ButtonStyle, ComponentType} from 'discord-api-types/v9';
-import {Channel, Role, User} from 'discord.js';
+import {type APIActionRowComponent, ButtonStyle, ChannelType, ComponentType} from 'discord-api-types/v9';
+import {type AnyChannel, Channel, Role, Snowflake, User} from 'discord.js';
 import {CommandHandlerError} from '../errors/CommandHandlerError.js';
 
-type SelectMenuTypes =
-	| ComponentType.ChannelSelect
-	| ComponentType.MentionableSelect
-	| ComponentType.RoleSelect
-	| ComponentType.StringSelect
-	| ComponentType.UserSelect;
-
-type SelectMenuValueMap = {
-	[ComponentType.ChannelSelect]: Channel;
-	[ComponentType.MentionableSelect]: User | Role | Channel;
-	[ComponentType.RoleSelect]: Role;
+export type SelectMenuValueMap = {
+	[ComponentType.ChannelSelect]: AnyChannel | Snowflake;
+	[ComponentType.MentionableSelect]: Role | User | Snowflake;
+	[ComponentType.RoleSelect]: Role | Snowflake;
 	[ComponentType.StringSelect]: string;
-	[ComponentType.UserSelect]: User;
+	[ComponentType.UserSelect]: User | Snowflake;
 };
 
-type SelectMenuValue = SelectMenuValueMap[keyof SelectMenuValueMap];
-
-interface ButtonOptions {
-	style: ButtonStyle;
-	label: string;
+export interface ButtonOptions {
 	customId?: string;
-	url?: string;
 	disabled?: boolean;
+	label: string;
+	style: ButtonStyle;
+	url?: string;
 }
 
-interface SelectMenuOptions<T extends SelectMenuTypes> {
+export interface SelectMenuOption<T extends keyof SelectMenuValueMap> {
+	description?: string;
+	label: string;
+	value: SelectMenuValueMap[T];
+}
+
+export interface SelectMenuOptions<T extends keyof SelectMenuValueMap> {
 	customId: string;
+	disabled?: boolean;
+	maxValues?: number;
+	minValues?: number;
+	options: SelectMenuOption<T>[];
 	placeholder?: string;
-	minValues: number;
-	maxValues: number;
-	options: Array<{
-		label: string;
-		value: SelectMenuValue;
-		description?: string
-	}>;
+}
+
+export interface SelectMenuChannelOptions {
+	channelTypes?: (keyof typeof ChannelType | ChannelType)[];
 }
 
 export class ActionRow {
@@ -62,59 +60,77 @@ export class ActionRow {
 		return this;
 	}
 
-	setSelectMenu<T extends SelectMenuTypes, V extends SelectMenuValueMap[T]>(selectMenu: SelectMenuOptions<T>): this {
-		if (this.buttons.length > 0) {
-			throw new CommandHandlerError('A row can\'t have both buttons and select menus', 'ActionRow.setSelectMenu');
+	setStringSelectMenu(options: SelectMenuOptions<ComponentType.StringSelect>): this {
+		this.selectMenu = this.configureSelectMenu(new StringSelectMenuBuilder(), options).setOptions(options.options);
+		return this;
+	}
+
+	setChannelSelectMenu(options: SelectMenuOptions<ComponentType.ChannelSelect> & SelectMenuChannelOptions): this {
+		this.selectMenu = this.configureSelectMenu(new ChannelSelectMenuBuilder(), options)
+		                      .setDefaultChannels(options.options.map(opt => opt.value instanceof Channel
+		                                                                     ? opt.value.id
+		                                                                     : opt.value as string));
+
+		if (options.channelTypes) {
+			this.selectMenu.setChannelTypes(options.channelTypes?.map(type => typeof type === 'string' ? ChannelType[type] : type) ?? []);
 		}
+		return this;
+	}
 
-		if (this.selectMenu) {
-			throw new CommandHandlerError('A row can\'t have multiple select menus', 'ActionRow.setSelectMenu');
-		}
+	setRoleSelectMenu(options: SelectMenuOptions<ComponentType.RoleSelect>): this {
+		this.selectMenu =
+			this.configureSelectMenu(new RoleSelectMenuBuilder(), options).setDefaultRoles(options.options.map(opt => opt.value instanceof
+			                                                                                                          Role
+			                                                                                                          ? opt.value.id
+			                                                                                                          : opt.value));
+		return this;
+	}
 
-		if (selectMenu.options.length === 0) {
-			throw new CommandHandlerError('Select menu must have at least one option', 'ActionRow.setSelectMenu');
-		}
+	setUserSelectMenu(options: SelectMenuOptions<ComponentType.UserSelect>): this {
+		this.selectMenu = this.configureSelectMenu(new UserSelectMenuBuilder(), options)
+		                      .setDefaultUsers(options.options.map(opt => opt.value instanceof User ? opt.value.id : opt.value));
+		return this;
+	}
 
-		let selectMenuBuilder;
-		const firstOptionValue = selectMenu.options[0].value;
-
-		if (typeof firstOptionValue === 'string') {
-			selectMenuBuilder = new StringSelectMenuBuilder();
-		} else if (firstOptionValue instanceof Channel) {
-			selectMenuBuilder = new ChannelSelectMenuBuilder();
-			selectMenuBuilder.setDefaultChannels(selectMenu.options.map(({value}: {
-				value: Channel
-			}) => value.id));
-		} else if (firstOptionValue instanceof Role) {
-			selectMenuBuilder = new RoleSelectMenuBuilder();
-			selectMenuBuilder.setDefaultRoles(selectMenu.options.map(({value}: {
-				value: Role
-			}) => value.id));
-		} else if (firstOptionValue instanceof User) {
-			selectMenuBuilder = new UserSelectMenuBuilder();
-			selectMenuBuilder.setDefaultUsers(selectMenu.options.map(({value}: {
-				value: User
-			}) => value.id));
-		} else {
-			selectMenuBuilder = new MentionableSelectMenuBuilder();
-		}
-
-		selectMenuBuilder
-			.setCustomId(selectMenu.customId)
-			.setPlaceholder(selectMenu.placeholder ?? '')
-			.setMinValues(selectMenu.minValues)
-			.setMaxValues(selectMenu.maxValues)
-			.addOptions?.(selectMenu.options);
-
-		this.selectMenu = selectMenuBuilder;
-
+	setMentionableSelectMenu(options: SelectMenuOptions<ComponentType.MentionableSelect>): this {
+		this.selectMenu = this.configureSelectMenu(new MentionableSelectMenuBuilder(), options)
+		                      .setDefaultValues(options.options.map(opt => ({
+			                      id: opt.value instanceof Role || opt.value instanceof User ? opt.value.id : opt.value,
+			                      type: opt.value instanceof Role ? 'role' : 'user',
+		                      } as any)));
 		return this;
 	}
 
 	toJSON(): APIActionRowComponent<any> {
-		const components = [...this.buttons.map(button => button?.toJSON()).filter(Boolean), this.selectMenu?.toJSON()].filter(Boolean);
+		const components = [
+			...this.buttons.map(button => button?.toBuilder()), this.selectMenu,
+		].filter(component => component !== undefined);
 
-		return new ActionRowBuilder().addComponents(...(components as AnyComponentBuilder[])).toJSON();
+		return new ActionRowBuilder().addComponents(...components).toJSON();
+	}
+
+	private configureSelectMenu<T extends keyof SelectMenuValueMap, B extends BaseSelectMenuBuilder<any>>(builder: B,
+		options: SelectMenuOptions<T>,
+	): B {
+		if (this.buttons.length > 0) {
+			throw new CommandHandlerError('A row can\'t have both buttons and select menus', 'ActionRow.configureSelectMenu');
+		}
+
+		if (this.selectMenu) {
+			throw new CommandHandlerError('A row can\'t have multiple select menus', 'ActionRow.configureSelectMenu');
+		}
+
+		if (options.options.length === 0) {
+			throw new CommandHandlerError('Select menu must have at least one option', 'ActionRow.configureSelectMenu');
+		}
+
+		builder.setCustomId(options.customId);
+
+		if (options.placeholder) builder.setPlaceholder(options.placeholder);
+		if (options.minValues) builder.setMinValues(options.minValues);
+		if (options.maxValues) builder.setMaxValues(options.maxValues);
+
+		return builder;
 	}
 }
 
@@ -133,7 +149,7 @@ export class Button {
 		}
 	}
 
-	toJSON(): ButtonBuilder {
+	toBuilder(): ButtonBuilder {
 		const button = new ButtonBuilder().setStyle(this.style).setLabel(this.label).setDisabled(this.disabled);
 
 		if (this.style === ButtonStyle.Link) {

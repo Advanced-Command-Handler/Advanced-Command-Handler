@@ -1,4 +1,3 @@
-import type {ComponentBuilder} from '@discordjs/builders';
 import type {APIInteractionGuildMember} from 'discord-api-types/v9';
 import {
 	BaseCommandInteraction,
@@ -9,14 +8,15 @@ import {
 	type InteractionReplyOptions,
 	MessageEmbed,
 } from 'discord.js';
+import {inspect} from 'util';
 import type {InteractionHandler} from '../../../InteractionHandler.js';
 import {ComponentsBuilder} from '../../components/ComponentsBuilder.js';
 import type {ApplicationCommand} from '../../interactions/ApplicationCommand.js';
 
-export type ReplyOptions = InteractionReplyOptions & {
+export interface ReplyOptions extends Omit<InteractionReplyOptions, 'components'> {
 	embed?: MessageEmbed;
-	components?: ComponentBuilder | InteractionReplyOptions['components'];
-};
+	components?: ComponentsBuilder | InteractionReplyOptions['components'];
+}
 
 /**
  * The options of the ApplicationCommandContext.
@@ -172,8 +172,14 @@ export class ApplicationCommandContext<T extends ApplicationCommand = Applicatio
 			finalOptions.components = components.toJSON() as any;
 		}
 
-		this.interaction.isRepliable();
+		console.log(inspect(finalOptions,
+			{
+				depth: 10,
+				colors: true,
+				sorted: true,
+			},
+		));
 
-		return this.interaction.reply(finalOptions);
+		return this.interaction.reply(finalOptions as InteractionReplyOptions);
 	}
 }

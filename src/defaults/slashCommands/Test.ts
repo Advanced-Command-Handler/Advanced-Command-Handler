@@ -1,6 +1,6 @@
 import {ButtonStyle} from 'discord-api-types/v9';
 import {stringArgument} from '../../classes/arguments/arguments.js';
-import {MessageComponentBuilder} from '../../classes/components/MessageComponentBuilder';
+import {ComponentsBuilder} from '../../classes/components/ComponentsBuilder.js';
 import type {SlashCommandContext} from '../../classes/contexts/interactions/SlashCommandContext.js';
 import {SlashCommand} from '../../classes/interactions/SlashCommand.js';
 
@@ -17,22 +17,44 @@ export class TestSlashCommand extends SlashCommand {
 		const argument = ctx.argument('test');
 
 		// Create message components
-		const builder = new MessageComponentBuilder();
+		const builder = new ComponentsBuilder();
 
-		const row1 = builder.addRow();
-		row1.addComponent(MessageComponentBuilder.createButton(ButtonStyle.Primary, 'Click me!', 'button1'));
-		row1.addComponent(MessageComponentBuilder.createButton(ButtonStyle.Secondary, 'Don\'t click me', 'button2', undefined, true));
+		builder.addRow(row => row.addButton({
+			label: 'Button',
+			style: ButtonStyle.Primary,
+			customId: 'button',
+		}));
 
-		const row2 = builder.addRow();
-		const selectMenu = MessageComponentBuilder.createSelectMenu('select1', 'Choose an option');
-		selectMenu.addOption('Option 1', 'opt1', 'This is option 1').addOption('Option 2', 'opt2', 'This is option 2');
-		row2.addComponent(selectMenu);
+		builder.addRow(row => row.setStringSelectMenu({
+			customId: 'a',
+			options: [
+				{
+					label: 'mdr',
+					value: 'a',
+				}, {
+					label: 'lol',
+					value: 'b',
+				},
+			],
+		}));
 
-		const components = builder.build();
+		builder.addRow(row => row.setChannelSelectMenu({
+			customId: 'a',
+			options: [
+				{
+					label: 'mdr',
+					value: ctx.channel!,
+				}, {
+					label: 'lol',
+					value: ctx.interaction.channelId,
+				},
+			],
+		}));
 
+		// Reply to the interaction
 		await ctx.reply({
-			content: `Test command! Argument: ${argument}`,
-			components: components,
+			content: `You provided the argument: ${argument}`,
+			components: builder,
 		});
 	}
 }
