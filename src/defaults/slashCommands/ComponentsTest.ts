@@ -5,17 +5,10 @@ import {ModalComponent} from '../../classes/components/Modal.js';
 import {SlashCommand} from '../../classes/interactions/SlashCommand.js';
 
 export class ComponentsTest extends SlashCommand {
-	public override arguments = {
-		test: stringArgument({
-			description: 'A test argument.',
-		}),
-	};
 	public override readonly description = 'A test command.';
 	public override readonly name = 'test';
 
 	public override registerSubCommands() {
-		console.log('registerSubCommands');
-
 		this.subCommand('modal', {
 			description: 'Test modals.',
 		}, async ctx => {
@@ -36,6 +29,11 @@ export class ComponentsTest extends SlashCommand {
 
 		this.subCommand('components', {
 			description: 'Test components.',
+			arguments: {
+				test: stringArgument({
+					description: 'A test argument.',
+				}),
+			},
 		}, async ctx => {
 			const argument = ctx.argument('test');
 
@@ -61,7 +59,8 @@ export class ComponentsTest extends SlashCommand {
 				],
 			}));
 
-			builder.addRow(row => row.setChannelSelectMenu({
+			// Does not work on discord.js v13
+			/* builder.addRow(row => row.setChannelSelectMenu({
 				customId: 'a',
 				options: [
 					{
@@ -72,7 +71,7 @@ export class ComponentsTest extends SlashCommand {
 						value: ctx.interaction.channelId,
 					},
 				],
-			}));
+			})); */
 
 			// Reply to the interaction
 			await ctx.reply({
