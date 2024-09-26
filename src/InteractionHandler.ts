@@ -257,7 +257,6 @@ export namespace InteractionHandler {
 		let defaultCommands: Record<string, Constructor<ApplicationCommand>>;
 		try {
 			defaultCommands = await import(`./defaults/${type.path}/index.js`);
-			console.log('defaultCommands', defaultCommands);
 		} catch (error) {
 			if (!(error instanceof Error)) throw new Error('An error occurred while loading the default commands.');
 			if (!('code' in error)) throw error;
@@ -293,9 +292,6 @@ export namespace InteractionHandler {
 		await loadCommandsType(userPath, type);
 
 		Logger.info(`${commands.length} commands loaded.`, 'Loading');
-
-		if (!usesDefaultCommands) return;
-		await loadDefaultCommandsOfType(type);
 	}
 
 	/**
@@ -336,12 +332,15 @@ export namespace InteractionHandler {
 	export async function createInteractions(launchOptions: LaunchInteractionHandlerOptions = {}) {
 		emit('launching', launchOptions);
 
-		console.log('slashCommandsDir', slashCommandsDir);
-		console.log('usesDefaultCommands', usesDefaultCommands);
-
 		if (messageCommandsDir) await loadApplicationCommands(messageCommandsDir, ApplicationCommandTypes.MESSAGE);
 		if (slashCommandsDir) await loadApplicationCommands(slashCommandsDir, ApplicationCommandTypes.SLASH);
 		if (userCommandsDir) await loadApplicationCommands(userCommandsDir, ApplicationCommandTypes.USER);
+
+		if (usesDefaultCommands) {
+			await loadDefaultCommandsOfType(ApplicationCommandTypes.MESSAGE);
+			await loadDefaultCommandsOfType(ApplicationCommandTypes.SLASH);
+			await loadDefaultCommandsOfType(ApplicationCommandTypes.USER);
+		}
 
 		Logger.log('Loading sub slash commands.', 'SubSlashCommandLoading');
 		commands.filter(c => c instanceof SlashCommand).forEach(c => c.registerSubCommands?.());
@@ -366,7 +365,6 @@ export namespace InteractionHandler {
 			const guildCommands: ApplicationCommand[] = [];
 			for (const guildId of guildIds) {
 				const commands = InteractionHandler.commands.filter(command => command.guilds.includes(guildId));
-				console.log('commands', commands);
 
 				const commandsJson = commands.map(command => command.toJSON());
 				const commandsLogString = Logger.setColor('green', commands.map(command => command.name).join(', '));
@@ -394,9 +392,7 @@ export namespace InteractionHandler {
 				}
 			}
 
-
 			const globalCommands = InteractionHandler.commands.filter(command => !guildCommands.includes(command));
-			console.log('globalCommands', globalCommands);
 			const commandsJson = globalCommands.map(command => command.toJSON());
 			const guildId = launchOptions.guildId;
 			const commandsLogString = Logger.setColor('green', globalCommands.map(command => command.name).join(', '));
