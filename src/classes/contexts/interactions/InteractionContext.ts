@@ -1,5 +1,27 @@
 import type {APIInteractionGuildMember} from 'discord-api-types/v9';
-import type {CacheType, CacheTypeReducer, GuildMember, Interaction} from 'discord.js';
+import {ButtonInteraction, type CacheType, type CacheTypeReducer, type GuildMember, type Interaction} from 'discord.js';
+import {CommandHandlerError} from '../../errors/CommandHandlerError.js';
+
+
+/**
+ * The options of the button click.
+ */
+export interface OnClickOptions {
+	/**
+	 * The id of the button to listen for, can be undefined to listen for all buttons.
+	 */
+	buttonId?: string;
+	/**
+	 * The amount of times to listen for the button click, can be Infinity to listen indefinitely, defaults to 1.
+	 */
+	count?: number;
+	/**
+	 * The time to wait for the button click, defaults to 60 seconds.
+	 * Cannot be infinite, consider using event listeners for indefinite timeouts.
+	 */
+	timeout: number;
+}
+
 
 /**
  * The context of an interaction.
@@ -52,5 +74,43 @@ export class InteractionContext<T extends Interaction> {
 	 */
 	get user() {
 		return this.interaction.user;
+	}
+
+
+	/**
+	 * Run code whenever a button is clicked.
+
+	 * @param options - The options of the button click.
+	 * @param callback - The callback to run when the button is clicked.
+	 * @param onFail - The callback to run when the button click fails.
+	 */
+	public onButtonClick(
+		options: OnClickOptions = {timeout: 60_000},
+		callback: (interaction: ButtonInteraction) => void,
+		onFail?: (error: unknown) => void,
+	) {
+		const count = options.count ?? 1;
+		if (count < 1) {
+			throw new CommandHandlerError('Count must be greater than 0 or Infinity to listen indefinitely.', 'OnButtonClick');
+		}
+
+		const filter = options.buttonId ? (interaction: ButtonInteraction) => interaction.customId === options.buttonId : undefined;
+		const collector = this.channel!.createMessageComponentCollector({
+			componentType: 'BUTTON',
+			filter,
+		});
+
+		collector.on('collect', interaction => {
+			callback(interaction);
+			if (collector.collected.size <= count) {
+				collector.stop();
+			}
+		});
+
+		collector.on('end', () => {
+			if (count > 0 && collector.collected.size < count) {
+				onFail?.(new CommandHandlerError('Button click timed out and button click count was not infinite.', 'OnButtonClick'));
+			}
+		});
 	}
 }

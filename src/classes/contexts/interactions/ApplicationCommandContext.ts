@@ -40,7 +40,6 @@ export class ApplicationCommandContext<T extends ApplicationCommand = Applicatio
 	 */
 	public command: T;
 
-
 	/**
 	 * The handler that handled the command.
 	 */
@@ -60,21 +59,21 @@ export class ApplicationCommandContext<T extends ApplicationCommand = Applicatio
 	/**
 	 * The name of the command that was executed.
 	 */
-	get commandName() {
+	public get commandName() {
 		return this.command.name;
 	}
 
 	/**
 	 * The client that handled the command.
 	 */
-	get client() {
+	public get client() {
 		return this.interactionHandler.client!;
 	}
 
 	/**
 	 * The options of the command that was executed.
 	 */
-	get options() {
+	public get options() {
 		return this.interaction.options;
 	}
 
@@ -88,8 +87,7 @@ export class ApplicationCommandContext<T extends ApplicationCommand = Applicatio
 	 */
 	public onModalSubmit(
 		timeout: number,
-		callback: (interaction: SubmittedModalContext) => void,
-		onFail?: () => void,
+		callback: (interaction: SubmittedModalContext) => void, onFail?: (error: unknown) => void,
 		modal?: ModalComponent | string,
 	) {
 		const modalId = typeof modal === 'string' ? modal : modal?.customId;
@@ -98,11 +96,9 @@ export class ApplicationCommandContext<T extends ApplicationCommand = Applicatio
 			time: timeout,
 			filter,
 		});
-		interaction.then(interaction => {
-			// @ts-expect-error Adding typings for simplicity.
-			interaction.rawFields = interaction.fields._fields.map(value => value.value);
-			callback(new SubmittedModalContext(interaction));
-		}).catch(() => onFail?.());
+		interaction
+			.then(interaction => callback(new SubmittedModalContext(interaction)))
+			.catch(error => onFail?.(error));
 	}
 
 	public showModal(modal: ModalComponent) {

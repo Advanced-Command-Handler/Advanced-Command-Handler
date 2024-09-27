@@ -82,6 +82,11 @@ export class ComponentsTest extends SlashCommand {
 				content: `You provided the argument: ${argument}`,
 				components: builder,
 			});
+
+			ctx.onButtonClick({
+				timeout: 60_000,
+				count: 1,
+			}, async interaction => await interaction.reply('Button clicked.'));
 		});
 	}
 }
