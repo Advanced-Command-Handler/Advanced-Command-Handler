@@ -54,15 +54,23 @@ export class SubSlashCommandContext<T extends SubSlashCommand<A>, A extends Slas
 	 * @returns - The result of the argument maybe in a promise or undefined if no arguments with this name exists or the subCommand has no arguments.
 	 */
 	public override resolveArgument<K extends keyof A, S = A[K]>(name: K) {
-		const subCommand = this.interaction.options.data.find(s => (s.type === 'SUB_COMMAND' || s.type === 'SUB_COMMAND_GROUP') &&
-			this.command.subCommandGroups.map(g => g.name).includes(s.name));
-		if (subCommand?.type === 'SUB_COMMAND_GROUP') {
-			const nestedSubCommand = subCommand.options?.find(o => o.type === 'SUB_COMMAND' && o.name === this.subCommand.name);
-			return nestedSubCommand?.options?.find(o => o.name === name)?.value as S extends SlashCommandArgument<infer T, any>
-			                                                                       ? T
-			                                                                       : undefined;
+		type ReturnType = S extends SlashCommandArgument<infer T, any> ? T : undefined;
+
+		const subCommandGroups = this.command.subCommandGroups.map(g => g.name);
+		const subCommands = this.command.subCommands.map(c => c.name);
+
+		for (const option of this.interaction.options.data) {
+			if (option.type === 'SUB_COMMAND_GROUP' && subCommandGroups.includes(option.name)) {
+				const subOptions = option.options?.find(o => o.type === 'SUB_COMMAND' && o.name === this.subCommand.name);
+				return subOptions?.options?.find(o => o.name === name)?.value as ReturnType;
+			}
+
+			if (option.type === 'SUB_COMMAND' && subCommands.includes(option.name)) {
+				return option.options?.find(o => o.name === name)?.value as ReturnType;
+			}
 		}
-		return subCommand?.options?.find(o => o.name === name)?.value as S extends SlashCommandArgument<infer T, any> ? T : undefined;
+
+		return undefined as ReturnType;
 	}
 
 	/**
