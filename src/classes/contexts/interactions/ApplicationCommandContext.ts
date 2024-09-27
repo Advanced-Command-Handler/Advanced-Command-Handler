@@ -1,17 +1,10 @@
-import type {APIInteractionGuildMember} from 'discord-api-types/v9';
-import {
-	BaseCommandInteraction,
-	type CacheType,
-	type CacheTypeReducer,
-	type GuildCacheMessage,
-	type GuildMember,
-	type InteractionReplyOptions,
-	MessageEmbed,
-} from 'discord.js';
+import {BaseCommandInteraction, type InteractionReplyOptions, MessageEmbed, ModalSubmitInteraction} from 'discord.js';
 import type {InteractionHandler} from '../../../InteractionHandler.js';
 import {ComponentsBuilder} from '../../components/ComponentsBuilder.js';
 import type {ModalComponent} from '../../components/Modal.js';
 import type {ApplicationCommand} from '../../interactions/ApplicationCommand.js';
+import {RepliableInteractionContext} from './RepliableInteractionContext.js';
+import {SubmittedModalContext} from './SubmittedModalContext.js';
 
 export interface ReplyOptions extends Omit<InteractionReplyOptions, 'components'> {
 	components?: ComponentsBuilder | InteractionReplyOptions['components'];
@@ -38,17 +31,15 @@ export interface ApplicationCommandContextBuilder<T extends ApplicationCommand =
 
 /**
  * The context of an application command.
+ *
+ * @property interaction The interaction that represents the command.
  */
-export class ApplicationCommandContext<T extends ApplicationCommand = ApplicationCommand> {
+export class ApplicationCommandContext<T extends ApplicationCommand = ApplicationCommand> extends RepliableInteractionContext<BaseCommandInteraction> {
 	/**
 	 * The application command that was executed.
 	 */
 	public command: T;
 
-	/**
-	 * The interaction that represents the command.
-	 */
-	public interaction: BaseCommandInteraction;
 
 	/**
 	 * The handler that handled the command.
@@ -61,23 +52,9 @@ export class ApplicationCommandContext<T extends ApplicationCommand = Applicatio
 	 * @param options - The options of the SlashCommandContext.
 	 */
 	public constructor(options: ApplicationCommandContextBuilder<T>) {
+		super(options.interaction);
 		this.command = options.command;
-		this.interaction = options.interaction;
 		this.interactionHandler = options.interactionHandler;
-	}
-
-	/**
-	 * The channel where the command was executed.
-	 */
-	get channel() {
-		return this.interaction.channel;
-	}
-
-	/**
-	 * The client that handled the command.
-	 */
-	get client() {
-		return this.interactionHandler.client!;
 	}
 
 	/**
@@ -88,25 +65,10 @@ export class ApplicationCommandContext<T extends ApplicationCommand = Applicatio
 	}
 
 	/**
-	 * The guild where the command was executed.
+	 * The client that handled the command.
 	 */
-	get guild() {
-		return this.interaction.guild;
-	}
-
-	/**
-	 * The id of the command that was executed.
-	 */
-	get id() {
-		return this.interaction.id;
-	}
-
-	/**
-	 * The member who executed the command.
-	 */
-	get member(): CacheTypeReducer<CacheType, GuildMember, APIInteractionGuildMember> {
-		// @ts-expect-error Version mismatch.
-		return this.interaction.member;
+	get client() {
+		return this.interactionHandler.client!;
 	}
 
 	/**
@@ -117,62 +79,30 @@ export class ApplicationCommandContext<T extends ApplicationCommand = Applicatio
 	}
 
 	/**
-	 * The token of the command that was executed.
-	 */
-	get token() {
-		return this.interaction.token;
-	}
-
-	/**
-	 * The user who executed the command.
-	 */
-	get user() {
-		return this.interaction.user;
-	}
-
-	/**
-	 * Defer the reply of the command.
-	 */
-	public async defer() {
-		await this.interaction.deferReply();
-	}
-
-	/**
+	 * Run code whenever a modal is submitted.
 	 *
+	 * @param timeout - The time to wait for the modal to be submitted.
+	 * @param callback - The callback to run when the modal is submitted.
+	 * @param onFail - The callback to run when the modal submission fails.
+	 * @param modal - The modal or modal id to listen for submission on.
 	 */
-	public reply<T extends ReplyOptions>(options: T): Promise<T['fetchReply'] extends true ? GuildCacheMessage<CacheType> : void>;
-	/**
-	 *
-	 */
-	public reply(content: string): Promise<void>;
-	/**
-	 *
-	 */
-	public reply<T extends ReplyOptions>(content: string, options: T): Promise<T['fetchReply'] extends true ? GuildCacheMessage<CacheType> : void>;
-
-	/**
-	 * Reply to the command.
-	 *
-	 * @param content - The options of the reply.
-	 * @param options - The options of the reply message.
-	 */
-	public async reply(
-		content: string | ReplyOptions,
-		options?: ReplyOptions
-	): Promise<typeof options extends ReplyOptions ? ((typeof options)['fetchReply'] extends true ? GuildCacheMessage<CacheType> : void) : void> {
-		const finalOptions: ReplyOptions = typeof content === 'string' ? {content} : content;
-		if (options) {
-			if (options.embed && !options.embeds) options.embeds = [options.embed];
-			options.fetchReply = true;
-			Object.assign(finalOptions, options);
-		}
-
-		const components = finalOptions.components;
-		if (components instanceof ComponentsBuilder) {
-			finalOptions.components = components.toJSON() as any;
-		}
-
-		return this.interaction.reply(finalOptions as InteractionReplyOptions);
+	public onModalSubmit(
+		timeout: number,
+		callback: (interaction: SubmittedModalContext) => void,
+		onFail?: () => void,
+		modal?: ModalComponent | string,
+	) {
+		const modalId = typeof modal === 'string' ? modal : modal?.customId;
+		const filter = modalId ? (interaction: ModalSubmitInteraction) => interaction.customId === modalId : undefined;
+		const interaction = this.interaction.awaitModalSubmit({
+			time: timeout,
+			filter,
+		});
+		interaction.then(interaction => {
+			// @ts-expect-error Adding typings for simplicity.
+			interaction.rawFields = interaction.fields._fields.map(value => value.value);
+			callback(new SubmittedModalContext(interaction));
+		}).catch(() => onFail?.());
 	}
 
 	public showModal(modal: ModalComponent) {

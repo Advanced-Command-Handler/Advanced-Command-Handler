@@ -11,11 +11,9 @@ interface TextInputOptions {
 }
 
 export class ModalComponent {
-	private components: TextInputComponent[] = [];
+	public components: TextInputComponent[] = [];
 
-	constructor(
-		private customId: string,
-		private title: string
+	constructor(public customId: string, public title: string
 	) {}
 
 	addTextInput(options: TextInputOptions): this {

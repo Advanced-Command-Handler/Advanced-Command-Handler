@@ -25,6 +25,10 @@ export class ComponentsTest extends SlashCommand {
 			});
 
 			await ctx.showModal(modal);
+
+			ctx.onModalSubmit(60_000,
+				async interaction => await interaction.reply(`You provided the following values: ${interaction.values.join(', ')}`),
+			);
 		});
 
 		this.subCommand('components', {
