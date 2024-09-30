@@ -1,5 +1,5 @@
-import {SlashCommandSubcommandGroupBuilder} from '@discordjs/builders';
-import type {APIApplicationCommandSubcommandGroupOption} from 'discord-api-types/v9';
+import type {APIApplicationCommandSubcommandGroupOption} from 'discord-api-types/v10';
+import {SlashCommandSubcommandGroupBuilder} from 'discord.js';
 import {Logger} from '../../helpers/Logger.js';
 import type {SlashCommandArguments} from '../arguments/CommandArgument.js';
 import {SubSlashCommand} from './SlashCommand.js';

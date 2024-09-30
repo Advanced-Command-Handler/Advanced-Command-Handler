@@ -63,7 +63,8 @@ export class SlashCommandContext<T extends SlashCommand<A>, A extends SlashComma
 	 * @returns - Is the command calling a sub command.
 	 */
 	public isCallingSubCommand() {
-		return this.interaction.options.getSubcommandGroup(false) !== null || this.interaction.options.getSubcommand(false) !== null;
+		return this.interaction.isChatInputCommand() &&
+			(this.interaction.options.getSubcommandGroup(false) !== null || this.interaction.options.getSubcommand(false) !== null);
 	}
 
 	/**

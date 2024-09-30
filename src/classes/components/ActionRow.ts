@@ -1,14 +1,16 @@
+import {type APIActionRowComponent, ButtonStyle, ChannelType, ComponentType} from 'discord-api-types/v10';
 import {
 	ActionRowBuilder,
-	BaseSelectMenuBuilder,
+	BaseChannel,
+	type BaseSelectMenuBuilder,
 	ChannelSelectMenuBuilder,
 	MentionableSelectMenuBuilder,
+	Role,
 	RoleSelectMenuBuilder,
 	StringSelectMenuBuilder,
+	User,
 	UserSelectMenuBuilder,
-} from '@discordjs/builders';
-import {type APIActionRowComponent, ButtonStyle, ChannelType, ComponentType} from 'discord-api-types/v9';
-import {Channel, Role, User} from 'discord.js';
+} from 'discord.js';
 import {CommandHandlerError} from '../errors/CommandHandlerError.js';
 import {Button, type ButtonOptions} from './Button.js';
 import type {SelectMenuChannelOptions, SelectMenuOptions, SelectMenuValueMap} from './SelectMenuOption.js';
@@ -35,7 +37,7 @@ export class ActionRow {
 
 	setChannelSelectMenu(options: SelectMenuOptions<ComponentType.ChannelSelect> & SelectMenuChannelOptions): this {
 		this.selectMenu = this.configureSelectMenu(new ChannelSelectMenuBuilder(), options)
-		                      .setDefaultChannels(options.options.map(opt => opt.value instanceof Channel
+		                      .setDefaultChannels(options.options.map(opt => opt.value instanceof BaseChannel
 		                                                                     ? opt.value.id
 		                                                                     : opt.value as string));
 

@@ -1,6 +1,7 @@
-import {type GuildTextBasedChannel, MessageAttachment} from 'discord.js';
+import {AttachmentBuilder, type GuildTextBasedChannel} from 'discord.js';
 import {BetterEmbed} from 'discord.js-better-embed';
 import type {CommandContext} from '../contexts/CommandContext.js';
+import {CommandHandlerError} from '../errors/CommandHandlerError.js';
 import {Command} from './Command.js';
 
 /**
@@ -80,14 +81,16 @@ export abstract class ImageCommand extends Command {
 	 * @returns - The message with the embed sent.
 	 */
 	public async sendImageEmbed(options: ImageEmbedOptions | ImageEmbedContextOptions) {
-		const channel = 'ctx' in options ? options.ctx.channel : options.channel;
+		const channel = 'ctx' in options ? options.ctx.textChannel : options.channel;
+		if (!channel) throw new CommandHandlerError('No channel provided.', 'ImageCommand');
+
 		const link = options.link ?? options.path ?? '';
 		const embed = BetterEmbed.fromTemplate('image', {
 			...options,
 			image: link,
 		});
 
-		const attachment = new MessageAttachment(link);
+		const attachment = new AttachmentBuilder(link);
 		if (options.path) embed.setImageFromFile(attachment);
 		return await channel.send({embeds: [embed]});
 	}
@@ -99,7 +102,8 @@ export abstract class ImageCommand extends Command {
 	 * @returns - The message with the image sent.
 	 */
 	public async sendLocalImage(options: ImageLocalOptions | ImageLocalContextOptions) {
-		const channel = 'ctx' in options ? options.ctx.channel : options.channel;
+		const channel = 'ctx' in options ? options.ctx.textChannel : options.channel;
+		if (!channel) throw new CommandHandlerError('No channel provided.', 'ImageCommand');
 		return await channel.send({
 			content: options.content,
 			files: [options.path],

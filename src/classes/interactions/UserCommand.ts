@@ -1,5 +1,5 @@
-import {ContextMenuCommandBuilder} from '@discordjs/builders';
-import {type RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v9';
+import {type RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v10';
+import {ContextMenuCommandBuilder} from 'discord.js';
 import type {UserCommandContext} from '../contexts/interactions/UserCommandContext.js';
 import {ApplicationCommand} from './ApplicationCommand.js';
 

@@ -1,4 +1,4 @@
-import {GuildChannel, GuildMember, Message, Permissions, type PermissionString, type Snowflake, type TextChannel, User} from 'discord.js';
+import {GuildMember, Message, PermissionsBitField, type PermissionsString, type Snowflake, type TextChannel, User} from 'discord.js';
 import {CommandHandler} from '../../CommandHandler.js';
 import {Logger} from '../../helpers/Logger.js';
 import {isPermission} from '../../helpers/permissionUtils.js';
@@ -72,10 +72,10 @@ export namespace Tag {
 		for (const tag of tags ?? []) {
 			/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 			if (tag === Tag.channelOnly && ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
-			if (tag === Tag.dmOnly && ctx.channel.type !== 'DM') missingTags.push(Tag.dmOnly);
+			if (tag === Tag.dmOnly && !ctx.channel.isDMBased()) missingTags.push(Tag.dmOnly);
 			if (tag === Tag.guildOnly && !ctx.guild) missingTags.push(Tag.guildOnly);
 			if (tag === Tag.guildOwnerOnly && ctx.guild?.ownerId !== ctx.user.id) missingTags.push(Tag.guildOwnerOnly);
-			if (tag === Tag.nsfw && ctx.channel instanceof GuildChannel && !ctx.channel.nsfw) missingTags.push(Tag.nsfw);
+			if (tag === Tag.nsfw && 'nsfw' in ctx.channel && !ctx.channel.nsfw) missingTags.push(Tag.nsfw);
 			if (tag === Tag.ownerOnly && !isOwner(ctx.user.id)) missingTags.push(Tag.ownerOnly);
 			if (tag === Tag.threadOnly && !ctx.channel.isThread()) missingTags.push(Tag.threadOnly);
 			/* eslint-enable @typescript-eslint/no-unsafe-enum-comparison */
@@ -116,11 +116,11 @@ export interface MissingPermissions {
 	/**
 	 * Missing permissions of the client.
 	 */
-	client: PermissionString[];
+	client: PermissionsString[];
 	/**
 	 * Missing permissions of the user.
 	 */
-	user: PermissionString[];
+	user: PermissionsString[];
 }
 
 /**
@@ -167,7 +167,7 @@ export abstract class Command {
 	 *
 	 * @defaultValue `['SEND_MESSAGES']`
 	 */
-	public clientPermissions?: Array<PermissionString>;
+	public clientPermissions?: Array<PermissionsString>;
 	/**
 	 * The cooldown of the command in seconds.
 	 *
@@ -216,7 +216,7 @@ export abstract class Command {
 	 *
 	 * @defaultValue `['SEND_MESSAGES']`
 	 */
-	public userPermissions?: Array<PermissionString>;
+	public userPermissions?: Array<PermissionsString>;
 
 	/**
 	 * Returns the names and aliases of this command in an array.
@@ -305,7 +305,7 @@ export abstract class Command {
 	 * @internal
 	 */
 	public getInvalidPermissions() {
-		const permissionsFlags = [...Object.keys(Permissions.FLAGS)];
+		const permissionsFlags = [...Object.keys(PermissionsBitField.Flags)];
 
 		return {
 			user: this.userPermissions?.filter(permission => !permissionsFlags.includes(permission)) ?? [],
@@ -342,8 +342,8 @@ export abstract class Command {
 			);
 		}
 
-		if (ctx.guild.members.me?.permissions.has('ADMINISTRATOR')) missingPermissions.client = [];
-		if (ctx.member?.permissions.has('ADMINISTRATOR')) missingPermissions.user = [];
+		if (ctx.guild.members.me?.permissions.has(PermissionsBitField.Flags.Administrator)) missingPermissions.client = [];
+		if (ctx.member?.permissions.has(PermissionsBitField.Flags.Administrator)) missingPermissions.user = [];
 
 		return missingPermissions;
 	}

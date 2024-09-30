@@ -1,4 +1,5 @@
 import {CommandHandler, InteractionHandler, Logger, LogLevel} from 'advanced-command-handler';
+import {GatewayIntentBits} from 'discord-api-types/v10';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -31,7 +32,10 @@ CommandHandler.create({
 		token: process.env.TOKEN,
 		cycleDuration: 15,
 		clientOptions: {
-			intents: ['GUILDS', 'GUILD_MESSAGES'],
+			intents: [
+				GatewayIntentBits.Guilds,
+				GatewayIntentBits.GuildMessages,
+			],
 		},
 		presences: [
 			{

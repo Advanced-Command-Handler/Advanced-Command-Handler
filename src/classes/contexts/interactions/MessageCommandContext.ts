@@ -1,4 +1,4 @@
-import {type GuildMember, type Message, MessageContextMenuInteraction, type User} from 'discord.js';
+import {type GuildMember, type Message, MessageContextMenuCommandInteraction, type User} from 'discord.js';
 import type {MessageCommand} from '../../interactions/MessageCommand.js';
 import {ApplicationCommandContext, type ApplicationCommandContextBuilder} from './ApplicationCommandContext.js';
 
@@ -6,7 +6,7 @@ import {ApplicationCommandContext, type ApplicationCommandContextBuilder} from '
  * The options of the UserCommandContext.
  */
 export interface MessageCommandContextBuilder extends ApplicationCommandContextBuilder<MessageCommand> {
-	interaction: MessageContextMenuInteraction;
+	interaction: MessageContextMenuCommandInteraction;
 	targetMessage: Message;
 }
 
@@ -14,7 +14,7 @@ export interface MessageCommandContextBuilder extends ApplicationCommandContextB
  * The context of a message command.
  */
 export class MessageCommandContext extends ApplicationCommandContext<MessageCommand> {
-	override interaction: MessageContextMenuInteraction;
+	override interaction: MessageContextMenuCommandInteraction;
 	/**
 	 * The author of the message that was targeted by the command.
 	 */

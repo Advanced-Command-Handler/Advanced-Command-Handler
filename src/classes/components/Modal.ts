@@ -1,9 +1,10 @@
-import {MessageActionRow, Modal, type ModalActionRowComponent, TextInputComponent, type TextInputStyleResolvable} from 'discord.js';
+import {TextInputStyle} from 'discord-api-types/v10';
+import {ActionRowBuilder, type ModalActionRowComponentBuilder, ModalBuilder, TextInputBuilder} from 'discord.js';
 
 interface TextInputOptions {
 	customId: string;
 	label: string;
-	style?: TextInputStyleResolvable;
+	style?: TextInputStyle;
 	placeholder?: string;
 	required?: boolean;
 	minLength?: number;
@@ -11,16 +12,19 @@ interface TextInputOptions {
 }
 
 export class ModalComponent {
-	public components: TextInputComponent[] = [];
+	public components: TextInputBuilder[] = [];
 
-	constructor(public customId: string, public title: string
-	) {}
+	constructor(public customId: string, public title: string) {
+	}
 
 	addTextInput(options: TextInputOptions): this {
-		const style = options.style ?? 'SHORT';
+		const style = options.style ?? TextInputStyle.Short;
 		const required = options.required ?? false;
-		const textInput = new TextInputComponent().setCustomId(options.customId).setLabel(options.label).setStyle(style).setRequired(
-			required);
+		const textInput = new TextInputBuilder()
+			.setCustomId(options.customId)
+			.setLabel(options.label)
+			.setStyle(style)
+			.setRequired(required);
 
 		if (options.placeholder) textInput.setPlaceholder(options.placeholder);
 		if (options.minLength) textInput.setMinLength(options.minLength);
@@ -30,9 +34,10 @@ export class ModalComponent {
 		return this;
 	}
 
-	toBuilder(): Modal {
-		const modal = new Modal().setCustomId(this.customId).setTitle(this.title);
-		modal.addComponents(...this.components.map(component => new MessageActionRow<ModalActionRowComponent>().addComponents(component)));
+	toBuilder() {
+		const modal = new ModalBuilder().setCustomId(this.customId).setTitle(this.title);
+		modal.addComponents(...this.components.map(component => new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+			component)));
 		return modal;
 	}
 }

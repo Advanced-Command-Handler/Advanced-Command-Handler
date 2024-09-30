@@ -1,4 +1,7 @@
-import {type ClientOptions, Collection, type Message, type MessageEmbed, type PresenceData, type Snowflake, Team} from 'discord.js';
+import type {APIEmbed} from 'discord-api-types/v10';
+import {
+	type ClientOptions, Collection, type EmbedBuilder, type Message, type PresenceData, type Snowflake, Team, TeamMemberMembershipState,
+} from 'discord.js';
 import {EventEmitter} from 'events';
 import {promises as fsPromises} from 'fs';
 import {join} from 'path';
@@ -75,7 +78,7 @@ export namespace CommandHandler {
 		/**
 		 * A message to send to anyone (or not-owners if {@link sendCodeErrorOnlyToOwners} is set) when a command execution is failed and an error is thrown.
 		 */
-		sendWhenError?: MessageEmbed | string;
+		sendWhenError?: APIEmbed | EmbedBuilder | string;
 	}
 
 	/**
@@ -461,8 +464,9 @@ export namespace CommandHandler {
 		if (options.addBotAndTeamOwnersToOwners !== false) {
 			const appOwner = (await client.application?.fetch())?.owner;
 			if (appOwner) {
-				if (appOwner instanceof Team) owners.push(...appOwner.members.filter(m => m.membershipState === 'ACCEPTED').map(m => m.id));
-				else owners.push(appOwner.id);
+				if (appOwner instanceof Team) {
+					owners.push(...appOwner.members.filter(m => m.membershipState === TeamMemberMembershipState.Accepted).map(m => m.id));
+				} else owners.push(appOwner.id);
 			}
 		}
 

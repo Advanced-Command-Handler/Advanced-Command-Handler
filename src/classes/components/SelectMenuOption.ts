@@ -1,8 +1,8 @@
-import {ChannelType, ComponentType} from 'discord-api-types/v9';
-import {type AnyChannel, Role, Snowflake, User} from 'discord.js';
+import {ChannelType, ComponentType} from 'discord-api-types/v10';
+import {type Channel, Role, Snowflake, User} from 'discord.js';
 
 export type SelectMenuValueMap = {
-	[ComponentType.ChannelSelect]: AnyChannel | Snowflake;
+	[ComponentType.ChannelSelect]: Channel | Snowflake;
 	[ComponentType.MentionableSelect]: Role | User | Snowflake;
 	[ComponentType.RoleSelect]: Role | Snowflake;
 	[ComponentType.StringSelect]: string;

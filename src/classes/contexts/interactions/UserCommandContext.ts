@@ -1,5 +1,5 @@
-import type {APIInteractionGuildMember} from 'discord-api-types/v9';
-import {type CacheType, type CacheTypeReducer, type GuildMember, type User, UserContextMenuInteraction} from 'discord.js';
+import type {APIInteractionGuildMember} from 'discord-api-types/v10';
+import {type CacheType, type CacheTypeReducer, type GuildMember, type User, UserContextMenuCommandInteraction} from 'discord.js';
 import type {UserCommand} from '../../interactions/UserCommand.js';
 import {ApplicationCommandContext, type ApplicationCommandContextBuilder} from './ApplicationCommandContext.js';
 
@@ -7,7 +7,7 @@ import {ApplicationCommandContext, type ApplicationCommandContextBuilder} from '
  * The options of the UserCommandContext.
  */
 export interface UserCommandContextBuilder extends ApplicationCommandContextBuilder<UserCommand> {
-	interaction: UserContextMenuInteraction;
+	interaction: UserContextMenuCommandInteraction;
 	targetMember: GuildMember | null;
 	targetUser: User;
 }
@@ -16,7 +16,7 @@ export interface UserCommandContextBuilder extends ApplicationCommandContextBuil
  * The context of a user command.
  */
 export class UserCommandContext extends ApplicationCommandContext<UserCommand> {
-	override interaction: UserContextMenuInteraction;
+	override interaction: UserContextMenuCommandInteraction;
 
 	/**
 	 * The member that was targeted by the command.

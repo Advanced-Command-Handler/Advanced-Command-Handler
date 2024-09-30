@@ -1,13 +1,13 @@
+import type {APIEmbed} from 'discord-api-types/v10';
 import {
 	type Awaitable,
-	BaseGuildTextChannel,
 	Collection,
+	EmbedBuilder,
 	type EmojiIdentifierResolvable,
 	Message,
-	MessageEmbed,
-	type MessageOptions,
+	type MessageCreateOptions,
+	type MessageReplyOptions,
 	type MessageResolvable,
-	type ReplyMessageOptions,
 	type StartThreadOptions,
 } from 'discord.js';
 import type {CommandHandler} from '../../CommandHandler.js';
@@ -16,12 +16,12 @@ import {CommandArgument} from '../arguments/CommandArgument.js';
 import type {Command} from '../commands/Command.js';
 import {CommandError} from '../errors/CommandError.js';
 
-interface ReplyOptions extends ReplyMessageOptions {
-	embed?: MessageEmbed;
+interface ReplyOptions extends MessageReplyOptions {
+	embed?: APIEmbed | EmbedBuilder;
 }
 
-interface SendOptions extends MessageOptions {
-	embed?: MessageEmbed;
+interface SendOptions extends MessageCreateOptions {
+	embed?: APIEmbed | EmbedBuilder;
 }
 
 /**
@@ -168,7 +168,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * Returns the channel where the command was executed as a TextChannel or undefined if it isn't.
 	 */
 	get textChannel() {
-		return this.message.channel instanceof BaseGuildTextChannel ? this.message.channel : undefined;
+		return this.message.inGuild() ? this.message.channel : undefined;
 	}
 
 	/**
@@ -304,7 +304,7 @@ export class CommandContext implements CommandContextBuilder {
 	 * @param options - The options.
 	 * @returns - The message sent.
 	 */
-	public reply(content: string | ReplyMessageOptions, options?: ReplyOptions) {
+	public reply(content: string | ReplyOptions, options?: ReplyOptions) {
 		if (typeof content !== 'string') options = content;
 		else if (content && options) {
 			options.content = content;
@@ -344,15 +344,15 @@ export class CommandContext implements CommandContextBuilder {
 	/**
 	 *
 	 */
-	public send(options: SendOptions): Promise<Message>;
+	public send(options: SendOptions): Promise<Message<true>>;
 	/**
 	 *
 	 */
-	public send(content: string): Promise<Message>;
+	public send(content: string): Promise<Message<true>>;
 	/**
 	 *
 	 */
-	public send(content: string, options: SendOptions): Promise<Message>;
+	public send(content: string, options: SendOptions): Promise<Message<true>>;
 	/**
 	 * Send a message in the channel.
 	 *
@@ -368,7 +368,7 @@ export class CommandContext implements CommandContextBuilder {
 
 		if (options && options.embed && !options.embeds) options.embeds = [options.embed];
 
-		return this.channel.send(options ?? '');
+		return this.textChannel?.send(options ?? '');
 	}
 
 	/**

@@ -1,4 +1,4 @@
-import {ButtonStyle} from 'discord-api-types/v9';
+import {ButtonStyle, TextInputStyle} from 'discord-api-types/v10';
 import {stringArgument} from '../../classes/arguments/arguments.js';
 import {ComponentsBuilder} from '../../classes/components/ComponentsBuilder.js';
 import {ModalComponent} from '../../classes/components/Modal.js';
@@ -21,7 +21,7 @@ export class ComponentsTest extends SlashCommand {
 			modal.addTextInput({
 				customId: 'test2',
 				label: 'Test2',
-				style: 'PARAGRAPH',
+				style: TextInputStyle.Paragraph,
 			});
 
 			await ctx.showModal(modal);
@@ -63,19 +63,15 @@ export class ComponentsTest extends SlashCommand {
 				],
 			}));
 
-			// Does not work on discord.js v13
-			/* builder.addRow(row => row.setChannelSelectMenu({
-				customId: 'a',
+			builder.addRow(row => row.setChannelSelectMenu({
+				customId: 'b',
 				options: [
 					{
 						label: 'mdr',
 						value: ctx.channel!,
-					}, {
-						label: 'lol',
-						value: ctx.interaction.channelId,
 					},
 				],
-			})); */
+			}));
 
 			// Reply to the interaction
 			await ctx.reply({

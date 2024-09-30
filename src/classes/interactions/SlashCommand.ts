@@ -1,6 +1,5 @@
-import {SlashCommandBuilder, SlashCommandSubcommandBuilder} from '@discordjs/builders';
-import type {APIApplicationCommandSubcommandOption, RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v9';
-import {Permissions, type PermissionString} from 'discord.js';
+import type {APIApplicationCommandSubcommandOption, RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v10';
+import {PermissionsBitField, type PermissionsString, SlashCommandBuilder, SlashCommandSubcommandBuilder} from 'discord.js';
 import {Logger} from '../../helpers/Logger.js';
 import type {SlashCommandArguments} from '../arguments/CommandArgument.js';
 
@@ -39,7 +38,7 @@ export abstract class SlashCommand<T extends SlashCommandArguments = SlashComman
 	 * @remarks Register SubCommands using the {@link Command#registerSubCommands} method.
 	 */
 	public subCommands: SubSlashCommand<any>[] = [];
-	public readonly userPermissions: PermissionString[] = [];
+	public readonly userPermissions: PermissionsString[] = [];
 	public subCommandGroups: GroupSubSlashCommand[] = [];
 
 	/**
@@ -71,7 +70,7 @@ export abstract class SlashCommand<T extends SlashCommandArguments = SlashComman
 				this.userPermissions
 					.map(name => {
 						try {
-							return Permissions.resolve(name);
+							return PermissionsBitField.resolve(name);
 						} catch (e) {
 							Logger.warn(`Permission ${Logger.setColor('orange', name)} is not valid: ${e instanceof Error ? e.message : String(e)}`);
 							return 0n;

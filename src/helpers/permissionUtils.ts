@@ -1,4 +1,4 @@
-import {type Message, Permissions, type PermissionString} from 'discord.js';
+import {type Message, PermissionsBitField, type PermissionsString} from 'discord.js';
 
 import {BetterEmbed} from 'discord.js-better-embed';
 import type {CommandContext} from '../classes/contexts/CommandContext.js';
@@ -11,7 +11,11 @@ import type {CommandContext} from '../classes/contexts/CommandContext.js';
  * @param fromClient - If the error is from the client.
  * @returns - The error message sent.
  */
-export function permissionsError(ctx: CommandContext, missingPermissions: PermissionString[], fromClient: boolean = false): Promise<Message> {
+export function permissionsError(
+	ctx: CommandContext,
+	missingPermissions: PermissionsString[],
+	fromClient: boolean = false,
+): Promise<Message> {
 	const embed = BetterEmbed.fromTemplate('complete', {
 		client: ctx.client,
 		color: 0xee2200,
@@ -34,6 +38,6 @@ export function permissionsError(ctx: CommandContext, missingPermissions: Permis
  * @param permission - The permission to test.
  * @returns - Is the permission is a valid permission.
  */
-export function isPermission(permission: string): permission is PermissionString {
-	return Object.keys(Permissions.FLAGS).includes(permission);
+export function isPermission(permission: string): permission is PermissionsString {
+	return Object.keys(PermissionsBitField.Flags).includes(permission);
 }

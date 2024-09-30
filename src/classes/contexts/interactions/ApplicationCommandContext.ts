@@ -1,4 +1,5 @@
-import {BaseCommandInteraction, type InteractionReplyOptions, MessageEmbed, ModalSubmitInteraction} from 'discord.js';
+import type {APIEmbed} from 'discord-api-types/v10';
+import {CommandInteraction, type EmbedBuilder, type InteractionReplyOptions, ModalSubmitInteraction} from 'discord.js';
 import type {InteractionHandler} from '../../../InteractionHandler.js';
 import {ComponentsBuilder} from '../../components/ComponentsBuilder.js';
 import type {ModalComponent} from '../../components/Modal.js';
@@ -8,7 +9,7 @@ import {SubmittedModalContext} from './SubmittedModalContext.js';
 
 export interface ReplyOptions extends Omit<InteractionReplyOptions, 'components'> {
 	components?: ComponentsBuilder | InteractionReplyOptions['components'];
-	embed?: MessageEmbed;
+	embed?: APIEmbed | EmbedBuilder;
 }
 
 /**
@@ -22,7 +23,7 @@ export interface ApplicationCommandContextBuilder<T extends ApplicationCommand =
 	/**
 	 * The interaction that represents the command.
 	 */
-	interaction: BaseCommandInteraction;
+	interaction: CommandInteraction;
 	/**
 	 * The handler that handled the command.
 	 */
@@ -34,7 +35,8 @@ export interface ApplicationCommandContextBuilder<T extends ApplicationCommand =
  *
  * @property interaction The interaction that represents the command.
  */
-export class ApplicationCommandContext<T extends ApplicationCommand = ApplicationCommand> extends RepliableInteractionContext<BaseCommandInteraction> {
+	// @ts-expect-error Bug, CommandInteraction is compatible with RepliableInteraction.
+export class ApplicationCommandContext<T extends ApplicationCommand = ApplicationCommand> extends RepliableInteractionContext<CommandInteraction> {
 	/**
 	 * The application command that was executed.
 	 */

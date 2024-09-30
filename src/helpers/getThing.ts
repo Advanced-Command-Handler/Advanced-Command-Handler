@@ -1,5 +1,16 @@
 import {
-	Channel, DMChannel, Emoji, Guild, GuildChannel, GuildMember, type GuildTextBasedChannel, Message, Role, TextChannel, User, Util,
+	Channel,
+	DMChannel,
+	Emoji,
+	Guild,
+	GuildChannel,
+	GuildMember,
+	type GuildTextBasedChannel,
+	Message,
+	resolvePartialEmoji,
+	Role,
+	TextChannel,
+	User,
 } from 'discord.js';
 import type {Command} from '../classes/commands/Command.js';
 import {CommandHandler} from '../CommandHandler.js';
@@ -135,16 +146,18 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 			return CommandHandler.findCommand(text) ?? null;
 
 		case DataType.CHANNEL:
-			return client?.channels.cache.get(text) ?? message?.mentions.channels.first() ??
-				client?.channels.cache.find(c => c instanceof GuildChannel && c.name.toLowerCase().includes(text.toLowerCase()) &&
-						text.toString().length > 1 ||
-					c instanceof DMChannel && c.recipient.username.toLowerCase().includes(text.toLowerCase()) && text.toString().length >
-						2 || c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') || false) ??
+			return client?.channels.cache.get(text) ?? message?.mentions.channels.first() ?? client?.channels.cache.find(c => {
+					const onDMChannel = c instanceof DMChannel && c.recipient!.username.toLowerCase().includes(text.toLowerCase());
+					const onGuildChannel = c instanceof GuildChannel && c.name.toLowerCase().includes(text.toLowerCase()) &&
+						text.toString().length > 1 && text.toString().length > 2;
+					const onText = c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>');
+					return onGuildChannel || onDMChannel || onText || false;
+				}) ??
 				client?.channels.resolve(text) ?? null;
 		case DataType.EMOTE:
 			return client?.emojis.cache.get(text) ??
 				client?.emojis.cache.find(e => e.name?.toLowerCase().includes(text.toLowerCase()) && text.length > 1 || false) ??
-				Util.resolvePartialEmoji(text) ?? null;
+				resolvePartialEmoji(text) ?? null;
 
 		case DataType.GUILD:
 			return client?.guilds.cache.get(text) ??
@@ -162,7 +175,7 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 			const url = text.replace(/https:\/\/((canary|ptb).)?discord.com\/channels\//, '').split('/');
 			const channels = client?.channels.cache;
 			if (text.startsWith('https') && channels?.has(url[1])) {
-				return await (channels?.filter(c => c.isText()).get(url[1]) as TextChannel)?.messages.fetch(url[2]) || null;
+				return await (channels?.filter(c => c.isTextBased()).get(url[1]) as TextChannel)?.messages.fetch(url[2]) || null;
 			}
 
 			if (channels) {
@@ -177,12 +190,12 @@ export async function getThing<T extends DataType>(dataType: DataTypeResolver<T>
 
 		case DataType.TEXT_CHANNEL: {
 			const result = client?.channels.cache.filter(c => isTextChannelLike(c)).get(text) ??
-				message?.mentions.channels.filter(c => isTextChannelLike(c)).first() ??
-				client?.channels.cache.find(c => isTextChannelLike(c) && c.name.toLowerCase().includes(text.toLowerCase()) &&
-						text.toString().length > 1 ||
-						c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>') ||
-						false
-				) ??
+				message?.mentions.channels.filter(c => isTextChannelLike(c)).first() ?? client?.channels.cache.find(c => {
+					const onTextChannelLike = isTextChannelLike(c) && c.name.toLowerCase().includes(text.toLowerCase()) &&
+						text.toString().length > 1;
+					const onText = c.toString() === text.toString().replace(/<#(\d{17,19})>/, '<@$1>');
+					return onTextChannelLike || onText || false;
+				}) ??
 				client?.channels.resolve(text) ??
 				null;
 

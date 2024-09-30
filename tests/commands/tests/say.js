@@ -1,9 +1,9 @@
-import {Command, stringArgument} from 'advanced-command-handler';
+import {Command, Permissions, stringArgument} from 'advanced-command-handler';
 
 export default class SayCommand extends Command {
 	name = 'say';
 	tags = ['guildOnly'];
-	userPermissions = ['MANAGE_MESSAGES'];
+	userPermissions = [Permissions.ManageMessages];
 	cooldown = 10;
 	arguments = {
 		text: stringArgument({coalescing: true}),

@@ -20,16 +20,16 @@ export class InteractionCreateEvent extends Event {
 	 * @returns The result of the command execution.
 	 */
 	public override async run(ctx: EventContext<this>, interaction: Interaction) {
-		if (!interaction.isApplicationCommand()) return;
+		if (!interaction.isCommand()) return;
 		const command = ctx.interactionHandler.commands.find(cmd => {
-			if (interaction.isMessageContextMenu()) return cmd instanceof MessageCommand && cmd.name === interaction.commandName;
-			if (interaction.isCommand()) return cmd instanceof SlashCommand && cmd.name === interaction.commandName;
-			if (interaction.isUserContextMenu()) return cmd instanceof UserCommand && cmd.name === interaction.commandName;
+			if (interaction.isMessageContextMenuCommand()) return cmd instanceof MessageCommand && cmd.name === interaction.commandName;
+			if (interaction.isChatInputCommand()) return cmd instanceof SlashCommand && cmd.name === interaction.commandName;
+			if (interaction.isUserContextMenuCommand()) return cmd instanceof UserCommand && cmd.name === interaction.commandName;
 			return false;
 		});
 		if (!command) return;
 
-		if (command instanceof MessageCommand && interaction.isMessageContextMenu()) {
+		if (command instanceof MessageCommand && interaction.isMessageContextMenuCommand()) {
 			const message = await interaction.channel!.messages.fetch(interaction.targetId);
 			const commandContext = new MessageCommandContext({
 				interaction,
@@ -38,7 +38,7 @@ export class InteractionCreateEvent extends Event {
 				targetMessage: message,
 			});
 			await command.run(commandContext);
-		} else if (command instanceof SlashCommand && interaction.isCommand()) {
+		} else if (command instanceof SlashCommand && interaction.isChatInputCommand()) {
 			const subCommandGroupName = interaction.options.getSubcommandGroup(false);
 			const subCommandName = interaction.options.getSubcommand(false);
 
@@ -74,7 +74,7 @@ export class InteractionCreateEvent extends Event {
 				command,
 			});
 			await command.run(commandContext);
-		} else if (command instanceof UserCommand && interaction.isUserContextMenu()) {
+		} else if (command instanceof UserCommand && interaction.isUserContextMenuCommand()) {
 			const member = interaction.inGuild() ? await interaction.guild!.members.fetch(interaction.targetId) : null;
 
 			const commandContext = new UserCommandContext({

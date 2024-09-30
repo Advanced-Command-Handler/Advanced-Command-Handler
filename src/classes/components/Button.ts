@@ -1,5 +1,5 @@
-import {ButtonBuilder} from '@discordjs/builders';
-import {ButtonStyle} from 'discord-api-types/v9';
+import {ButtonStyle} from 'discord-api-types/v10';
+import {ButtonBuilder} from 'discord.js';
 
 export interface ButtonOptions {
 	customId?: string;

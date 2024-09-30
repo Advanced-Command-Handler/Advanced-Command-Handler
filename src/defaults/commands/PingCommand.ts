@@ -7,7 +7,7 @@ export class PingCommand extends Command {
 	override description = 'Get the ping of the bot.';
 	override name = 'ping';
 	override tags = [Tag.guildOnly];
-	override userPermissions = [Permissions.MANAGE_MESSAGES];
+	override userPermissions = [Permissions.ManageMessages];
 
 	public override async run(ctx: CommandContext) {
 		const msg = await ctx.reply('Ping ?');

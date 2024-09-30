@@ -1,6 +1,4 @@
-import {
-	type CacheType, type GuildCacheMessage, Interaction, type InteractionReplyOptions, type InteractionResponseFields, MessagePayload,
-} from 'discord.js';
+import {Interaction, type InteractionReplyOptions, InteractionResponse, MessagePayload, type RepliableInteraction} from 'discord.js';
 import {ComponentsBuilder} from '../../components/ComponentsBuilder.js';
 import type {ReplyOptions} from './ApplicationCommandContext.js';
 import {InteractionContext} from './InteractionContext.js';
@@ -8,7 +6,7 @@ import {InteractionContext} from './InteractionContext.js';
 /**
  * The context of an interaction that can be replied to.
  */
-export class RepliableInteractionContext<T extends Interaction & InteractionResponseFields> extends InteractionContext<T> {
+export class RepliableInteractionContext<T extends Interaction & RepliableInteraction> extends InteractionContext<T> {
 	/**
 	 * Defer the reply of the command.
 	 */
@@ -19,17 +17,17 @@ export class RepliableInteractionContext<T extends Interaction & InteractionResp
 	/**
 	 * Reply with options.
 	 */
-	public reply<T extends ReplyOptions>(options: T): Promise<T['fetchReply'] extends true ? GuildCacheMessage<CacheType> : void>;
+	public reply<T extends ReplyOptions>(options: T): Promise<InteractionResponse<T['fetchReply'] extends true ? true : false>>;
 	/**
 	 * Reply with raw content.
 	 */
-	public reply(content: string | MessagePayload): Promise<void>;
+	public reply(content: string | MessagePayload): Promise<InteractionResponse<boolean>>;
 	/**
 	 * Reply with content and options.
 	 */
-	public reply<T extends ReplyOptions>(content: string, options: T): Promise<T['fetchReply'] extends true
-	                                                                           ? GuildCacheMessage<CacheType>
-	                                                                           : void>;
+	public reply<T extends ReplyOptions>(content: string, options: T): Promise<InteractionResponse<T['fetchReply'] extends true
+	                                                                                               ? true
+	                                                                                               : false>>;
 
 	/**
 	 * Reply to the command.
@@ -39,12 +37,7 @@ export class RepliableInteractionContext<T extends Interaction & InteractionResp
 	 *
 	 * @returns The message that was replied if `fetchReply` is set to `true`.
 	 */
-	public async reply(content: string | ReplyOptions | MessagePayload, options?: ReplyOptions): Promise<typeof options extends ReplyOptions
-	                                                                                                     ? ((typeof options)['fetchReply'] extends true
-	                                                                                                        ? GuildCacheMessage<CacheType>
-	                                                                                                        : void)
-	                                                                                                     : void> {
-
+	public async reply(content: string | ReplyOptions | MessagePayload, options?: ReplyOptions) {
 		if (content instanceof MessagePayload) {
 			return this.interaction.reply(content);
 		}

@@ -1,4 +1,4 @@
-import {type Message, type PermissionString} from 'discord.js';
+import {type Message, type PermissionsString} from 'discord.js';
 import {Tag} from '../../classes/commands/Command.js';
 import {CommandContext} from '../../classes/contexts/CommandContext.js';
 import {type EventContext} from '../../classes/contexts/EventContext.js';
@@ -26,7 +26,7 @@ export class MessageCreateEvent extends Event {
 	 * @param message - The message that was sent.
 	 * @returns The result of the command execution.
 	 */
-	public override async run(ctx: EventContext<this>, message: Message) {
+	public override async run(ctx: EventContext<this>, message: Message<true>) {
 		if (MessageCreateEvent.options.excludeBots !== false && message.author.bot) return;
 		if (message.system) return;
 
@@ -64,9 +64,9 @@ export class MessageCreateEvent extends Event {
 			if (error) {
 				switch (error.type) {
 					case CommandErrorType.CLIENT_MISSING_PERMISSIONS:
-						return permissionsError(commandContext, error.data as PermissionString[], true);
+						return permissionsError(commandContext, error.data as PermissionsString[], true);
 					case CommandErrorType.USER_MISSING_PERMISSIONS:
-						return permissionsError(commandContext, error.data as PermissionString[]);
+						return permissionsError(commandContext, error.data as PermissionsString[]);
 					case CommandErrorType.MISSING_TAGS:
 						return argError(
 							commandContext,

@@ -1,3 +1,4 @@
+import {ApplicationCommandOptionType} from 'discord.js';
 import {CommandArgument, type SlashCommandArguments} from '../../arguments/CommandArgument.js';
 import type {SlashCommandArgument} from '../../arguments/SlashCommandArgument.js';
 import type {SlashCommand, SubSlashCommand} from '../../interactions/SlashCommand.js';
@@ -60,12 +61,13 @@ export class SubSlashCommandContext<T extends SubSlashCommand<A>, A extends Slas
 		const subCommands = this.command.subCommands.map(c => c.name);
 
 		for (const option of this.interaction.options.data) {
-			if (option.type === 'SUB_COMMAND_GROUP' && subCommandGroups.includes(option.name)) {
-				const subOptions = option.options?.find(o => o.type === 'SUB_COMMAND' && o.name === this.subCommand.name);
+			if (option.type === ApplicationCommandOptionType.SubcommandGroup && subCommandGroups.includes(option.name)) {
+				const subOptions = option.options?.find(o => o.type === ApplicationCommandOptionType.Subcommand && o.name ===
+					this.subCommand.name);
 				return subOptions?.options?.find(o => o.name === name)?.value as ReturnType;
 			}
 
-			if (option.type === 'SUB_COMMAND' && subCommands.includes(option.name)) {
+			if (option.type === ApplicationCommandOptionType.Subcommand && subCommands.includes(option.name)) {
 				return option.options?.find(o => o.name === name)?.value as ReturnType;
 			}
 		}

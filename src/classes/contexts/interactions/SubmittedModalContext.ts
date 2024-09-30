@@ -1,4 +1,4 @@
-import {type CacheType, type GuildCacheMessage, ModalSubmitInteraction, type PartialTextInputData} from 'discord.js';
+import {type CacheType, type GuildCacheMessage, ModalSubmitInteraction} from 'discord.js';
 import {RepliableInteractionContext} from './RepliableInteractionContext.js';
 
 export class SubmittedModalContext extends RepliableInteractionContext<ModalSubmitInteraction> {
@@ -10,7 +10,7 @@ export class SubmittedModalContext extends RepliableInteractionContext<ModalSubm
 	 * The entries of the fields that were submitted.
 	 */
 	public get entries() {
-		return new Map(this.rawFields.map(value => [value.customId, value.value]));
+		return new Map(this.rawFields.entries());
 	}
 
 	/**
@@ -30,15 +30,14 @@ export class SubmittedModalContext extends RepliableInteractionContext<ModalSubm
 	/**
 	 * The raw fields that were submitted.
 	 */
-	public get rawFields(): PartialTextInputData[] {
-		// @ts-expect-error This is on purpose to add access to raw data to user.
-		return this.interaction.fields._fields;
+	public get rawFields() {
+		return this.interaction.fields.fields;
 	}
 
 	/**
 	 * The values of the fields that were submitted.
 	 */
 	public get values() {
-		return this.rawFields.map(value => value.value);
+		return [...this.rawFields.values()];
 	}
 }

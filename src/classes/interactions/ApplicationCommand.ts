@@ -1,4 +1,4 @@
-import type {RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v9';
+import type {RESTPostAPIApplicationCommandsJSONBody} from 'discord-api-types/v10';
 import type {ApplicationCommandContext} from '../contexts/interactions/ApplicationCommandContext.js';
 
 export abstract class ApplicationCommand {
