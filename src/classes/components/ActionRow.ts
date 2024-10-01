@@ -1,19 +1,23 @@
-import {type APIActionRowComponent, ButtonStyle, ChannelType, ComponentType} from 'discord-api-types/v10';
+import {type APIActionRowComponent, ButtonStyle, ChannelType} from 'discord-api-types/v10';
 import {
 	ActionRowBuilder,
-	BaseChannel,
 	type BaseSelectMenuBuilder,
 	ChannelSelectMenuBuilder,
 	MentionableSelectMenuBuilder,
-	Role,
 	RoleSelectMenuBuilder,
 	StringSelectMenuBuilder,
-	User,
 	UserSelectMenuBuilder,
 } from 'discord.js';
 import {CommandHandlerError} from '../errors/CommandHandlerError.js';
 import {Button, type ButtonOptions} from './Button.js';
-import type {SelectMenuChannelOptions, SelectMenuOptions, SelectMenuValueMap} from './SelectMenuOption.js';
+import type {
+	SelectMenuChannelOptions,
+	SelectMenuMentionableOptions,
+	SelectMenuOptions,
+	SelectMenuRoleOptions,
+	SelectMenuStringOptions,
+	SelectMenuUserOptions,
+} from './SelectMenuOption.js';
 
 export class ActionRow {
 	private buttons: (Button | undefined)[] = [];
@@ -30,44 +34,59 @@ export class ActionRow {
 		return this;
 	}
 
-	setStringSelectMenu(options: SelectMenuOptions<ComponentType.StringSelect>): this {
+	setStringSelectMenu(options: SelectMenuOptions & SelectMenuStringOptions): this {
+		if (!options.options.length) {
+			throw new CommandHandlerError('String Select Menu must have at least one option.', 'ActionRow.setStringSelectMenu');
+		}
+
 		this.selectMenu = this.configureSelectMenu(new StringSelectMenuBuilder(), options).setOptions(options.options);
 		return this;
 	}
 
-	setChannelSelectMenu(options: SelectMenuOptions<ComponentType.ChannelSelect> & SelectMenuChannelOptions): this {
-		this.selectMenu = this.configureSelectMenu(new ChannelSelectMenuBuilder(), options)
-		                      .setDefaultChannels(options.options.map(opt => opt.value instanceof BaseChannel
-		                                                                     ? opt.value.id
-		                                                                     : opt.value as string));
+	setChannelSelectMenu(options: SelectMenuOptions & SelectMenuChannelOptions): this {
+		this.selectMenu = this.configureSelectMenu(new ChannelSelectMenuBuilder(), options);
 
 		if (options.channelTypes) {
 			this.selectMenu.setChannelTypes(options.channelTypes?.map(type => typeof type === 'string' ? ChannelType[type] : type) ?? []);
 		}
+		if (options.defaultChannel !== undefined) {
+			this.selectMenu.setDefaultChannels(typeof options.defaultChannel === 'string'
+			                                   ? options.defaultChannel
+			                                   : options.defaultChannel.id);
+		}
+
 		return this;
 	}
 
-	setRoleSelectMenu(options: SelectMenuOptions<ComponentType.RoleSelect>): this {
-		this.selectMenu =
-			this.configureSelectMenu(new RoleSelectMenuBuilder(), options).setDefaultRoles(options.options.map(opt => opt.value instanceof
-			                                                                                                          Role
-			                                                                                                          ? opt.value.id
-			                                                                                                          : opt.value));
+	setRoleSelectMenu(options: SelectMenuOptions & SelectMenuRoleOptions): this {
+		this.selectMenu = this.configureSelectMenu(new RoleSelectMenuBuilder(), options);
+
+		if (options.defaultRole !== undefined) {
+			this.selectMenu.setDefaultRoles(typeof options.defaultRole === 'string' ? options.defaultRole : options.defaultRole.id);
+		}
 		return this;
 	}
 
-	setUserSelectMenu(options: SelectMenuOptions<ComponentType.UserSelect>): this {
-		this.selectMenu = this.configureSelectMenu(new UserSelectMenuBuilder(), options)
-		                      .setDefaultUsers(options.options.map(opt => opt.value instanceof User ? opt.value.id : opt.value));
+	setUserSelectMenu(options: SelectMenuOptions & SelectMenuUserOptions): this {
+		this.selectMenu = this.configureSelectMenu(new UserSelectMenuBuilder(), options);
+
+		if (options.defaultUser !== undefined) {
+			this.selectMenu.setDefaultUsers(typeof options.defaultUser === 'string' ? options.defaultUser : options.defaultUser.id);
+		}
 		return this;
 	}
 
-	setMentionableSelectMenu(options: SelectMenuOptions<ComponentType.MentionableSelect>): this {
-		this.selectMenu = this.configureSelectMenu(new MentionableSelectMenuBuilder(), options)
-		                      .setDefaultValues(options.options.map(opt => ({
-			                      id: opt.value instanceof Role || opt.value instanceof User ? opt.value.id : opt.value,
-			                      type: opt.value instanceof Role ? 'role' : 'user',
-		                      } as any)));
+	setMentionableSelectMenu(options: SelectMenuOptions & SelectMenuMentionableOptions): this {
+		this.selectMenu = this.configureSelectMenu(new MentionableSelectMenuBuilder(), options);
+
+		if (options.defaultRole !== undefined) {
+			this.selectMenu.addDefaultRoles(typeof options.defaultRole === 'string' ? options.defaultRole : options.defaultRole.id);
+		}
+
+		if (options.defaultUser !== undefined) {
+			this.selectMenu.addDefaultUsers(typeof options.defaultUser === 'string' ? options.defaultUser : options.defaultUser.id);
+		}
+
 		return this;
 	}
 
@@ -79,8 +98,7 @@ export class ActionRow {
 		return new ActionRowBuilder().addComponents(...components).toJSON();
 	}
 
-	private configureSelectMenu<T extends keyof SelectMenuValueMap, B extends BaseSelectMenuBuilder<any>>(builder: B,
-		options: SelectMenuOptions<T>,
+	private configureSelectMenu<B extends BaseSelectMenuBuilder<any>>(builder: B, options: SelectMenuOptions,
 	): B {
 		if (this.buttons.length > 0) {
 			throw new CommandHandlerError('A row can\'t have both buttons and select menus', 'ActionRow.configureSelectMenu');
@@ -88,10 +106,6 @@ export class ActionRow {
 
 		if (this.selectMenu) {
 			throw new CommandHandlerError('A row can\'t have multiple select menus', 'ActionRow.configureSelectMenu');
-		}
-
-		if (options.options.length === 0) {
-			throw new CommandHandlerError('Select menu must have at least one option', 'ActionRow.configureSelectMenu');
 		}
 
 		builder.setCustomId(options.customId);

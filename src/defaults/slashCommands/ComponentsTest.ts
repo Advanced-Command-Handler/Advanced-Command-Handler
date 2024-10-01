@@ -1,4 +1,4 @@
-import {ButtonStyle, TextInputStyle} from 'discord-api-types/v10';
+import {ButtonStyle, ChannelType, ComponentType, TextInputStyle} from 'discord-api-types/v10';
 import {stringArgument} from '../../classes/arguments/arguments.js';
 import {ComponentsBuilder} from '../../classes/components/ComponentsBuilder.js';
 import {ModalComponent} from '../../classes/components/Modal.js';
@@ -65,12 +65,8 @@ export class ComponentsTest extends SlashCommand {
 
 			builder.addRow(row => row.setChannelSelectMenu({
 				customId: 'b',
-				options: [
-					{
-						label: 'mdr',
-						value: ctx.channel!,
-					},
-				],
+				defaultChannel: ctx.channel,
+				channelTypes: [ChannelType.GuildText],
 			}));
 
 			// Reply to the interaction
@@ -83,6 +79,22 @@ export class ComponentsTest extends SlashCommand {
 				timeout: 60_000,
 				count: 1,
 			}, async interaction => await interaction.reply('Button clicked.'));
+
+			ctx.onSelectMenuSelect({
+				timeout: 60_000,
+				count: 1,
+			}, async interaction => await interaction.reply(`Select menu selected: ${interaction.values.join(', ')}`));
+
+			ctx.onSelectMenuSelect({
+					type: ComponentType.ChannelSelect,
+					timeout: 60_000,
+					count: 1,
+				},
+				async interaction => await interaction.reply(`Role select menu selected: ${interaction.channels.map(c => c.isDMBased()
+				                                                                                                         ? c.id
+				                                                                                                         : c.name)
+				                                                                                      .join(', ')}`),
+			);
 		});
 	}
 }

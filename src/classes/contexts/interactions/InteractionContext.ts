@@ -1,7 +1,17 @@
 import {APIInteractionGuildMember, ComponentType} from 'discord-api-types/v10';
-import {ButtonInteraction, type CacheType, type CacheTypeReducer, type GuildMember, type Interaction} from 'discord.js';
+import {
+	ButtonInteraction,
+	type CacheType,
+	type CacheTypeReducer,
+	type GuildMember,
+	type Interaction,
+	type MappedInteractionTypes,
+	type MessageComponentType,
+} from 'discord.js';
 import {CommandHandlerError} from '../../errors/CommandHandlerError.js';
 
+
+type SelectMenuType = Exclude<MessageComponentType, ComponentType.Button>;
 
 /**
  * The options of the button click.
@@ -25,7 +35,7 @@ export interface OnClickOptions {
 /**
  * The options of the select menu selection.
  */
-export interface OnSelectOptions<T extends ComponentType = ComponentType.StringSelect> {
+export interface OnSelectOptions<T extends SelectMenuType = ComponentType.StringSelect> {
 	/**
 	 * The id of the select menu to listen for, can be undefined to listen for all select menus.
 	 */
@@ -37,7 +47,7 @@ export interface OnSelectOptions<T extends ComponentType = ComponentType.StringS
 	/**
 	 * The type of the select menu to listen for, defaults to {@link ComponentType.StringSelect}.
 	 */
-	type: T;
+	type?: T;
 	/**
 	 * The time to wait for the select menu selection, defaults to 60 seconds.
 	 * Cannot be infinite, consider using event listeners for indefinite timeouts.
@@ -136,27 +146,24 @@ export class InteractionContext<T extends Interaction> {
 	}
 
 	// TODO: Unfinished
-	/* /!**
+	/**
 	 * Run code whenever a select menu is selected.
 	 *
 	 * @param options - The options of the select menu selection.
 	 * @param callback - The callback to run when the select menu is selected.
 	 * @param onFail - The callback to run when the select menu selection fails.
-	 *!/
-	public onSelectMenuSelect<T extends ComponentType>(
-		options: OnSelectOptions<T>,
-		callback: (interaction: SelectMenuInteraction) => void,
+	 */
+	public onSelectMenuSelect<T extends SelectMenuType = SelectMenuType>(
+		options: OnSelectOptions<T>, callback: (interaction: MappedInteractionTypes<true>[T]) => void,
 		onFail?: (error: unknown) => void,
 	) {
 		const count = options.count ?? 1;
 		if (count < 1) {
 			throw new CommandHandlerError('Count must be greater than 0 or Infinity to listen indefinitely.', 'OnSelectMenuSelect');
 		}
-
-		const filter = options.selectMenuId ? (interaction: SelectMenuInteraction) => interaction.customId === options.selectMenuId : undefined;
 		const collector = this.channel!.createMessageComponentCollector({
 			componentType: options.type,
-			filter,
+			filter: options.selectMenuId ? interaction => interaction.customId === options.selectMenuId : undefined,
 		});
 
 		collector.on('collect', interaction => {
@@ -171,5 +178,5 @@ export class InteractionContext<T extends Interaction> {
 				onFail?.(new CommandHandlerError('Select menu selection timed out and select menu selection count was not infinite.', 'OnSelectMenuSelect'));
 			}
 		});
-	} */
+	}
 }
