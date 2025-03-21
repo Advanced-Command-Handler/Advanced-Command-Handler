@@ -83,17 +83,21 @@ export class ComponentsTest extends SlashCommand {
 			ctx.onSelectMenuSelect({
 				timeout: 60_000,
 				count: 1,
-			}, async interaction => await interaction.reply(`Select menu selected: ${interaction.values.join(', ')}`));
+			}, async interaction => await interaction.reply(`Select menu selected: ${interaction.channels.map(c => c.isDMBased() ? c.id : c.name).join(', ')}`));
 
 			ctx.onSelectMenuSelect({
 					type: ComponentType.ChannelSelect,
 					timeout: 60_000,
 					count: 1,
 				},
-				async interaction => await interaction.reply(`Role select menu selected: ${interaction.channels.map(c => c.isDMBased()
-				                                                                                                         ? c.id
-				                                                                                                         : c.name)
-				                                                                                      .join(', ')}`),
+				async interaction => {
+					await interaction.message.edit({
+						components: [],
+					});
+
+					const channels = interaction.channels.map(c => c.isDMBased() ? c.id : c.name).join(', ');
+					await interaction.reply(`Channel select menu selected: ${channels}`);
+				},
 			);
 		});
 	}

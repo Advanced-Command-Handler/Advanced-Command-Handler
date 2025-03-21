@@ -9,6 +9,7 @@ import {
 	type MessageComponentType,
 } from 'discord.js';
 import {CommandHandlerError} from '../../errors/CommandHandlerError.js';
+import {SelectMenuInteractionContext} from './SelectMenuInteractionContext.js';
 
 
 type SelectMenuType = Exclude<MessageComponentType, ComponentType.Button>;
@@ -145,7 +146,6 @@ export class InteractionContext<T extends Interaction> {
 		});
 	}
 
-	// TODO: Unfinished
 	/**
 	 * Run code whenever a select menu is selected.
 	 *
@@ -154,7 +154,8 @@ export class InteractionContext<T extends Interaction> {
 	 * @param onFail - The callback to run when the select menu selection fails.
 	 */
 	public onSelectMenuSelect<T extends SelectMenuType = SelectMenuType>(
-		options: OnSelectOptions<T>, callback: (interaction: MappedInteractionTypes<true>[T]) => void,
+		options: OnSelectOptions<T>,
+		callback: (context: SelectMenuInteractionContext<MappedInteractionTypes<true>[T]>) => void,
 		onFail?: (error: unknown) => void,
 	) {
 		const count = options.count ?? 1;
@@ -167,7 +168,7 @@ export class InteractionContext<T extends Interaction> {
 		});
 
 		collector.on('collect', interaction => {
-			callback(interaction);
+			callback(new SelectMenuInteractionContext(interaction));
 			if (collector.collected.size <= count) {
 				collector.stop();
 			}
