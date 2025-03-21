@@ -5,20 +5,20 @@
 	},
 	"dependencies": {
 		"argumentorum": "^0.1.1",
-		"chalk": "^5.3.0",
-		"dayjs": "^1.11.10",
-		"discord.js": "^14.16.3",
+		"chalk": "^5.4.1",
+		"dayjs": "^1.11.13",
+		"discord.js": "^14.18.0",
 		"discord.js-better-embed": "^1.4.0"
 	},
 	"description": "A package to help you create a bot with only 1 main file, directories for your events/commands, with some helpers classes and functions.",
 	"devDependencies": {
-		"discord-api-types": "^0.37.101",
-		"@types/node": "^20.16.5",
-		"eslint": "^9.10.0",
-		"eslint-plugin-jsdoc": "^50.2.2",
-		"prettier": "^3.3.3",
-		"typescript": "^5.6.2",
-		"typescript-eslint": "^8.5.0"
+		"discord-api-types": "^0.37.119",
+		"@types/node": "^22.13.11",
+		"eslint": "^9.22.0",
+		"eslint-plugin-jsdoc": "^50.6.8",
+		"prettier": "^3.5.3",
+		"typescript": "^5.8.2",
+		"typescript-eslint": "^8.27.0"
 	},
 	"engineStrict": true,
 	"engines": {
