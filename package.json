@@ -5,7 +5,7 @@
 	},
 	"dependencies": {
 		"argumentorum": "^0.1.1",
-		"chalk": "^5.4.1",
+		"chalk": "^6.0.1",
 		"dayjs": "^1.11.13",
 		"discord.js": "^14.18.0",
 		"discord.js-better-embed": "^1.4.0"
